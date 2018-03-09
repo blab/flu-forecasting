@@ -1,0 +1,15 @@
+name: janus_python3
+channels:
+- bioconda
+- defaults
+dependencies:
+- boto
+- boto3
+- ipython
+- python=3.6*
+- numpy
+- pandas
+- psutil
+- pip:
+  - drmaa
+  - snakemake
