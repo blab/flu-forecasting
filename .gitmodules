@@ -1,3 +1,6 @@
 [submodule "dist/augur"]
 	path = dist/augur
 	url = https://github.com/nextstrain/augur.git
+[submodule "dist/fauna"]
+	path = dist/fauna
+	url = https://github.com/nextstrain/fauna.git
