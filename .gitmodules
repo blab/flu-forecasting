@@ -1,0 +1,3 @@
+[submodule "dist/augur"]
+	path = dist/augur
+	url = https://github.com/nextstrain/augur.git
