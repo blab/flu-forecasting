@@ -31,3 +31,10 @@ rule download_sequences_and_titers:
     output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     conda: "envs/anaconda.python2.yaml"
     shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha --sequences --titers"
+
+rule clean:
+    run:
+        for year_range in YEAR_RANGES:
+            for virus in VIRUSES:
+                shell("rm -f dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{virus}v.json".format(year_range=year_range, virus=virus))
+                shell("rm -f dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
