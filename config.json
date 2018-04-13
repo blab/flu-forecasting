@@ -1,0 +1,10 @@
+{
+    "year_ranges": ["2002-2017"],
+    "viruses": ["17"],
+    "number_of_samples": 1,
+    "predictors": [
+        "ep",
+        "cTiter",
+        "cTiterSub"
+    ]
+}

@@ -1,14 +1,11 @@
+# Load configuration parameters.
+configfile: "config.json"
 
-BUILD = "flu_h3n2_ha_15y_17v"
-YEAR_RANGES = ("2002-2017",)
-VIRUSES = ("17",)
-NUMBER_OF_SAMPLES = 1
+YEAR_RANGES = config["year_ranges"]
+VIRUSES = config["viruses"]
+PREDICTORS = config["predictors"]
+NUMBER_OF_SAMPLES = config["number_of_samples"]
 SAMPLES = range(NUMBER_OF_SAMPLES)
-PREDICTORS = (
-    "ep",
-    "cTiter",
-    "cTiterSub"
-)
 
 def _get_start_year_from_range(wildcards):
     return wildcards["year_range"].split("-")[0]
