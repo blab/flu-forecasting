@@ -4,6 +4,11 @@ YEAR_RANGES = ("2002-2017",)
 VIRUSES = ("17",)
 NUMBER_OF_SAMPLES = 1
 SAMPLES = range(NUMBER_OF_SAMPLES)
+PREDICTORS = (
+    "ep",
+    "cTiter",
+    "cTiterSub"
+)
 
 def _get_start_year_from_range(wildcards):
     return wildcards["year_range"].split("-")[0]
@@ -11,19 +16,25 @@ def _get_start_year_from_range(wildcards):
 def _get_end_year_from_range(wildcards):
     return wildcards["year_range"].split("-")[1]
 
+def _get_predictor_list(wildcards):
+    return " ".join(wildcards["predictors"].split("-"))
+
 rule all:
-    input: expand("dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    input: expand("models/{year_range}/{viruses}/{predictors}/{sample}.json", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
 
 rule run_fitness_model:
-    input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
-    output: "models/{year_range}/{viruses}/{sample}.json"
+    input:
+        tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        frequencies="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_frequencies.json"
+    output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
+    params: predictor_list=_get_predictor_list
     conda: "envs/anaconda.python2.yaml"
-    shell: "python "
-
+    shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list}"
 
 rule augur_process:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
-    output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
+    output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+            "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_frequencies.json"
     conda: "envs/anaconda.python2.yaml"
     shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method fasttree"""
 
