@@ -80,5 +80,5 @@ rule clean:
     run:
         for year_range in YEAR_RANGES:
             for virus in VIRUSES:
-                shell("rm -f dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{virus}v.json".format(year_range=year_range, virus=virus))
+                shell("rm -f dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
                 shell("rm -f dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
