@@ -1,3 +1,6 @@
+# Imports.
+import pandas as pd
+
 # Load configuration parameters.
 configfile: "config.json"
 
@@ -17,7 +20,32 @@ def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
 
 rule all:
-    input: expand("models/{year_range}/{viruses}/{predictors}/{sample}.json", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    input: "model_summary.tab"
+
+rule aggregate_models:
+    input: expand("model_summary/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_summary.tab"
+    run:
+        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False)
+
+rule summarize_model:
+    input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
+    output: "model_summary/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    run:
+        with open(input[0], "r") as fh:
+            model = json.load(fh)
+
+        accuracy = model["accuracy"]
+        df = pd.DataFrame({
+            "year_range": [wildcards.year_range],
+            "viruses": [wildcards.viruses],
+            "predictors": [wildcards.predictors],
+            "sample": [wildcards.sample],
+            "rho_rel": [accuracy["rho_rel"]],
+            "clade_error": [accuracy["clade_error"]]
+        })
+        df.to_csv(output[0], sep="\t", index=False)
 
 rule run_fitness_model:
     input:
