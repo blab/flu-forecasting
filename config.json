@@ -6,6 +6,7 @@
         "ep",
         "cTiter",
         "cTiterSub",
-        "ne"
+        "ne",
+        "random"
     ]
 }
