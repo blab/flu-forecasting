@@ -69,7 +69,7 @@ rule augur_prepare:
     conda: "envs/anaconda.python2.yaml"
     params: start_year=_get_start_year_from_range, end_year=_get_end_year_from_range
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} --sequences ../../../../{input.sequences} --titers ../../../../{input.titers} \
-  --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --sampling even --time_interval {params.start_year}-10-01 {params.end_year}-04-01"""
+  --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --time_interval {params.start_year}-10-01 {params.end_year}-04-01"""
 
 rule download_sequences_and_titers:
     output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
