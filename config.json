@@ -1,6 +1,6 @@
 {
     "year_ranges": ["2002-2017"],
-    "viruses": ["17"],
+    "viruses": ["17", "50"],
     "number_of_samples": 5,
     "predictors": [
         "ep",
