@@ -77,7 +77,7 @@ rule augur_process:
     output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
             "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_frequencies.json"
     conda: "envs/anaconda.python2.yaml"
-    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method fasttree"""
+    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method raxml"""
 
 rule augur_prepare:
     input: sequences="dist/fauna/data/h3n2_ha.fasta", titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
