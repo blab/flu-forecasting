@@ -20,18 +20,27 @@ def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
 
 rule all:
-    input: "model_summary.tab"
+    input: "model_accuracy.tab", "model_parameters.tab"
 
-rule aggregate_models:
-    input: expand("model_summary/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "model_summary.tab"
+rule aggregate_model_parameters:
+    input: expand("model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_parameters.tab"
+    run:
+        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False)
+
+rule aggregate_model_accuracy:
+    input: expand("model_accuracy/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_accuracy.tab"
     run:
         df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False)
 
 rule summarize_model:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
-    output: "model_summary/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    output:
+        accuracy="model_accuracy/{year_range}/{viruses}/{predictors}/{sample}.tab",
+        parameters="model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab"
     run:
         with open(input[0], "r") as fh:
             model = json.load(fh)
@@ -45,7 +54,14 @@ rule summarize_model:
             "rho_rel": [accuracy["rho_rel"]],
             "clade_error": [accuracy["clade_error"]]
         })
-        df.to_csv(output[0], sep="\t", index=False)
+        df.to_csv(output["accuracy"], sep="\t", index=False)
+
+        df = pd.DataFrame(model["params"])
+        df["year_range"] = wildcards.year_range
+        df["viruses"] = wildcards.viruses
+        df["predictors"] = wildcards.predictors
+        df["sample"] = wildcards.sample
+        df.to_csv(output["parameters"], sep="\t", index=False)
 
 rule run_fitness_model:
     input:
