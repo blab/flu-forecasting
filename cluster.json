@@ -12,5 +12,8 @@
         "time": "24:00:00",
         "memory": "16384",
         "cores": 2
+    },
+    "run_fitness_model": {
+        "memory": "4096"
     }
 }
