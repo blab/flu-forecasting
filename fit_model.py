@@ -13,6 +13,7 @@ sys.path.insert(0, code_directory)
 from base.fitness_model import fitness_model as FitnessModel, make_pivots
 from base.frequencies import tree_frequencies as TreeFrequency, logit_transform
 from base.io_util import json_to_tree, json_to_clade_frequencies
+from base.titer_model import TiterCollection
 
 
 def pivot_to_date(pivot):
@@ -37,8 +38,10 @@ if __name__ == "__main__":
     parser.add_argument("frequencies", help="auspice frequencies JSON")
     parser.add_argument("model", help="output model JSON")
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
+    parser.add_argument("--titers", help="tab-delimited file of titer measurements")
 
     args = parser.parse_args()
+    predictor_kwargs = {}
 
     # Load JSON tree.
     with open(args.tree, "r") as json_fh:
@@ -64,6 +67,16 @@ if __name__ == "__main__":
         start_date
     )
 
+    # If titers were provided, load them for the model to use.
+    if args.titers:
+        predictor_kwargs = {
+            "lam_avi": 2.0,
+            "lam_pot": 0.3,
+            "lam_drop": 2.0
+        }
+        titers, strains, sources = TiterCollection.load_from_file(args.titers)
+        predictor_kwargs["titers"] = titers
+
     # Run the fitness model.
     model = FitnessModel(
         tree,
@@ -74,7 +87,8 @@ if __name__ == "__main__":
         epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % code_directory,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
-        min_freq=0.1
+        min_freq=0.1,
+        predictor_kwargs=predictor_kwargs
     )
     model.predict()
     model.validate_prediction()
