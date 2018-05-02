@@ -1,6 +1,8 @@
 # Imports.
 import pandas as pd
 
+localrules: clean, augur_prepare
+
 # Load configuration parameters.
 configfile: "config.json"
 
