@@ -93,6 +93,7 @@ rule augur_prepare:
 rule download_sequences_and_titers:
     output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     conda: "envs/anaconda.python2.yaml"
+    benchmark: "benchmarks/download_sequences_and_titers.txt"
     shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha --sequences --titers"
 
 rule clean:
