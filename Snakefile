@@ -25,7 +25,12 @@ def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
 
 rule all:
-    input: "model_accuracy.tab", "model_parameters.tab"
+    input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf"
+
+rule aggregate_tree_plots:
+    input: expand("figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    output: "trees.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
 rule aggregate_model_parameters:
     input: expand("model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
@@ -76,7 +81,17 @@ rule run_fitness_model:
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
     params: predictor_list=_get_predictor_list
     conda: "envs/anaconda.python2.yaml"
-    shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers}"
+    benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.txt"
+    log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.log"
+    shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} &> {log}"
+
+rule plot_tree:
+    input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+    output: "figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    benchmark: "benchmarks/plot_tree_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/plot_tree_{year_range}y_{viruses}v_{sample}.log"
+    shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_process:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
