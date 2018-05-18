@@ -1,6 +1,9 @@
 # Imports.
 import pandas as pd
 
+# Set snakemake directory
+SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
+
 localrules: clean, augur_prepare
 
 # Load configuration parameters.
@@ -80,12 +83,16 @@ rule augur_process:
     output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
             "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_frequencies.json"
     conda: "envs/anaconda.python2.yaml"
-    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method raxml"""
+    benchmark: "benchmarks/augur_process_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/augur_process_{year_range}y_{viruses}v_{sample}.log"
+    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method raxml &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_prepare:
     input: sequences="dist/fauna/data/h3n2_ha.fasta"
     output: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     conda: "envs/anaconda.python2.yaml"
+    benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/augur_prepare_{year_range}y_{viruses}v_{sample}.log"
     params: start_year=_get_start_year_from_range, end_year=_get_end_year_from_range
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} --sequences ../../../../{input.sequences} \
   --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --time_interval {params.start_year}-10-01 {params.end_year}-04-01 --sampling even"""
