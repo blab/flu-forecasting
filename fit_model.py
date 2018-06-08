@@ -79,7 +79,8 @@ if __name__ == "__main__":
         predictor_kwargs = {
             "lam_avi": 2.0,
             "lam_pot": 0.3,
-            "lam_drop": 2.0
+            "lam_drop": 2.0,
+            "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory
         }
         titers, strains, sources = TiterCollection.load_from_file(args.titers)
         predictor_kwargs["titers"] = titers
