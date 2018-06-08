@@ -1,8 +1,18 @@
 {
-    "year_ranges": ["2002-2017"],
-    "viruses": ["17", "50"],
+    "year_ranges": ["2005-2017"],
+    "viruses": ["20"],
     "number_of_samples": 5,
     "predictors": [
+        "ep",
+        "ne",
+        "cTiter",
+        "cTiterSub",
+        "dms",
+        "random",
+        "lbi",
+        "ep-ne-cTiterSub-dms-lbi"
+    ],
+    "predictors_all": [
         "ep",
         "cTiter",
         "cTiterSub",
