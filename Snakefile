@@ -1,10 +1,11 @@
 # Imports.
+import json
 import pandas as pd
 
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, augur_prepare
+localrules: clean, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
 
 # Load configuration parameters.
 configfile: "config.json"
@@ -25,7 +26,7 @@ def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
 
 rule all:
-    input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf"
+    input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf", "models.tab", "model_fold_change.pdf"
 
 rule aggregate_tree_plots:
     input: expand("figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
@@ -45,6 +46,39 @@ rule aggregate_model_accuracy:
     run:
         df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False)
+
+rule aggregate_models:
+    input: expand("models/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "models.tab"
+    run:
+        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False)
+
+rule aggregate_model_fold_change:
+    input: expand("model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_fold_change.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule plot_model_fold_change:
+    input: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    output: "model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python plot_model_fold_change.py {input} {output} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+
+rule convert_model_json_to_tsv:
+    input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
+    output: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    run:
+        with open(input[0], "r") as fh:
+            model_json = json.load(fh)
+
+        df = pd.DataFrame(model_json["data"])
+        df["year_range"] = wildcards.year_range
+        df["viruses"] = wildcards.viruses
+        df["predictors"] = wildcards.predictors
+        df["sample"] = wildcards.sample
+
+        df.to_csv(output[0], sep="\t", header=True, index=False)
 
 rule summarize_model:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
