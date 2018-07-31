@@ -13,6 +13,7 @@ sys.path.insert(0, code_directory)
 from base.fitness_model import fitness_model as FitnessModel, make_pivots
 from base.frequencies import KdeFrequencies
 from base.io_util import json_to_tree, json_to_clade_frequencies
+from base.process import process
 from base.titer_model import TiterCollection
 
 
@@ -35,11 +36,12 @@ def pivot_to_date(pivot):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("tree", help="auspice tree JSON")
-    parser.add_argument("frequencies", help="auspice frequencies JSON")
+    parser.add_argument("prepared", help="augur prepared JSON containing metadata about the build data")
     parser.add_argument("model", help="output model JSON")
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--sigma", type=float, default=1 / 12.0, help="Bandwidth for KDE frequencies")
+    parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
 
     args = parser.parse_args()
     predictor_kwargs = {}
@@ -51,27 +53,26 @@ if __name__ == "__main__":
     # Convert JSON tree layout to a Biopython Clade instance.
     tree = json_to_tree(json_tree)
 
-    with open(args.frequencies, "r") as json_fh:
-        json_frequencies = json.load(json_fh)
+    # Load the build's metadata to get the time interval used.
+    with open(args.prepared, "r") as json_fh:
+        prepared_json = json.load(json_fh)
 
-    # Get pivots from frequencies JSON.
-    pivots = np.array(json_frequencies["pivots"])
+    prepared_time_interval = prepared_json["info"]["time_interval"]
+    del prepared_json
+
+    # Convert the string time interval to a datetime instance and then to floats.
+    time_interval = [datetime.datetime.strptime(time, "%Y-%m-%d")
+                     for time in prepared_time_interval]
+
+    start_date, end_date = process.get_time_interval_as_floats(time_interval)
 
     # Use empty frequencies to force the fitness model to recalculate
     # frequencies with the KDE approach.
-    frequencies = KdeFrequencies.estimate_frequencies_for_tree(
-        tree,
-        pivots,
-        sigmaNarrow=args.sigma,
-        proportionWide=0.0
-    )
-
-    # Determine the time interval from the pivots defined in the frequencies JSON.
-    start_date = pivot_to_date(min(pivots))
-    end_date = pivot_to_date(max(pivots))
-    time_interval = (
-        end_date,
-        start_date
+    frequencies = KdeFrequencies(
+        sigma_narrow=args.sigma,
+        proportion_wide=0.0,
+        start_date=start_date,
+        end_date=end_date
     )
 
     # If titers were provided, load them for the model to use.
@@ -80,7 +81,9 @@ if __name__ == "__main__":
             "lam_avi": 2.0,
             "lam_pot": 0.3,
             "lam_drop": 2.0,
-            "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory
+            "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory,
+            "tau": 0.0005,
+            "time_window": 0.5
         }
         titers, strains, sources = TiterCollection.load_from_file(args.titers)
         predictor_kwargs["titers"] = titers
@@ -91,7 +94,7 @@ if __name__ == "__main__":
         frequencies,
         time_interval,
         args.predictors,
-        pivots=np.around(pivots, 2),
+        censor_frequencies=not args.no_censoring,
         epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % code_directory,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
