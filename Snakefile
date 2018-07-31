@@ -28,6 +28,9 @@ def _get_predictor_list(wildcards):
 rule all:
     input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf", "models.tab", "model_fold_change.pdf"
 
+rule trees:
+    input: "trees.pdf"
+
 rule aggregate_tree_plots:
     input: expand("figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
     output: "trees.pdf"
