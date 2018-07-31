@@ -16,5 +16,8 @@
     "run_fitness_model": {
         "memory": "8192",
         "time" : "00:30:00"
+    },
+    "plot_tree": {
+        "memory": "1024"
     }
 }
