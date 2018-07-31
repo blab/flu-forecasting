@@ -72,7 +72,8 @@ if __name__ == "__main__":
         sigma_narrow=args.sigma,
         proportion_wide=0.0,
         start_date=start_date,
-        end_date=end_date
+        end_date=end_date,
+        include_internal_nodes=True
     )
 
     # If titers were provided, load them for the model to use.
