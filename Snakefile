@@ -113,7 +113,7 @@ rule summarize_model:
 rule run_fitness_model:
     input:
         tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        prepared="dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
+        prepared="dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
     params: predictor_list=_get_predictor_list
