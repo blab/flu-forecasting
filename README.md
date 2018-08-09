@@ -15,8 +15,11 @@ conda env create -f envs/anaconda.python3.yaml
 # Set RETHINK database environment variables.
 export RETHINK=
 
-# Run pipeline.
+# Run pipeline on a minimal dataset to confirm everything works.
 # The first run will take some time while Snakemake creates the conda environments it needs.
+./quickstart
+
+# Or run the entire pipeline on the complete input data.
 ./run
 ```
 

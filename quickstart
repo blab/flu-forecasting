@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Build models with minimal inputs to confirm everything works.
+./run --config viruses=1 number_of_samples=1
