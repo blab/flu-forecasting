@@ -4,7 +4,7 @@
     "viruses": ["92"],
     "number_of_samples": 5,
     "predictors": [
-        "null"
+        "null",
         "ep",
         "ne"
     ],

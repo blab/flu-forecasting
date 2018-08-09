@@ -98,7 +98,7 @@ rule summarize_model:
             "viruses": [wildcards.viruses],
             "predictors": [wildcards.predictors],
             "sample": [wildcards.sample],
-            "rho_rel": [accuracy["rho_rel"]],
+            "correlation_rel": [accuracy["correlation_rel"]],
             "clade_error": [accuracy["clade_error"]]
         })
         df.to_csv(output["accuracy"], sep="\t", index=False)

@@ -22,4 +22,5 @@ dependencies:
 - scipy
 - seaborn
 - pip:
+  - phylo-treetime
   - rethinkdb

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Warn users about missing RethinkDB environment variables.
+if [[ -z "${RETHINK_HOST}" || -z "${RETHINK_AUTH_KEY}" ]]
+then
+    echo -n "RETHINK_HOST or RETHINK_AUTH_KEY are not set. Continue? (Y/N): "
+    read should_continue
+    if [[ "${should_continue}" != "Y" && "${should_continue}" != "y" ]]
+    then
+        echo "Aborting"
+        exit 1
+    fi
+fi
+
 # Search user arguments for jobs parameter, -j or --jobs, and provide a default
 # value if it isn't supplied.
 FOUND_JOBS=0
