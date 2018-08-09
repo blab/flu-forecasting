@@ -33,9 +33,12 @@ The following parameters are required to specify builds.
 | Parameter | Description | Example |
 |:---:|:---:|:---:|
 | year_ranges | list of year intervals to build trees for | `["2000-2015", "2005-2017"]` |
-| viruses | list of number of viruses to sample per month | `["20", "92"]` |
+| viruses | scalar or list of number of viruses to sample per month | `[20, 92]` |
 | number_of_samples | number of trees to build for each combination of year ranges and virus sampling densities | `5` |
 | predictors | list of fitness predictors to fit a model for; multiple predictors specified as hyphen-delimited lists | `["null", "ep-cTiterSub-dms"]` |
+
+Trees will be built for all combination of year ranges, virus sampling densities, and number of samples.
+Models will be built for all combination of predictors and trees.
 
 ## Inputs
 
