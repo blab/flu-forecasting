@@ -17,7 +17,7 @@ export RETHINK=
 
 # Run pipeline.
 # The first run will take some time while Snakemake creates the conda environments it needs.
-./janus
+./run
 ```
 
 By default, this pipeline will download HA sequences and public titers for A/H3N2 with fauna, run augur prepare and process, run the fitness model for all defined combinations of predictors, and generate the output tables and figures described below.
