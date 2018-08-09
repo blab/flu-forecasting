@@ -1,23 +1,22 @@
 {
     "year_ranges": ["2005-2017"],
-    "viruses": ["20"],
+    "all_year_ranges": ["1994-2006", "2005-2017"],
+    "viruses": ["92"],
     "number_of_samples": 5,
     "predictors": [
+        "null"
+        "ep",
+        "ne"
+    ],
+    "all_predictors": [
+        "null",
         "ep",
         "ne",
         "cTiter",
         "cTiterSub",
         "dms",
-        "random",
         "lbi",
-        "ep-ne-cTiterSub-dms-lbi"
-    ],
-    "predictors_all": [
-        "ep",
-        "cTiter",
-        "cTiterSub",
-        "ne",
-        "random",
-        "num_date"
+        "numdate",
+        "ep-ne-cTiterSub-dms-lbi-numdate"
     ]
 }
