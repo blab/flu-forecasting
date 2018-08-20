@@ -5,7 +5,7 @@ import pandas as pd
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
+localrules: clean, download_sequences_and_titers, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
 
 # Load configuration parameters.
 configfile: "config.json"
@@ -153,6 +153,7 @@ rule download_sequences_and_titers:
     output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/download_sequences_and_titers.txt"
+    log: "logs/download_sequences_and_titers.log"
     shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha --sequences --titers"
 
 rule clean:
