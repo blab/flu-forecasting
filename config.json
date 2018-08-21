@@ -18,5 +18,10 @@
         "lbi",
         "numdate",
         "ep-ne-cTiterSub-dms-lbi-numdate"
-    ]
+    ],
+    "frequencies": {
+        "narrow_bandwidth": 0.0833,
+        "wide_bandwidth": 0.25,
+        "proportion_wide": 0.0
+    }
 }

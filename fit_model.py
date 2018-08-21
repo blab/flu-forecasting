@@ -36,11 +36,10 @@ def pivot_to_date(pivot):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("tree", help="auspice tree JSON")
-    parser.add_argument("prepared", help="augur prepared JSON containing metadata about the build data")
+    parser.add_argument("frequencies", help="JSON containing frequencies estimated from the given tree")
     parser.add_argument("model", help="output model JSON")
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
-    parser.add_argument("--sigma", type=float, default=1 / 12.0, help="Bandwidth for KDE frequencies")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
 
     args = parser.parse_args()
@@ -53,28 +52,11 @@ if __name__ == "__main__":
     # Convert JSON tree layout to a Biopython Clade instance.
     tree = json_to_tree(json_tree)
 
-    # Load the build's metadata to get the time interval used.
-    with open(args.prepared, "r") as json_fh:
-        prepared_json = json.load(json_fh)
+    # Load frequencies.
+    with open(args.frequencies, "r") as json_fh:
+        json_frequencies = json.load(json_fh)
 
-    prepared_time_interval = prepared_json["info"]["time_interval"]
-    del prepared_json
-
-    # Convert the string time interval to a datetime instance and then to floats.
-    time_interval = [datetime.datetime.strptime(time, "%Y-%m-%d")
-                     for time in prepared_time_interval]
-
-    start_date, end_date = process.get_time_interval_as_floats(time_interval)
-
-    # Use empty frequencies to force the fitness model to recalculate
-    # frequencies with the KDE approach.
-    frequencies = KdeFrequencies(
-        sigma_narrow=args.sigma,
-        proportion_wide=0.0,
-        start_date=start_date,
-        end_date=end_date,
-        include_internal_nodes=True
-    )
+    frequencies = KdeFrequencies.from_json(json_frequencies)
 
     # If titers were provided, load them for the model to use.
     if args.titers:
@@ -93,15 +75,13 @@ if __name__ == "__main__":
     model = FitnessModel(
         tree,
         frequencies,
-        time_interval,
         args.predictors,
         censor_frequencies=not args.no_censoring,
         epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % code_directory,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
         min_freq=0.1,
-        predictor_kwargs=predictor_kwargs,
-        sigma=args.sigma
+        predictor_kwargs=predictor_kwargs
     )
     model.predict()
     model.validate_prediction()

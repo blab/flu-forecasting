@@ -16,11 +16,11 @@ PREDICTORS = config["predictors"]
 NUMBER_OF_SAMPLES = config["number_of_samples"]
 SAMPLES = range(NUMBER_OF_SAMPLES)
 
-def _get_start_year_from_range(wildcards):
-    return wildcards["year_range"].split("-")[0]
+def _get_start_date_from_range(wildcards):
+    return "%s-10-01" % wildcards["year_range"].split("-")[0]
 
-def _get_end_year_from_range(wildcards):
-    return wildcards["year_range"].split("-")[1]
+def _get_end_date_from_range(wildcards):
+    return "%s-04-01" % wildcards["year_range"].split("-")[1]
 
 def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
@@ -113,14 +113,34 @@ rule summarize_model:
 rule run_fitness_model:
     input:
         tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        prepared="dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
+        frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
     params: predictor_list=_get_predictor_list
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.log"
-    shell: "python fit_model.py {input.tree} {input.prepared} {output} {params.predictor_list} --titers {input.titers} &> {log}"
+    shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} &> {log}"
+
+rule estimate_frequencies:
+    input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
+    output: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
+    params:
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
+        start_date=_get_start_date_from_range,
+        end_date=_get_end_date_from_range
+    conda: "envs/anaconda.python2.yaml"
+    benchmark: "benchmarks/estimate_frequencies_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/estimate_frequencies_{year_range}y_{viruses}v_{sample}.log"
+    shell: """python scripts/frequencies.py {input} {output} \
+--narrow-bandwidth {params.narrow_bandwidth} \
+--wide-bandwidth {params.wide_bandwidth} \
+--proportion-wide {params.proportion_wide} \
+--start-date {params.start_date} \
+--end-date {params.end_date} \
+--include-internal-nodes &> {log}"""
 
 rule plot_tree:
     input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
@@ -132,12 +152,11 @@ rule plot_tree:
 
 rule augur_process:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
-    output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-            "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_frequencies.json"
+    output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/augur_process_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/augur_process_{year_range}y_{viruses}v_{sample}.log"
-    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --tree_method raxml &> {SNAKEMAKE_DIR}/{log}"""
+    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --no_tree_freqs --tree_method raxml &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_prepare:
     input: sequences="dist/fauna/data/h3n2_ha.fasta"
@@ -145,9 +164,9 @@ rule augur_prepare:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/augur_prepare_{year_range}y_{viruses}v_{sample}.log"
-    params: start_year=_get_start_year_from_range, end_year=_get_end_year_from_range
+    params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} --sequences ../../../../{input.sequences} \
-  --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --time_interval {params.start_year}-10-01 {params.end_year}-04-01 --sampling even -r 12y &> {SNAKEMAKE_DIR}/{log}"""
+  --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --time_interval {params.start_date} {params.end_date} --sampling even -r 12y &> {SNAKEMAKE_DIR}/{log}"""
 
 rule download_sequences_and_titers:
     output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
