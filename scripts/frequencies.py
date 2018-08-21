@@ -20,7 +20,6 @@ import sys
 
 # augur imports.
 augur_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist", "augur")
-print(augur_path)
 sys.path.append(augur_path)
 from base.frequencies import KdeFrequencies
 from base.io_util import json_to_tree
