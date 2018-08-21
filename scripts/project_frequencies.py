@@ -171,5 +171,5 @@ if __name__ == "__main__":
 
     ax.legend()
 
-    plt.savefig("frequencies.pdf")
+    plt.savefig("analyses/projected-frequencies/example-clade.png")
     plt.close()
