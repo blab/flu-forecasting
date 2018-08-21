@@ -58,16 +58,20 @@ if __name__ == "__main__":
 
     frequencies = KdeFrequencies.from_json(json_frequencies)
 
+    # Setup predictor arguments.
+    predictor_kwargs = {
+        "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory,
+        "tau": 0.25,
+        "time_window": 0.75
+    }
+
     # If titers were provided, load them for the model to use.
     if args.titers:
-        predictor_kwargs = {
+        predictor_kwargs.update({
             "lam_avi": 2.0,
             "lam_pot": 0.3,
-            "lam_drop": 2.0,
-            "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory,
-            "tau": 0.25,
-            "time_window": 0.75
-        }
+            "lam_drop": 2.0
+        })
         titers, strains, sources = TiterCollection.load_from_file(args.titers)
         predictor_kwargs["titers"] = titers
 
