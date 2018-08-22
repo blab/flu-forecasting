@@ -18,6 +18,8 @@ import os
 import pandas as pd
 import sys
 
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # augur imports.
@@ -89,8 +91,8 @@ if __name__ == "__main__":
     parser.add_argument("frequencies", help="JSON with frequencies estimated from the given tree and used to estimate the given parameters")
     parser.add_argument("parameters", help="tab-delimited file of model parameters produced by the forecasting builds (e.g., model_parameters/.../0.tab)")
     parser.add_argument("projected_frequencies", help="JSON with frequencies projected into the future")
-    parser.add_argument("projection_date", type=float, help="date from which frequencies should be projected")
     parser.add_argument("delta", type=float, default=1.0, help="amount of time in years to project frequencies into the future")
+    parser.add_argument("projection_dates", type=float, nargs="+", help="dates from which frequencies should be projected")
     delta_steps_per_year = 12
 
     args = parser.parse_args()
@@ -122,23 +124,34 @@ if __name__ == "__main__":
     )
     model.predict()
 
-    # Calculate projected frequencies.
-    projected_frequencies = project_clade_frequencies_by_delta_from_time(
-        tree,
-        model,
-        args.projection_date,
-        args.delta
-    )
+    # Calculate projected frequencies for each requested date.
+    records = []
+    for projection_date in args.projection_dates:
+        projected_frequencies = project_clade_frequencies_by_delta_from_time(
+            tree,
+            model,
+            projection_date,
+            args.delta
+        )
+        for node in model.tree:
+            for pivot, frequency in zip(projected_frequencies["data"]["pivots"],
+                                        projected_frequencies["data"]["frequencies"][node.clade]):
+                records.append({
+                    "sample": parameters_df["sample"].values[0],
+                    "predictors": parameters_df["predictors"].values[0],
+                    "clade": node.clade,
+                    "clade_membership": node.attr["clade_membership"],
+                    "projection_date": projected_frequencies["params"]["max_date"],
+                    "pivot": pivot,
+                    "frequency": frequency
+                })
 
-    # Export projected frequencies in the context of the input frequencies.
-    with open(args.projected_frequencies, "w") as oh:
-        json_frequencies = json.dump(projected_frequencies, oh, indent=2)
+    projected_df = pd.DataFrame(records)
+    projected_df.to_csv(args.projected_frequencies, sep="\t", header=True, index=False)
 
-    # Calculate censored frequencies.
-    frequency_parameters = frequencies.get_params()
-    frequency_parameters["max_date"] = projected_frequencies["params"]["max_date"]
-    censored_frequencies = KdeFrequencies(**frequency_parameters)
-    censored_frequencies.estimate(tree)
+    # # Export projected frequencies in the context of the input frequencies.
+    # with open(args.projected_frequencies, "w") as oh:
+    #     json_frequencies = json.dump(projected_frequencies, oh, indent=2)
 
     #
     # Plot frequencies
@@ -149,25 +162,39 @@ if __name__ == "__main__":
              if len(node.get_terminals()) > 20 and len(node.get_terminals()) < 100][2]
     clade_id = clade.clade
 
-    # Plot observed frequencies.
-    fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-    ax.plot(frequencies.pivots, frequencies.frequencies[clade_id], "o-", label="Observed")
+    projection_dates = projected_df["projection_date"].unique()
+    fig, axes = plt.subplots(len(projection_dates), 1, figsize=(8, 4 * len(projection_dates)), squeeze=False)
+    print(axes)
 
-    # Plot censored frequencies.
-    ax.plot(censored_frequencies.pivots, censored_frequencies.frequencies[clade_id], "o-", label="Censored")
+    for i, projection_date in enumerate(projection_dates):
+        ax = axes.flatten()[i]
+        df = projected_df[(projected_df["projection_date"] == projection_date) &
+                          (projected_df["clade"] == clade_id)]
 
-    # Plot projected frequencies.
-    ax.plot(projected_frequencies["data"]["pivots"], projected_frequencies["data"]["frequencies"][clade_id], "o--", label="Projected")
+        # Calculate censored frequencies.
+        frequency_parameters = frequencies.get_params()
+        frequency_parameters["max_date"] = projection_date
+        censored_frequencies = KdeFrequencies(**frequency_parameters)
+        censored_frequencies.estimate(tree)
 
-    # Annotate projection date.
-    ax.axvline(x=projected_frequencies["params"]["max_date"], color="#000000", alpha=0.5, zorder=-1)
+        # Plot observed frequencies.
+        ax.plot(frequencies.pivots, frequencies.frequencies[clade_id], "o-", label="Observed")
 
-    # Label axes.
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Frequency")
+        # Plot censored frequencies.
+        ax.plot(censored_frequencies.pivots, censored_frequencies.frequencies[clade_id], "o-", label="Censored")
 
-    # Annotate clade membership and size.
-    ax.set_title("Clade from %s with %i tips" % (clade.attr["clade_membership"], len(clade.get_terminals())))
+        # Plot projected frequencies.
+        ax.plot(df["pivot"], df["frequency"], "o--", label="Projected")
+
+        # Annotate projection date.
+        ax.axvline(x=projection_date, color="#000000", alpha=0.5, zorder=-1)
+
+        # Label axes.
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Frequency")
+
+        # Annotate clade membership and size.
+        ax.set_title("Clade from %s with %i tips" % (clade.attr["clade_membership"], len(clade.get_terminals())))
 
     ax.legend()
 
