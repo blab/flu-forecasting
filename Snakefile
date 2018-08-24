@@ -123,7 +123,9 @@ rule run_fitness_model:
     shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} &> {log}"
 
 rule estimate_frequencies:
-    input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
+    input:
+        tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        weights="region_weights.json"
     output: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
@@ -134,12 +136,14 @@ rule estimate_frequencies:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/estimate_frequencies_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/estimate_frequencies_{year_range}y_{viruses}v_{sample}.log"
-    shell: """python scripts/frequencies.py {input} {output} \
+    shell: """python scripts/frequencies.py {input.tree} {output} \
 --narrow-bandwidth {params.narrow_bandwidth} \
 --wide-bandwidth {params.wide_bandwidth} \
 --proportion-wide {params.proportion_wide} \
 --start-date {params.start_date} \
 --end-date {params.end_date} \
+--weights {input.weights} \
+--weights-attribute region \
 --include-internal-nodes &> {log}"""
 
 rule plot_tree:
@@ -156,7 +160,7 @@ rule augur_process:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/augur_process_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/augur_process_{year_range}y_{viruses}v_{sample}.log"
-    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --no_tree_freqs --tree_method raxml &> {SNAKEMAKE_DIR}/{log}"""
+    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --no_tree_freqs --tree_method raxml --export_translations &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_prepare:
     input: sequences="dist/fauna/data/h3n2_ha.fasta"

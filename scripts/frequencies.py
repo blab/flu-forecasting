@@ -39,6 +39,8 @@ if __name__ == "__main__":
     parser.add_argument("--start-date", help="the start of the interval to estimate frequencies across")
     parser.add_argument("--end-date", help="the end of the interval to estimate frequencies across")
     parser.add_argument("--include-internal-nodes", action="store_true", help="calculate frequencies for internal nodes as well as tips")
+    parser.add_argument("--weights", help="a dictionary of key/value mappings in JSON format used to weight tip frequencies")
+    parser.add_argument("--weights-attribute", help="name of the attribute on each tip whose values map to the given weights dictionary")
 
     parser.add_argument("--precision", type=int, default=6, help="number of decimal places to retain in frequency estimates")
 
@@ -63,6 +65,16 @@ if __name__ == "__main__":
     else:
         start_date = end_date = None
 
+    # Load weights if they have been provided.
+    if args.weights:
+        with open(args.weights, "r") as fh:
+            weights = json.load(fh)
+
+        weights_attribute = args.weights_attribute
+    else:
+        weights = None
+        weights_attribute = None
+
     # Estimate frequencies.
     frequencies = KdeFrequencies(
         sigma_narrow=args.narrow_bandwidth,
@@ -71,6 +83,8 @@ if __name__ == "__main__":
         pivot_frequency=args.pivot_frequency,
         start_date=start_date,
         end_date=end_date,
+        weights=weights,
+        weights_attribute=weights_attribute,
         include_internal_nodes=args.include_internal_nodes
     )
     frequencies.estimate(tree)
