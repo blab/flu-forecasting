@@ -31,7 +31,7 @@ from base.frequencies import KdeFrequencies
 from utils import load_tree_from_json_filename, load_frequencies_from_json_filename
 
 
-def project_clade_frequencies_by_delta_from_time(tree, model, time, delta):
+def project_clade_frequencies_by_delta_from_time(tree, model, time, delta, delta_steps_per_year=12):
     """
     Project clade frequencies from a given time to the future by a given delta.
     """
@@ -89,11 +89,10 @@ if __name__ == "__main__":
     )
     parser.add_argument("tree", help="auspice JSON tree")
     parser.add_argument("frequencies", help="JSON with frequencies estimated from the given tree and used to estimate the given parameters")
-    parser.add_argument("parameters", help="tab-delimited file of model parameters produced by the forecasting builds (e.g., model_parameters/.../0.tab)")
+    parser.add_argument("model", help="fitness model JSON with learned parameters, projected frequencies, and predictor configuration (e.g., models/.../0.json)")
     parser.add_argument("projected_frequencies", help="JSON with frequencies projected into the future")
     parser.add_argument("delta", type=float, default=1.0, help="amount of time in years to project frequencies into the future")
     parser.add_argument("projection_dates", type=float, nargs="+", help="dates from which frequencies should be projected")
-    delta_steps_per_year = 12
 
     args = parser.parse_args()
 
@@ -102,14 +101,19 @@ if __name__ == "__main__":
 
     # Load frequencies.
     frequencies = load_frequencies_from_json_filename(args.frequencies)
+    frequencies.include_internal_nodes = True
+    frequencies.estimate(tree)
 
-    # Load model parameters.
-    parameters_df = pd.read_table(args.parameters)
-    predictors = {record["predictor"]: (record["param"], record["global_sd"])
-                  for record in parameters_df.to_dict("records")}
+    # Load the model.
+    with open(args.model, "r") as fh:
+        json_model = json.load(fh)
+
+    predictors = {record["predictor"]: [round(record["param"], 2), round(record["global_sd"], 2)]
+                  for record in json_model["params"]}
+    predictors_key = "-".join(sorted([record["predictor"] for record in json_model["params"]]))
 
     # Setup predictor arguments.
-    predictor_kwargs = {}
+    predictor_kwargs = json_model["predictor_kwargs"]
 
     # Populate the fitness model with the given tree, frequencies, and parameters.
     model = FitnessModel(
@@ -122,23 +126,38 @@ if __name__ == "__main__":
         min_freq=0.1,
         predictor_kwargs=predictor_kwargs
     )
-    model.predict()
+    model.prep_nodes()
+    model.delta_time = json_model["delta_time"]
+
+    predictor_arrays = {}
+    for key in json_model["predictor_arrays"]:
+        predictor_arrays[float(key)] = np.array(json_model["predictor_arrays"][key])
+
+    model.predictor_arrays = predictor_arrays
+
+    freq_arrays = {}
+    for key in json_model["freq_arrays"]:
+        freq_arrays[float(key)] = np.array(json_model["freq_arrays"][key])
+
+    model.freq_arrays = freq_arrays
+
+    model.select_clades_for_fitting()
 
     # Calculate projected frequencies for each requested date.
     records = []
     for projection_date in args.projection_dates:
+        print("Project from %s" % projection_date)
         projected_frequencies = project_clade_frequencies_by_delta_from_time(
             tree,
             model,
             projection_date,
             args.delta
         )
-        for node in model.tree:
+        for node in model.tree.find_clades():
             for pivot, frequency in zip(projected_frequencies["data"]["pivots"],
                                         projected_frequencies["data"]["frequencies"][node.clade]):
                 records.append({
-                    "sample": parameters_df["sample"].values[0],
-                    "predictors": parameters_df["predictors"].values[0],
+                    "predictors": predictors_key,
                     "clade": node.clade,
                     "clade_membership": node.attr["clade_membership"],
                     "projection_date": projected_frequencies["params"]["max_date"],
@@ -157,19 +176,40 @@ if __name__ == "__main__":
     # Plot frequencies
     #
 
-    # Pick a clade to plot.
-    clade = [node for node in tree.get_nonterminals()
-             if len(node.get_terminals()) > 20 and len(node.get_terminals()) < 100][2]
-    clade_id = clade.clade
-
     projection_dates = projected_df["projection_date"].unique()
-    fig, axes = plt.subplots(len(projection_dates), 1, figsize=(8, 4 * len(projection_dates)), squeeze=False)
-    print(axes)
+    fig, axes = plt.subplots(
+        len(projection_dates),
+        1,
+        figsize=(8, 2.5 * len(projection_dates)),
+        squeeze=False,
+        sharex=True,
+        sharey=True,
+        gridspec_kw={"hspace": 0.2}
+    )
+    print(projection_dates)
 
     for i, projection_date in enumerate(projection_dates):
         ax = axes.flatten()[i]
+
+        # Pick a clade to plot.
+        clade = model.fit_clades[projection_date][0]
+        clade_id = clade.clade
+
+        # Annotate clade membership and size.
+        ax.set_title(
+            "Clade from %s with %i tips (%s)" %
+            (clade.attr["clade_membership"], len(clade.get_terminals()), predictors)
+        )
+
         df = projected_df[(projected_df["projection_date"] == projection_date) &
                           (projected_df["clade"] == clade_id)]
+
+        # Calculate mean +/- std of fitness for this clade vs. others.
+        clade_fitness = model.predictor_arrays[projection_date][clade.tips]
+        non_clade_tips = np.array([i for i in range(len(model.tips)) if i not in clade.tips])
+        non_clade_fitness = model.predictor_arrays[projection_date][non_clade_tips]
+        ax.text(0.05, 0.9, "Clade fitness: %.2f +/- %.2f" % (clade_fitness.mean(), clade_fitness.std()), transform=ax.transAxes)
+        ax.text(0.05, 0.8, "Non-clade fitness: %.2f +/- %.2f" % (non_clade_fitness.mean(), non_clade_fitness.std()), transform=ax.transAxes)
 
         # Calculate censored frequencies.
         frequency_parameters = frequencies.get_params()
@@ -192,9 +232,6 @@ if __name__ == "__main__":
         # Label axes.
         ax.set_xlabel("Date")
         ax.set_ylabel("Frequency")
-
-        # Annotate clade membership and size.
-        ax.set_title("Clade from %s with %i tips" % (clade.attr["clade_membership"], len(clade.get_terminals())))
 
     ax.legend()
 
