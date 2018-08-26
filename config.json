@@ -1,12 +1,10 @@
 {
-    "year_ranges": ["2005-2017"],
+    "year_ranges": ["2006-2018"],
     "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
     "viruses": [92],
     "number_of_samples": 5,
     "predictors": [
-        "null",
-        "ep",
-        "ne"
+        "ep"
     ],
     "all_predictors": [
         "null",
