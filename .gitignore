@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+*.png
+.snakemake
+*.pdf
+*.gif
+*.tab
+*.DS_Store*
