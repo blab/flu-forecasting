@@ -41,6 +41,8 @@ if __name__ == "__main__":
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
+    parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
+    parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
 
     args = parser.parse_args()
     predictor_kwargs = {}
@@ -85,7 +87,9 @@ if __name__ == "__main__":
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
         min_freq=0.1,
-        predictor_kwargs=predictor_kwargs
+        predictor_kwargs=predictor_kwargs,
+        end_date=args.end_date,
+        step_size=args.step_size
     )
     model.predict()
     model.validate_prediction()
