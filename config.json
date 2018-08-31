@@ -5,18 +5,25 @@
     "viruses": [92],
     "number_of_samples": 5,
     "predictors": [
-        "ep"
+        "ep",
+        "ep-ep_x-ne",
+        "ep-ep_x-ne-na_ep"
     ],
     "all_predictors": [
         "null",
         "ep",
+        "ep-ep_x",
+        "na_ep",
         "ne",
         "cTiter",
         "cTiterSub",
         "dms",
         "lbi",
         "numdate",
-        "ep-ne-cTiterSub-dms-lbi-numdate"
+        "ep-ep_x-ne",
+        "ep-ep_x-ne-na_ep",
+        "ep-ep_x-ne-cTiterSub-lbi",
+        "ep-ep_x-ne-cTiterSub-lbi-na_ep"
     ],
     "frequencies": {
         "narrow_bandwidth": 0.0833,
