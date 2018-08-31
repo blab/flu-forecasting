@@ -106,3 +106,4 @@ ENV/
 *.gif
 *.tab
 *.DS_Store*
+*.out
