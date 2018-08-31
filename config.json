@@ -5,9 +5,16 @@
     "viruses": [92],
     "number_of_samples": 5,
     "predictors": [
+        "null",
         "ep",
+        "na_ep",
+        "ne",
+        "cTiterSub",
+        "lbi",
+        "ep-ep_x",
         "ep-ep_x-ne",
-        "ep-ep_x-ne-na_ep"
+        "ep-ep_x-ne-na_ep",
+        "ep-ep_x-ne-cTiterSub-lbi-na_ep"
     ],
     "all_predictors": [
         "null",

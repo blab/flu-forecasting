@@ -156,18 +156,172 @@ rule plot_tree:
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
 
-rule copy_augur_tree:
-    input: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
-    output: "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
-    shell: "rsync {input} {output}"
+rule export:
+    message: "Exporting data files for for auspice"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv",
+        branch_lengths = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json",
+        traits = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
+        nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
+        aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
+        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
+        colors = "dist/augur/builds/flu/colors.tsv",
+        auspice_config = "config/auspice_config.json"
+    output:
+        auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_metadata.json"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur export \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} \
+            --colors {input.colors} \
+            --auspice-config {input.auspice_config} \
+            --output-tree {output.auspice_tree} \
+            --output-meta {output.auspice_metadata}
+        """
 
-rule augur_process:
+rule traits:
+    message: "Inferring ancestral traits for {params.columns!s}"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
+    output:
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
+    params:
+        columns = "region country"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur traits \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --output {output.node_data} \
+            --columns {params.columns} \
+            --confidence
+        """
+
+rule translate:
+    message: "Translating amino acid sequences"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
+        reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
+    output:
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
+        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur translate \
+            --tree {input.tree} \
+            --ancestral-sequences {input.node_data} \
+            --reference-sequence {input.reference} \
+            --output {output.node_data} \
+            --alignment-output {output.translations}
+        """
+
+rule ancestral:
+    message: "Reconstructing ancestral sequences and mutations"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
+    output:
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json"
+    params:
+        inference = "joint"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur ancestral \
+            --tree {input.tree} \
+            --alignment {input.alignment} \
+            --output {output.node_data} \
+            --inference {params.inference}
+        """
+
+rule refine:
+    message:
+        """
+        Refining tree
+          - estimate timetree
+          - use {params.coalescent} coalescent timescale
+          - estimate {params.date_inference} node dates
+          - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
+        """
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk",
+        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta",
+        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
+    output:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json"
+    params:
+        coalescent = "opt",
+        date_inference = "marginal",
+        clock_filter_iqd = 4
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur refine \
+            --tree {input.tree} \
+            --alignment {input.alignment} \
+            --metadata {input.metadata} \
+            --output-tree {output.tree} \
+            --output-node-data {output.node_data} \
+            --timetree \
+            --coalescent {params.coalescent} \
+            --date-confidence \
+            --date-inference {params.date_inference} \
+            --clock-filter-iqd {params.clock_filter_iqd}
+        """
+
+rule tree:
+    message: "Building tree"
+    input:
+        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
+    output:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur tree \
+            --alignment {input.alignment} \
+            --output {output.tree}
+        """
+
+rule align:
+    message:
+        """
+        Aligning sequences to {input.reference}
+          - filling gaps with N
+        """
+    input:
+        sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
+        reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
+    output:
+        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur align \
+            --sequences {input.sequences} \
+            --reference-sequence {input.reference} \
+            --output {output.alignment} \
+            --fill-gaps
+        """
+
+rule convert_prepared_json_to_metadata_and_sequences:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.json"
-    output: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
+    output:
+        sequences="builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
+        metadata="builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
     conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/augur_process_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/augur_process_{segment}_{year_range}y_{viruses}v_{sample}.log"
-    shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --no_tree_freqs --tree_method raxml --export_translations &> {SNAKEMAKE_DIR}/{log}"""
+    log: "logs/convert_prepared_json_{segment}_{year_range}y_{viruses}v_{sample}.log"
+    shell: "cd dist/augur/scripts && python prepared_json_to_fasta.py --metadata {SNAKEMAKE_DIR}/{output.metadata} {SNAKEMAKE_DIR}/{input} > {SNAKEMAKE_DIR}/{output.sequences} 2> {SNAKEMAKE_DIR}/{log}"
 
 rule augur_prepare:
     input:

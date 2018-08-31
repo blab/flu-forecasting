@@ -1,15 +1,16 @@
-name: janus_python3
+name: nextstrain
 channels:
 - bioconda
+- conda-forge
 - defaults
 dependencies:
-- boto
-- boto3
-- ipython
-- python=3.6*
-- numpy
+- cvxopt
+- fasttree
+- iqtree
+- mafft
 - pandas
-- psutil
+- python=3.6*
+- raxml
 - pip:
-  - drmaa
-  - snakemake
+  - git+https://github.com/nextstrain/augur@7b27696
+  - rethinkdb
