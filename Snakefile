@@ -113,8 +113,8 @@ rule summarize_model:
 
 rule run_fitness_model:
     input:
-        ha_tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        na_tree="dist/augur/builds/flu/auspice/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
+        ha_tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        na_tree="trees/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
@@ -126,7 +126,7 @@ rule run_fitness_model:
 
 rule estimate_frequencies:
     input:
-        tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
         weights="region_weights.json"
     output: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     params:
@@ -149,12 +149,17 @@ rule estimate_frequencies:
 --include-internal-nodes &> {log}"""
 
 rule plot_tree:
-    input: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+    input: "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
     output: "figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf"
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
+
+rule copy_augur_tree:
+    input: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
+    output: "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
+    shell: "rsync {input} {output}"
 
 rule augur_process:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.json"
