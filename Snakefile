@@ -10,6 +10,7 @@ localrules: clean, download_sequences_and_titers, augur_prepare, summarize_model
 # Load configuration parameters.
 configfile: "config.json"
 
+SEGMENTS = config["segments"]
 YEAR_RANGES = config["year_ranges"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
@@ -32,7 +33,7 @@ rule trees:
     input: "trees.pdf"
 
 rule aggregate_tree_plots:
-    input: expand("figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    input: expand("figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
     output: "trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
@@ -112,7 +113,8 @@ rule summarize_model:
 
 rule run_fitness_model:
     input:
-        tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        ha_tree="dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        na_tree="dist/augur/builds/flu/auspice/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
@@ -120,7 +122,7 @@ rule run_fitness_model:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}_{predictors}.log"
-    shell: "python fit_model.py {input.tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} &> {log}"
+    shell: "python fit_model.py {input.ha_tree} {input.frequencies} {output} {params.predictor_list} --na-tree {input.na_tree} --titers {input.titers} &> {log}"
 
 rule estimate_frequencies:
     input:
@@ -147,37 +149,45 @@ rule estimate_frequencies:
 --include-internal-nodes &> {log}"""
 
 rule plot_tree:
-    input: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-    output: "figures/trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.pdf"
+    input: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+    output: "figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf"
     conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/plot_tree_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/plot_tree_{year_range}y_{viruses}v_{sample}.log"
+    benchmark: "benchmarks/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_process:
-    input: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
-    output: "dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
+    input: "dist/augur/builds/flu/prepared/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.json"
+    output: "dist/augur/builds/flu/auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json"
     conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/augur_process_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/augur_process_{year_range}y_{viruses}v_{sample}.log"
+    benchmark: "benchmarks/augur_process_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/augur_process_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/builds/flu && python flu.process.py -j ../../../../{input} --no_mut_freqs --no_tree_freqs --tree_method raxml --export_translations &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_prepare:
-    input: sequences="dist/fauna/data/h3n2_ha.fasta"
-    output: "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
+    input:
+        ha_sequences="dist/fauna/data/h3n2_ha.fasta",
+        na_sequences="dist/fauna/data/h3n2_na.fasta"
+    output:
+        "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
+        "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_{sample}.json"
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/augur_prepare_{year_range}y_{viruses}v_{sample}.log"
     params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
-    shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} --sequences ../../../../{input.sequences} \
-  --file_prefix flu_h3n2_ha_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segment ha --time_interval {params.start_date} {params.end_date} --sampling even -r 12y &> {SNAKEMAKE_DIR}/{log}"""
+    shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
+  --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
+  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} --sampling even -r 12y &> {SNAKEMAKE_DIR}/{log}"""
 
 rule download_sequences_and_titers:
-    output: "dist/fauna/data/h3n2_ha.fasta", "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
+    output:
+        "dist/fauna/data/h3n2_ha.fasta",
+        "dist/fauna/data/h3n2_na.fasta",
+        "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/download_sequences_and_titers.txt"
     log: "logs/download_sequences_and_titers.log"
-    shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha --sequences --titers"
+    shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha na --sequences --titers"
 
 rule clean:
     run:

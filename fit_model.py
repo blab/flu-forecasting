@@ -17,6 +17,17 @@ from base.process import process
 from base.titer_model import TiterCollection
 
 
+def load_tree_from_json_filename(filename):
+    # Load JSON tree.
+    with open(filename, "r") as json_fh:
+         json_tree = json.load(json_fh)
+
+    # Convert JSON tree layout to a Biopython Clade instance.
+    tree = json_to_tree(json_tree)
+
+    return tree
+
+
 def pivot_to_date(pivot):
     """
     Convert the given pivot floating point date to its corresponding Python date instance.
@@ -35,10 +46,11 @@ def pivot_to_date(pivot):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("tree", help="auspice tree JSON")
+    parser.add_argument("ha_tree", help="auspice tree JSON for HA")
     parser.add_argument("frequencies", help="JSON containing frequencies estimated from the given tree")
     parser.add_argument("model", help="output model JSON")
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
+    parser.add_argument("--na-tree", help="auspice tree JSON for NA")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
@@ -47,12 +59,23 @@ if __name__ == "__main__":
     args = parser.parse_args()
     predictor_kwargs = {}
 
-    # Load JSON tree.
-    with open(args.tree, "r") as json_fh:
-         json_tree = json.load(json_fh)
+    # Load HA tree.
+    ha_tree = load_tree_from_json_filename(args.ha_tree)
 
-    # Convert JSON tree layout to a Biopython Clade instance.
-    tree = json_to_tree(json_tree)
+    # Load NA tree if it has been provided.
+    if args.na_tree:
+        na_tree = load_tree_from_json_filename(args.na_tree)
+
+        # Annotate epitope mutations from NA tree onto HA tree.
+        na_mutations_by_strain = {
+            node.name: node.attr["ep"]
+            for node in na_tree.find_clades()
+            if node.is_terminal()
+        }
+
+        for node in ha_tree.find_clades():
+            if node.is_terminal():
+                node.attr["na_ep"] = na_mutations_by_strain.get(node.name, 0)
 
     # Load frequencies.
     with open(args.frequencies, "r") as json_fh:
@@ -79,7 +102,7 @@ if __name__ == "__main__":
 
     # Run the fitness model.
     model = FitnessModel(
-        tree,
+        ha_tree,
         frequencies,
         args.predictors,
         censor_frequencies=not args.no_censoring,
