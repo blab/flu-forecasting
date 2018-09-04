@@ -342,6 +342,7 @@ rule align:
             --sequences {input.sequences} \
             --reference-sequence {input.reference} \
             --output {output.alignment} \
+            --remove-reference \
             --fill-gaps
         """
 
