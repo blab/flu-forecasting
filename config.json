@@ -36,5 +36,15 @@
         "narrow_bandwidth": 0.0833,
         "wide_bandwidth": 0.25,
         "proportion_wide": 0.0
+    },
+    "distance_parameters_by_segment": {
+        "ha": {
+            "attributes": ["ep", "rbs"],
+            "masks": ["wolf", "koel"]
+        },
+        "na": {
+            "attributes": ["ep"],
+            "masks": ["bhatt"]
+        }
     }
 }

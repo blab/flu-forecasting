@@ -26,6 +26,12 @@ def _get_end_date_from_range(wildcards):
 def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
 
+def _get_distance_attribute_names_by_segment(wildcards):
+    return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["attributes"])
+
+def _get_distance_mask_names_by_segment(wildcards):
+    return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
+
 rule all:
     input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf", "models.tab", "model_fold_change.pdf"
 
@@ -166,6 +172,7 @@ rule export:
         nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
         aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
         translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
+        distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
         colors = "dist/augur/builds/flu/colors.tsv",
         auspice_config = "config/auspice_config.json"
     output:
@@ -182,6 +189,29 @@ rule export:
             --auspice-config {input.auspice_config} \
             --output-tree {output.auspice_tree} \
             --output-meta {output.auspice_metadata}
+        """
+
+rule distances:
+    message: "Calculating amino acid distances"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
+        masks = "dist/augur/builds/flu/metadata/{segment}_masks.tsv"
+    output:
+        distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json"
+    params:
+        attribute_names = _get_distance_attribute_names_by_segment,
+        mask_names = _get_distance_mask_names_by_segment
+    conda: "envs/anaconda.python2.yaml"
+    shell:
+        """
+        python scripts/distance.py \
+            {input.tree} \
+            {input.translations} \
+            {output.distances} \
+            --masks {input.masks} \
+            --attribute-names {params.attribute_names} \
+            --mask-names {params.mask_names}
         """
 
 rule traits:
