@@ -12,5 +12,5 @@ dependencies:
 - python=3.6*
 - raxml
 - pip:
-  - git+https://github.com/nextstrain/augur@7b27696
+  - git+https://github.com/nextstrain/augur@e8f18ea
   - rethinkdb
