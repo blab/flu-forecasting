@@ -8,10 +8,19 @@
         "stdout": "log/cluster/{rule}.{wildcards}.%j.out",
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
     },
-    "augur_process": {
-        "time": "24:00:00",
+    "align": {
+        "time": "2:00:00",
         "memory": "16384",
         "cores": 2
+    },
+    "tree": {
+        "time": "8:00:00",
+        "memory": "16384",
+        "cores": 2
+    },
+    "refine": {
+        "time": "2:00:00",
+        "memory": "16384"
     },
     "run_fitness_model": {
         "memory": "8192",
