@@ -39,8 +39,8 @@
     },
     "distance_parameters_by_segment": {
         "ha": {
-            "attributes": ["ep", "rbs"],
-            "masks": ["wolf", "koel"]
+            "attributes": ["ep", "rbs", "ne"],
+            "masks": ["wolf", "koel", "wolf_ne"]
         },
         "na": {
             "attributes": ["ep"],
