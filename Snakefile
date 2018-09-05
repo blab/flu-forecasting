@@ -316,6 +316,7 @@ rule tree:
     output:
         tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
     conda: "envs/anaconda.python3.yaml"
+    shadow: "minimal"
     shell:
         """
         augur tree \
