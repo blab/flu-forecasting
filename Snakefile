@@ -184,7 +184,7 @@ rule export:
         augur export \
             --tree {input.tree} \
             --metadata {input.metadata} \
-            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} \
+            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} {input.distances} \
             --colors {input.colors} \
             --auspice-config {input.auspice_config} \
             --output-tree {output.auspice_tree} \
