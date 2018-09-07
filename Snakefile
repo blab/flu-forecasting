@@ -181,7 +181,7 @@ rule export:
         auspice_config = "config/auspice_config.json"
     output:
         auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
-        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_metadata.json"
+        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json"
     conda: "envs/anaconda.python3.yaml"
     shell:
         """
