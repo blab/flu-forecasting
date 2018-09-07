@@ -327,7 +327,8 @@ rule tree:
         augur tree \
             --alignment {input.alignment} \
             --output {output.tree} \
-            --method raxml
+            --method iqtree \
+            --nthreads {threads}
         """
 
 rule align:
