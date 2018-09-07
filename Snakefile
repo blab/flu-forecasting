@@ -228,6 +228,7 @@ rule traits:
     params:
         columns = "region country"
     conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/traits_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     shell:
         """
         augur traits \
@@ -268,6 +269,7 @@ rule ancestral:
     params:
         inference = "joint"
     conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/ancestral_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     shell:
         """
         augur ancestral \
@@ -298,6 +300,7 @@ rule refine:
         date_inference = "marginal",
         clock_filter_iqd = 4
     conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/refine_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     shell:
         """
         augur refine \
@@ -321,6 +324,8 @@ rule tree:
         tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
     conda: "envs/anaconda.python3.yaml"
     shadow: "minimal"
+    benchmark: "benchmarks/tree_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    threads: 2
     shell:
         """
         augur tree \
@@ -341,6 +346,7 @@ rule align:
     output:
         alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
     conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/align_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     shell:
         """
         augur align \
