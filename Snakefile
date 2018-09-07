@@ -285,7 +285,6 @@ rule refine:
         Refining tree
           - estimate timetree
           - use {params.coalescent} coalescent timescale
-          - estimate {params.date_inference} node dates
           - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
         """
     input:
@@ -296,8 +295,7 @@ rule refine:
         tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
         node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json"
     params:
-        coalescent = "opt",
-        date_inference = "marginal",
+        coalescent = 0.03,
         clock_filter_iqd = 4
     conda: "envs/anaconda.python3.yaml"
     benchmark: "benchmarks/refine_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
@@ -311,8 +309,6 @@ rule refine:
             --output-node-data {output.node_data} \
             --timetree \
             --coalescent {params.coalescent} \
-            --date-confidence \
-            --date-inference {params.date_inference} \
             --clock-filter-iqd {params.clock_filter_iqd}
         """
 
