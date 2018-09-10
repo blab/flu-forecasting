@@ -201,6 +201,7 @@ rule export:
         translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
         distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
         lbi="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json",
+        clades = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json",
         colors = "dist/augur/builds/flu/colors.tsv",
         auspice_config = "config/auspice_config.json"
     output:
@@ -217,6 +218,7 @@ rule export:
             --metadata {input.metadata} \
             --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} {input.distances} \
                         {input.lbi} \
+                        {input.clades} \
             --colors {input.colors} \
             --geography-traits {params.geography_traits} \
             --auspice-config {input.auspice_config} \
@@ -245,6 +247,25 @@ rule lbi:
             --attribute-names lbi \
             --tau {params.tau} \
             --window {params.window}
+        """
+
+rule clades:
+    message: "Annotating clades"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
+        aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
+        clade_definitions = "clades.tsv"
+    output:
+        "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur clades \
+            --tree {input.tree} \
+            --mutations {input.nt_muts} {input.aa_muts} \
+            --clades {input.clade_definitions} \
+            --output {output}
         """
 
 rule distances:
