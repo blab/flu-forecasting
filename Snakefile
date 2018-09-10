@@ -203,13 +203,16 @@ rule export:
         """
 
 rule lbi:
-    message: "Calculating LBI"
+    message: "Calculating LBI with tau={params.tau} and window={params.window}"
     input:
         tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
         branch_lengths = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json",
     output:
         lbi = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json"
     conda: "envs/anaconda.python2.yaml"
+    params:
+        tau = 0.2,
+        window = 0.1
     shell:
         """
         python scripts/lbi.py \
@@ -217,8 +220,8 @@ rule lbi:
             {input.branch_lengths} \
             {output.lbi} \
             --attribute-names lbi \
-            --tau 0.75 \
-            --window 0.75
+            --tau {params.tau} \
+            --window {params.window}
         """
 
 rule distances:
