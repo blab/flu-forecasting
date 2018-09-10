@@ -177,6 +177,7 @@ rule export:
         aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
         translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
         distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
+        lbi="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json",
         colors = "dist/augur/builds/flu/colors.tsv",
         auspice_config = "config/auspice_config.json"
     output:
@@ -189,10 +190,30 @@ rule export:
             --tree {input.tree} \
             --metadata {input.metadata} \
             --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} {input.distances} \
+                        {input.lbi} \
             --colors {input.colors} \
             --auspice-config {input.auspice_config} \
             --output-tree {output.auspice_tree} \
             --output-meta {output.auspice_metadata}
+        """
+
+rule lbi:
+    message: "Calculating LBI"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        branch_lengths = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json",
+    output:
+        lbi = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json"
+    conda: "envs/anaconda.python2.yaml"
+    shell:
+        """
+        python scripts/lbi.py \
+            {input.tree} \
+            {input.branch_lengths} \
+            {output.lbi} \
+            --attribute-names lbi \
+            --tau 0.75 \
+            --window 0.75
         """
 
 rule distances:
