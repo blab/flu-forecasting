@@ -86,8 +86,8 @@ if __name__ == "__main__":
     # Setup predictor arguments.
     predictor_kwargs = {
         "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory,
-        "tau": 0.75,
-        "time_window": 0.75
+        "tau": 0.2,
+        "time_window": 0.1
     }
 
     # If titers were provided, load them for the model to use.
