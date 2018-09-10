@@ -183,6 +183,9 @@ rule export:
     output:
         auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
         auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json"
+    params:
+        geography_traits = "region",
+        panels = "tree entropy"
     conda: "envs/anaconda.python3.yaml"
     shell:
         """
@@ -192,9 +195,11 @@ rule export:
             --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} {input.distances} \
                         {input.lbi} \
             --colors {input.colors} \
+            --geography-traits {params.geography_traits} \
             --auspice-config {input.auspice_config} \
             --output-tree {output.auspice_tree} \
-            --output-meta {output.auspice_metadata}
+            --output-meta {output.auspice_metadata} \
+            --panels {params.panels}
         """
 
 rule lbi:

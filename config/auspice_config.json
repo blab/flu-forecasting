@@ -19,9 +19,39 @@
       "menuItem":"authors",
       "type":"discrete"
     },
-    "country": {
-    },
     "region": {
+    },
+    "lbi": {
+      "vmin": 0,
+      "vmax": 0.7,
+      "legendTitle": "local branching index",
+      "key": "lbi",
+      "menuItem": "local branching index",
+      "type": "continuous"
+    },
+    "ep": {
+      "menuItem": "epitope mutations",
+      "legendTitle": "Epitope mutations",
+      "type": "continuous",
+      "key": "ep"
+    },
+    "ne": {
+      "menuItem": "Non-epitope mutations",
+      "legendTitle": "Non-epitope mutations",
+      "type": "continuous",
+      "key": "ne"
+    },
+    "rbs": {
+      "menuItem": "RBS-adjacent mutations",
+      "legendTitle": "RBS-adjacent mutations",
+      "type": "continuous",
+      "key": "rbs"
+    },
+    "clade_membership": {
+      "menuItem": "clade",
+      "type": "discrete",
+      "legendTitle": "Clade",
+      "key": "clade_membership"
     }
   },
   "geo": [
@@ -39,5 +69,9 @@
     "country",
     "region",
     "authors"
+  ],
+  "panels": [
+    "tree",
+    "entropy"
   ]
 }
