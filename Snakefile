@@ -51,21 +51,21 @@ rule aggregate_model_parameters:
     input: expand("model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output: "model_parameters.tab"
     run:
-        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
-        df.to_csv(output[0], sep="\t", index=False, na_rep="null")
+        df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False)
 
 rule aggregate_model_accuracy:
     input: expand("model_accuracy/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output: "model_accuracy.tab"
     run:
-        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
 
 rule aggregate_models:
     input: expand("models/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output: "models.tab"
     run:
-        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
 
 rule aggregate_model_fold_change:
