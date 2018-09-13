@@ -1,0 +1,26 @@
+
+rule compile_report:
+    input:
+        report="results.tex",
+        correlation="frequency_correlation_by_lbi_parameters.pdf",
+        mcc="mcc_by_lbi_parameters.pdf"
+    output: "results.pdf"
+    log: "results.log"
+    shell: "pdflatex {input.report} &> {log}"
+
+rule plot_accuracy_by_parameters:
+    input: "results_by_lbi_parameters.tsv"
+    output:
+        correlation="frequency_correlation_by_lbi_parameters.pdf",
+        mcc="mcc_by_lbi_parameters.pdf"
+    conda: "python2_env.yaml"
+    shell: "python plot_accuracy_by_parameters.py {input} {output.correlation} {output.mcc}"
+
+rule sweep_parameters:
+    input:
+        tree="../../trees/flu_h3n2_ha_2006-2018y_92v_0_tree.json",
+        frequencies="../../frequencies/flu_h3n2_ha_2006-2018y_92v_0.json"
+    output:
+        "results_by_lbi_parameters.tsv"
+    conda: "python2_env.yaml"
+    shell: "python sweep_parameters.py {input.tree} {input.frequencies} {output}"

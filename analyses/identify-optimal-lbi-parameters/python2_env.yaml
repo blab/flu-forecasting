@@ -1,0 +1,23 @@
+name: janus_python2
+channels:
+- bioconda
+- defaults
+dependencies:
+- biopython
+- boto
+- boto3
+- cvxopt
+- future
+- gitpython
+- ipykernel
+- ipython
+- matplotlib
+- numpy
+- pandas
+- pytest
+- python=2.7*
+- scipy
+- seaborn
+- pip:
+  - phylo-treetime
+  - rethinkdb
