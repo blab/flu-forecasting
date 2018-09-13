@@ -37,10 +37,31 @@ def _get_distance_mask_names_by_segment(wildcards):
     return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
 
 rule all:
-    input: "model_accuracy.tab", "model_parameters.tab", "trees.pdf", "models.tab", "model_fold_change.pdf"
+    input:
+        "model_accuracy.tab",
+        "model_parameters.tab",
+        "trees.pdf",
+        "models.tab",
+        "model_fold_change.pdf",
+        "figures/frequency_correlation.pdf",
+        "figures/model_parameters.pdf"
 
 rule trees:
     input: "trees.pdf"
+
+rule plot_model_parameters:
+    input: "model_parameters.tab"
+    output: "figures/model_parameters.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/plot_parameters.py {input} {output}"
+
+rule plot_frequency_correlation:
+    input: "model_accuracy.tab"
+    output:
+        correlation="figures/frequency_correlation.pdf",
+        mcc="figures/mcc.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
 
 rule aggregate_tree_plots:
     input: expand("figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
@@ -110,6 +131,7 @@ rule summarize_model:
             "predictors": [wildcards.predictors],
             "sample": [wildcards.sample],
             "correlation_rel": [accuracy["correlation_rel"]],
+            "mcc": [accuracy["mcc"]],
             "clade_error": [accuracy["clade_error"]]
         })
         df.to_csv(output["accuracy"], sep="\t", index=False)
