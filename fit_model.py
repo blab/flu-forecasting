@@ -6,8 +6,9 @@ import os
 
 # Add augur source to the Python path.
 import sys
-code_directory = os.path.join(os.getcwd(), "dist", "augur")
-sys.path.insert(0, code_directory)
+root_directory = os.path.dirname(os.path.abspath(__file__))
+augur_directory = os.path.join(root_directory, "dist", "augur")
+sys.path.insert(0, augur_directory)
 
 # Load augur modules.
 from base.fitness_model import fitness_model as FitnessModel, make_pivots
@@ -110,7 +111,7 @@ if __name__ == "__main__":
         frequencies,
         args.predictors,
         censor_frequencies=not args.no_censoring,
-        epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % code_directory,
+        epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % augur_directory,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
         min_freq=0.1,
