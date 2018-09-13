@@ -98,7 +98,7 @@ rule plot_model_fold_change:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
     output: "model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
     conda: "envs/anaconda.python2.yaml"
-    shell: "python plot_model_fold_change.py {input} {output} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+    shell: "python scripts/plot_model_fold_change.py {input} {output} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
 
 rule convert_model_json_to_tsv:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
