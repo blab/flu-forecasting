@@ -11,6 +11,7 @@ dependencies:
 - pandas
 - python=3.6*
 - raxml
+- snakemake
 - pip:
   - git+https://github.com/nextstrain/augur@e8f18ea
   - rethinkdb

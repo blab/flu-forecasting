@@ -81,8 +81,8 @@ then
 fi
 
 # Setup the environment.
-PATH="$HOME/miniconda3/bin:$PATH"
-source activate janus_python3
+. ${HOME}/miniconda3/etc/profile.d/conda.sh
+conda activate janus_python3
 
 # Run jobs on the cluster if it is possible and the user did not request a local
 # run.
