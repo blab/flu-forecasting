@@ -160,7 +160,7 @@ rule run_fitness_model:
 rule estimate_frequencies:
     input:
         tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        weights="region_weights.json"
+        weights="data/region_weights.json"
     output: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
