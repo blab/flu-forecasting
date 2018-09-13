@@ -52,6 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
     parser.add_argument("--na-tree", help="auspice tree JSON for NA")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
+    parser.add_argument("--dms", help="tab-delimited file of DMS preferences")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
@@ -85,10 +86,13 @@ if __name__ == "__main__":
 
     # Setup predictor arguments.
     predictor_kwargs = {
-        "preferences_file": "%s/builds/flu/metadata/2017-12-07-H3N2-preferences-rescaled.csv" % code_directory,
         "tau": 0.2,
         "time_window": 0.1
     }
+
+    # If DMS preferences were provided, link to them.
+    if args.dms:
+        predictor_kwargs["preferences_file"] = args.dms
 
     # If titers were provided, load them for the model to use.
     if args.titers:

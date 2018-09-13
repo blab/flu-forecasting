@@ -148,13 +148,14 @@ rule run_fitness_model:
         ha_tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
         na_tree="trees/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
-        titers="dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
+        titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv",
+        dms="data/dms-h3n2-preferences-rescaled.csv"
     output: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
     params: predictor_list=_get_predictor_list
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python fit_model.py {input.ha_tree} {input.frequencies} {output} {params.predictor_list} --na-tree {input.na_tree} --titers {input.titers} &> {log}"
+    shell: "python fit_model.py {input.ha_tree} {input.frequencies} {output} {params.predictor_list} --na-tree {input.na_tree} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} &> {log}"
 
 rule estimate_frequencies:
     input:
