@@ -418,7 +418,8 @@ rule convert_prepared_json_to_metadata_and_sequences:
 rule augur_prepare:
     input:
         ha_sequences="dist/fauna/data/h3n2_ha.fasta",
-        na_sequences="dist/fauna/data/h3n2_na.fasta"
+        na_sequences="dist/fauna/data/h3n2_na.fasta",
+        titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv"
     output:
         "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_{sample}.json"
@@ -428,7 +429,7 @@ rule augur_prepare:
     params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
   --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
-  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} --sampling even -r 12y &> {SNAKEMAKE_DIR}/{log}"""
+  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y --titers {SNAKEMAKE_DIR}/{input.titers} &> {SNAKEMAKE_DIR}/{log}"""
 
 rule download_sequences_and_titers:
     output:
