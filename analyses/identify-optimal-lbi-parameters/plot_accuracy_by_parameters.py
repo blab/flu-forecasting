@@ -31,6 +31,7 @@ if __name__ == "__main__":
     parser.add_argument("results", help="tab-delimited model results for all LBI parameters")
     parser.add_argument("correlation", help="plot of correlations by LBI parameters")
     parser.add_argument("mcc", help="plot of MCCs by LBI parameters")
+    parser.add_argument("sse", help="plot of SSEs by LBI parameters")
 
     args = parser.parse_args()
 
@@ -41,5 +42,8 @@ if __name__ == "__main__":
 
     sns.lmplot(x="tau", y="mcc", hue="time_window", fit_reg=False, data=results_df, aspect=1.5)
     plt.savefig(args.mcc)
+
+    sns.lmplot(x="tau", y="sse", hue="time_window", fit_reg=False, data=results_df, aspect=1.5)
+    plt.savefig(args.sse)
 
     print(results_df.to_string())

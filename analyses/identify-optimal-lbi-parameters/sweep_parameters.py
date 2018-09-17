@@ -129,6 +129,7 @@ if __name__ == "__main__":
         model.standardize_predictors()
         model.learn_parameters()
 
+        sse = model.last_fit
         correlation_null, correlation_raw, correlation_rel = model.get_correlation()
         correlation = correlation_rel[0]
         mcc = get_matthews_correlation_coefficient_for_data_frame(model.pred_vs_true_df)
@@ -137,6 +138,7 @@ if __name__ == "__main__":
             "time_window": parameter_set["time_window"],
             "correlation": correlation,
             "mcc": mcc,
+            "sse": sse,
             "param": model.model_params[0]
         })
 

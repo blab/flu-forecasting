@@ -3,7 +3,8 @@ rule compile_report:
     input:
         report="results.tex",
         correlation="frequency_correlation_by_lbi_parameters.pdf",
-        mcc="mcc_by_lbi_parameters.pdf"
+        mcc="mcc_by_lbi_parameters.pdf",
+        sse="sse_by_lbi_parameters.pdf"
     output: "results.pdf"
     log: "results.log"
     shell: "pdflatex {input.report} &> {log}"
@@ -12,9 +13,10 @@ rule plot_accuracy_by_parameters:
     input: "results_by_lbi_parameters.tsv"
     output:
         correlation="frequency_correlation_by_lbi_parameters.pdf",
-        mcc="mcc_by_lbi_parameters.pdf"
+        mcc="mcc_by_lbi_parameters.pdf",
+        sse="sse_by_lbi_parameters.pdf"
     conda: "python2_env.yaml"
-    shell: "python plot_accuracy_by_parameters.py {input} {output.correlation} {output.mcc}"
+    shell: "python plot_accuracy_by_parameters.py {input} {output.correlation} {output.mcc} {output.sse}"
 
 rule sweep_parameters:
     input:
