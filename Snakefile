@@ -390,7 +390,7 @@ rule align:
           - filling gaps with N
         """
     input:
-        sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
+        sequences = "builds/data/filtered/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
         reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
     output:
         alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
@@ -404,6 +404,28 @@ rule align:
             --output {output.alignment} \
             --remove-reference \
             --fill-gaps
+        """
+
+rule filter:
+    message:
+        """
+        Filtering sequences to exclude potential swine samples
+        """
+    input:
+        sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
+        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv",
+        excluded = "outliers/likely_swine_samples.txt"
+    output:
+        sequences = "builds/data/filtered/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/filter_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    shell:
+        """
+        augur filter \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --exclude {input.excluded} \
+            --output {output.sequences}
         """
 
 rule convert_prepared_json_to_metadata_and_sequences:
