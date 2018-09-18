@@ -87,8 +87,8 @@ if __name__ == "__main__":
 
     # Setup predictor arguments.
     predictor_kwargs = {
-        "tau": 0.25,
-        "time_window": 0.25
+        "tau": 0.5,
+        "time_window": 0.1
     }
 
     # If DMS preferences were provided, link to them.

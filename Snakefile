@@ -234,7 +234,7 @@ rule lbi:
         lbi = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json"
     conda: "envs/anaconda.python2.yaml"
     params:
-        tau = 0.2,
+        tau = 0.5,
         window = 0.1
     shell:
         """
