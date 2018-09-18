@@ -13,7 +13,7 @@ def annotate_predictor_class(predictor):
         pclass = "functional"
     elif predictor in ["lbi"]:
         pclass = "phylogenetic"
-    elif predictor == "all" or predictor in ["ep-ep_x-ne", "ep-ep_x-ne-na_ep", "cTiterSub-lbi", "ep-ep_x-ne-cTiterSub-lbi"]:
+    elif predictor == "all" or predictor in ["ep-ep_x-ne", "ep-ep_x-ne-na_ep", "cTiterSub-lbi", "ne-cTiterSub-lbi", "ep-ep_x-ne-cTiterSub-lbi"]:
         pclass = "ensemble"
     else:
         pclass = "control"
@@ -35,7 +35,8 @@ def annotate_order(predictor):
         "ep-ep_x-ne": 6,
         "ep-ep_x-ne-na_ep": 6.4,
         "cTiterSub-lbi": 6.5,
-        "ep-ep_x-ne-cTiterSub-lbi": 6.6,
+        "ne-cTiterSub-lbi": 6.6,
+        "ep-ep_x-ne-cTiterSub-lbi": 6.7,
         "all": 7
     }
 
