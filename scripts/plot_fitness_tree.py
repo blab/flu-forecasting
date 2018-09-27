@@ -46,7 +46,7 @@ def plot_tree(tree, model, timepoint, color_by_trait, initial_branch_width, tip_
     # Setup colors.
     trait_name = color_by_trait
     traits = [k.attr[trait_name] for k in tree.get_terminals()]
-    norm = mpl.colors.Normalize(-1 * np.std(traits), np.std(traits))
+    norm = mpl.colors.Normalize(-2 * np.std(traits), 2 * np.std(traits))
     cmap = mpl.cm.viridis
 
     #
