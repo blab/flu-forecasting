@@ -21,7 +21,7 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("tree", help="Newick tree")
-    parser.add_argument("translations", help="JSON of amino acid translations indexed by node name and gene name")
+    parser.add_argument("sequences", help="JSON of amino acid translations indexed by node name and gene name")
     parser.add_argument("output", help="JSON file with calculated distances stored by node name and attribute name")
     parser.add_argument("--attribute-names", nargs="+", help="names to store distances associated with the corresponding masks", required=True)
     parser.add_argument("--masks", help="tab-delimited mask definitions with mask name in first column and binary mask in second column")
@@ -35,8 +35,8 @@ if __name__ == "__main__":
     # Identify the name of the root node.
     root_node_name = tree.root.name
 
-    # Load translation.
-    with open(args.translations, "r") as json_fh:
+    # Load sequences.
+    with open(args.sequences, "r") as json_fh:
         json_translations = json.load(json_fh)
 
     # Order gene annotations by their start position.
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # Only keep genes that have a corresponding translation in the root node.
     genes = [annotation[0]
              for annotation in annotations
-             if annotation[0] in json_translations["nodes"][root_node_name]["translations"]]
+             if annotation[0] in json_translations["nodes"][root_node_name]["translations"] and annotation[0] != "nuc"]
 
     # Create a single amino acid sequence for the root node based on the order of the genes.
     # Convert the string into an array for mask comparisons.

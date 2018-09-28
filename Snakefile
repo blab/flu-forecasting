@@ -198,15 +198,16 @@ rule export:
         traits = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
         nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
         aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
-        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
         distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
+        sequences = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json",
         lbi="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json",
         clades = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json",
         colors = "dist/augur/builds/flu/colors.tsv",
         auspice_config = "config/auspice_config.json"
     output:
-        auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
-        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json"
+        auspice_tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
+        auspice_sequence = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
     params:
         geography_traits = "region",
         panels = "tree entropy"
@@ -216,7 +217,7 @@ rule export:
         augur export \
             --tree {input.tree} \
             --metadata {input.metadata} \
-            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.translations} {input.distances} \
+            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.sequences} {input.distances} \
                         {input.lbi} \
                         {input.clades} \
             --colors {input.colors} \
@@ -272,7 +273,7 @@ rule distances:
     message: "Calculating amino acid distances"
     input:
         tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json",
+        sequences = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json",
         masks = "dist/augur/builds/flu/metadata/{segment}_masks.tsv"
     output:
         distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json"
@@ -284,7 +285,7 @@ rule distances:
         """
         python scripts/distance.py \
             {input.tree} \
-            {input.translations} \
+            {input.sequences} \
             {output.distances} \
             --masks {input.masks} \
             --attribute-names {params.attribute_names} \
@@ -312,6 +313,17 @@ rule traits:
             --confidence
         """
 
+rule reconstruct_sequences:
+    message: "Reconstructing sequences from tree and root sequences"
+    input:
+        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        nt_muts="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
+        aa_muts="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
+    output:
+        "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/reconstruct_sequences.py {input.tree} {input.nt_muts} {input.aa_muts} {output}"
+
 rule translate:
     message: "Translating amino acid sequences"
     input:
@@ -319,8 +331,7 @@ rule translate:
         node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
         reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
     output:
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
-        translations = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/translations.json"
+        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
     conda: "envs/anaconda.python3.yaml"
     shell:
         """
