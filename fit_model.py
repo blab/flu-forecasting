@@ -47,6 +47,20 @@ def pivot_to_date(pivot):
     return datetime.date(year, month, day)
 
 
+def get_ordered_genes_from_metadata(metadata_json):
+    """Get gene names in order of their genomic coordinates. Annotations are stored
+    in the metadata as a dictionary of start/end coordinates and strand indexed
+    by gene name.
+    """
+    sorted_gene_annotations = sorted(
+        metadata_json["annotations"].items(),
+        key=lambda item: item[1]["start"]
+    )
+    ordered_genes = [gene for gene, annotations in sorted_gene_annotations]
+
+    return ordered_genes
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("ha_tree", help="auspice tree JSON for HA")
@@ -73,21 +87,15 @@ if __name__ == "__main__":
     with open(args.ha_metadata, "r") as fh:
         ha_metadata = json.load(fh)
 
-    # Get gene names in order of their genomic coordinates. Annotations are
-    # stored in the metadata as a dictionary of start/end coordinates and strand
-    # indexed by gene name.
-    sorted_gene_annotations = sorted(
-        ha_metadata["annotations"].items(),
-        key=lambda item: item[1]["start"]
-    )
-    ordered_genes = [gene for gene, annotations in sorted_gene_annotations]
+    # Get HA genes in order.
+    ha_ordered_genes = get_ordered_genes_from_metadata(ha_metadata)
 
     # Load HA root sequences.
     with open(args.ha_sequences, "r") as fh:
         ha_root_sequences = json.load(fh)
 
     # Reconstruct ordered translations from the tree, root sequences, and gene order.
-    ha_tree = reconstruct_sequences_from_tree_and_root(ha_tree, ha_root_sequences, ordered_genes)
+    ha_tree = reconstruct_sequences_from_tree_and_root(ha_tree, ha_root_sequences, ha_ordered_genes)
 
     # Load NA tree if it has been provided.
     if args.na_tree:
