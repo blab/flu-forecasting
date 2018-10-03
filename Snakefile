@@ -146,6 +146,8 @@ rule summarize_model:
 rule run_fitness_model:
     input:
         ha_tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        ha_metadata="metadata/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_meta.json",
+        ha_sequences="sequences/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
         #na_tree="trees/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv",
@@ -155,7 +157,7 @@ rule run_fitness_model:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python fit_model.py {input.ha_tree} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} &> {log}"
+    shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} &> {log}"
 
 rule estimate_frequencies:
     input:
@@ -199,15 +201,14 @@ rule export:
         nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
         aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
         distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
-        sequences = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json",
         lbi="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json",
         clades = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json",
         colors = "dist/augur/builds/flu/colors.tsv",
         auspice_config = "config/auspice_config.json"
     output:
-        auspice_tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+        auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
         auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
-        auspice_sequence = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
+        auspice_sequence = "sequences/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
     params:
         geography_traits = "region",
         panels = "tree entropy"
@@ -217,7 +218,7 @@ rule export:
         augur export \
             --tree {input.tree} \
             --metadata {input.metadata} \
-            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.sequences} {input.distances} \
+            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.distances} \
                         {input.lbi} \
                         {input.clades} \
             --colors {input.colors} \
@@ -225,6 +226,7 @@ rule export:
             --auspice-config {input.auspice_config} \
             --output-tree {output.auspice_tree} \
             --output-meta {output.auspice_metadata} \
+            --output-sequence {output.auspice_sequence} \
             --panels {params.panels}
         """
 
@@ -339,8 +341,7 @@ rule translate:
             --tree {input.tree} \
             --ancestral-sequences {input.node_data} \
             --reference-sequence {input.reference} \
-            --output {output.node_data} \
-            --alignment-output {output.translations}
+            --output {output.node_data}
         """
 
 rule ancestral:

@@ -17,6 +17,8 @@ from base.io_util import json_to_tree, json_to_clade_frequencies
 from base.process import process
 from base.titer_model import TiterCollection
 
+from scripts.reconstruct_sequences import reconstruct_sequences_from_tree_and_root
+
 
 def load_tree_from_json_filename(filename):
     # Load JSON tree.
@@ -48,10 +50,13 @@ def pivot_to_date(pivot):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("ha_tree", help="auspice tree JSON for HA")
+    parser.add_argument("ha_metadata", help="auspice metadata JSON for HA")
+    parser.add_argument("ha_sequences", help="auspice sequence JSON for HA")
     parser.add_argument("frequencies", help="JSON containing frequencies estimated from the given tree")
     parser.add_argument("model", help="output model JSON")
     parser.add_argument("predictors", nargs="+", help="one or more predictors to build model for")
     parser.add_argument("--na-tree", help="auspice tree JSON for NA")
+    parser.add_argument("--na-sequences", help="auspice sequence JSON for NA")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--dms", help="tab-delimited file of DMS preferences")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
@@ -63,6 +68,26 @@ if __name__ == "__main__":
 
     # Load HA tree.
     ha_tree = load_tree_from_json_filename(args.ha_tree)
+
+    # Load HA metadata.
+    with open(args.ha_metadata, "r") as fh:
+        ha_metadata = json.load(fh)
+
+    # Get gene names in order of their genomic coordinates. Annotations are
+    # stored in the metadata as a dictionary of start/end coordinates and strand
+    # indexed by gene name.
+    sorted_gene_annotations = sorted(
+        ha_metadata["annotations"].items(),
+        key=lambda item: item[1]["start"]
+    )
+    ordered_genes = [gene for gene, annotations in sorted_gene_annotations]
+
+    # Load HA root sequences.
+    with open(args.ha_sequences, "r") as fh:
+        ha_root_sequences = json.load(fh)
+
+    # Reconstruct ordered translations from the tree, root sequences, and gene order.
+    ha_tree = reconstruct_sequences_from_tree_and_root(ha_tree, ha_root_sequences, ordered_genes)
 
     # Load NA tree if it has been provided.
     if args.na_tree:
