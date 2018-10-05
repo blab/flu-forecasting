@@ -76,6 +76,7 @@ if __name__ == "__main__":
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
+    parser.add_argument("--data-frame", help="optional name of a file to save the resulting model's data frame to")
 
     args = parser.parse_args()
     predictor_kwargs = {}
@@ -157,3 +158,8 @@ if __name__ == "__main__":
 
     # Save resulting model.
     model.to_json(args.model)
+
+    # Save model's input data frame to a file, if a filename is given.
+    if args.data_frame:
+        df = model.to_data_frame()
+        df.to_csv(args.data_frame, sep="\t", header=True, index=False)
