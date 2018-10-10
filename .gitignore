@@ -107,3 +107,7 @@ ENV/
 *.tab
 *.DS_Store*
 *.out
+*.fasta
+*.n??
+*.txt
+*.tsv
