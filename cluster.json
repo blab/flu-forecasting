@@ -8,6 +8,11 @@
         "stdout": "log/cluster/{rule}.{wildcards}.%j.out",
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
     },
+    "align_fauna_sequences_to_ncbi_database": {
+        "time": "4:00:00",
+        "memory": "16384",
+        "cores": 4
+    },
     "align": {
         "time": "0:30:00",
         "memory": "16384",
