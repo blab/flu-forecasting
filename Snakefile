@@ -449,7 +449,7 @@ rule filter:
     input:
         sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
         metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv",
-        excluded = "outliers/likely_swine_samples.txt"
+        excluded = "outliers/filtered_strains.txt"
     output:
         sequences = "builds/data/filtered/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta"
     conda: "envs/anaconda.python3.yaml"
@@ -486,6 +486,43 @@ rule augur_prepare:
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
   --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
   --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y &> {SNAKEMAKE_DIR}/{log}"""
+
+rule collect_outliers:
+    input:
+        augur_outliers="dist/augur/builds/flu/metadata/h3n2_outliers.txt",
+        ncbi_outliers="outliers/non_h3_strains.txt"
+    output: "outliers/filtered_strains.txt"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "sort {input} | uniq > {output}"
+
+rule find_outliers:
+    input: "outliers/h3n2_ha.out"
+    output: "outliers/non_h3_strains.txt"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/annotate_outliers.py {input} {output}"
+
+rule align_fauna_sequences_to_ncbi_database:
+    input:
+        fauna_sequences="dist/fauna/data/h3n2_ha.fasta",
+        ncbi_database="outliers/iav_ha.nsq"
+    output: "outliers/h3n2_ha.out"
+    conda: "envs/ncbi.yaml"
+    benchmark: "benchmarks/find_outliers.txt"
+    threads: 4
+    shell: """blastn -num_threads {threads} -task megablast -db outliers/iav_ha -query {input.fauna_sequences} -out {output} -max_target_seqs 5 -outfmt "6 qseqid sseqid pident evalue bitscore stitle" """
+
+rule create_iav_blast_database:
+    input: "outliers/iav_ha.fasta"
+    output: "outliers/iav_ha.nsq"
+    conda: "envs/ncbi.yaml"
+    benchmark: "benchmarks/create_iav_blast_database.txt"
+    shell: "makeblastdb -dbtype nucl -out iav_ha -in {input}"
+
+rule download_iav_sequences:
+    output: "outliers/iav_ha.fasta"
+    conda: "envs/ncbi.yaml"
+    benchmark: "benchmarks/download_iav_sequences.txt"
+    shell: """esearch -db nuccore -query "Influenza A virus[Organism] hemagglutinin" | efetch -format fasta > {output}"""
 
 rule download_sequences_and_titers:
     output:

@@ -1,0 +1,8 @@
+name: ncbi
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - blast=2.6.0=boost1.61_1
+  - entrez-direct=7.70=pl526_2
+  - python=3.6.6=hc3d631a_0
