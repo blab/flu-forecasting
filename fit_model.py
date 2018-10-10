@@ -75,6 +75,9 @@ if __name__ == "__main__":
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
     parser.add_argument("--data-frame", help="optional name of a file to save the resulting model's data frame to")
+    parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
+    parser.add_argument("--min-freq", type=float, default=0.1, help="minimum frequency for clades to be used in model fitting")
+    parser.add_argument("--max-freq", type=float, default=0.99, help="maximum frequency for clades to be used in model fitting")
 
     args = parser.parse_args()
     predictor_kwargs = {}
@@ -146,16 +149,28 @@ if __name__ == "__main__":
         epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % augur_directory,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
-        min_freq=0.1,
+        min_freq=args.min_freq,
+        max_freq=args.max_freq,
         predictor_kwargs=predictor_kwargs,
         end_date=args.end_date,
         step_size=args.step_size
     )
-    model.predict()
-    model.validate_prediction()
 
-    # Save resulting model.
-    model.to_json(args.model)
+    if args.prepare_only:
+        model.prep_nodes()
+        model.calc_node_frequencies()
+        model.calc_all_predictors()
+        model.standardize_predictors()
+        model.select_clades_for_fitting()
+
+        with open(args.model, "w") as fh:
+            fh.write("{}\n")
+    else:
+        model.predict()
+        model.validate_prediction()
+
+        # Save resulting model.
+        model.to_json(args.model)
 
     # Save model's input data frame to a file, if a filename is given.
     if args.data_frame:
