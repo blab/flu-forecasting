@@ -13,11 +13,9 @@ sys.path.insert(0, augur_directory)
 # Load augur modules.
 from base.fitness_model import fitness_model as FitnessModel, make_pivots
 from base.frequencies import KdeFrequencies
-from base.io_util import json_to_tree, json_to_clade_frequencies
+from base.io_util import json_to_tree, json_to_clade_frequencies, reconstruct_sequences_from_tree_and_root
 from base.process import process
 from base.titer_model import TiterCollection
-
-from scripts.reconstruct_sequences import reconstruct_sequences_from_tree_and_root
 
 
 def load_tree_from_json_filename(filename):
