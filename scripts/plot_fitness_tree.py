@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     model.freq_arrays = freq_arrays
 
-    model.select_clades_for_fitting()
+    model.select_nonoverlapping_clades_for_fitting()
 
     timepoints = model.timepoints[:-1]
     for timepoint in timepoints:
