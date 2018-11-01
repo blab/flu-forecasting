@@ -6,9 +6,10 @@ import pandas as pd
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
 localrules: clean, download_sequences_and_titers, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
+ruleorder: augur_prepare_with_titers > augur_prepare
 
 wildcard_constraints:
-    sample="\d+",
+    sample="(\d+|titers)",
     viruses="\d+"
 
 # Load configuration parameters.
@@ -19,7 +20,7 @@ YEAR_RANGES = config["year_ranges"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
 NUMBER_OF_SAMPLES = config["number_of_samples"]
-SAMPLES = range(NUMBER_OF_SAMPLES)
+SAMPLES = list(range(NUMBER_OF_SAMPLES)) + ["titers"]
 
 def _get_start_date_from_range(wildcards):
     return "%s-10-01" % wildcards["year_range"].split("-")[0]
@@ -471,6 +472,22 @@ rule convert_prepared_json_to_metadata_and_sequences:
     conda: "envs/anaconda.python2.yaml"
     log: "logs/convert_prepared_json_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: "cd dist/augur/scripts && python prepared_json_to_fasta.py --metadata {SNAKEMAKE_DIR}/{output.metadata} {SNAKEMAKE_DIR}/{input} > {SNAKEMAKE_DIR}/{output.sequences} 2> {SNAKEMAKE_DIR}/{log}"
+
+rule augur_prepare_with_titers:
+    input:
+        ha_sequences="dist/fauna/data/h3n2_ha_unpassaged.fasta",
+        na_sequences="dist/fauna/data/h3n2_na.fasta",
+        titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv"
+    output:
+        "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_titers.json",
+        "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_titers.json"
+    conda: "envs/anaconda.python2.yaml"
+    benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_titers.txt"
+    log: "logs/augur_prepare_{year_range}y_{viruses}v_titers.log"
+    params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
+    shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
+  --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
+  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_titers --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y --sampling even --titers {SNAKEMAKE_DIR}/{input.titers} &> {SNAKEMAKE_DIR}/{log}"""
 
 rule augur_prepare:
     input:
