@@ -194,6 +194,12 @@ rule estimate_frequencies:
 --weights-attribute region \
 --include-internal-nodes &> {log}"""
 
+rule plot_sequences_by_date:
+    input: "trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
+    output: "figures/sequence_distributions/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/plot_sequence_distribution.py {input} {output}"
+
 rule plot_tree:
     input: "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
     output: "figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf"
