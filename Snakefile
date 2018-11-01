@@ -170,6 +170,12 @@ rule run_fitness_model:
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
     shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --data-frame {output.data_frame} &> {log}"
 
+rule plot_frequencies:
+    input: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
+    output: "figures/frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf"
+    conda: "envs/anaconda.python2.yaml"
+    shell: "python scripts/plot_frequency_trajectories.py {input} {output}"
+
 rule estimate_frequencies:
     input:
         tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
