@@ -91,8 +91,12 @@ if __name__ == "__main__":
     with open(args.ha_metadata, "r") as fh:
         ha_metadata = json.load(fh)
 
-    # Get HA genes in order.
-    ha_ordered_genes = get_ordered_genes_from_metadata(ha_metadata)
+    # Get HA genes in order excluding nucleotide sequences.
+    ha_ordered_genes = [
+        gene
+        for gene in get_ordered_genes_from_metadata(ha_metadata)
+        if gene != "nuc"
+    ]
 
     # Load HA root sequences.
     with open(args.ha_sequences, "r") as fh:
