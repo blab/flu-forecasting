@@ -19,7 +19,8 @@ from base.fitness_model import get_matthews_correlation_coefficient_for_data_fra
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="model TSV")
-    parser.add_argument("output", help="model fold change scatterplot (PDF, PNG, etc.)")
+    parser.add_argument("faceted_output", help="faceted model fold change scatterplot (PDF, PNG, etc.)")
+    parser.add_argument("combined_output", help="single-panel model fold change scatterplot (PDF, PNG, etc.)")
     parser.add_argument("year_range")
     parser.add_argument("viruses")
     parser.add_argument("predictors")
@@ -27,7 +28,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    frequency_bins = np.arange(0.1, 1, 0.2)
+    frequency_bins = np.linspace(0.0, 1.0, 5)
     df = pd.read_table(args.input)
     df["observed_ratio"] = df["observed_freq"] / df["initial_freq"]
     df["predicted_ratio"] = df["predicted_freq"] / df["initial_freq"]
@@ -35,13 +36,16 @@ if __name__ == "__main__":
 
     correlation_by_bin = []
     mcc_by_bin = []
+    n_clades_by_bin = []
     for freq, freq_df in df.groupby("binned_initial_freq"):
         correlation_by_bin.append(pearsonr(freq_df["observed_ratio"], freq_df["predicted_ratio"])[0])
 
         # Calculate Matthew's correlation coefficient
         mcc_by_bin.append(get_matthews_correlation_coefficient_for_data_frame(freq_df))
 
-    g = sns.FacetGrid(df, col="binned_initial_freq", col_wrap=2, size=4)
+        n_clades_by_bin.append(freq_df.shape[0])
+
+    g = sns.FacetGrid(df, col="binned_initial_freq", col_wrap=2, height=4)
     g.map(sns.regplot, "observed_ratio", "predicted_ratio", fit_reg=False)
     g.add_legend()
 
@@ -59,7 +63,7 @@ if __name__ == "__main__":
         ax.text(
             0.5,
             0.8,
-            "MCC = %.2f" % mcc_by_bin[i],
+            "MCC = %.2f\nN = %s" % (mcc_by_bin[i], n_clades_by_bin[i]),
             transform=ax.transAxes,
             horizontalalignment="left",
             verticalalignment="center"
@@ -72,4 +76,31 @@ if __name__ == "__main__":
         args.predictors,
         args.sample
     ))
-    plt.savefig(args.output)
+    plt.savefig(args.faceted_output)
+
+    # Single-panel output
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    sns.regplot("observed_ratio", "predicted_ratio", data=df, fit_reg=False)
+    ax.axhline(y=1, color="#999999", alpha=0.7)
+    ax.axvline(x=1, color="#999999", alpha=0.7)
+
+    # Calculate statistics for entire data frame.
+    correlation = pearsonr(df["observed_ratio"], df["predicted_ratio"])[0]
+    mcc = get_matthews_correlation_coefficient_for_data_frame(df)
+    n_clades = df.shape[0]
+
+    ax.text(
+        0.5,
+        0.9,
+        "Pearson's $R$ = %.2f\nMCC = %.2f\nN = %s" % (correlation, mcc, n_clades),
+        transform=ax.transAxes,
+        horizontalalignment="left",
+        verticalalignment="center"
+    )
+    ax.set_title("year: %s, viruses: %s, predictors: %s, sample: %s" % (
+        args.year_range,
+        args.viruses,
+        args.predictors,
+        args.sample
+    ))
+    plt.savefig(args.combined_output)

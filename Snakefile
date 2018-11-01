@@ -43,7 +43,8 @@ rule all:
         "model_parameters.tab",
         "trees.pdf",
         "models.tab",
-        "model_fold_change.pdf",
+        "figures/faceted_model_fold_change.pdf",
+        "figures/combined_model_fold_change.pdf",
         "figures/frequency_correlation.pdf",
         "figures/model_parameters.pdf"
 
@@ -90,16 +91,23 @@ rule aggregate_models:
         df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
 
-rule aggregate_model_fold_change:
-    input: expand("model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "model_fold_change.pdf"
+rule aggregate_combined_model_fold_change:
+    input: expand("figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "figures/combined_model_fold_change.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule aggregate_faceted_model_fold_change:
+    input: expand("figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "figures/faceted_model_fold_change.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
 rule plot_model_fold_change:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
-    output: "model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
+    output:
+        faceted="figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf",
+        combined="figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
     conda: "envs/anaconda.python2.yaml"
-    shell: "python scripts/plot_model_fold_change.py {input} {output} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+    shell: "python scripts/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
 
 rule convert_model_json_to_tsv:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
