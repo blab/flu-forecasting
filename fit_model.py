@@ -74,10 +74,12 @@ if __name__ == "__main__":
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
-    parser.add_argument("--data-frame", help="optional name of a file to save the resulting model's data frame to")
+    parser.add_argument("--tip-data-frame", help="optional name of a file to save the resulting model's tip data frame to")
+    parser.add_argument("--clade-data-frame", help="optional name of a file to save the resulting model's clade data frame to")
     parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
     parser.add_argument("--min-freq", type=float, default=0.1, help="minimum frequency for clades to be used in model fitting")
     parser.add_argument("--max-freq", type=float, default=0.99, help="maximum frequency for clades to be used in model fitting")
+    parser.add_argument("--verbose", "-v", action="store_true")
 
     args = parser.parse_args()
     predictor_kwargs = {}
@@ -154,7 +156,9 @@ if __name__ == "__main__":
         max_freq=args.max_freq,
         predictor_kwargs=predictor_kwargs,
         end_date=args.end_date,
-        step_size=args.step_size
+        step_size=args.step_size,
+        verbose=int(args.verbose),
+        enforce_positive_predictors=False
     )
 
     if args.prepare_only:
@@ -174,6 +178,7 @@ if __name__ == "__main__":
         model.to_json(args.model)
 
     # Save model's input data frame to a file, if a filename is given.
-    if args.data_frame:
-        df = model.to_data_frame()
-        df.to_csv(args.data_frame, sep="\t", header=True, index=False)
+    if args.tip_data_frame:
+        tip_df, clade_df = model.to_data_frames()
+        tip_df.to_csv(args.tip_data_frame, sep="\t", header=True, index=False)
+        clade_df.to_csv(args.clade_data_frame, sep="\t", header=True, index=False)
