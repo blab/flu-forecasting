@@ -513,7 +513,7 @@ rule augur_prepare_with_titers:
 
 rule augur_prepare:
     input:
-        ha_sequences="dist/fauna/data/h3n2_ha.fasta",
+        ha_sequences="dist/fauna/data/h3n2_ha_unpassaged.fasta",
         na_sequences="dist/fauna/data/h3n2_na.fasta"
     output:
         "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
@@ -524,14 +524,64 @@ rule augur_prepare:
     params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
     shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
   --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
-  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y &> {SNAKEMAKE_DIR}/{log}"""
+  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y --sampling even &> {SNAKEMAKE_DIR}/{log}"""
+
+rule filter_passaged_viruses:
+    message:
+        """
+        Filtering to exclude passaged viruses
+        """
+    input:
+        sequences = "dist/fauna/data/h3n2_ha.fasta",
+        metadata = "filtering_metadata.tsv",
+        excluded = "outliers/non_reference_passaged_strains.txt"
+    output:
+        sequences = "dist/fauna/data/h3n2_ha_unpassaged.fasta"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur filter \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --exclude {input.excluded} \
+            --output {output.sequences}
+        """
+
+rule build_simple_metadata_for_filtering:
+    input: "dist/fauna/data/h3n2_ha.fasta"
+    output: "filtering_metadata.tsv"
+    shell: """grep "^>" {input} | sed 's/>//' | sort | uniq | awk '{{ if (NR == 1) {{ print "strain" }} print }}' > {output}"""
+
+rule remove_reference_strains_from_passaged_strains:
+    message: "Removing reference strains from list of passaged strains"
+    input:
+        passaged="outliers/passaged_strains.txt",
+        references="data/reference_viruses.txt"
+    output: "outliers/non_reference_passaged_strains.txt"
+    run:
+        with open(input["references"], "r") as fh:
+            references = set([line.rstrip() for line in fh])
+
+        with open(input["passaged"], "r") as fh:
+            with open(output[0], "w") as oh:
+                for line in fh:
+                    # Parse out strain name from pipe-delimited values.
+                    strain, rest = line.split("|", 1)
+
+                    # If this exact strain is not a reference, write it out.
+                    if strain not in references:
+                        oh.write(line)
+
+rule find_passaged_strains:
+    input: "dist/fauna/data/h3n2_ha.fasta"
+    output: "outliers/passaged_strains.txt"
+    shell: """grep "^>" {input} | grep -v -E "\|(cell|unpassaged)\|" | sed 's/>//' | sort | uniq > {output}"""
 
 rule collect_outliers:
     input:
-        augur_outliers="dist/augur/builds/flu/metadata/h3n2_outliers.txt",
-        ncbi_outliers="outliers/non_h3_strains.txt"
+        "dist/augur/builds/flu/metadata/h3n2_outliers.txt",
+        "outliers/non_h3_strains.txt"
     output: "outliers/filtered_strains.txt"
-    conda: "envs/anaconda.python2.yaml"
     shell: "sort {input} | uniq > {output}"
 
 rule find_outliers:
