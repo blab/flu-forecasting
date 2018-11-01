@@ -176,12 +176,16 @@ rule run_fitness_model:
         dms="data/dms-h3n2-preferences-rescaled.csv"
     output:
         model="models/{year_range}/{viruses}/{predictors}/{sample}.json",
-        data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/{sample}.tsv"
-    params: predictor_list=_get_predictor_list
+        tip_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/tips_{sample}.tsv",
+        clade_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/clades_{sample}.tsv"
+    params:
+        predictor_list=_get_predictor_list,
+        min_freq=config["fitness_model"]["min_freq"],
+        max_freq=config["fitness_model"]["max_freq"]
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --data-frame {output.data_frame} &> {log}"
+    shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
 
 rule plot_frequencies:
     input: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
@@ -190,6 +194,13 @@ rule plot_frequencies:
     shell: "python scripts/plot_frequency_trajectories.py {input} {output}"
 
 rule estimate_frequencies:
+    message:
+        """
+        Estimating frequencies for {input.tree}
+          - narrow bandwidth: {params.narrow_bandwidth}
+          - wide bandwidth: {params.wide_bandwidth}
+          - proportion wide: {params.proportion_wide}
+        """
     input:
         tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
         weights="data/region_weights.json"
@@ -198,6 +209,7 @@ rule estimate_frequencies:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
         proportion_wide=config["frequencies"]["proportion_wide"],
+        pivot_frequency=config["frequencies"]["pivot_frequency"],
         start_date=_get_start_date_from_range,
         end_date=_get_end_date_from_range
     conda: "envs/anaconda.python2.yaml"
@@ -207,6 +219,7 @@ rule estimate_frequencies:
 --narrow-bandwidth {params.narrow_bandwidth} \
 --wide-bandwidth {params.wide_bandwidth} \
 --proportion-wide {params.proportion_wide} \
+--pivot-frequency {params.pivot_frequency} \
 --start-date {params.start_date} \
 --end-date {params.end_date} \
 --weights {input.weights} \
@@ -480,7 +493,7 @@ rule align:
 rule filter:
     message:
         """
-        Filtering sequences to exclude potential swine samples
+        Filtering sequences to exclude H1N1 and swine samples
         """
     input:
         sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",

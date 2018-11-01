@@ -3,38 +3,41 @@
     "year_ranges": ["2006-2018"],
     "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
     "viruses": [92],
-    "number_of_samples": 1,
+    "number_of_samples": 3,
     "predictors": [
         "null",
-        "ep",
-        "ne",
-        "cTiter",
-        "cTiterSub",
+        "ep_x",
+        "ne_star",
         "lbi",
-        "ep-ep_x",
-        "ep-ep_x-ne",
-        "cTiterSub-lbi",
-        "ne-cTiterSub-lbi",
-        "ep-ep_x-ne-cTiterSub-lbi"
+        "cTiterSub",
+        "dms",
+        "ep_x-ne_star",
+        "ep_x-ne_star-lbi",
+        "lbi-cTiterSub-dms",
+        "ep_x-ne_star-lbi-cTiterSub-dms"
     ],
     "all_predictors": [
         "null",
-        "ep",
-        "na_ep",
-        "ne",
-        "cTiter",
-        "cTiterSub",
+        "freq",
+        "future_fitness",
+        "ep_x",
+        "ne_star",
         "lbi",
-        "ep-ep_x",
-        "ep-ep_x-ne",
-        "ep-ep_x-ne-na_ep",
-        "ep-ep_x-ne-cTiterSub-lbi",
-        "ep-ep_x-ne-cTiterSub-lbi-na_ep"
+        "cLbi",
+        "cTiterSub",
+        "cTiterSub-dms",
+        "ne_star-cTiterSub",
+        "ep_x-cTiterSub",
+        "ep_x-ne_star",
+        "ep_x-lbi",
+        "ep_x-ne_star-lbi",
+        "ep_x-ne_star-lbi-cTiterSub"
     ],
     "frequencies": {
-        "narrow_bandwidth": 0.0833,
+        "narrow_bandwidth": 0.25,
         "wide_bandwidth": 0.25,
-        "proportion_wide": 0.0
+        "proportion_wide": 0.0,
+        "pivot_frequency": 0.0833
     },
     "distance_parameters_by_segment": {
         "ha": {
@@ -45,5 +48,9 @@
             "attributes": ["ep"],
             "masks": ["bhatt"]
         }
+    },
+    "fitness_model": {
+        "min_freq": 0.10,
+        "max_freq": 0.99
     }
 }
