@@ -409,7 +409,7 @@ rule tree:
     conda: "envs/anaconda.python3.yaml"
     shadow: "minimal"
     benchmark: "benchmarks/tree_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    threads: 2
+    threads: 4
     shell:
         """
         augur tree \
@@ -432,6 +432,7 @@ rule align:
         alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
     conda: "envs/anaconda.python3.yaml"
     benchmark: "benchmarks/align_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    threads: 4
     shell:
         """
         augur align \
@@ -439,7 +440,8 @@ rule align:
             --reference-sequence {input.reference} \
             --output {output.alignment} \
             --remove-reference \
-            --fill-gaps
+            --fill-gaps \
+            --nthreads {threads}
         """
 
 rule filter:

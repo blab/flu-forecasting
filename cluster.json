@@ -16,12 +16,12 @@
     "align": {
         "time": "0:30:00",
         "memory": "16384",
-        "cores": 2
+        "cores": 4
     },
     "tree": {
         "time": "2:00:00",
         "memory": "16384",
-        "cores": 2
+        "cores": 4
     },
     "refine": {
         "time": "2:00:00",
