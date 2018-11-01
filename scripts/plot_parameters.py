@@ -5,42 +5,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-# Annotate predictor class
-def annotate_predictor_class(predictor):
-    if predictor in ["ep", "ep-ep_x", "na_ep", "cTiter", "cTiterSub"]:
-        pclass = "antigenic"
-    elif predictor in ["ne", "dms"]:
-        pclass = "functional"
-    elif predictor in ["lbi"]:
-        pclass = "phylogenetic"
-    elif predictor == "all" or predictor in ["ep-ep_x-ne", "ep-ep_x-ne-na_ep", "cTiterSub-lbi", "ep-ep_x-ne-cTiterSub-lbi"]:
-        pclass = "ensemble"
-    else:
-        pclass = "control"
-
-    return pclass
-
-# Annotate predictor order
-def annotate_order(predictor):
-    predictor_order = {
-        "null": 0,
-        "ep": 1,
-        "ep-ep_x": 2,
-        "na_ep": 2.5,
-        "cTiterSub": 3,
-        "cTiter": 3.5,
-        "ne": 4,
-        "dms": 4,
-        "lbi": 5,
-        "ep-ep_x-ne": 6,
-        "ep-ep_x-ne-na_ep": 6.4,
-        "cTiterSub-lbi": 6.5,
-        "ep-ep_x-ne-cTiterSub-lbi": 6.6,
-        "all": 7
-    }
-
-    return predictor_order.get(predictor, 100)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -64,10 +28,7 @@ if __name__ == "__main__":
     plt.rcParams.update(params)
 
     df = pd.read_table(args.parameters, keep_default_na=False)
-    df["order"] = df["predictors"].apply(annotate_order)
     df["build"] = df.apply(lambda row: "%s, %sv" % (row["year_range"], row["viruses"]), axis=1)
-
-    df = df.sort_values(["order"])
 
     g = sns.catplot(
         y="predictors",
@@ -75,9 +36,23 @@ if __name__ == "__main__":
         hue="predictor",
         row="build",
         data=df,
-        kind="bar",
+        ci="sd",
+        dodge=0.5,
+        join=False,
+        kind="point",
         height=10,
         aspect=1.33
     )
+
+    # Check for a single axis and if it doesn't exist, we must have multiple axes.
+    try:
+        axes = [g.ax]
+    except AttributeError:
+        axes = g.axes.flatten()
+
+    for ax in axes:
+        ax.axvline(0, color="#999999", alpha=0.5)
+
     g.set_axis_labels("Model parameters", "Predictors")
+    plt.tight_layout()
     plt.savefig(args.output)

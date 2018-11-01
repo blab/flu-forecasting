@@ -65,7 +65,7 @@ if __name__ == "__main__":
     }
     plt.rcParams.update(params)
 
-    accuracy_df = pd.read_table(args.accuracy, keep_default_na=False)
+    accuracy_df = pd.read_table(args.accuracy, keep_default_na=False, na_values=["NaN"])
     accuracy_df["predictor_class"] = accuracy_df["predictors"].apply(annotate_predictor_class)
     accuracy_df["order"] = accuracy_df["predictors"].apply(annotate_order)
     accuracy_df["build"] = accuracy_df.apply(lambda row: "%s, %sv" % (row["year_range"], row["viruses"]), axis=1)
@@ -75,10 +75,11 @@ if __name__ == "__main__":
     g = sns.catplot(
         y="predictors",
         x="correlation_rel",
-        hue="predictor_class",
         row="build",
         data=accuracy_df,
-        kind="bar",
+        kind="point",
+        ci="sd",
+        join=False,
         height=10,
         aspect=1.33,
         orient="h"
@@ -89,10 +90,11 @@ if __name__ == "__main__":
     g = sns.catplot(
         y="predictors",
         x="mcc",
-        hue="predictor_class",
         row="build",
         data=accuracy_df,
-        kind="bar",
+        kind="point",
+        ci="sd",
+        join=False,
         height=10,
         aspect=1.33,
         orient="h"
