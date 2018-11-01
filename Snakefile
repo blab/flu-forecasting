@@ -156,7 +156,7 @@ rule summarize_model:
             "mcc": [accuracy["mcc"]],
             "clade_error": [accuracy["clade_error"]]
         })
-        df.to_csv(output["accuracy"], sep="\t", index=False)
+        df.to_csv(output["accuracy"], sep="\t", index=False, na_rep="NaN")
 
         df = pd.DataFrame(model["params"])
         df["year_range"] = wildcards.year_range
