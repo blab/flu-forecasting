@@ -170,7 +170,7 @@ if __name__ == "__main__":
         model.calc_node_frequencies()
         model.calc_all_predictors()
         model.standardize_predictors()
-        model.select_clades_for_fitting()
+        model.select_nonoverlapping_clades_for_fitting()
 
         with open(args.model, "w") as fh:
             fh.write("{}\n")
