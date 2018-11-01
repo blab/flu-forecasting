@@ -123,7 +123,8 @@ if __name__ == "__main__":
     # Setup predictor arguments.
     predictor_kwargs = {
         "tau": 0.5,
-        "time_window": 0.1
+        "time_window": 0.1,
+        "step_size": args.step_size
     }
 
     # If DMS preferences were provided, link to them.
