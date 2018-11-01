@@ -5,7 +5,8 @@ import pandas as pd
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, download_sequences_and_titers, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
+localrules: clean, download_sequences_and_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
+
 ruleorder: augur_prepare_with_titers > augur_prepare
 
 wildcard_constraints:
@@ -41,15 +42,17 @@ rule all:
     input:
         "model_accuracy.tab",
         "model_parameters.tab",
-        "trees.pdf",
+        "figures/trees.pdf",
         "models.tab",
         "figures/faceted_model_fold_change.pdf",
         "figures/combined_model_fold_change.pdf",
         "figures/frequency_correlation.pdf",
-        "figures/model_parameters.pdf"
+        "figures/model_parameters.pdf",
+        "figures/sequence_distributions.pdf",
+        "figures/frequencies.pdf"
 
 rule trees:
-    input: "trees.pdf"
+    input: "figures/trees.pdf"
 
 rule plot_model_parameters:
     input: "model_parameters.tab"
@@ -65,9 +68,19 @@ rule plot_frequency_correlation:
     conda: "envs/anaconda.python2.yaml"
     shell: "python scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
 
+rule aggregate_frequency_plots:
+    input: expand("figures/frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    output: "figures/frequencies.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule aggregate_sequence_distribution_plots:
+    input: expand("figures/sequence_distributions/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    output: "figures/sequence_distributions.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
 rule aggregate_tree_plots:
     input: expand("figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
-    output: "trees.pdf"
+    output: "figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
 rule aggregate_model_parameters:
