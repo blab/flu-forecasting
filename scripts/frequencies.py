@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("--narrow-bandwidth", type=float, default=1 / 12.0, help="the bandwidth for the narrow KDE")
     parser.add_argument("--wide-bandwidth", type=float, default=3 / 12.0, help="the bandwidth for the wide KDE")
     parser.add_argument("--proportion-wide", type=float, default=0.2, help="the proportion of the wide bandwidth to use in the KDE mixture model")
-    parser.add_argument("--pivot-frequency", type=float, default=1 / 12.0, help="frequency of pivots in fraction of a year")
+    parser.add_argument("--pivot-frequency", type=int, default=1, help="number of months between pivots")
     parser.add_argument("--start-date", help="the start of the interval to estimate frequencies across")
     parser.add_argument("--end-date", help="the end of the interval to estimate frequencies across")
     parser.add_argument("--include-internal-nodes", action="store_true", help="calculate frequencies for internal nodes as well as tips")
