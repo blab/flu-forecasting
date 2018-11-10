@@ -74,6 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
+    parser.add_argument("--delta-time", type=float, default=1.0, help="Number of years to project forward from each timepoint")
     parser.add_argument("--tip-data-frame", help="optional name of a file to save the resulting model's tip data frame to")
     parser.add_argument("--clade-data-frame", help="optional name of a file to save the resulting model's clade data frame to")
     parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
@@ -161,6 +162,7 @@ if __name__ == "__main__":
         predictor_kwargs=predictor_kwargs,
         end_date=args.end_date,
         step_size=args.step_size,
+        delta_time=args.delta_time,
         verbose=int(args.verbose),
         enforce_positive_predictors=False
     )
