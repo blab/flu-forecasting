@@ -23,7 +23,19 @@ augur_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 sys.path.append(augur_path)
 from base.frequencies import KdeFrequencies
 from base.io_util import json_to_tree
-from base.process import process
+
+
+def get_time_interval_as_floats(time_interval):
+    """
+    Converts the given datetime interval to start and end floats.
+
+    Returns:
+        start_date (float): the start of the given time interval
+        end_date (float): the end of the given time interval
+    """
+    start_date = time_interval[1].year + (time_interval[1].month - 1) / 12.0
+    end_date = time_interval[0].year + (time_interval[0].month - 1) / 12.0
+    return start_date, end_date
 
 
 if __name__ == "__main__":
@@ -61,7 +73,7 @@ if __name__ == "__main__":
             for time in (args.end_date, args.start_date)
         ]
 
-        start_date, end_date = process.get_time_interval_as_floats(time_interval)
+        start_date, end_date = get_time_interval_as_floats(time_interval)
     else:
         start_date = end_date = None
 
