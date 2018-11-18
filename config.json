@@ -38,7 +38,7 @@
         "narrow_bandwidth": 0.25,
         "wide_bandwidth": 0.25,
         "proportion_wide": 0.0,
-        "pivot_frequency": 1
+        "pivot_frequency": 6
     },
     "distance_parameters_by_segment": {
         "ha": {

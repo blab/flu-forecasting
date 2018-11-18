@@ -248,7 +248,8 @@ rule estimate_frequencies:
 --end-date {params.end_date} \
 --weights {input.weights} \
 --weights-attribute region \
---include-internal-nodes &> {log}"""
+--include-internal-nodes \
+--censored &> {log}"""
 
 rule plot_sequences_by_date:
     input: "trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"

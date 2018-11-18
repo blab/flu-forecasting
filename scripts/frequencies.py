@@ -55,6 +55,7 @@ if __name__ == "__main__":
     parser.add_argument("--weights-attribute", help="name of the attribute on each tip whose values map to the given weights dictionary")
 
     parser.add_argument("--precision", type=int, default=6, help="number of decimal places to retain in frequency estimates")
+    parser.add_argument("--censored", action="store_true", help="calculate censored frequencies at each pivot")
 
     args = parser.parse_args()
 
@@ -97,7 +98,8 @@ if __name__ == "__main__":
         end_date=end_date,
         weights=weights,
         weights_attribute=weights_attribute,
-        include_internal_nodes=args.include_internal_nodes
+        include_internal_nodes=args.include_internal_nodes,
+        censored=args.censored
     )
     frequencies.estimate(tree)
 
