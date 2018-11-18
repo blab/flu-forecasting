@@ -4,6 +4,7 @@
     "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
     "viruses": [92],
     "number_of_samples": 3,
+    "include_titer_tree": false,
     "predictors": [
         "null",
         "ep_x",

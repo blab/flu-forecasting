@@ -20,8 +20,13 @@ SEGMENTS = config["segments"]
 YEAR_RANGES = config["year_ranges"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
+
+# Construct a list of samples to build trees for including an optional tree
+# where sequences with titer measurements are preferred.
 NUMBER_OF_SAMPLES = config["number_of_samples"]
-SAMPLES = list(range(NUMBER_OF_SAMPLES)) + ["titers"]
+SAMPLES = list(range(NUMBER_OF_SAMPLES))
+if config["include_titer_tree"]:
+    SAMPLES += ["titers"]
 
 def _get_start_date_from_range(wildcards):
     return "%s-10-01" % wildcards["year_range"].split("-")[0]
