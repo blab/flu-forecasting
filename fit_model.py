@@ -11,7 +11,7 @@ augur_directory = os.path.join(root_directory, "dist", "augur")
 sys.path.insert(0, augur_directory)
 
 # Load augur modules.
-from base.fitness_model import fitness_model as FitnessModel, make_pivots
+from base.fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
 from base.frequencies import KdeFrequencies
 from base.io_util import json_to_tree, json_to_clade_frequencies, reconstruct_sequences_from_tree_and_root
 from base.process import process
@@ -77,6 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("--delta-time", type=float, default=1.0, help="Number of years to project forward from each timepoint")
     parser.add_argument("--tip-data-frame", help="optional name of a file to save the resulting model's tip data frame to")
     parser.add_argument("--clade-data-frame", help="optional name of a file to save the resulting model's clade data frame to")
+    parser.add_argument("--validation-data-frame", help="optional name of a file to save the resulting model's cross-validation results to")
     parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
     parser.add_argument("--min-freq", type=float, default=0.1, help="minimum frequency for clades to be used in model fitting")
     parser.add_argument("--max-freq", type=float, default=0.99, help="maximum frequency for clades to be used in model fitting")
@@ -153,6 +154,7 @@ if __name__ == "__main__":
         ha_tree,
         frequencies,
         args.predictors,
+        cross_validate=True,
         censor_frequencies=not args.no_censoring,
         epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % augur_directory,
         epitope_mask_version="wolf",
@@ -164,7 +166,8 @@ if __name__ == "__main__":
         step_size=args.step_size,
         delta_time=args.delta_time,
         verbose=int(args.verbose),
-        enforce_positive_predictors=False
+        enforce_positive_predictors=False,
+        cost_function=sum_of_squared_errors
     )
 
     if args.prepare_only:
@@ -177,11 +180,15 @@ if __name__ == "__main__":
         with open(args.model, "w") as fh:
             fh.write("{}\n")
     else:
-        model.predict()
+        validation_df = model.predict()
         model.validate_prediction()
+        model.validate_prediction(test=True)
 
         # Save resulting model.
         model.to_json(args.model)
+
+        # Save the model's cross-validation results.
+        validation_df.to_csv(args.validation_data_frame, sep="\t", index=False)
 
     # Save model's input data frame to a file, if a filename is given.
     if args.tip_data_frame:

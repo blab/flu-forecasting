@@ -5,7 +5,7 @@ import pandas as pd
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, download_sequences_and_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots
+localrules: clean, download_sequences_and_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
 
 ruleorder: augur_prepare_with_titers > augur_prepare
 
@@ -88,6 +88,13 @@ rule aggregate_tree_plots:
     output: "figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
+rule aggregate_model_validation:
+    input: expand("model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_validation.tab"
+    run:
+        df = pd.concat([pd.read_table(i, keep_default_na=False, na_values="N/A") for i in input], ignore_index=True, sort=True)
+        df.to_csv(output[0], sep="\t", index=False, na_rep="N/A")
+
 rule aggregate_model_parameters:
     input: expand("model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output: "model_parameters.tab"
@@ -126,6 +133,17 @@ rule plot_model_fold_change:
         combined="figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
     conda: "envs/anaconda.python2.yaml"
     shell: "python scripts/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+
+rule label_model_validation_table:
+    input: "model_data_frames/{year_range}/{viruses}/{predictors}/validation_{sample}.tsv"
+    output: "model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv"
+    run:
+        df = pd.read_table(input[0])
+        df["year_range"] = wildcards.year_range
+        df["viruses"] = wildcards.viruses
+        df["predictors"] = wildcards.predictors
+        df["sample"] = wildcards.sample
+        df.to_csv(output[0], sep="\t", header=True, index=False, na_rep="N/A")
 
 rule convert_model_json_to_tsv:
     input: "models/{year_range}/{viruses}/{predictors}/{sample}.json"
@@ -182,7 +200,8 @@ rule run_fitness_model:
     output:
         model="models/{year_range}/{viruses}/{predictors}/{sample}.json",
         tip_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/tips_{sample}.tsv",
-        clade_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/clades_{sample}.tsv"
+        clade_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/clades_{sample}.tsv",
+        validation_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/validation_{sample}.tsv"
     params:
         predictor_list=_get_predictor_list,
         min_freq=config["fitness_model"]["min_freq"],
@@ -190,7 +209,7 @@ rule run_fitness_model:
     conda: "envs/anaconda.python2.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
+    shell: "python fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --validation-data-frame {output.validation_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
 
 rule plot_frequencies:
     input: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
