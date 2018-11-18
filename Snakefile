@@ -441,7 +441,7 @@ rule ancestral:
 rule refine:
     message:
         """
-        Refining tree
+        Refining tree ({wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})
           - estimate timetree
           - use {params.coalescent} coalescent timescale
           - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
@@ -472,7 +472,7 @@ rule refine:
         """
 
 rule tree:
-    message: "Building tree"
+    message: "Building tree ({wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})"
     input:
         alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
     output:
@@ -493,7 +493,7 @@ rule tree:
 rule align:
     message:
         """
-        Aligning sequences to {input.reference}
+        Aligning sequences to {input.reference} for {wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample}
           - filling gaps with N
         """
     input:
