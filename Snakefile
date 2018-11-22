@@ -11,7 +11,8 @@ ruleorder: augur_prepare_with_titers > augur_prepare
 
 wildcard_constraints:
     sample="(\d+|titers)",
-    viruses="\d+"
+    viruses="\d+",
+    bandwidth="[0-9]*\.?[0-9]+"
 
 # Load configuration parameters.
 configfile: "config.json"
@@ -20,6 +21,7 @@ SEGMENTS = config["segments"]
 YEAR_RANGES = config["year_ranges"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
+BANDWIDTHS = config["frequencies"]["bandwidths"]
 
 # Construct a list of samples to build trees for including an optional tree
 # where sequences with titer measurements are preferred.
@@ -43,10 +45,14 @@ def _get_distance_attribute_names_by_segment(wildcards):
 def _get_distance_mask_names_by_segment(wildcards):
     return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
 
+include: "rules/frequency_bandwidths.smk"
+
 rule all:
     input:
         "model_accuracy.tab",
         "model_parameters.tab",
+        "model_validation.tab",
+        "model_validation_by_bandwidth.tab",
         "figures/trees.pdf",
         "models.tab",
         "figures/faceted_model_fold_change.pdf",

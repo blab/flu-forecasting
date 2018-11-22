@@ -40,7 +40,8 @@
         "narrow_bandwidth": 0.25,
         "wide_bandwidth": 0.25,
         "proportion_wide": 0.0,
-        "pivot_frequency": 6
+        "pivot_frequency": 6,
+        "bandwidths": [0.02, 0.04, 0.08, 0.16, 0.25, 0.33, 0.5]
     },
     "distance_parameters_by_segment": {
         "ha": {
@@ -53,7 +54,7 @@
         }
     },
     "fitness_model": {
-        "min_freq": 0.10,
+        "min_freq": 0.01,
         "max_freq": 0.99
     }
 }
