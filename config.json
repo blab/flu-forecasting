@@ -1,6 +1,6 @@
 {
     "segments": ["ha"],
-    "year_ranges": ["2006-2018"],
+    "year_ranges": ["2005-2015"],
     "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
     "viruses": [92],
     "number_of_samples": 3,

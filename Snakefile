@@ -34,7 +34,7 @@ def _get_start_date_from_range(wildcards):
     return "%s-10-01" % wildcards["year_range"].split("-")[0]
 
 def _get_end_date_from_range(wildcards):
-    return "%s-04-01" % wildcards["year_range"].split("-")[1]
+    return "%s-10-01" % wildcards["year_range"].split("-")[1]
 
 def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
