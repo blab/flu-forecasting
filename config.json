@@ -37,7 +37,7 @@
         "ep_x-ne_star-lbi-cTiterSub"
     ],
     "frequencies": {
-        "narrow_bandwidth": 0.25,
+        "narrow_bandwidth": 0.0833,
         "wide_bandwidth": 0.25,
         "proportion_wide": 0.0,
         "pivot_frequency": 6,
