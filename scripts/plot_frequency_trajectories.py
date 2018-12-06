@@ -16,6 +16,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("frequencies", help="frequencies JSON")
     parser.add_argument("output", help="frequency trajectories plot")
+    parser.add_argument("--min-frequency", type=float, default=0.1, help="clades must reach at least this frequency at some point to be plotted")
 
     args = parser.parse_args()
 
@@ -39,7 +40,8 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
     for clade in frequencies.frequencies:
-        ax.plot(frequencies.pivots, frequencies.frequencies[clade])
+        if frequencies.frequencies[clade].max() >= args.min_frequency:
+            ax.plot(frequencies.pivots, frequencies.frequencies[clade])
 
     ax.set_title(args.frequencies)
     ax.set_xlabel("Date")
