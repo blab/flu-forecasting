@@ -158,7 +158,7 @@ rule convert_model_json_to_tsv:
         with open(input[0], "r") as fh:
             model_json = json.load(fh)
 
-        df = pd.DataFrame(model_json["data"])
+        df = pd.DataFrame(model_json["test_data"])
         df["year_range"] = wildcards.year_range
         df["viruses"] = wildcards.viruses
         df["predictors"] = wildcards.predictors
