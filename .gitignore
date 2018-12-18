@@ -111,3 +111,4 @@ ENV/
 *.n??
 *.txt
 *.tsv
+*.json
