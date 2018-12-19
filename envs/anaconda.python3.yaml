@@ -13,5 +13,5 @@ dependencies:
 - raxml
 - snakemake
 - pip:
-  - git+https://github.com/nextstrain/augur@master
+  - git+https://github.com/nextstrain/augur@3.1.0
   - rethinkdb

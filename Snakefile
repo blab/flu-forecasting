@@ -5,23 +5,27 @@ import pandas as pd
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, download_sequences_and_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
+localrules: clean, download_sequences, download_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
 
 ruleorder: augur_prepare_with_titers > augur_prepare
 
 wildcard_constraints:
     sample="(\d+|titers)",
     viruses="\d+",
-    bandwidth="[0-9]*\.?[0-9]+"
+    bandwidth="[0-9]*\.?[0-9]+",
+    lineage="[a-z0-9]+",
+    segment="[a-z]+"
 
 # Load configuration parameters.
 configfile: "config.json"
 
+path_to_fauna = config["path_to_fauna"]
 SEGMENTS = config["segments"]
 YEAR_RANGES = config["year_ranges"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
 BANDWIDTHS = config["frequencies"]["bandwidths"]
+MIN_LENGTH = config["min_length"]
 
 # Construct a list of samples to build trees for including an optional tree
 # where sequences with titer measurements are preferred.
@@ -45,10 +49,20 @@ def _get_distance_attribute_names_by_segment(wildcards):
 def _get_distance_mask_names_by_segment(wildcards):
     return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
 
+def _get_clock_rate_by_wildcards(wildcards):
+    rate = {
+        ('h3n2', 'ha'): 0.0043, ('h3n2', 'na'):0.0029,
+        ('h1n1pdm', 'ha'): 0.0040, ('h1n1pdm', 'na'):0.0032,
+        ('vic', 'ha'): 0.0024, ('vic', 'na'):0.0015,
+        ('yam', 'ha'): 0.0019, ('yam', 'na'):0.0013
+    }
+    return rate[(wildcards.lineage, wildcards.segment)]
+
 include: "rules/frequency_bandwidths.smk"
 
 rule all:
     input:
+        auspice = expand("auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
         "model_accuracy.tab",
         "model_parameters.tab",
         "model_validation.tab",
@@ -61,6 +75,327 @@ rule all:
         "figures/model_parameters.pdf",
         "figures/sequence_distributions.pdf",
         "figures/frequencies.pdf"
+
+rule download_sequences:
+    message: "Downloading {wildcards.segment} sequences from fauna"
+    output:
+        sequences = "data/h3n2_{segment}.fasta"
+    params:
+        fasta_fields = "strain virus accession collection_date region country division location passage_category submitting_lab age gender"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/download_sequences_{segment}.txt"
+    log: "logs/download_sequences_{segment}.log"
+    shell:
+        """
+        python3 {path_to_fauna}/vdb/download.py \
+            --database vdb \
+            --virus flu \
+            --fasta_fields {params.fasta_fields} \
+            --resolve_method split_passage \
+            --select locus:{wildcards.segment} lineage:seasonal_h3n2 \
+            --path data \
+            --fstem h3n2_{wildcards.segment}
+        """
+
+rule download_titers:
+    message: "Downloading titers from fauna"
+    output:
+        titers = "data/h3n2_hi_titers.tsv"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/download_titers.txt"
+    log: "logs/download_titers.log"
+    shell:
+        """
+        python3 {path_to_fauna}/tdb/download.py \
+            --database cdc_tdb \
+            --virus flu \
+            --subtype h3n2 \
+            --select assay_type:hi \
+            --path data \
+            --fstem h3n2_hi
+        """
+
+rule parse:
+    message: "Parsing fasta into sequences and metadata"
+    input:
+        sequences = rules.download_sequences.output.sequences
+    output:
+        sequences = "results/sequences_{lineage}_{segment}.fasta",
+        metadata = "results/metadata_{lineage}_{segment}.tsv"
+    params:
+        fasta_fields =  "strain virus isolate_id date region country division location passage authors age gender"
+    shell:
+        """
+        augur parse \
+            --sequences {input.sequences} \
+            --output-sequences {output.sequences} \
+            --output-metadata {output.metadata} \
+            --fields {params.fasta_fields}
+        """
+
+rule filter:
+    message:
+        """
+        Filtering {wildcards.lineage} {wildcards.segment} sequences:
+          - less than {params.min_length} bases
+          - outliers
+          - samples with missing region and country metadata
+        """
+    input:
+        metadata = rules.parse.output.metadata,
+        sequences = rules.parse.output.sequences,
+        exclude = "config/outliers_{lineage}.txt"
+    output:
+        sequences = 'results/filtered_{lineage}_{segment}.fasta'
+    params:
+        min_length = MIN_LENGTH
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/filter_{lineage}_{segment}.txt"
+    shell:
+        """
+        augur filter \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --min-length {params.min_length} \
+            --exclude {input.exclude} \
+            --exclude-where country=? region=? \
+            --output {output}
+        """
+
+rule select_strains:
+    input:
+        sequences = expand("results/filtered_{{lineage}}_{segment}.fasta", segment=SEGMENTS),
+        metadata = expand("results/metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
+        titers = rules.download_titers.output.titers,
+        include = "config/references_{lineage}.txt"
+    output:
+        strains = "results/strains_{lineage}_{year_range}y_{viruses}v_{sample}.txt",
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.log"
+    params:
+        start_date=_get_start_date_from_range,
+        end_date=_get_end_date_from_range
+    shell:
+        """
+        python3 scripts/select_strains.py \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --segments {SEGMENTS} \
+            --include {input.include} \
+            --lineage {wildcards.lineage} \
+            --time-interval {params.start_date} {params.end_date} \
+            --viruses_per_month {wildcards.viruses} \
+            --titers {input.titers} \
+            --output {output.strains}
+        """
+
+rule extract:
+    input:
+        sequences = rules.filter.output.sequences,
+        strains = rules.select_strains.output.strains
+    output:
+        sequences = "results/filtered_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.fasta"
+    shell:
+        """
+        python3 scripts/extract_sequences.py \
+            --sequences {input.sequences} \
+            --samples {input.strains} \
+            --output {output}
+        """
+
+rule align:
+    message:
+        """
+        Aligning sequences to {input.reference} for {wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample}
+          - filling gaps with N
+        """
+    input:
+        sequences = rules.extract.output.sequences,
+        reference = "config/{lineage}_{segment}_outgroup.gb"
+    output:
+        alignment = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/align_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    threads: 4
+    shell:
+        """
+        augur align \
+            --sequences {input.sequences} \
+            --reference-sequence {input.reference} \
+            --output {output.alignment} \
+            --remove-reference \
+            --fill-gaps \
+            --nthreads {threads}
+        """
+
+rule tree:
+    message: "Building tree ({wildcards.lineage}_{wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})"
+    input:
+        alignment = rules.align.output.alignment
+    output:
+        tree = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
+    conda: "envs/anaconda.python3.yaml"
+    shadow: "minimal"
+    benchmark: "benchmarks/tree_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    threads: 4
+    shell:
+        """
+        augur tree \
+            --alignment {input.alignment} \
+            --output {output.tree} \
+            --method iqtree \
+            --nthreads {threads}
+        """
+
+rule refine:
+    message:
+        """
+        Refining tree ({wildcards.lineage}_{wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})
+          - estimate timetree
+          - use {params.coalescent} coalescent timescale
+          - use fixed clock rate of {params.clock_rate}
+          - estimate {params.date_inference} node dates
+          - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
+        """
+    input:
+        tree = rules.tree.output.tree,
+        alignment = rules.align.output.alignment,
+        metadata = rules.parse.output.metadata
+    output:
+        tree = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
+        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json"
+    params:
+        coalescent = "const",
+        date_inference = "marginal",
+        clock_filter_iqd = 4,
+        clock_rate = _get_clock_rate_by_wildcards
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/refine_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    shell:
+        """
+        augur refine \
+            --tree {input.tree} \
+            --alignment {input.alignment} \
+            --metadata {input.metadata} \
+            --output-tree {output.tree} \
+            --output-node-data {output.node_data} \
+            --timetree \
+            --clock-rate {params.clock_rate} \
+            --coalescent {params.coalescent} \
+            --date-confidence \
+            --date-inference {params.date_inference} \
+            --clock-filter-iqd {params.clock_filter_iqd}
+        """
+
+rule ancestral:
+    message: "Reconstructing ancestral sequences and mutations"
+    input:
+        tree = rules.refine.output.tree,
+        alignment = rules.align.output.alignment
+    output:
+        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json"
+    params:
+        inference = "joint"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/ancestral_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    shell:
+        """
+        augur ancestral \
+            --tree {input.tree} \
+            --alignment {input.alignment} \
+            --output {output.node_data} \
+            --inference {params.inference}
+        """
+
+rule translate:
+    message: "Translating amino acid sequences"
+    input:
+        tree = rules.refine.output.tree,
+        node_data = rules.ancestral.output.node_data,
+        reference = "config/{lineage}_{segment}_outgroup.gb"
+    output:
+        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur translate \
+            --tree {input.tree} \
+            --ancestral-sequences {input.node_data} \
+            --reference-sequence {input.reference} \
+            --output {output.node_data}
+        """
+
+rule traits:
+    message: "Inferring ancestral traits for {params.columns!s}"
+    input:
+        tree = rules.refine.output.tree,
+        metadata = rules.parse.output.metadata
+    output:
+        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
+    params:
+        columns = "region country"
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/traits_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    shell:
+        """
+        augur traits \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --output {output.node_data} \
+            --columns {params.columns} \
+            --confidence
+        """
+
+def _get_node_data_for_export(wildcards):
+    """Return a list of node data files to include for a given build's wildcards.
+    """
+    # Define inputs shared by all builds.
+    inputs = [
+        rules.refine.output.node_data,
+        rules.ancestral.output.node_data,
+        rules.translate.output.node_data,
+        rules.traits.output.node_data
+        # Omit these annotations for now
+        # rules.titers_tree.output.titers_model,
+        # rules.titers_sub.output.titers_model,
+        # rules.clades.output.clades,
+        # rules.lbi.output.lbi
+    ]
+
+    # Convert input files from wildcard strings to real file names.
+    inputs = [input_file.format(**wildcards) for input_file in inputs]
+    return inputs
+
+rule export:
+    input:
+        tree = rules.refine.output.tree,
+        metadata = rules.parse.output.metadata,
+        auspice_config = "config/auspice_config.json",
+        node_data = _get_node_data_for_export,
+        colors = "dist/augur/builds/flu/colors.tsv"
+    output:
+        auspice_tree = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+        auspice_metadata = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
+        auspice_sequence = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
+    params:
+        geography_traits = "region",
+        panels = "tree entropy"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur export \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --node-data {input.node_data} \
+            --colors {input.colors} \
+            --geography-traits {params.geography_traits} \
+            --auspice-config {input.auspice_config} \
+            --output-tree {output.auspice_tree} \
+            --output-meta {output.auspice_metadata} \
+            --output-sequence {output.auspice_sequence} \
+            --panels {params.panels}
+        """
 
 rule trees:
     input: "figures/trees.pdf"
@@ -201,7 +536,7 @@ rule run_fitness_model:
         ha_sequences="sequences/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
         #na_tree="trees/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
-        titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv",
+        titers=rules.download_titers.output.titers,
         dms="data/dms-h3n2-preferences-rescaled.csv"
     output:
         model="models/{year_range}/{viruses}/{predictors}/{sample}.json",
@@ -271,45 +606,6 @@ rule plot_tree:
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
 
-rule export:
-    message: "Exporting data files for for auspice"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv",
-        branch_lengths = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json",
-        traits = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
-        nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
-        aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
-        distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json",
-        lbi="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json",
-        clades = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json",
-        colors = "dist/augur/builds/flu/colors.tsv",
-        auspice_config = "config/auspice_config.json"
-    output:
-        auspice_tree = "trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
-        auspice_metadata = "metadata/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
-        auspice_sequence = "sequences/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
-    params:
-        geography_traits = "region",
-        panels = "tree entropy"
-    conda: "envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur export \
-            --tree {input.tree} \
-            --metadata {input.metadata} \
-            --node-data {input.branch_lengths} {input.traits} {input.nt_muts} {input.aa_muts} {input.distances} \
-                        {input.lbi} \
-                        {input.clades} \
-            --colors {input.colors} \
-            --geography-traits {params.geography_traits} \
-            --auspice-config {input.auspice_config} \
-            --output-tree {output.auspice_tree} \
-            --output-meta {output.auspice_metadata} \
-            --output-sequence {output.auspice_sequence} \
-            --panels {params.panels}
-        """
-
 rule lbi:
     message: "Calculating LBI with tau={params.tau} and window={params.window}"
     input:
@@ -374,27 +670,6 @@ rule distances:
             --mask-names {params.mask_names}
         """
 
-rule traits:
-    message: "Inferring ancestral traits for {params.columns!s}"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
-    output:
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
-    params:
-        columns = "region country"
-    conda: "envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/traits_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    shell:
-        """
-        augur traits \
-            --tree {input.tree} \
-            --metadata {input.metadata} \
-            --output {output.node_data} \
-            --columns {params.columns} \
-            --confidence
-        """
-
 rule reconstruct_sequences:
     message: "Reconstructing sequences from tree and root sequences"
     input:
@@ -405,143 +680,6 @@ rule reconstruct_sequences:
         "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json"
     conda: "envs/anaconda.python2.yaml"
     shell: "python scripts/reconstruct_sequences.py {input.tree} {input.nt_muts} {input.aa_muts} {output}"
-
-rule translate:
-    message: "Translating amino acid sequences"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
-        reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
-    output:
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
-    conda: "envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur translate \
-            --tree {input.tree} \
-            --ancestral-sequences {input.node_data} \
-            --reference-sequence {input.reference} \
-            --output {output.node_data}
-        """
-
-rule ancestral:
-    message: "Reconstructing ancestral sequences and mutations"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
-    output:
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json"
-    params:
-        inference = "joint"
-    conda: "envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/ancestral_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    shell:
-        """
-        augur ancestral \
-            --tree {input.tree} \
-            --alignment {input.alignment} \
-            --output {output.node_data} \
-            --inference {params.inference}
-        """
-
-rule refine:
-    message:
-        """
-        Refining tree ({wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})
-          - estimate timetree
-          - use {params.coalescent} coalescent timescale
-          - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
-        """
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk",
-        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta",
-        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
-    output:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        node_data = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json"
-    params:
-        coalescent = 0.03,
-        clock_filter_iqd = 4
-    conda: "envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/refine_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    shell:
-        """
-        augur refine \
-            --tree {input.tree} \
-            --alignment {input.alignment} \
-            --metadata {input.metadata} \
-            --output-tree {output.tree} \
-            --output-node-data {output.node_data} \
-            --timetree \
-            --coalescent {params.coalescent} \
-            --clock-filter-iqd {params.clock_filter_iqd}
-        """
-
-rule tree:
-    message: "Building tree ({wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})"
-    input:
-        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
-    output:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
-    conda: "envs/anaconda.python3.yaml"
-    shadow: "minimal"
-    benchmark: "benchmarks/tree_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    threads: 4
-    shell:
-        """
-        augur tree \
-            --alignment {input.alignment} \
-            --output {output.tree} \
-            --method iqtree \
-            --nthreads {threads}
-        """
-
-rule align:
-    message:
-        """
-        Aligning sequences to {input.reference} for {wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample}
-          - filling gaps with N
-        """
-    input:
-        sequences = "builds/data/filtered/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
-        reference = "dist/augur/builds/flu/metadata/h3n2_{segment}_outgroup.gb"
-    output:
-        alignment = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
-    conda: "envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/align_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    threads: 4
-    shell:
-        """
-        augur align \
-            --sequences {input.sequences} \
-            --reference-sequence {input.reference} \
-            --output {output.alignment} \
-            --remove-reference \
-            --fill-gaps \
-            --nthreads {threads}
-        """
-
-rule filter:
-    message:
-        """
-        Filtering sequences to exclude H1N1 and swine samples
-        """
-    input:
-        sequences = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
-        metadata = "builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv",
-        excluded = "outliers/filtered_strains.txt"
-    output:
-        sequences = "builds/data/filtered/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta"
-    conda: "envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/filter_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    shell:
-        """
-        augur filter \
-            --sequences {input.sequences} \
-            --metadata {input.metadata} \
-            --exclude {input.excluded} \
-            --output {output.sequences}
-        """
 
 rule convert_prepared_json_to_metadata_and_sequences:
     input: "dist/augur/builds/flu/prepared/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.json"
@@ -556,7 +694,7 @@ rule augur_prepare_with_titers:
     input:
         ha_sequences="dist/fauna/data/h3n2_ha_unpassaged.fasta",
         na_sequences="dist/fauna/data/h3n2_na.fasta",
-        titers="dist/fauna/data/h3n2_who_hi_cell_titers.tsv"
+        titers=rules.download_titers.output.titers
     output:
         "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_titers.json",
         "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_titers.json"
@@ -633,52 +771,6 @@ rule find_passaged_strains:
     input: "dist/fauna/data/h3n2_ha.fasta"
     output: "outliers/passaged_strains.txt"
     shell: """grep "^>" {input} | grep -v -E "\|(cell|unpassaged)\|" | sed 's/>//' | sort | uniq > {output}"""
-
-rule collect_outliers:
-    input:
-        "dist/augur/builds/flu/metadata/h3n2_outliers.txt",
-        "outliers/non_h3_strains.txt"
-    output: "outliers/filtered_strains.txt"
-    shell: "sort {input} | uniq > {output}"
-
-rule find_outliers:
-    input: "outliers/h3n2_ha.out"
-    output: "outliers/non_h3_strains.txt"
-    conda: "envs/anaconda.python2.yaml"
-    shell: "python scripts/annotate_outliers.py {input} {output}"
-
-rule align_fauna_sequences_to_ncbi_database:
-    input:
-        fauna_sequences="dist/fauna/data/h3n2_ha.fasta",
-        ncbi_database="outliers/iav_ha.nsq"
-    output: "outliers/h3n2_ha.out"
-    conda: "envs/ncbi.yaml"
-    benchmark: "benchmarks/find_outliers.txt"
-    threads: 4
-    shell: """blastn -num_threads {threads} -task megablast -db outliers/iav_ha -query {input.fauna_sequences} -out {output} -max_target_seqs 5 -outfmt "6 qseqid sseqid pident evalue bitscore stitle" """
-
-rule create_iav_blast_database:
-    input: "outliers/iav_ha.fasta"
-    output: "outliers/iav_ha.nsq"
-    conda: "envs/ncbi.yaml"
-    benchmark: "benchmarks/create_iav_blast_database.txt"
-    shell: "makeblastdb -dbtype nucl -out iav_ha -in {input}"
-
-rule download_iav_sequences:
-    output: "outliers/iav_ha.fasta"
-    conda: "envs/ncbi.yaml"
-    benchmark: "benchmarks/download_iav_sequences.txt"
-    shell: """esearch -db nuccore -query "Influenza A virus[Organism] hemagglutinin" | efetch -format fasta > {output}"""
-
-rule download_sequences_and_titers:
-    output:
-        "dist/fauna/data/h3n2_ha.fasta",
-        "dist/fauna/data/h3n2_na.fasta",
-        "dist/fauna/data/h3n2_public_hi_cell_titers.tsv"
-    conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/download_sequences_and_titers.txt"
-    log: "logs/download_sequences_and_titers.log"
-    shell: "cd dist/fauna && python download_all.py --virus flu --flu_lineages h3n2 --segments ha na --sequences --titers"
 
 rule clean:
     run:

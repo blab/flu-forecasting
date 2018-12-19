@@ -1,4 +1,6 @@
 {
+    "path_to_fauna": "../fauna",
+    "min_length": 900,
     "segments": ["ha"],
     "year_ranges": ["2005-2015"],
     "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
