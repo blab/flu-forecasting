@@ -50,6 +50,7 @@ rule parse:
         metadata = "results/metadata_{lineage}_{segment}.tsv"
     params:
         fasta_fields =  "strain virus isolate_id date region country division location passage authors age gender"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur parse \
