@@ -5,9 +5,7 @@ import pandas as pd
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: clean, download_sequences, download_titers, remove_reference_strains_from_passaged_strains, augur_prepare, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
-
-ruleorder: augur_prepare_with_titers > augur_prepare
+localrules: clean, download_sequences, download_titers, remove_reference_strains_from_passaged_strains, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
 
 wildcard_constraints:
     sample="(\d+|titers)",
@@ -292,121 +290,6 @@ rule plot_tree:
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
 
-rule lbi:
-    message: "Calculating LBI with tau={params.tau} and window={params.window}"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        branch_lengths = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json",
-    output:
-        lbi = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/lbi.json"
-    conda: "envs/anaconda.python2.yaml"
-    params:
-        tau = 0.5,
-        window = 0.1
-    shell:
-        """
-        python scripts/lbi.py \
-            {input.tree} \
-            {input.branch_lengths} \
-            {output.lbi} \
-            --attribute-names lbi \
-            --tau {params.tau} \
-            --window {params.window}
-        """
-
-rule clades:
-    message: "Annotating clades"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        nt_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
-        aa_muts = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json",
-        clade_definitions = "clades.tsv"
-    output:
-        "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/clades.json"
-    conda: "envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur clades \
-            --tree {input.tree} \
-            --mutations {input.nt_muts} {input.aa_muts} \
-            --clades {input.clade_definitions} \
-            --output {output}
-        """
-
-rule distances:
-    message: "Calculating amino acid distances"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        sequences = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json",
-        masks = "dist/augur/builds/flu/metadata/{segment}_masks.tsv"
-    output:
-        distances = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/distances.json"
-    params:
-        attribute_names = _get_distance_attribute_names_by_segment,
-        mask_names = _get_distance_mask_names_by_segment
-    conda: "envs/anaconda.python2.yaml"
-    shell:
-        """
-        python scripts/distance.py \
-            {input.tree} \
-            {input.sequences} \
-            {output.distances} \
-            --masks {input.masks} \
-            --attribute-names {params.attribute_names} \
-            --mask-names {params.mask_names}
-        """
-
-rule reconstruct_sequences:
-    message: "Reconstructing sequences from tree and root sequences"
-    input:
-        tree = "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        nt_muts="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json",
-        aa_muts="builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
-    output:
-        "builds/results/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}/sequences.json"
-    conda: "envs/anaconda.python2.yaml"
-    shell: "python scripts/reconstruct_sequences.py {input.tree} {input.nt_muts} {input.aa_muts} {output}"
-
-rule convert_prepared_json_to_metadata_and_sequences:
-    input: "dist/augur/builds/flu/prepared/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.json"
-    output:
-        sequences="builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.fasta",
-        metadata="builds/data/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}.tsv"
-    conda: "envs/anaconda.python2.yaml"
-    log: "logs/convert_prepared_json_{segment}_{year_range}y_{viruses}v_{sample}.log"
-    shell: "cd dist/augur/scripts && python prepared_json_to_fasta.py --metadata {SNAKEMAKE_DIR}/{output.metadata} {SNAKEMAKE_DIR}/{input} > {SNAKEMAKE_DIR}/{output.sequences} 2> {SNAKEMAKE_DIR}/{log}"
-
-rule augur_prepare_with_titers:
-    input:
-        ha_sequences="dist/fauna/data/h3n2_ha_unpassaged.fasta",
-        na_sequences="dist/fauna/data/h3n2_na.fasta",
-        titers=rules.download_titers.output.titers
-    output:
-        "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_titers.json",
-        "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_titers.json"
-    conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_titers.txt"
-    log: "logs/augur_prepare_{year_range}y_{viruses}v_titers.log"
-    params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
-    shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
-  --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
-  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_titers --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y --sampling even --titers {SNAKEMAKE_DIR}/{input.titers} &> {SNAKEMAKE_DIR}/{log}"""
-
-rule augur_prepare:
-    input:
-        ha_sequences="dist/fauna/data/h3n2_ha_unpassaged.fasta",
-        na_sequences="dist/fauna/data/h3n2_na.fasta"
-    output:
-        "dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
-        "dist/augur/builds/flu/prepared/flu_h3n2_na_{year_range}y_{viruses}v_{sample}.json"
-    conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/augur_prepare_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/augur_prepare_{year_range}y_{viruses}v_{sample}.log"
-    params: start_date=_get_start_date_from_range, end_date=_get_end_date_from_range
-    shell: """cd dist/augur/builds/flu && python flu.prepare.py -v {wildcards.viruses} \
-  --sequences ../../../../{input.ha_sequences} ../../../../{input.na_sequences} \
-  --file_prefix flu_h3n2_*segment*_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample} --lineage h3n2 --segments ha na --time_interval {params.start_date} {params.end_date} -r 12y --sampling even &> {SNAKEMAKE_DIR}/{log}"""
-
 rule filter_passaged_viruses:
     message:
         """
@@ -457,22 +340,3 @@ rule find_passaged_strains:
     input: "dist/fauna/data/h3n2_ha.fasta"
     output: "outliers/passaged_strains.txt"
     shell: """grep "^>" {input} | grep -v -E "\|(cell|unpassaged)\|" | sed 's/>//' | sort | uniq > {output}"""
-
-rule clean:
-    run:
-        print(config.get("clean"))
-        if config.get("clean") is not None:
-            items = config.get("clean").split(",")
-            for year_range in YEAR_RANGES:
-                for virus in VIRUSES:
-                    for item in items:
-                        if item == "all":
-                            shell("rm -f dist/augur/builds/flu/prepared/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
-                            shell("rm -f dist/augur/builds/flu/processed/flu_h3n2_ha_{year_range}y_{virus}v*".format(year_range=year_range, virus=virus))
-                            shell("rm -f dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
-                        elif item == "auspice":
-                            shell("rm -f dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
-                        elif item == "tree":
-                            shell("rm -f dist/augur/builds/flu/processed/flu_h3n2_ha_{year_range}y_{virus}v*tree*".format(year_range=year_range, virus=virus))
-                            shell("rm -f dist/augur/builds/flu/processed/flu_h3n2_ha_{year_range}y_{virus}v*newick*".format(year_range=year_range, virus=virus))
-                            shell("rm -f dist/augur/builds/flu/auspice/flu_h3n2_ha_{year_range}y_{virus}v*.json".format(year_range=year_range, virus=virus))
