@@ -12,17 +12,15 @@ python frequencies.py tree.json frequencies.json \
     --start-date 2006-10-01 --end-date 2018-04-01
 """
 import argparse
+from augur.utils import read_metadata, get_numerical_dates
+from augur.frequencies import TreeKdeFrequencies
+import Bio
+import Bio.Phylo
 import datetime
 import json
 import numpy as np
 import os
 import sys
-
-# augur imports.
-augur_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist", "augur")
-sys.path.append(augur_path)
-from base.frequencies import KdeFrequencies
-from base.io_util import json_to_tree
 
 
 def get_time_interval_as_floats(time_interval):
@@ -42,7 +40,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument("tree", help="auspice JSON tree")
+    parser.add_argument("tree", help="Newick tree")
+    parser.add_argument("metadata", help="tab-delimited metadata for tips in the given tree including a date field")
     parser.add_argument("frequencies", help="JSON with frequencies estimated from the given tree and used to estimate the given parameters")
     parser.add_argument("--narrow-bandwidth", type=float, default=1 / 12.0, help="the bandwidth for the narrow KDE")
     parser.add_argument("--wide-bandwidth", type=float, default=3 / 12.0, help="the bandwidth for the wide KDE")
@@ -59,12 +58,21 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Load JSON tree.
-    with open(args.tree, "r") as json_fh:
-         json_tree = json.load(json_fh)
+    # Load tree.
+    tree = Bio.Phylo.read(args.tree, "newick")
 
-    # Convert JSON tree layout to a Biopython Clade instance.
-    tree = json_to_tree(json_tree)
+    # Load metadata.
+    metadata, columns = read_metadata(args.metadata)
+    dates = get_numerical_dates(metadata, fmt='%Y-%m-%d')
+
+    # Annotate tree with dates and other metadata.
+    for tip in tree.find_clades(terminal=True):
+        tip.attr = {"num_date": np.mean(dates[tip.name])}
+
+        # Annotate tips with metadata to enable filtering and weighting of
+        # frequencies by metadata attributes.
+        for key, value in metadata[tip.name].items():
+            tip.attr[key] = value
 
     # Convert start and end dates to floats from time interval format.
     if args.start_date is not None and args.end_date is not None:
@@ -89,7 +97,7 @@ if __name__ == "__main__":
         weights_attribute = None
 
     # Estimate frequencies.
-    frequencies = KdeFrequencies(
+    frequencies = TreeKdeFrequencies(
         sigma_narrow=args.narrow_bandwidth,
         sigma_wide=args.wide_bandwidth,
         proportion_wide=args.proportion_wide,
@@ -116,4 +124,4 @@ if __name__ == "__main__":
         ).tolist()
 
     with open(args.frequencies, "w") as oh:
-        json.dump(json_frequencies, oh, indent=2)
+        json.dump(json_frequencies, oh, indent=1, sort_keys=True)

@@ -252,9 +252,10 @@ rule estimate_frequencies:
           - proportion wide: {params.proportion_wide}
         """
     input:
-        tree="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        tree=rules.refine.output.tree,
+        metadata=rules.parse.output.metadata,
         weights="data/region_weights.json"
-    output: "frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
+    output: "frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
@@ -262,10 +263,10 @@ rule estimate_frequencies:
         pivot_frequency=config["frequencies"]["pivot_frequency"],
         start_date=_get_start_date_from_range,
         end_date=_get_end_date_from_range
-    conda: "envs/anaconda.python2.yaml"
-    benchmark: "benchmarks/estimate_frequencies_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/estimate_frequencies_{year_range}y_{viruses}v_{sample}.log"
-    shell: """python scripts/frequencies.py {input.tree} {output} \
+    conda: "envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    log: "logs/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.log"
+    shell: """python scripts/frequencies.py {input.tree} {input.metadata} {output} \
 --narrow-bandwidth {params.narrow_bandwidth} \
 --wide-bandwidth {params.wide_bandwidth} \
 --proportion-wide {params.proportion_wide} \
@@ -280,13 +281,13 @@ rule estimate_frequencies:
 rule plot_sequences_by_date:
     input: "auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json"
     output: "figures/sequence_distributions/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf"
-    conda: "envs/anaconda.python2.yaml"
+    conda: "envs/anaconda.python3.yaml"
     shell: "python scripts/plot_sequence_distribution.py {input} {output}"
 
 rule plot_tree:
     input: "auspice/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
     output: "figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf"
-    conda: "envs/anaconda.python2.yaml"
+    conda: "envs/anaconda.python3.yaml"
     benchmark: "benchmarks/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
-    shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
+    shell: """python3 scripts/plot_tree.py {input} {output} &> {log}"""

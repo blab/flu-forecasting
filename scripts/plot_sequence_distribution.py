@@ -2,6 +2,7 @@
 Plot a histogram of number of sequences in a given tree by month.
 """
 import argparse
+from augur.utils import json_to_tree
 import json
 import matplotlib as mpl
 mpl.use("Agg")
@@ -9,11 +10,6 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import sys
-
-# augur imports.
-augur_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist", "augur")
-sys.path.append(augur_path)
-from base.io_util import json_to_tree
 
 
 if __name__ == "__main__":

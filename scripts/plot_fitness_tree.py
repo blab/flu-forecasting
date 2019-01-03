@@ -80,10 +80,10 @@ def plot_tree(tree, model, timepoint, color_by_trait, initial_branch_width, tip_
         x=k.attr["num_date"] ## or from x position determined earlier
         y=y_span - k.yvalue ## get y position from .drawTree that was run earlier, but could be anything else
 
-        if k.up is None:
+        if k.parent is None:
             xp = None
         else:
-            xp=k.up.attr["num_date"] ## get x position of current object's parent
+            xp=k.parent.attr["num_date"] ## get x position of current object's parent
 
         if x==None: ## matplotlib won't plot Nones, like root
             x=0.0
