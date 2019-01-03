@@ -59,6 +59,7 @@ def _get_clock_rate_by_wildcards(wildcards):
 def _get_auspice_files(wildcards):
     return expand("auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
+include: "rules/filter_passaged_viruses.smk"
 include: "rules/modular_augur_builds.smk"
 include: "rules/frequency_bandwidths.smk"
 
@@ -289,54 +290,3 @@ rule plot_tree:
     benchmark: "benchmarks/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/plot_tree_{segment}_{year_range}y_{viruses}v_{sample}.log"
     shell: """cd dist/augur/scripts && python plot_tree.py {SNAKEMAKE_DIR}/{input} {SNAKEMAKE_DIR}/{output} &> {SNAKEMAKE_DIR}/{log}"""
-
-rule filter_passaged_viruses:
-    message:
-        """
-        Filtering to exclude passaged viruses
-        """
-    input:
-        sequences = "dist/fauna/data/h3n2_ha.fasta",
-        metadata = "filtering_metadata.tsv",
-        excluded = "outliers/non_reference_passaged_strains.txt"
-    output:
-        sequences = "dist/fauna/data/h3n2_ha_unpassaged.fasta"
-    conda: "envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur filter \
-            --sequences {input.sequences} \
-            --metadata {input.metadata} \
-            --exclude {input.excluded} \
-            --output {output.sequences}
-        """
-
-rule build_simple_metadata_for_filtering:
-    input: "dist/fauna/data/h3n2_ha.fasta"
-    output: "filtering_metadata.tsv"
-    shell: """grep "^>" {input} | sed 's/>//' | sort | uniq | awk '{{ if (NR == 1) {{ print "strain" }} print }}' > {output}"""
-
-rule remove_reference_strains_from_passaged_strains:
-    message: "Removing reference strains from list of passaged strains"
-    input:
-        passaged="outliers/passaged_strains.txt",
-        references="data/reference_viruses.txt"
-    output: "outliers/non_reference_passaged_strains.txt"
-    run:
-        with open(input["references"], "r") as fh:
-            references = set([line.rstrip() for line in fh])
-
-        with open(input["passaged"], "r") as fh:
-            with open(output[0], "w") as oh:
-                for line in fh:
-                    # Parse out strain name from pipe-delimited values.
-                    strain, rest = line.split("|", 1)
-
-                    # If this exact strain is not a reference, write it out.
-                    if strain not in references:
-                        oh.write(line)
-
-rule find_passaged_strains:
-    input: "dist/fauna/data/h3n2_ha.fasta"
-    output: "outliers/passaged_strains.txt"
-    shell: """grep "^>" {input} | grep -v -E "\|(cell|unpassaged)\|" | sed 's/>//' | sort | uniq > {output}"""
