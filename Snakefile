@@ -58,6 +58,9 @@ def _get_clock_rate_by_wildcards(wildcards):
     }
     return rate[(wildcards.lineage, wildcards.segment)]
 
+def _get_auspice_files(wildcards):
+    return expand("auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+
 include: "rules/modular_augur_builds.smk"
 include: "rules/frequency_bandwidths.smk"
 
@@ -75,7 +78,10 @@ rule all:
         "figures/model_parameters.pdf",
         "figures/sequence_distributions.pdf",
         "figures/frequencies.pdf",
-        auspice = expand("auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+        _get_auspice_files
+
+rule auspice:
+    input: _get_auspice_files
 
 rule trees:
     input: "figures/trees.pdf"
