@@ -19,9 +19,9 @@ rule label_model_validation_by_bandwidth_table:
 
 rule run_fitness_model_by_frequency_bandwidth:
     input:
-        ha_tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        ha_metadata="metadata/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_meta.json",
-        ha_sequences="sequences/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
+        ha_tree="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        ha_metadata="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_meta.json",
+        ha_sequences="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
         frequencies="frequencies_by_bandwidth/{bandwidth}/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     output:
         model="models_by_bandwidth/{bandwidth}/{year_range}/{viruses}/{sample}.json",
@@ -42,7 +42,7 @@ rule estimate_frequencies_by_bandwidth:
           - narrow bandwidth: {wildcards.bandwidth}
         """
     input:
-        tree="trees/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        tree="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
         weights="data/region_weights.json"
     output: "frequencies_by_bandwidth/{bandwidth}/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json"
     params:
