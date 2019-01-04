@@ -38,7 +38,11 @@ if __name__ == "__main__":
 
     tree = json_to_tree(tree_json)
 
-    tip_dates = [node.attr["raw_date"] for node in tree.find_clades() if node.is_terminal()]
+    tip_dates = [
+        node.attr["raw_date"]
+        for node in tree.find_clades()
+        if node.is_terminal() and not "XX" in node.attr["raw_date"]
+    ]
     tip_dates_df = pd.DataFrame({"date": pd.to_datetime(pd.Series(tip_dates, None))})
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
