@@ -300,7 +300,7 @@ rule export:
         metadata = rules.parse.output.metadata,
         auspice_config = "config/auspice_config.json",
         node_data = _get_node_data_for_export,
-        colors = "dist/augur/builds/flu/colors.tsv"
+        colors = "config/colors.tsv"
     output:
         auspice_tree = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
         auspice_metadata = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
