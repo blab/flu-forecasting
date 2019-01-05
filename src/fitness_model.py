@@ -1,4 +1,7 @@
 import argparse
+from augur.frequency_estimators import logit_transform, TreeKdeFrequencies
+from augur.lbi import select_nodes_in_season
+from augur.utils import write_json
 from collections import defaultdict
 import numpy as np
 import os
@@ -7,15 +10,8 @@ from scipy.interpolate import interp1d
 from scipy.stats import linregress, pearsonr
 import sys
 
-from .io_util import write_json
-from .scores import select_nodes_in_season
-from .frequencies import logit_transform, KdeFrequencies
 from .fitness_predictors import fitness_predictors
 
-try:
-    import itertools.izip as zip
-except ImportError:
-    pass
 
 min_tips = 10
 pc=1e-2
@@ -221,7 +217,7 @@ class fitness_model(object):
 
         Args:
             tree (Bio.Phylo): an annotated tree for which a fitness model is to be determined
-            frequencies (KdeFrequencies): a frequency estimator and its parameters
+            frequencies (TreeKdeFrequencies): a frequency estimator and its parameters
             predictor_input: a list of predictors to fit or dict of predictors to coefficients / std deviations
             censor_frequencies (bool): whether frequencies should censor future data or not
             pivot_spacing:
@@ -267,7 +263,7 @@ class fitness_model(object):
             sys.stderr.write("Recalculating frequencies\n")
             frequency_params = self.frequencies.get_params()
             frequency_params["include_internal_nodes"] = True
-            self.frequencies = KdeFrequencies(**frequency_params)
+            self.frequencies = TreeKdeFrequencies(**frequency_params)
             self.frequencies.estimate(self.tree)
 
         # Pivots should be defined by frequencies.
@@ -405,7 +401,7 @@ class fitness_model(object):
                     sys.stderr.write("Calculating censored frequencies for %s\n" % time)
 
                 frequency_parameters["max_date"] = time
-                frequency_estimator = KdeFrequencies(**frequency_parameters)
+                frequency_estimator = TreeKdeFrequencies(**frequency_parameters)
                 frequencies = frequency_estimator.estimate(self.tree)
 
                 # Determine the frequency of each tip at the given timepoint.
@@ -471,7 +467,7 @@ class fitness_model(object):
             frequency_parameters["start_date"] = time_interval[0]
             frequency_parameters["end_date"] = time_interval[1]
             frequency_parameters["max_date"] = time_interval[1]
-            frequency_estimator = KdeFrequencies(**frequency_parameters)
+            frequency_estimator = TreeKdeFrequencies(**frequency_parameters)
             frequencies = frequency_estimator.estimate(self.tree)
 
             # Annotate censored frequencies on nodes.
