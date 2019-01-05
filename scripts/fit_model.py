@@ -1,21 +1,66 @@
 import argparse
+from augur.frequencies import TreeKdeFrequencies
+from augur.titer_model import TiterCollection
+from augur.utils import json_to_tree
 import datetime
 import json
 import numpy as np
 import os
-
-# Add augur source to the Python path.
 import sys
-root_directory = os.path.dirname(os.path.abspath(__file__))
-augur_directory = os.path.join(root_directory, "dist", "augur")
-sys.path.insert(0, augur_directory)
 
-# Load augur modules.
-from base.fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
-from base.frequencies import KdeFrequencies
-from base.io_util import json_to_tree, json_to_clade_frequencies, reconstruct_sequences_from_tree_and_root
-from base.process import process
-from base.titer_model import TiterCollection
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
+from fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
+
+
+def reconstruct_sequences_from_tree_and_root(tree, root_sequences, ordered_genes):
+    """Returns a tree for which each node is annotated with that node's
+    corresponding nucleotide and amino acid sequences as reconstructed from the
+    given root node's sequences and a tree with nucleotide and amino acid
+    mutations annotated per node.
+
+    The given sequence of gene names should be ordered by their genomic
+    coordinates such that the annotated translations are stored in coordinate
+    order.
+    """
+    # Annotate root translations using gene order information.
+    tree.root.translations = OrderedDict()
+    for gene in ordered_genes:
+        tree.root.translations[gene] = root_sequences[gene]
+
+    # Reconstruct sequences for all other nodes in the tree.
+    for node in tree.find_clades():
+        for child in node.clades:
+            child_sequences = node.translations.copy()
+
+            # Merge mutations into a single data structure that can be iterated over once.
+            mutation_sets = child.aa_muts.copy()
+
+            if "nuc" in ordered_genes:
+                mutation_sets["nuc"] = child.muts
+
+            # Reconstruct amino acid sequences.
+            for gene, mutations in mutation_sets.items():
+                if len(mutations) > 0:
+                    # Convert sequence string to a list for in place manipulation.
+                    gene_sequence = list(child_sequences[gene])
+
+                    for mutation in mutations:
+                        ancestral_aa = mutation[0]
+                        derived_aa = mutation[-1]
+                        position = int(mutation[1:-1])
+
+                        assert gene_sequence[position - 1] == ancestral_aa
+                        gene_sequence[position - 1] = derived_aa
+
+                    # Convert list back to a string for the final child sequence.
+                    child_sequences[gene] = "".join(gene_sequence)
+
+                    assert child_sequences[gene] != node.translations[gene]
+
+            # Assign child sequences to child node.
+            child.translations = child_sequences
+
+    return tree
 
 
 def load_tree_from_json_filename(filename):
@@ -126,7 +171,7 @@ if __name__ == "__main__":
     with open(args.frequencies, "r") as json_fh:
         json_frequencies = json.load(json_fh)
 
-    frequencies = KdeFrequencies.from_json(json_frequencies)
+    frequencies = TreeKdeFrequencies.from_json(json_frequencies)
 
     # Setup predictor arguments.
     predictor_kwargs = {
