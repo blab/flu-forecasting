@@ -886,8 +886,8 @@ class fitness_model(object):
         self.calc_node_frequencies()
         self.calc_all_predictors(estimate_frequencies = estimate_frequencies)
         self.standardize_predictors()
-        #self.select_nonoverlapping_clades_for_fitting()
-        self.select_clades_for_fitting()
+        self.select_nonoverlapping_clades_for_fitting()
+        #self.select_clades_for_fitting()
 
         validation_df = None
         if self.estimate_coefficients:
@@ -931,6 +931,8 @@ class fitness_model(object):
             else:
                 self.train_timepoints = self.projection_timepoints
                 self.learn_parameters(niter = niter, fit_func = "clade")
+        else:
+            self.train_timepoints = self.projection_timepoints
 
         self.assign_fitness()
         self.assign_predicted_frequency()
