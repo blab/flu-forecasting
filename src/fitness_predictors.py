@@ -17,6 +17,22 @@ from .titer_model import SubstitutionModel, TiterCollection, TreeModel
 # number of epitope mutations
 # -1 * number of non-epitope mutations
 
+def inverse_cross_immunity_amplitude(d_ep, d_init):
+    """Return the inverse cross-immunity amplitude corresponding to the given
+    epitope distance between two amino acid sequences and a predetermined
+    scaling parameter that controls the time period across which cross-immunity
+    decays.
+
+    Note that this implementation differs from Luksza and Lassig in that
+    decaying cross-immunity is measured on a scale of 0 - 1 where no epitope
+    differences correspond to a cross-immunity of 1 and more mutations decrease
+    the cross-immunity score. These values are subtracted from 1 such that the
+    fitness predictor in the model has positive, increasing values as
+    cross-immunity wanes.
+    """
+    return 1 - np.exp(-d_ep / float(d_init))
+
+
 class fitness_predictors(object):
 
     def __init__(self, predictor_names = ['ep', 'lb', 'dfreq'], **kwargs):
@@ -33,7 +49,7 @@ class fitness_predictors(object):
         protein translations concatenated in genomic order (e.g., SigPep, HA1,
         and HA2 for flu's HA protein).
         """
-        return "".join(node.translations.values())
+        return "".join([value for key, value in node.translations.items() if key != "nuc"])
 
     def setup_predictor(self, tree, pred, timepoint, **kwargs):
         if pred == 'lbi':
@@ -61,11 +77,43 @@ class fitness_predictors(object):
         if pred == 'ep':
             self.calc_epitope_distance(tree)
         if pred == 'ep_x':
-            self.calc_epitope_cross_immunity(tree, timepoint)
+            # Annotate an array of amino acids at epitope sites to each node.
+            for node in tree.get_terminals():
+                if not hasattr(node, 'np_ep'):
+                    if not hasattr(node, 'aa'):
+                        node.aa = self._translate(node)
+
+                    node.np_ep = np.array(list(self.epitope_sites(node.aa)))
+
+            def epitope_distance(node_1, node_2):
+                return self.fast_epitope_distance(node_1.np_ep, node_2.np_ep)
+
+            self.calc_cross_immunity(
+                tree,
+                timepoint,
+                attr=pred,
+                distance_function=epitope_distance,
+                d_init=14,
+                **kwargs
+            )
+        if pred == 'cTiterSub_x':
+            titer_model = self.calc_titer_model("substitution", tree, timepoint, **kwargs)
+
+            def titer_distance(node_1, node_2):
+                return titer_model.predict_titer(node_1.name, (node_2.name, None))
+
+            self.calc_cross_immunity(
+                tree,
+                timepoint,
+                attr=pred,
+                distance_function=titer_distance,
+                d_init=8,
+                **kwargs
+            )
         #if pred == 'ne':
         #    self.calc_nonepitope_distance(tree)
         if pred == 'ne_star':
-            self.calc_nonepitope_star_distance(tree)
+            self.calc_nonepitope_star_distance(tree, timepoint, **kwargs)
         if pred == 'tol':
             self.calc_tolerance(tree, preferences_file='metadata/2017-12-07-H3N2-preferences-rescaled.csv', attr = 'tol')
         if pred == 'tol_mask':
@@ -85,6 +133,10 @@ class fitness_predictors(object):
             self.calc_titer_model("tree", tree, timepoint, **kwargs)
         if pred == 'cTiterSub':
             self.calc_titer_model("substitution", tree, timepoint, **kwargs)
+        if pred == 'future_fitness':
+            self.calc_future_fitness(tree, timepoint, **kwargs)
+        if pred == 'freq':
+            self.calc_freq(tree, timepoint, **kwargs)
 
     def setup_epitope_mask(self, epitope_masks_fname = 'metadata/ha_masks.tsv', epitope_mask_version = 'wolf', tolerance_mask_version = 'ha1'):
         sys.stderr.write("setup " + str(epitope_mask_version) + " epitope mask and " + str(tolerance_mask_version) + " tolerance mask\n")
@@ -106,6 +158,7 @@ class fitness_predictors(object):
         """Returns amino acids from the given protein sequence corresponding to sites in
         a predefined epitope mask.
         """
+        assert len(aa) == len(self.epitope_mask), "Sequence length: %s long, mask length: %s" % (len(aa), len(self.epitope_mask))
         sites = []
         for a, m in zip(aa, self.epitope_mask):
             if m == '1':
@@ -172,51 +225,104 @@ class fitness_predictors(object):
         for node in tree.find_clades(order="postorder"):
             node.__setattr__(attr, self.fast_epitope_distance(node.np_ep, ref.np_ep))
 
-    def calc_epitope_cross_immunity(self, tree, timepoint, window = 2.0, attr='ep_x'):
-        """Calculates the distance at epitope sites to contemporaneous viruses
-        this should capture cross-immunity of circulating viruses
-        meant to be used in conjunction with epitope_distance that focuses
-        on escape from previous human immunity.
-        """
-        comparison_nodes = []
-        for node in tree.get_terminals():
-            if node.attr['num_date'] < timepoint and node.attr['num_date'] > timepoint - window:
-                comparison_nodes.append(node)
+    def calc_cross_immunity(self, tree, timepoint, step_size, distance_function, d_init=14, attr='ep_x', years_to_wane=5, **kwargs):
+        """Calculates the distance at epitope sites to contemporaneous viruses.
 
-            if not hasattr(node, 'np_ep'):
-                if not hasattr(node, 'aa'):
-                    node.aa = self._translate(node)
-                node.np_ep = np.array(list(self.epitope_sites(node.aa)))
+        This should capture cross-immunity of circulating viruses and is meant
+        to be used in conjunction with epitope_distance that focuses on escape
+        from previous human immunity.
+        """
+        # Find all strains sampled between the previous timepoint and the
+        # current timepoint. We will calculate cross-immunity for each of these
+        # strains. Additionally, find all strains sampled prior to the previous
+        # timepoint. We will compare the current timepoint's strains to these
+        # past strains.
+        previous_timepoint = timepoint - step_size
+        current_nodes = []
+        past_nodes = []
+        for node in tree.get_terminals():
+            if node.attr['num_date'] < previous_timepoint:
+                past_nodes.append(node)
+            elif previous_timepoint <= node.attr['num_date'] < timepoint:
+                current_nodes.append(node)
 
             # Initialize all tips to 0 distance.
-            setattr(node, attr, 0)
+            setattr(node, attr, 0.0)
 
-            # Store distances in nodes by clade id.
-            if not hasattr(node, "pairwise_distances"):
-                node.pairwise_distances = {}
+        print("calculating cross-immunity at %s between %s current nodes and %s past nodes" % (timepoint, len(current_nodes), len(past_nodes)))
 
-        count = float(len(comparison_nodes))
-        print("calculating cross-immunity to %s comparison nodes" % count)
+        for node in current_nodes:
+            waning_effects = []
+            frequencies = []
+            distances = []
+            for comp_node in past_nodes:
+                # Consider only past viruses that were sampled while immunity
+                # had not waned relative to the current virus.
+                if node.attr["num_date"] - comp_node.attr["num_date"] < years_to_wane:
+                    # Calculate the effect of linear waning immunity on the
+                    # overall cross-immunity amplitude as a proportion of the
+                    # years between the two viruses and the overall waning
+                    # period.
+                    waning_effect = 1 - ((node.attr["num_date"] - comp_node.attr["num_date"]) / years_to_wane)
+                    waning_effects.append(waning_effect)
 
-        for node in comparison_nodes:
-            distance = 0
-            for comp_node in comparison_nodes:
-                if node.clade == comp_node.clade:
-                    continue
+                    # Track the frequency of each past node and its distance from the current node.
+                    # Cross-immunity is scaled by the maximum frequency that the past node ever obtained.
+                    frequencies.append(max(comp_node.censored_freqs.values()))
 
-                if comp_node.clade not in node.pairwise_distances:
-                    if node.clade in comp_node.pairwise_distances:
-                        pair_distance = comp_node.pairwise_distances[node.clade]
-                    else:
-                        node.pairwise_distances[comp_node.clade] = self.fast_epitope_distance(node.np_ep, comp_node.np_ep)
-                        pair_distance = node.pairwise_distances[comp_node.clade]
-                else:
-                    pair_distance = node.pairwise_distances[comp_node.clade]
+                    # Calculate the number of epitope mutations between viruses.
+                    distance = distance_function(node, comp_node)
+                    if distance is not None:
+                        distances.append(distance)
 
-                distance += pair_distance
+            # Skip this node if it has no valid distance values to other nodes.
+            if len(distances) == 0:
+                continue
 
-            mean_distance = np.uint8(int(distance / count))
-            setattr(node, attr, mean_distance)
+            # Calculate inverse cross-immunity amplitude once from all distances to the current strain.
+            # This is an increasingly positive value for strains that are increasingly distant from previous strains.
+            distances = np.array(distances)
+            cross_immunity_amplitudes = inverse_cross_immunity_amplitude(distances, d_init)
+
+            # Scale cross-immunity by waning effects and past strain frequencies
+            # and sum across all past viruses.
+            waning_effects = np.array(waning_effects)
+            frequencies = np.array(frequencies)
+            total_cross_immunity = (frequencies * cross_immunity_amplitudes).sum()
+            setattr(node, attr, total_cross_immunity)
+
+    def calc_nonepitope_star_distance(self, tree, timepoint, step_size, attr='ne_star', **kwargs):
+        """Calculate the non-epitope mutation distance between each node in the current
+        timepoint interval and its closest ancestor in the previous timepoint
+        interval.
+        """
+        # First, find all nodes sampled in this timepoint interval and the
+        # previous one and annotate non-epitope mutations to each node.
+        previous_timepoint = timepoint - step_size
+        current_nodes = []
+        for node in tree.find_clades():
+            if not hasattr(node, 'np_ne'):
+                if not hasattr(node, 'aa'):
+                    node.aa = self._translate(node)
+                node.np_ne = np.array(list(self.nonepitope_sites(node.aa)))
+
+            if node.is_terminal():
+                # Initialize predictor to zero.
+                if not hasattr(node, attr):
+                    setattr(node, attr, 0.0)
+
+                if previous_timepoint <= node.attr['num_date'] < timepoint:
+                    current_nodes.append(node)
+
+        # Next, find the first ancestor of each current node that was sampled in
+        # the previous time interval.
+        for node in current_nodes:
+            parent = node.up
+            while parent.attr["num_date"] > previous_timepoint:
+                parent = parent.up
+
+            # Calculate the non-epitope distance to the ancestor.
+            setattr(node, attr, self.fast_epitope_distance(node.np_ne, parent.np_ne))
 
     def calc_rbs_distance(self, tree, attr='rb', ref = None):
         '''
@@ -379,33 +485,6 @@ class fitness_predictors(object):
             distance = self.nonepitope_distance(node.aa, ref)
             node.__setattr__(attr, -1 * distance)
 
-    def calc_nonepitope_star_distance(self, tree, attr='ne_star', seasons = []):
-        '''
-        calculates the distance at nonepitope sites of any tree node to ref
-        tree   --   dendropy tree
-        attr   --   the attribute name used to save the result
-        '''
-        for node in tree.find_clades(order="postorder"):
-            if len(node.season_tips) and node!=tree.root:
-                if not hasattr(node, 'aa'):
-                    node.aa = self._translate(node)
-                tmp_node = node.parent_node
-                cur_season = min(node.season_tips.keys())
-                prev_season = seasons[max(0,seasons.index(cur_season)-1)]
-                while True:
-                    if tmp_node!=tree.root:
-                        if prev_season in tmp_node.season_tips and len(tmp_node.season_tips[prev_season])>0:
-                            break
-                        else:
-                            tmp_node=tmp_node.parent_node
-                    else:
-                        break
-                if not hasattr(tmp_node, 'aa'):
-                    tmp_node.aa = self._translate(tmp_node)
-                node.__setattr__(attr, self.nonepitope_distance(node.aa, tmp_node.aa))
-            else:
-                node.__setattr__(attr, np.nan)
-
     def calc_null_predictor(self, tree, attr="null"):
         """Assign a zero value to each node as a control representing a null predictor.
         """
@@ -418,7 +497,7 @@ class fitness_predictors(object):
         for node in tree.find_clades():
             setattr(node, attr, np.random.random())
 
-    def calc_titer_model(self, model, tree, timepoint, titers, lam_avi, lam_pot, lam_drop, **kwargs):
+    def calc_titer_model(self, model_name, tree, timepoint, titers, lam_avi, lam_pot, lam_drop, **kwargs):
         """Calculates the requested titer model for the given tree using only titers
         associated with strains sampled prior to the given timepoint.
         """
@@ -435,10 +514,47 @@ class fitness_predictors(object):
         }
 
         # Run the requested model and annotate results to nodes.
-        if model == "tree":
+        if model_name == "tree":
             model = TreeModel(tree, filtered_titers, **kwargs)
-        elif model == "substitution":
+        elif model_name == "substitution":
             model = SubstitutionModel(tree, filtered_titers, **kwargs)
 
         model.prepare(**kwargs)
         model.train(**kwargs)
+
+        return model
+
+    def calc_future_fitness(self, tree, timepoint, attr="future_fitness", **kwargs):
+        """Calculate the known future frequency of each tip at the given timepoint.
+
+        This predictor is a positive control for the model that should always
+        predict the correct future frequencies since it is borrowing that
+        information from the future without any censoring.
+        """
+        for node in tree.get_terminals():
+            # Try to use the known future frequency of a node and fallback to
+            # the current timepoint frequency when we don't know the
+            # future. This should only be true for the last timepoint.
+            if timepoint in node.observed_final_freqs:
+                future_freq = node.observed_final_freqs[timepoint]
+            else:
+                future_freq = node.timepoint_freqs[timepoint]
+
+            if future_freq > 0:
+                future_freq = np.log(future_freq)
+            else:
+                future_freq = np.log(1e-8)
+
+            setattr(node, attr, future_freq)
+
+    def calc_freq(self, tree, timepoint, attr="freq", **kwargs):
+        """Calculate a fitness predictor based on the current frequency of each tip.
+        """
+        freq_threshold = 1e-6
+        for node in tree.get_terminals():
+            if node.censored_freqs[timepoint] > freq_threshold:
+                pred = np.log(node.censored_freqs[timepoint])
+            else:
+                pred = np.log(freq_threshold)
+
+            setattr(node, attr, pred)
