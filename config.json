@@ -8,7 +8,9 @@
     "number_of_samples": 3,
     "include_titer_tree": false,
     "predictors": [
-        "null",
+        "null"
+    ],
+    "standard_predictors": [
         "ep",
         "ne",
         "ep_x",
