@@ -46,7 +46,8 @@ rule run_fitness_model:
         #na_tree="auspice/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
         frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers=rules.download_titers.output.titers,
-        dms="data/dms-h3n2-preferences-rescaled.csv"
+        dms="data/dms-h3n2-preferences-rescaled.csv",
+        masks="config/ha_masks.tsv"
     output:
         model="models/{year_range}/{viruses}/{predictors}/{sample}.json",
         tip_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/tips_{sample}.tsv",
@@ -59,7 +60,7 @@ rule run_fitness_model:
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python3 scripts/fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {SNAKEMAKE_DIR}/{input.dms} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --validation-data-frame {output.validation_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
+    shell: "python3 src/fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {input.dms} --masks {input.masks} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --validation-data-frame {output.validation_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
 
 rule summarize_model:
     input:

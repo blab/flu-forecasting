@@ -2,14 +2,14 @@ import argparse
 from augur.frequencies import TreeKdeFrequencies
 from augur.titer_model import TiterCollection
 from augur.utils import json_to_tree
+from collections import OrderedDict
 import datetime
 import json
 import numpy as np
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
-from fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
+from forecast.fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
 
 
 def reconstruct_sequences_from_tree_and_root(tree, root_sequences, ordered_genes):
@@ -116,6 +116,7 @@ if __name__ == "__main__":
     parser.add_argument("--na-sequences", help="auspice sequence JSON for NA")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--dms", help="tab-delimited file of DMS preferences")
+    parser.add_argument("--masks", help="tab-delimited file of mutational masks to use")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
@@ -201,7 +202,7 @@ if __name__ == "__main__":
         args.predictors,
         cross_validate=True,
         censor_frequencies=not args.no_censoring,
-        epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % augur_directory,
+        epitope_masks_fname=args.masks,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
         min_freq=args.min_freq,

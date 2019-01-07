@@ -250,7 +250,7 @@ class fitness_model(object):
         self.time_window = kwargs.get("time_window", 6.0 / 12.0)
 
         if isinstance(predictor_input, dict):
-            predictor_names = predictor_input.keys()
+            predictor_names = list(predictor_input.keys())
             self.estimate_coefficients = False
         else:
             predictor_names = predictor_input
@@ -289,7 +289,7 @@ class fitness_model(object):
         )
 
         # Convert date range to floats for consistency with downstream functions.
-        timepoints = map(timestamp_to_float, timepoints)
+        timepoints = [timestamp_to_float(timepoint) for timepoint in timepoints]
         self.timepoints = np.array(timepoints)
 
         # If an end date was provided, exclude all timepoints after that date.
@@ -543,7 +543,7 @@ class fitness_model(object):
             self.predictor_sds[time] = sds
 
         if self.estimate_coefficients:
-            self.global_sds = np.mean(self.predictor_sds.values(), axis=0)
+            self.global_sds = np.mean(list(self.predictor_sds.values()), axis=0)
 
         for time in self.timepoints:
             for node in self.tips:
@@ -596,14 +596,14 @@ class fitness_model(object):
 
             # Order tips by the date of their parents.
             # This preferentially adds parents that represent more tips.
-            tip_names = [key for key, value in sorted(tips_in_window.items(), key=lambda item: item[1].up.attr["num_date"])]
+            tip_names = [key for key, value in sorted(tips_in_window.items(), key=lambda item: item[1].parent.attr["num_date"])]
 
             for tip_name in tip_names:
                 if tip_name in tips_in_window:
                     tip = tips_in_window[tip_name]
 
                     # Test whether the tip's parent contains any other tips in this window.
-                    parent = tip.up
+                    parent = tip.parent
                     while parent:
                         tips_added_by_parent = 0
                         for child in parent.get_terminals():
@@ -624,7 +624,7 @@ class fitness_model(object):
                         if parent.attr["num_date"] < previous_timepoint:
                             break
                         else:
-                            parent = parent.up
+                            parent = parent.parent
 
             # Reset attribute on nodes.
             for clade in self.tree.find_clades():
@@ -635,8 +635,8 @@ class fitness_model(object):
             clade_group_freq = []
             nested = 0
             for clade in self.tree.find_clades():
-                if clade.up and "clade_group" in clade.up.attr:
-                    clade.attr["clade_group"] = clade.up.attr["clade_group"]
+                if clade.parent and "clade_group" in clade.parent.attr:
+                    clade.attr["clade_group"] = clade.parent.attr["clade_group"]
                     nested += 1
                 elif clade in candidate_clades:
                     clade_group += 1
@@ -802,7 +802,7 @@ class fitness_model(object):
         minimize_error()
         params_stack.append((self.last_fit, self.model_params))
 
-        for ii in xrange(niter):
+        for ii in range(niter):
             if self.verbose:
                 print("iteration:", ii+1)
             self.model_params = np.random.rand(len(self.predictors)) #0*np.ones(len(self.predictors))  # initial values
@@ -996,7 +996,7 @@ class fitness_model(object):
         print("Correct classification:",  (correct_growth+correct_decline) / (total_growth+total_decline))
         print("Matthew's correlation coefficient: %s" % trajectory_mcc)
         print("Params:")
-        print(zip(self.predictors, np.around(self.model_params, 4)))
+        print(list(zip(self.predictors, np.around(self.model_params, 4))))
 
         pred_data = []
         for time, pred_vs_true in zip(self.projection_timepoints, self.pred_vs_true):

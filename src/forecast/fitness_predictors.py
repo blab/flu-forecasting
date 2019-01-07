@@ -1,17 +1,11 @@
+from augur.lbi import calculate_LBI, select_nodes_in_season
+from augur.titer_model import SubstitutionModel, TiterCollection, TreeModel
 import Bio
 import time
 import numpy as np
 import pandas as pd
 from scipy.stats import linregress
 import sys
-
-try:
-    import itertools.izip as zip
-except ImportError:
-    pass
-
-from .scores import calculate_LBI, select_nodes_in_season
-from .titer_model import SubstitutionModel, TiterCollection, TreeModel
 
 # all fitness predictors should be designed to give a positive sign, ie.
 # number of epitope mutations
@@ -62,8 +56,8 @@ class fitness_predictors(object):
 
             max_lbi = 0.0
             for node in tree.find_clades():
-                if node.up:
-                    node.attr[pred] = node.up.attr[pred] + node.attr[pred]
+                if node.parent:
+                    node.attr[pred] = node.parent.attr[pred] + node.attr[pred]
 
                 if node.attr[pred] > max_lbi:
                     max_lbi = node.attr[pred]
@@ -317,9 +311,9 @@ class fitness_predictors(object):
         # Next, find the first ancestor of each current node that was sampled in
         # the previous time interval.
         for node in current_nodes:
-            parent = node.up
+            parent = node.parent
             while parent.attr["num_date"] > previous_timepoint:
-                parent = parent.up
+                parent = parent.parent
 
             # Calculate the non-epitope distance to the ancestor.
             setattr(node, attr, self.fast_epitope_distance(node.np_ne, parent.np_ne))
@@ -362,22 +356,22 @@ class fitness_predictors(object):
                 node.aa = self._translate(node)
 
             # Get amino acid mutations between this node and its parent.
-            if node.up is None:
+            if node.parent is None:
                 mut_effect = 0.0
             else:
                 parent_mutations = []
                 node_mutations = []
 
                 for i in positions:
-                    if node.aa[i] != node.up.aa[i]:
-                        parent_mutations.append((i, node.up.aa[i]))
+                    if node.aa[i] != node.parent.aa[i]:
+                        parent_mutations.append((i, node.parent.aa[i]))
                         node_mutations.append((i, node.aa[i]))
 
                 # Calculate mutational effect for this node based on its differences
                 # since the parent node. If there are no mutations since the parent,
                 # this node keeps the same effect. Otherwise, sum the effects of all
                 # mutations since the parent.
-                mut_effect = node.up.attr[attr]
+                mut_effect = node.parent.attr[attr]
                 if len(node_mutations) > 0:
                     # Mutational effect is the preference of the current node's amino acid
                     # at each mutated site divided by the preference of the original and
@@ -456,13 +450,13 @@ class fitness_predictors(object):
             node_mutations = []
             parent_mutations = []
             for i in positions:
-                if node.aa[i] != node.up.aa[i]:
-                    parent_mutations.append((i, node.up.aa[i]))
+                if node.aa[i] != node.parent.aa[i]:
+                    parent_mutations.append((i, node.parent.aa[i]))
                     node_mutations.append((i, node.aa[i]))
 
             # Assign a new tolerance to this node based on its differences
             # since the parent node.
-            tolerance = node.up.attr[attr]
+            tolerance = node.parent.attr[attr]
             if len(node_mutations) > 0:
                 tolerance = (tolerance -
                              (log_preferences[parent_mutations].fillna(missing_preference).sum() / len(positions)) +
