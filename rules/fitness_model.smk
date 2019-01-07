@@ -56,11 +56,12 @@ rule run_fitness_model:
     params:
         predictor_list=_get_predictor_list,
         min_freq=config["fitness_model"]["min_freq"],
-        max_freq=config["fitness_model"]["max_freq"]
+        max_freq=config["fitness_model"]["max_freq"],
+        min_training_window=config["fitness_model"]["min_training_window"]
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.txt"
     log: "logs/fitness_model_{year_range}y_{viruses}v_{sample}/{predictors}.log"
-    shell: "python3 src/fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {input.dms} --masks {input.masks} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --validation-data-frame {output.validation_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v &> {log}"
+    shell: "python3 src/fit_model.py {input.ha_tree} {input.ha_metadata} {input.ha_sequences} {input.frequencies} {output.model} {params.predictor_list} --titers {input.titers} --dms {input.dms} --masks {input.masks} --tip-data-frame {output.tip_data_frame} --clade-data-frame {output.clade_data_frame} --validation-data-frame {output.validation_data_frame} --min-freq {params.min_freq} --max-freq {params.max_freq} -v --min-training-window {params.min_training_window} &> {log}"
 
 rule summarize_model:
     input:

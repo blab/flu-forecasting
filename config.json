@@ -59,6 +59,7 @@
     },
     "fitness_model": {
         "min_freq": 0.01,
-        "max_freq": 0.99
+        "max_freq": 0.99,
+        "min_training_window": 1.0
     }
 }

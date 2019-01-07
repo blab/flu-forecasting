@@ -127,6 +127,7 @@ if __name__ == "__main__":
     parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
     parser.add_argument("--min-freq", type=float, default=0.1, help="minimum frequency for clades to be used in model fitting")
     parser.add_argument("--max-freq", type=float, default=0.99, help="maximum frequency for clades to be used in model fitting")
+    parser.add_argument("--min-training-window", type=float, default=4.0, help="minimum number of years to required for model training")
     parser.add_argument("--verbose", "-v", action="store_true")
 
     args = parser.parse_args()
@@ -213,7 +214,8 @@ if __name__ == "__main__":
         delta_time=args.delta_time,
         verbose=int(args.verbose),
         enforce_positive_predictors=False,
-        cost_function=sum_of_squared_errors
+        cost_function=sum_of_squared_errors,
+        min_training_window=args.min_training_window
     )
 
     if args.prepare_only:
@@ -227,6 +229,7 @@ if __name__ == "__main__":
             fh.write("{}\n")
     else:
         validation_df = model.predict()
+        assert hasattr(model, "train_timepoints")
         model.validate_prediction()
         model.validate_prediction(test=True)
 

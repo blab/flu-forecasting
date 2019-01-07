@@ -875,6 +875,7 @@ class fitness_model(object):
             else:
                 break
 
+        assert len(train_test_splits) > 0, "No train/test timepoints found; consider changing the value of `min_training_window` from %s." % self.min_training_window
         return train_test_splits
 
     def predict(self, niter = 10, estimate_frequencies = True):
