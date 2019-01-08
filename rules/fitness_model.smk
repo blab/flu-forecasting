@@ -181,7 +181,7 @@ rule plot_model_fold_change:
         faceted="figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf",
         combined="figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    shell: "python3 scripts/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+    shell: "python3 src/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
 
 rule aggregate_combined_model_fold_change:
     input:
