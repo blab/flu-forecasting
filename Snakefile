@@ -15,7 +15,7 @@ wildcard_constraints:
     segment="[a-z]+"
 
 # Load configuration parameters.
-configfile: "config.json"
+configfile: "config/config.json"
 
 path_to_fauna = config["path_to_fauna"]
 SEGMENTS = config["segments"]
@@ -57,7 +57,7 @@ def _get_clock_rate_by_wildcards(wildcards):
     return rate[(wildcards.lineage, wildcards.segment)]
 
 def _get_auspice_files(wildcards):
-    return expand("auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    return expand("results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
 include: "rules/filter_passaged_viruses.smk"
 include: "rules/modular_augur_builds.smk"
@@ -67,18 +67,18 @@ include: "rules/quality_control_plots.smk"
 
 rule all:
     input:
-        "model_accuracy.tab",
-        "model_parameters.tab",
-        "model_validation.tab",
-        "model_validation_by_bandwidth.tab",
-        "figures/trees.pdf",
-        "models.tab",
-        "figures/faceted_model_fold_change.pdf",
-        "figures/combined_model_fold_change.pdf",
-        "figures/frequency_correlation.pdf",
-        "figures/model_parameters.pdf",
-        "figures/sequence_distributions.pdf",
-        "figures/frequencies.pdf",
+        "results/model_accuracy.tab",
+        "results/model_parameters.tab",
+        "results/model_validation.tab",
+        "results/model_validation_by_bandwidth.tab",
+        "results/figures/trees.pdf",
+        "results/models.tab",
+        "results/figures/faceted_model_fold_change.pdf",
+        "results/figures/combined_model_fold_change.pdf",
+        "results/figures/frequency_correlation.pdf",
+        "results/figures/model_parameters.pdf",
+        "results/figures/sequence_distributions.pdf",
+        "results/figures/frequencies.pdf",
         _get_auspice_files
 
 rule auspice:

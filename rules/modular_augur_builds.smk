@@ -46,8 +46,8 @@ rule parse:
     input:
         sequences = rules.download_sequences.output.sequences
     output:
-        sequences = "results/sequences_{lineage}_{segment}.fasta",
-        metadata = "results/metadata_{lineage}_{segment}.tsv"
+        sequences = "results/builds/sequences_{lineage}_{segment}.fasta",
+        metadata = "results/builds/metadata_{lineage}_{segment}.tsv"
     params:
         fasta_fields =  "strain virus isolate_id date region country division location passage authors age gender"
     conda: "../envs/anaconda.python3.yaml"
@@ -73,7 +73,7 @@ rule filter:
         sequences = rules.parse.output.sequences,
         exclude = "config/outliers_{lineage}.txt"
     output:
-        sequences = 'results/filtered_{lineage}_{segment}.fasta'
+        sequences = 'results/builds/filtered_{lineage}_{segment}.fasta'
     params:
         min_length = MIN_LENGTH
     conda: "../envs/anaconda.python3.yaml"
@@ -91,12 +91,12 @@ rule filter:
 
 rule select_strains:
     input:
-        sequences = expand("results/filtered_{{lineage}}_{segment}.fasta", segment=SEGMENTS),
-        metadata = expand("results/metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
+        sequences = expand("results/builds/filtered_{{lineage}}_{segment}.fasta", segment=SEGMENTS),
+        metadata = expand("results/builds/metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
         titers = rules.download_titers.output.titers,
         include = "config/references_{lineage}.txt"
     output:
-        strains = "results/strains_{lineage}_{year_range}y_{viruses}v_{sample}.txt",
+        strains = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains.txt",
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.log"
@@ -122,7 +122,7 @@ rule extract:
         sequences = rules.filter.output.sequences,
         strains = rules.select_strains.output.strains
     output:
-        sequences = "results/filtered_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.fasta"
+        sequences = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/filtered_sequences.fasta"
     shell:
         """
         python3 scripts/extract_sequences.py \
@@ -141,7 +141,7 @@ rule align:
         sequences = rules.extract.output.sequences,
         reference = "config/{lineage}_{segment}_outgroup.gb"
     output:
-        alignment = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/aligned.fasta"
+        alignment = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/aligned.fasta"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/align_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     threads: 4
@@ -161,7 +161,7 @@ rule tree:
     input:
         alignment = rules.align.output.alignment
     output:
-        tree = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/tree_raw.nwk"
+        tree = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/tree_raw.nwk"
     conda: "../envs/anaconda.python3.yaml"
     shadow: "minimal"
     benchmark: "benchmarks/tree_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
@@ -190,8 +190,8 @@ rule refine:
         alignment = rules.align.output.alignment,
         metadata = rules.parse.output.metadata
     output:
-        tree = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/tree.nwk",
-        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/branch_lengths.json"
+        tree = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/tree.nwk",
+        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/branch_lengths.json"
     params:
         coalescent = "const",
         date_inference = "marginal",
@@ -221,7 +221,7 @@ rule ancestral:
         tree = rules.refine.output.tree,
         alignment = rules.align.output.alignment
     output:
-        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/nt_muts.json"
+        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/nt_muts.json"
     params:
         inference = "joint"
     conda: "../envs/anaconda.python3.yaml"
@@ -242,7 +242,7 @@ rule translate:
         node_data = rules.ancestral.output.node_data,
         reference = "config/{lineage}_{segment}_outgroup.gb"
     output:
-        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/aa_muts.json"
+        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -259,7 +259,7 @@ rule traits:
         tree = rules.refine.output.tree,
         metadata = rules.parse.output.metadata
     output:
-        node_data = "results/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}/traits.json",
+        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/traits.json",
     params:
         columns = "region country"
     conda: "../envs/anaconda.python3.yaml"
@@ -302,9 +302,9 @@ rule export:
         node_data = _get_node_data_for_export,
         colors = "config/colors.tsv"
     output:
-        auspice_tree = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
-        auspice_metadata = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
-        auspice_sequence = "auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
+        auspice_tree = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
+        auspice_metadata = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
+        auspice_sequence = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
     params:
         geography_traits = "region",
         panels = "tree entropy"

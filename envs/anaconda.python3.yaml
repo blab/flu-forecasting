@@ -4,14 +4,16 @@ channels:
 - conda-forge
 - defaults
 dependencies:
+- conda
 - cvxopt
 - fasttree
 - iqtree
 - mafft
 - pandas
+- psutil
 - python=3.6*
 - raxml
 - snakemake
 - pip:
-  - git+https://github.com/nextstrain/augur@1754d98
+  - git+https://github.com/nextstrain/augur@ae6f2f9
   - rethinkdb

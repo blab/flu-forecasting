@@ -15,7 +15,7 @@ rule estimate_frequencies:
         metadata=rules.parse.output.metadata,
         weights="data/region_weights.json"
     output:
-        frequencies="frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.json"
+        frequencies="results/frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
@@ -40,19 +40,19 @@ rule estimate_frequencies:
 
 rule run_fitness_model:
     input:
-        ha_tree="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
-        ha_metadata="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_meta.json",
-        ha_sequences="auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
-        #na_tree="auspice/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
-        frequencies="frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
+        ha_tree="results/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",
+        ha_metadata="results/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_meta.json",
+        ha_sequences="results/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_seq.json",
+        #na_tree="results/auspice/flu_h3n2_na_{year_range}y_{viruses}v_{sample}_tree.json",
+        frequencies="results/frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.json",
         titers=rules.download_titers.output.titers,
         dms="data/dms-h3n2-preferences-rescaled.csv",
         masks="config/ha_masks.tsv"
     output:
-        model="models/{year_range}/{viruses}/{predictors}/{sample}.json",
-        tip_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/tips_{sample}.tsv",
-        clade_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/clades_{sample}.tsv",
-        validation_data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/validation_{sample}.tsv"
+        model="results/models/{year_range}/{viruses}/{predictors}/{sample}.json",
+        tip_data_frame="results/model_data_frames/{year_range}/{viruses}/{predictors}/tips_{sample}.tsv",
+        clade_data_frame="results/model_data_frames/{year_range}/{viruses}/{predictors}/clades_{sample}.tsv",
+        validation_data_frame="results/model_data_frames/{year_range}/{viruses}/{predictors}/validation_{sample}.tsv"
     params:
         predictor_list=_get_predictor_list,
         min_freq=config["fitness_model"]["min_freq"],
@@ -67,8 +67,8 @@ rule summarize_model:
     input:
         rules.run_fitness_model.output.model
     output:
-        accuracy="model_accuracy/{year_range}/{viruses}/{predictors}/{sample}.tab",
-        parameters="model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab"
+        accuracy="results/model_accuracy/{year_range}/{viruses}/{predictors}/{sample}.tab",
+        parameters="results/model_parameters/{year_range}/{viruses}/{predictors}/{sample}.tab"
     run:
         with open(input[0], "r") as fh:
             model = json.load(fh)
@@ -96,7 +96,7 @@ rule convert_model_json_to_tsv:
     input:
         model=rules.run_fitness_model.output.model
     output:
-        model="models/{year_range}/{viruses}/{predictors}/{sample}.tab"
+        model="results/models/{year_range}/{viruses}/{predictors}/{sample}.tab"
     run:
         with open(input["model"], "r") as fh:
             model_json = json.load(fh)
@@ -112,7 +112,7 @@ rule convert_model_json_to_tsv:
 rule label_model_validation_table:
     input: rules.run_fitness_model.output.validation_data_frame
     output:
-        data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv"
+        data_frame="results/model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv"
     run:
         df = pd.read_table(input[0])
         df["year_range"] = wildcards.year_range
@@ -123,14 +123,14 @@ rule label_model_validation_table:
 
 rule aggregate_models:
     input: expand(rules.convert_model_json_to_tsv.output.model, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "models.tab"
+    output: "results/models.tab"
     run:
         df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
 
 rule aggregate_model_validation:
     input: expand(rules.label_model_validation_table.output.data_frame, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "model_validation.tab"
+    output: "results/model_validation.tab"
     run:
         df = pd.concat([pd.read_table(i, keep_default_na=False, na_values="N/A") for i in input], ignore_index=True, sort=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="N/A")
@@ -139,7 +139,7 @@ rule aggregate_model_parameters:
     input:
         expand(rules.summarize_model.output.parameters, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output:
-        parameters="model_parameters.tab"
+        parameters="results/model_parameters.tab"
     run:
         df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False)
@@ -148,7 +148,7 @@ rule aggregate_model_accuracy:
     input:
         expand(rules.summarize_model.output.accuracy, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
     output:
-        accuracy="model_accuracy.tab"
+        accuracy="results/model_accuracy.tab"
     run:
         df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
@@ -159,15 +159,15 @@ rule aggregate_model_accuracy:
 
 rule plot_model_parameters:
     input: rules.aggregate_model_parameters.output.parameters
-    output: "figures/model_parameters.pdf"
+    output: "results/figures/model_parameters.pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell: "python scripts/plot_parameters.py {input} {output}"
 
 rule plot_frequency_correlation:
     input: rules.aggregate_model_accuracy.output.accuracy
     output:
-        correlation="figures/frequency_correlation.pdf",
-        mcc="figures/mcc.pdf"
+        correlation="results/figures/frequency_correlation.pdf",
+        mcc="results/figures/mcc.pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell: "python scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
 
@@ -176,20 +176,20 @@ rule plot_frequency_correlation:
 #
 
 rule plot_model_fold_change:
-    input: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    input: "results/models/{year_range}/{viruses}/{predictors}/{sample}.tab"
     output:
-        faceted="figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf",
-        combined="figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
+        faceted="results/figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf",
+        combined="results/figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell: "python3 src/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
 
 rule aggregate_combined_model_fold_change:
     input:
         expand(rules.plot_model_fold_change.output.combined, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "figures/combined_model_fold_change.pdf"
+    output: "results/figures/combined_model_fold_change.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
 rule aggregate_faceted_model_fold_change:
     input: expand(rules.plot_model_fold_change.output.faceted, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
-    output: "figures/faceted_model_fold_change.pdf"
+    output: "results/figures/faceted_model_fold_change.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
