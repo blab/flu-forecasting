@@ -101,7 +101,7 @@ rule convert_model_json_to_tsv:
         with open(input["model"], "r") as fh:
             model_json = json.load(fh)
 
-        df = pd.DataFrame(model_json["test_data"])
+        df = pd.DataFrame(model_json["data"])
         df["year_range"] = wildcards.year_range
         df["viruses"] = wildcards.viruses
         df["predictors"] = wildcards.predictors
@@ -111,7 +111,8 @@ rule convert_model_json_to_tsv:
 
 rule label_model_validation_table:
     input: rules.run_fitness_model.output.validation_data_frame
-    output: "model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv"
+    output:
+        data_frame="model_data_frames/{year_range}/{viruses}/{predictors}/labeled_validation_{sample}.tsv"
     run:
         df = pd.read_table(input[0])
         df["year_range"] = wildcards.year_range
@@ -126,3 +127,69 @@ rule aggregate_models:
     run:
         df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
         df.to_csv(output[0], sep="\t", index=False, na_rep="null")
+
+rule aggregate_model_validation:
+    input: expand(rules.label_model_validation_table.output.data_frame, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "model_validation.tab"
+    run:
+        df = pd.concat([pd.read_table(i, keep_default_na=False, na_values="N/A") for i in input], ignore_index=True, sort=True)
+        df.to_csv(output[0], sep="\t", index=False, na_rep="N/A")
+
+rule aggregate_model_parameters:
+    input:
+        expand(rules.summarize_model.output.parameters, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output:
+        parameters="model_parameters.tab"
+    run:
+        df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False)
+
+rule aggregate_model_accuracy:
+    input:
+        expand(rules.summarize_model.output.accuracy, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output:
+        accuracy="model_accuracy.tab"
+    run:
+        df = pd.concat([pd.read_table(i, keep_default_na=False) for i in input], ignore_index=True)
+        df.to_csv(output[0], sep="\t", index=False, na_rep="null")
+
+#
+# Model parameter and accuracy plots
+#
+
+rule plot_model_parameters:
+    input: rules.aggregate_model_parameters.output.parameters
+    output: "figures/model_parameters.pdf"
+    conda: "../envs/anaconda.python3.yaml"
+    shell: "python scripts/plot_parameters.py {input} {output}"
+
+rule plot_frequency_correlation:
+    input: rules.aggregate_model_accuracy.output.accuracy
+    output:
+        correlation="figures/frequency_correlation.pdf",
+        mcc="figures/mcc.pdf"
+    conda: "../envs/anaconda.python3.yaml"
+    shell: "python scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
+
+#
+# Model fold change plots
+#
+
+rule plot_model_fold_change:
+    input: "models/{year_range}/{viruses}/{predictors}/{sample}.tab"
+    output:
+        faceted="figures/faceted_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf",
+        combined="figures/combined_model_fold_change/{year_range}/{viruses}/{predictors}/{sample}.pdf"
+    conda: "../envs/anaconda.python3.yaml"
+    shell: "python3 scripts/plot_model_fold_change.py {input} {output.faceted} {output.combined} {wildcards.year_range} {wildcards.viruses} {wildcards.predictors} {wildcards.sample}"
+
+rule aggregate_combined_model_fold_change:
+    input:
+        expand(rules.plot_model_fold_change.output.combined, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "figures/combined_model_fold_change.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule aggregate_faceted_model_fold_change:
+    input: expand(rules.plot_model_fold_change.output.faceted, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES, predictors=PREDICTORS)
+    output: "figures/faceted_model_fold_change.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"

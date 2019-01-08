@@ -46,5 +46,6 @@ rule plot_tree:
 
 rule aggregate_tree_plots:
     input: expand("figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
-    output: "figures/trees.pdf"
+    output:
+        trees="figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
