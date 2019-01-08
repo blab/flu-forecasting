@@ -894,9 +894,19 @@ class fitness_model(object):
                 train_test_splits = self.split_timepoints()
                 results = []
                 for train, test in train_test_splits:
-                    print("train: %s, test: %s" % (train, test))
                     self.train_timepoints = self.projection_timepoints[train]
                     self.test_timepoints = self.projection_timepoints[test]
+
+                    clades_for_training = sum([len(self.fit_clades[timepoint])
+                                               for timepoint in self.train_timepoints])
+                    clades_for_testing = sum([len(self.fit_clades[timepoint])
+                                              for timepoint in self.test_timepoints])
+
+                    if clades_for_training == 0 or clades_for_testing == 0:
+                        sys.stderr.write(f"WARNING: No clades for training ({self.train_timepoints}) or testing ({self.test_timepoints}), skipping\n")
+                        continue
+
+                    print("train: %s, test: %s" % (self.train_timepoints, self.test_timepoints))
                     self.learn_parameters(niter = niter, fit_func = "clade")
                     training_error = self.clade_fit(self.model_params, test=False)
                     training_correlation = self.get_correlation()
