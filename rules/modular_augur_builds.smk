@@ -117,6 +117,18 @@ rule select_strains:
             --output {output.strains}
         """
 
+rule extract_strain_metadata:
+    input:
+        strains = rules.select_strains.output.strains,
+        metadata = "results/builds/metadata_{lineage}_ha.tsv"
+    output:
+        metadata = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv"
+    run:
+        strains = pd.read_table(input.strains, header=None, names=["strain"])
+        metadata = pd.read_table(input.metadata)
+        selected_metadata = strains.merge(metadata, how="left", on="strain")
+        selected_metadata.to_csv(output.metadata, sep="\t", index=False)
+
 rule extract:
     input:
         sequences = rules.filter.output.sequences,

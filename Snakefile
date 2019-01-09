@@ -79,7 +79,8 @@ rule all:
         "results/figures/model_parameters.pdf",
         "results/figures/sequence_distributions.pdf",
         "results/figures/frequencies.pdf",
-        _get_auspice_files
+        _get_auspice_files,
+        expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
 rule auspice:
     input: _get_auspice_files
