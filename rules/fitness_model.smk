@@ -26,7 +26,7 @@ rule estimate_frequencies:
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
     log: "logs/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.log"
-    shell: """python scripts/frequencies.py {input.tree} {input.metadata} {output} \
+    shell: """python3 scripts/frequencies.py {input.tree} {input.metadata} {output} \
 --narrow-bandwidth {params.narrow_bandwidth} \
 --wide-bandwidth {params.wide_bandwidth} \
 --proportion-wide {params.proportion_wide} \
@@ -161,7 +161,7 @@ rule plot_model_parameters:
     input: rules.aggregate_model_parameters.output.parameters
     output: "results/figures/model_parameters.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    shell: "python scripts/plot_parameters.py {input} {output}"
+    shell: "python3 scripts/plot_parameters.py {input} {output}"
 
 rule plot_frequency_correlation:
     input: rules.aggregate_model_accuracy.output.accuracy
@@ -169,7 +169,7 @@ rule plot_frequency_correlation:
         correlation="results/figures/frequency_correlation.pdf",
         mcc="results/figures/mcc.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    shell: "python scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
+    shell: "python3 scripts/plot_accuracy.py {input} {output.correlation} {output.mcc}"
 
 #
 # Model fold change plots

@@ -10,7 +10,7 @@ rule plot_frequencies:
     input: rules.estimate_frequencies.output.frequencies
     output: "results/figures/frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    shell: "python scripts/plot_frequency_trajectories.py {input} {output}"
+    shell: "python3 scripts/plot_frequency_trajectories.py {input} {output}"
 
 rule aggregate_frequency_plots:
     input: expand("results/figures/frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
@@ -25,7 +25,7 @@ rule plot_sequences_by_date:
     input: rules.export.output.auspice_tree
     output: "results/figures/sequence_distributions/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    shell: "python scripts/plot_sequence_distribution.py {input} {output}"
+    shell: "python3 scripts/plot_sequence_distribution.py {input} {output}"
 
 rule aggregate_sequence_distribution_plots:
     input: expand("results/figures/sequence_distributions/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
