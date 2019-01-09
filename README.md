@@ -5,8 +5,11 @@
 [Install miniconda](https://conda.io/miniconda.html) for your machine and then run the following commands.
 
 ```bash
-# Clone the repo
-git clone --recursive https://github.com/blab/flu-forecasting.git
+# Clone the fauna repo
+git clone https://github.com/nextstrain/fauna.git
+
+# Clone the forecasting repo
+git clone https://github.com/blab/flu-forecasting.git
 cd flu-forecasting
 
 # Create conda environment for Snakemake.

@@ -9,11 +9,7 @@ from scipy.stats import pearsonr
 import seaborn as sns
 import sys
 
-# augur imports.
-project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-augur_path = os.path.join(project_path, "dist", "augur")
-sys.path.append(augur_path)
-from base.fitness_model import get_matthews_correlation_coefficient_for_data_frame
+from forecast.fitness_model import get_matthews_correlation_coefficient_for_data_frame
 
 
 if __name__ == "__main__":

@@ -1,15 +1,11 @@
 import argparse
+from augur.frequencies import TreeKdeFrequencies
 import json
 import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 import os
 import sys
-
-# augur imports.
-augur_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist", "augur")
-sys.path.append(augur_path)
-from base.frequencies import KdeFrequencies
 
 
 if __name__ == "__main__":
@@ -36,7 +32,7 @@ if __name__ == "__main__":
 
     with open(args.frequencies, "r") as fh:
         frequencies_json = json.load(fh)
-        frequencies = KdeFrequencies.from_json(frequencies_json)
+        frequencies = TreeKdeFrequencies.from_json(frequencies_json)
 
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
     for clade in frequencies.frequencies:

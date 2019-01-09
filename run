@@ -40,7 +40,7 @@ while getopts ":lh" opt; do
             # Run jobs locally.
             USE_CLUSTER=0
 
-            # Remove janus argument from arguments passed to snakemake.
+            # Remove run argument from arguments passed to snakemake.
             shift
             ;;
         h)
@@ -53,17 +53,11 @@ while getopts ":lh" opt; do
             echo "--------"
             echo
             echo "Local run:"
-            echo -e "\t./janus -l"
+            echo -e "\t./run -l"
             echo "Dry run:"
-            echo -e "\t./janus -n"
+            echo -e "\t./run -n"
             echo "Run 4 jobs at once:"
-            echo -e "\t./janus -j 4"
-            echo "Clean up prepare/process output for flu builds:"
-            echo -e "\t./janus clean -j 1 --config filters=\"flu*\""
-            echo "Clean up prepare/process output for H3N2 flu builds:"
-            echo -e "\t./janus clean -j 1 --config filters=\"flu_h3n2*\""
-            echo "Run only flu and zika builds with 4 jobs at once:"
-            echo -e "\t./janus -j 4 --config filters=\"flu*,zika\""
+            echo -e "\t./run -j 4"
             exit
             ;;
         \?)
@@ -82,7 +76,7 @@ fi
 
 # Setup the environment.
 . ${HOME}/miniconda3/etc/profile.d/conda.sh
-conda activate janus_python3
+conda activate nextstrain
 
 # Run jobs on the cluster if it is possible and the user did not request a local
 # run.
@@ -91,7 +85,7 @@ then
     # Run multiple build jobs at a time on the cluster.
     echo "Running on the cluster"
     #snakemake -w 60 --use-conda --cluster-config cluster.json --drmaa " --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" --jobname "{rulename}.{jobid}.sh" ${JOBS} $*
-    snakemake -w 60 --use-conda --cluster-config cluster.json --cluster "sbatch --nodes=1 --tasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" ${JOBS} $*
+    snakemake -w 60 --use-conda --cluster-config config/cluster-gizmo.json --cluster "sbatch --nodes=1 --tasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" ${JOBS} $*
 else
     echo "Running locally"
     snakemake -w 60 --use-conda ${JOBS} $*

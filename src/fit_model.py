@@ -1,21 +1,66 @@
 import argparse
+from augur.frequencies import TreeKdeFrequencies
+from augur.titer_model import TiterCollection
+from augur.utils import json_to_tree
+from collections import OrderedDict
 import datetime
 import json
 import numpy as np
 import os
-
-# Add augur source to the Python path.
 import sys
-root_directory = os.path.dirname(os.path.abspath(__file__))
-augur_directory = os.path.join(root_directory, "dist", "augur")
-sys.path.insert(0, augur_directory)
 
-# Load augur modules.
-from base.fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
-from base.frequencies import KdeFrequencies
-from base.io_util import json_to_tree, json_to_clade_frequencies, reconstruct_sequences_from_tree_and_root
-from base.process import process
-from base.titer_model import TiterCollection
+from forecast.fitness_model import fitness_model as FitnessModel, make_pivots, mean_absolute_error, sum_of_squared_errors
+
+
+def reconstruct_sequences_from_tree_and_root(tree, root_sequences, ordered_genes):
+    """Returns a tree for which each node is annotated with that node's
+    corresponding nucleotide and amino acid sequences as reconstructed from the
+    given root node's sequences and a tree with nucleotide and amino acid
+    mutations annotated per node.
+
+    The given sequence of gene names should be ordered by their genomic
+    coordinates such that the annotated translations are stored in coordinate
+    order.
+    """
+    # Annotate root translations using gene order information.
+    tree.root.translations = OrderedDict()
+    for gene in ordered_genes:
+        tree.root.translations[gene] = root_sequences[gene]
+
+    # Reconstruct sequences for all other nodes in the tree.
+    for node in tree.find_clades():
+        for child in node.clades:
+            child_sequences = node.translations.copy()
+
+            # Merge mutations into a single data structure that can be iterated over once.
+            mutation_sets = child.aa_muts.copy()
+
+            if "nuc" in ordered_genes:
+                mutation_sets["nuc"] = child.muts
+
+            # Reconstruct amino acid sequences.
+            for gene, mutations in mutation_sets.items():
+                if len(mutations) > 0:
+                    # Convert sequence string to a list for in place manipulation.
+                    gene_sequence = list(child_sequences[gene])
+
+                    for mutation in mutations:
+                        ancestral_aa = mutation[0]
+                        derived_aa = mutation[-1]
+                        position = int(mutation[1:-1])
+
+                        assert gene_sequence[position - 1] == ancestral_aa
+                        gene_sequence[position - 1] = derived_aa
+
+                    # Convert list back to a string for the final child sequence.
+                    child_sequences[gene] = "".join(gene_sequence)
+
+                    assert child_sequences[gene] != node.translations[gene]
+
+            # Assign child sequences to child node.
+            child.translations = child_sequences
+
+    return tree
 
 
 def load_tree_from_json_filename(filename):
@@ -71,6 +116,7 @@ if __name__ == "__main__":
     parser.add_argument("--na-sequences", help="auspice sequence JSON for NA")
     parser.add_argument("--titers", help="tab-delimited file of titer measurements")
     parser.add_argument("--dms", help="tab-delimited file of DMS preferences")
+    parser.add_argument("--masks", help="tab-delimited file of mutational masks to use")
     parser.add_argument("--no-censoring", action="store_true", help="Disable censoring of future data during frequency estimation")
     parser.add_argument("--end-date", type=float, help="Maximum date to use data from when fitting the model")
     parser.add_argument("--step-size", type=float, default=0.5, help="Step size in years between timepoints the model fits to")
@@ -81,6 +127,7 @@ if __name__ == "__main__":
     parser.add_argument("--prepare-only", action="store_true", help="prepare model inputs without fitting model parameters")
     parser.add_argument("--min-freq", type=float, default=0.1, help="minimum frequency for clades to be used in model fitting")
     parser.add_argument("--max-freq", type=float, default=0.99, help="maximum frequency for clades to be used in model fitting")
+    parser.add_argument("--min-training-window", type=float, default=4.0, help="minimum number of years to required for model training")
     parser.add_argument("--verbose", "-v", action="store_true")
 
     args = parser.parse_args()
@@ -126,7 +173,7 @@ if __name__ == "__main__":
     with open(args.frequencies, "r") as json_fh:
         json_frequencies = json.load(json_fh)
 
-    frequencies = KdeFrequencies.from_json(json_frequencies)
+    frequencies = TreeKdeFrequencies.from_json(json_frequencies)
 
     # Setup predictor arguments.
     predictor_kwargs = {
@@ -156,7 +203,7 @@ if __name__ == "__main__":
         args.predictors,
         cross_validate=True,
         censor_frequencies=not args.no_censoring,
-        epitope_masks_fname="%s/builds/flu/metadata/ha_masks.tsv" % augur_directory,
+        epitope_masks_fname=args.masks,
         epitope_mask_version="wolf",
         tolerance_mask_version="HA1",
         min_freq=args.min_freq,
@@ -167,7 +214,8 @@ if __name__ == "__main__":
         delta_time=args.delta_time,
         verbose=int(args.verbose),
         enforce_positive_predictors=False,
-        cost_function=sum_of_squared_errors
+        cost_function=sum_of_squared_errors,
+        min_training_window=args.min_training_window
     )
 
     if args.prepare_only:
@@ -181,6 +229,7 @@ if __name__ == "__main__":
             fh.write("{}\n")
     else:
         validation_df = model.predict()
+        assert hasattr(model, "train_timepoints")
         model.validate_prediction()
         model.validate_prediction(test=True)
 
