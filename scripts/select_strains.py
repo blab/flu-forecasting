@@ -99,6 +99,16 @@ def populate_categories(metadata):
 
 
 def flu_subsampling(metadata, viruses_per_month, time_interval, titer_fname=None):
+    # Filter metadata by date using the given time interval. Using numeric dates
+    # here allows users to define time intervals to the day and filter viruses
+    # at that same level of precision.
+    time_interval_start = numeric_date(time_interval[1])
+    time_interval_end = numeric_date(time_interval[0])
+    metadata = {
+        strain: record
+        for strain, record in metadata.items()
+        if time_interval_start <= record["num_date"] <= time_interval_end
+    }
 
     #### DEFINE THE PRIORITY
     if titer_fname:
@@ -141,20 +151,11 @@ def flu_subsampling(metadata, viruses_per_month, time_interval, titer_fname=None
 
     selected_strains = []
     for cat, val in virus_by_category.items():
-        if cat_valid(cat, time_interval):
-            val.sort(key=priority, reverse=True)
-            selected_strains.extend(val[:threshold_fn(cat)])
+        val.sort(key=priority, reverse=True)
+        selected_strains.extend(val[:threshold_fn(cat)])
 
     return selected_strains
 
-
-def cat_valid(cat, time_interval):
-    if cat[-2]<time_interval[1].year or cat[-2]>time_interval[0].year:
-        return False
-    if (cat[-2]==time_interval[1].year and cat[-1]<time_interval[1].month) or\
-       (cat[-2]==time_interval[0].year and cat[-1]>time_interval[0].month):
-        return False
-    return True
 
 def determine_time_interval(time_interval, resolution):
     # determine date range to include strains from
@@ -177,7 +178,10 @@ def parse_metadata(segments, metadata_files):
         for x in tmp_meta:
             tmp_meta[x]['num_date'] = np.mean(numerical_dates[x])
             tmp_meta[x]['year'] = int(tmp_meta[x]['num_date'])
-            tmp_meta[x]['month'] = int((tmp_meta[x]['num_date']%1)*12)
+
+            # Extract month values starting at January == 1 for comparison with
+            # datetime objects.
+            tmp_meta[x]['month'] = int((tmp_meta[x]['num_date'] % 1) * 12) + 1
         metadata[segment] = tmp_meta
     return metadata
 
@@ -263,6 +267,11 @@ if __name__ == '__main__':
             if (filtered_metadata[guide_segment][strain]['year'] >= lower_reference_cutoff.year and
                 filtered_metadata[guide_segment][strain]['num_date'] <= numeric_date(upper_reference_cutoff)):
                 selected_strains.append(strain)
+
+    # Confirm that none of the selected strains were sampled outside of the
+    # requested interval.
+    for strain in selected_strains:
+        assert filtered_metadata[guide_segment][strain]['num_date'] <= numeric_date(upper_reference_cutoff)
 
     # write the list of selected strains to file
     with open(args.output, 'w') as ofile:
