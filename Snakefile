@@ -1,5 +1,3 @@
-# Imports.
-import json
 import pandas as pd
 
 # Set snakemake directory
@@ -8,18 +6,25 @@ SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 localrules: download_sequences, download_titers, remove_reference_strains_from_passaged_strains, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
 
 wildcard_constraints:
-    sample="(\d+|titers)",
+    sample="sample_(\d+|titers)",
     viruses="\d+",
     bandwidth="[0-9]*\.?[0-9]+",
     lineage="[a-z0-9]+",
-    segment="[a-z]+"
+    segment="[a-z]+",
+    start="\d{4}-\d{2}-\d{2}",
+    end="\d{4}-\d{2}-\d{2}",
+    timepoint="\d{4}-\d{2}-\d{2}"
 
 # Load configuration parameters.
 configfile: "config/config.json"
 
 path_to_fauna = config["path_to_fauna"]
+LINEAGES = config["lineages"]
 SEGMENTS = config["segments"]
-YEAR_RANGES = config["year_ranges"]
+START_DATE = config["start_date"]
+END_DATE = config["end_date"]
+PIVOT_INTERVAL = config["pivot_interval"]
+MIN_YEARS_PER_BUILD = config["min_years_per_build"]
 VIRUSES = config["viruses"]
 PREDICTORS = config["predictors"]
 BANDWIDTHS = config["frequencies"]["bandwidths"]
@@ -31,6 +36,32 @@ NUMBER_OF_SAMPLES = config["number_of_samples"]
 SAMPLES = list(range(NUMBER_OF_SAMPLES))
 if config["include_titer_tree"]:
     SAMPLES += ["titers"]
+SAMPLES = ["sample_%s" % sample for sample in SAMPLES]
+
+# Construct a list of timepoints for the requested start/end dates.
+def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min_years_per_build):
+    # Find all potential timepoints.
+    all_timepoints = pd.date_range(start_date, end_date, freq="%sMS" % pivot_interval)
+
+    # Calculate date offset from the minimum years per build to find first
+    # timepoint we can use to partition strains.
+    offset = pd.DateOffset(years=min_years_per_build)
+    first_timepoint = all_timepoints[0] + offset
+
+    # Convert datetime instances to strings for all valid build timepoints.
+    timepoints = [
+        timepoint.strftime("%Y-%m-%d")
+        for timepoint in all_timepoints
+        if timepoint >= first_timepoint
+    ]
+
+    return timepoints
+
+TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)[:3]
+
+#
+# Define helper functions.
+#
 
 def _get_start_date_from_range(wildcards):
     return "%s-10-01" % wildcards["year_range"].split("-")[0]
@@ -57,33 +88,35 @@ def _get_clock_rate_by_wildcards(wildcards):
     return rate[(wildcards.lineage, wildcards.segment)]
 
 def _get_auspice_files(wildcards):
-    return expand("results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json", lineage="h3n2", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
 
-include: "rules/filter_passaged_viruses.smk"
+#include: "rules/filter_passaged_viruses.smk"
 include: "rules/modular_augur_builds.smk"
-include: "rules/frequency_bandwidths.smk"
-include: "rules/fitness_model.smk"
+#include: "rules/frequency_bandwidths.smk"
+#include: "rules/fitness_model.smk"
 include: "rules/quality_control_plots.smk"
 
 rule all:
     input:
-        "results/model_accuracy.tab",
-        "results/model_parameters.tab",
-        "results/model_validation.tab",
-        "results/model_validation_by_bandwidth.tab",
-        "results/figures/trees.pdf",
-        "results/models.tab",
-        "results/figures/faceted_model_fold_change.pdf",
-        "results/figures/combined_model_fold_change.pdf",
-        "results/figures/frequency_correlation.pdf",
-        "results/figures/model_parameters.pdf",
-        "results/figures/sequence_distributions.pdf",
-        "results/figures/frequencies.pdf",
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/frequencies.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS),
         _get_auspice_files,
-        expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+        "results/figures/frequencies.pdf"
+        # "results/model_accuracy.tab",
+        # "results/model_parameters.tab",
+        # "results/model_validation.tab",
+        # "results/model_validation_by_bandwidth.tab",
+        # "results/figures/trees.pdf",
+        # "results/models.tab",
+        # "results/figures/faceted_model_fold_change.pdf",
+        # "results/figures/combined_model_fold_change.pdf",
+        # "results/figures/frequency_correlation.pdf",
+        # "results/figures/model_parameters.pdf",
+        # "results/figures/sequence_distributions.pdf",
+        # "results/figures/frequencies.pdf",
+        # expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
 rule auspice:
-    input: _get_auspice_files
+   input: _get_auspice_files
 
-rule trees:
-    input: rules.aggregate_tree_plots.output.trees
+#rule trees:
+#    input: rules.aggregate_tree_plots.output.trees

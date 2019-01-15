@@ -2,42 +2,6 @@
 Rules for building fitness models from augur builds.
 """
 
-rule estimate_frequencies:
-    message:
-        """
-        Estimating frequencies for {input.tree}
-          - narrow bandwidth: {params.narrow_bandwidth}
-          - wide bandwidth: {params.wide_bandwidth}
-          - proportion wide: {params.proportion_wide}
-        """
-    input:
-        tree=rules.refine.output.tree,
-        metadata=rules.parse.output.metadata,
-        weights="data/region_weights.json"
-    output:
-        frequencies="results/frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.json"
-    params:
-        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
-        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
-        proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=config["frequencies"]["pivot_frequency"],
-        start_date=_get_start_date_from_range,
-        end_date=_get_end_date_from_range
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/estimate_frequencies_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.log"
-    shell: """python3 scripts/frequencies.py {input.tree} {input.metadata} {output} \
---narrow-bandwidth {params.narrow_bandwidth} \
---wide-bandwidth {params.wide_bandwidth} \
---proportion-wide {params.proportion_wide} \
---pivot-frequency {params.pivot_frequency} \
---start-date {params.start_date} \
---end-date {params.end_date} \
---weights {input.weights} \
---weights-attribute region \
---include-internal-nodes \
---censored &> {log}"""
-
 rule run_fitness_model:
     input:
         ha_tree="results/auspice/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}_tree.json",

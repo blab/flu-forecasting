@@ -7,13 +7,15 @@ Rules for quality control visualizations including metadata, trees, and frequenc
 #
 
 rule plot_frequencies:
-    input: rules.estimate_frequencies.output.frequencies
-    output: "results/figures/frequencies/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.pdf"
+    input:
+        frequencies = rules.estimate_frequencies.output.frequencies
+    output:
+        frequencies = "results/figures/frequencies/flu_" + BUILD_SEGMENT_LOG_STEM + ".pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell: "python3 scripts/plot_frequency_trajectories.py {input} {output}"
 
 rule aggregate_frequency_plots:
-    input: expand("results/figures/frequencies/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    input: expand(rules.plot_frequencies.output.frequencies, lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
     output: "results/figures/frequencies.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
@@ -22,13 +24,15 @@ rule aggregate_frequency_plots:
 #
 
 rule plot_sequences_by_date:
-    input: rules.export.output.auspice_tree
-    output: "results/figures/sequence_distributions/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.pdf"
+    input:
+        auspice_tree = rules.export.output.auspice_tree
+    output:
+        sequences = "results/figures/sequence_distributions/flu_" + BUILD_SEGMENT_LOG_STEM + ".pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell: "python3 scripts/plot_sequence_distribution.py {input} {output}"
 
 rule aggregate_sequence_distribution_plots:
-    input: expand("results/figures/sequence_distributions/flu_h3n2_ha_{year_range}y_{viruses}v_{sample}.pdf", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    input: expand(rules.plot_sequences_by_date.output.sequences, lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
     output: "results/figures/sequence_distributions.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
@@ -37,15 +41,17 @@ rule aggregate_sequence_distribution_plots:
 #
 
 rule plot_tree:
-    input: rules.export.output.auspice_tree
-    output: "results/figures/trees/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf"
+    input:
+        auspice_tree = rules.export.output.auspice_tree
+    output:
+        tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/plot_tree_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/plot_tree_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.log"
+    benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell: """python3 scripts/plot_tree.py {input} {output} &> {log}"""
 
 rule aggregate_tree_plots:
-    input: expand("results/figures/trees/flu_h3n2_{segment}_{year_range}y_{viruses}v_{sample}_tree.pdf", segment=SEGMENTS, year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
+    input: expand(rules.plot_tree.output.tree, lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
     output:
         trees="results/figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
