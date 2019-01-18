@@ -1,12 +1,16 @@
 {
     "path_to_fauna": "../fauna",
     "min_length": 900,
+    "lineages": ["h3n2"],
     "segments": ["ha"],
-    "year_ranges": ["2005-2015"],
-    "all_year_ranges": ["1994-2006", "2005-2017", "2006-2018"],
-    "viruses": [92],
-    "number_of_samples": 3,
+    "start_date": "2005-10-01",
+    "end_date": "2018-10-01",
+    "pivot_interval": 6,
+    "min_years_per_build": 4,
+    "viruses": [1],
+    "number_of_samples": 1,
     "include_titer_tree": false,
+    "min_tips_per_clade": 5,
     "predictors": [
         "null"
     ],
@@ -56,6 +60,10 @@
             "attributes": ["ep"],
             "masks": ["bhatt"]
         }
+    },
+    "lbi": {
+        "tau": 0.5,
+        "window": 0.1
     },
     "fitness_model": {
         "min_freq": 0.01,

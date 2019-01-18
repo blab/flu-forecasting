@@ -1,6 +1,16 @@
 """
 Rules to build auspice JSONs from sequences and titers using modular augur.
 """
+# Imports.
+from augur.frequency_estimators import get_pivots, timestamp_to_float
+import json
+import pandas as pd
+from pathlib import Path
+from snakemake.exceptions import IncompleteCheckpointException
+
+BUILD_SEGMENT_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/"
+BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
+
 
 rule download_sequences:
     message: "Downloading {wildcards.segment} sequences from fauna"
@@ -33,7 +43,7 @@ rule download_titers:
     shell:
         """
         python3 {path_to_fauna}/tdb/download.py \
-            --database cdc_tdb \
+            --database tdb cdc_tdb \
             --virus flu \
             --subtype h3n2 \
             --select assay_type:hi \
@@ -85,7 +95,7 @@ rule filter:
             --metadata {input.metadata} \
             --min-length {params.min_length} \
             --exclude {input.exclude} \
-            --exclude-where country=? region=? \
+            --exclude-where country=? region=? passage=egg \
             --output {output}
         """
 
@@ -96,13 +106,10 @@ rule select_strains:
         titers = rules.download_titers.output.titers,
         include = "config/references_{lineage}.txt"
     output:
-        strains = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains.txt",
+        strains = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/strains.txt"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.txt"
-    log: "logs/select_strains_{lineage}_{year_range}y_{viruses}v_{sample}.log"
-    params:
-        start_date=_get_start_date_from_range,
-        end_date=_get_end_date_from_range
+    benchmark: "benchmarks/select_strains_{lineage}_{viruses}v_{sample}_{start}_{end}.txt"
+    log: "logs/select_strains_{lineage}_{viruses}v_{sample}_{start}_{end}.log"
     shell:
         """
         python3 scripts/select_strains.py \
@@ -111,7 +118,7 @@ rule select_strains:
             --segments {SEGMENTS} \
             --include {input.include} \
             --lineage {wildcards.lineage} \
-            --time-interval {params.start_date} {params.end_date} \
+            --time-interval {wildcards.start} {wildcards.end} \
             --viruses_per_month {wildcards.viruses} \
             --titers {input.titers} \
             --output {output.strains}
@@ -122,19 +129,33 @@ rule extract_strain_metadata:
         strains = rules.select_strains.output.strains,
         metadata = "results/builds/metadata_{lineage}_ha.tsv"
     output:
-        metadata = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv"
+        metadata = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/strains_metadata.tsv"
     run:
         strains = pd.read_table(input.strains, header=None, names=["strain"])
         metadata = pd.read_table(input.metadata)
         selected_metadata = strains.merge(metadata, how="left", on="strain")
         selected_metadata.to_csv(output.metadata, sep="\t", index=False)
 
+rule get_strains_by_timepoint:
+    input:
+        metadata = rules.extract_strain_metadata.output.metadata
+    output:
+        strains = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/strains.txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/partition_strains_by_timepoint.py \
+            {input.metadata} \
+            {wildcards.timepoint} \
+            {output}
+        """
+
 rule extract:
     input:
         sequences = rules.filter.output.sequences,
-        strains = rules.select_strains.output.strains
+        strains = rules.get_strains_by_timepoint.output.strains
     output:
-        sequences = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/filtered_sequences.fasta"
+        sequences = BUILD_SEGMENT_PATH + "filtered_sequences.fasta"
     shell:
         """
         python3 scripts/extract_sequences.py \
@@ -146,16 +167,16 @@ rule extract:
 rule align:
     message:
         """
-        Aligning sequences to {input.reference} for {wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample}
+        Aligning sequences to {input.reference} for {wildcards}
           - filling gaps with N
         """
     input:
         sequences = rules.extract.output.sequences,
         reference = "config/{lineage}_{segment}_outgroup.gb"
     output:
-        alignment = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/aligned.fasta"
+        alignment = BUILD_SEGMENT_PATH + "aligned.fasta"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/align_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    benchmark: "benchmarks/align_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     threads: 4
     shell:
         """
@@ -169,14 +190,14 @@ rule align:
         """
 
 rule tree:
-    message: "Building tree ({wildcards.lineage}_{wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})"
+    message: "Building tree ({wildcards})"
     input:
         alignment = rules.align.output.alignment
     output:
-        tree = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/tree_raw.nwk"
+        tree = BUILD_SEGMENT_PATH + "tree_raw.nwk"
     conda: "../envs/anaconda.python3.yaml"
     shadow: "minimal"
-    benchmark: "benchmarks/tree_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    benchmark: "benchmarks/tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     threads: 4
     shell:
         """
@@ -190,7 +211,7 @@ rule tree:
 rule refine:
     message:
         """
-        Refining tree ({wildcards.lineage}_{wildcards.segment}_{wildcards.year_range}y_{wildcards.viruses}v_{wildcards.sample})
+        Refining tree ({wildcards})
           - estimate timetree
           - use {params.coalescent} coalescent timescale
           - use fixed clock rate of {params.clock_rate}
@@ -202,15 +223,15 @@ rule refine:
         alignment = rules.align.output.alignment,
         metadata = rules.parse.output.metadata
     output:
-        tree = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/tree.nwk",
-        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/branch_lengths.json"
+        tree = BUILD_SEGMENT_PATH + "tree.nwk",
+        node_data = BUILD_SEGMENT_PATH + "branch_lengths.json"
     params:
         coalescent = "const",
         date_inference = "marginal",
         clock_filter_iqd = 4,
         clock_rate = _get_clock_rate_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/refine_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    benchmark: "benchmarks/refine_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur refine \
@@ -227,17 +248,50 @@ rule refine:
             --clock-filter-iqd {params.clock_filter_iqd}
         """
 
+rule estimate_frequencies:
+    message:
+        """
+        Estimating frequencies for {input.tree}
+          - narrow bandwidth: {params.narrow_bandwidth}
+          - wide bandwidth: {params.wide_bandwidth}
+          - proportion wide: {params.proportion_wide}
+        """
+    input:
+        tree=rules.refine.output.tree,
+        metadata=rules.parse.output.metadata,
+        weights="data/region_weights.json"
+    output:
+        frequencies = BUILD_SEGMENT_PATH + "frequencies.json"
+    params:
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
+        pivot_frequency=PIVOT_INTERVAL
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell: """python3 scripts/frequencies.py {input.tree} {input.metadata} {output} \
+--narrow-bandwidth {params.narrow_bandwidth} \
+--wide-bandwidth {params.wide_bandwidth} \
+--proportion-wide {params.proportion_wide} \
+--pivot-frequency {params.pivot_frequency} \
+--start-date {wildcards.start} \
+--end-date {wildcards.timepoint} \
+--weights {input.weights} \
+--weights-attribute region \
+--include-internal-nodes &> {log}"""
+
 rule ancestral:
-    message: "Reconstructing ancestral sequences and mutations"
+    message: "Reconstructing ancestral sequences and mutations for {wildcards}"
     input:
         tree = rules.refine.output.tree,
         alignment = rules.align.output.alignment
     output:
-        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/nt_muts.json"
+        node_data = BUILD_SEGMENT_PATH + "nt_muts.json"
     params:
         inference = "joint"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/ancestral_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    benchmark: "benchmarks/ancestral_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur ancestral \
@@ -254,8 +308,9 @@ rule translate:
         node_data = rules.ancestral.output.node_data,
         reference = "config/{lineage}_{segment}_outgroup.gb"
     output:
-        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/aa_muts.json"
+        node_data = BUILD_SEGMENT_PATH + "aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/translate_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur translate \
@@ -265,17 +320,62 @@ rule translate:
             --output {output.node_data}
         """
 
+rule reconstruct_translations:
+    message: "Reconstructing translations for {wildcards.gene}"
+    input:
+        tree = rules.refine.output.tree,
+        node_data = rules.translate.output.node_data
+    output:
+        aa_alignment = BUILD_SEGMENT_PATH + "aa-seq_{gene}.fasta"
+    shell:
+        """
+        augur reconstruct-sequences \
+            --tree {input.tree} \
+            --mutations {input.node_data} \
+            --gene {wildcards.gene} \
+            --output {output.aa_alignment} \
+            --internal-nodes
+        """
+
+genes_to_translate = {'ha':['SigPep', 'HA1', 'HA2'], 'na':['NA']}
+def gene_names(wildcards):
+    return genes_to_translate[wildcards.segment]
+
+def translations(wildcards):
+    genes = gene_names(wildcards)
+    return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
+            for gene in genes]
+
+rule clades_by_haplotype:
+    input:
+        tree = rules.refine.output.tree,
+        translations = translations,
+    output:
+        clades = BUILD_SEGMENT_PATH + "clades.json"
+    params:
+        gene_names = gene_names,
+        minimum_tips = config["min_tips_per_clade"]
+    shell:
+        """
+        python3 scripts/find_clades.py \
+            --tree {input.tree} \
+            --translations {input.translations} \
+            --gene-names {params.gene_names} \
+            --minimum-tips {params.minimum_tips} \
+            --output {output.clades}
+        """
+
 rule traits:
     message: "Inferring ancestral traits for {params.columns!s}"
     input:
         tree = rules.refine.output.tree,
         metadata = rules.parse.output.metadata
     output:
-        node_data = "results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/{segment}/traits.json",
+        node_data = BUILD_SEGMENT_PATH + "traits.json",
     params:
         columns = "region country"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/traits_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}.txt"
+    benchmark: "benchmarks/traits_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur traits \
@@ -286,6 +386,28 @@ rule traits:
             --confidence
         """
 
+rule lbi:
+    message: "Calculating LBI"
+    input:
+        tree = rules.refine.output.tree,
+        branch_lengths = rules.refine.output.node_data
+    params:
+        tau = config["lbi"]["tau"],
+        window = config["lbi"]["window"],
+        names = "lbi"
+    output:
+        lbi = BUILD_SEGMENT_PATH + "lbi.json"
+    shell:
+        """
+        augur lbi \
+            --tree {input.tree} \
+            --branch-lengths {input.branch_lengths} \
+            --output {output} \
+            --attribute-names {params.names} \
+            --tau {params.tau} \
+            --window {params.window}
+        """
+
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """
@@ -294,12 +416,12 @@ def _get_node_data_for_export(wildcards):
         rules.refine.output.node_data,
         rules.ancestral.output.node_data,
         rules.translate.output.node_data,
-        rules.traits.output.node_data
+        rules.traits.output.node_data,
+        rules.clades_by_haplotype.output.clades,
+        rules.lbi.output.lbi
         # Omit these annotations for now
         # rules.titers_tree.output.titers_model,
-        # rules.titers_sub.output.titers_model,
-        # rules.clades.output.clades,
-        # rules.lbi.output.lbi
+        # rules.titers_sub.output.titers_model
     ]
 
     # Convert input files from wildcard strings to real file names.
@@ -314,9 +436,9 @@ rule export:
         node_data = _get_node_data_for_export,
         colors = "config/colors.tsv"
     output:
-        auspice_tree = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_tree.json",
-        auspice_metadata = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_meta.json",
-        auspice_sequence = "results/auspice/flu_{lineage}_{segment}_{year_range}y_{viruses}v_{sample}_seq.json",
+        auspice_tree = "results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json",
+        auspice_metadata = "results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_meta.json",
+        auspice_sequence = "results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_seq.json",
     params:
         geography_traits = "region",
         panels = "tree entropy"
