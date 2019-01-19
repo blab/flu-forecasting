@@ -431,6 +431,40 @@ rule lbi:
             --window {params.window}
         """
 
+rule titers_sub:
+    input:
+        titers = rules.download_titers.output.titers,
+        aa_muts = rules.translate.output,
+        alignments = translations,
+        tree = rules.refine.output.tree
+    params:
+        genes = gene_names
+    output:
+        titers_model = BUILD_SEGMENT_PATH + "titers-sub-model.json",
+    shell:
+        """
+        augur titers sub \
+            --titers {input.titers} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --tree {input.tree} \
+            --output {output.titers_model}
+        """
+
+rule titers_tree:
+    input:
+        titers = rules.download_titers.output.titers,
+        tree = rules.refine.output.tree
+    output:
+        titers_model = BUILD_SEGMENT_PATH + "titers-tree-model.json",
+    shell:
+        """
+        augur titers tree \
+            --titers {input.titers} \
+            --tree {input.tree} \
+            --output {output.titers_model}
+        """
+
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """
@@ -441,10 +475,9 @@ def _get_node_data_for_export(wildcards):
         rules.translate.output.node_data,
         rules.traits.output.node_data,
         rules.clades_by_haplotype.output.clades,
-        rules.lbi.output.lbi
-        # Omit these annotations for now
-        # rules.titers_tree.output.titers_model,
-        # rules.titers_sub.output.titers_model
+        rules.lbi.output.lbi,
+        rules.titers_tree.output.titers_model,
+        rules.titers_sub.output.titers_model
     ]
 
     # Convert input files from wildcard strings to real file names.
@@ -486,7 +519,9 @@ rule convert_node_data_to_table:
         tree = rules.refine.output.tree,
         node_data = [
             rules.lbi.output.lbi,
-            rules.distances.output.distances
+            rules.distances.output.distances,
+            rules.titers_tree.output.titers_model,
+            rules.titers_sub.output.titers_model
         ]
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
