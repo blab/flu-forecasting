@@ -8,7 +8,9 @@ import pandas as pd
 from pathlib import Path
 from snakemake.exceptions import IncompleteCheckpointException
 
-BUILD_SEGMENT_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/"
+BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
+BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
+BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
 BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
 
 
@@ -565,3 +567,13 @@ rule merge_node_data_and_frequencies:
         )
 
         df.to_csv(output.table, sep="\t", index=False, header=True)
+
+
+rule collect_tip_attributes:
+    input:
+        expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tip_attributes.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+    output:
+        attributes = BUILD_PATH + "tip_attributes.tsv"
+    run:
+        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+        df.to_csv(output["attributes"], sep="\t", index=False)
