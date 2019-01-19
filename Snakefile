@@ -122,7 +122,7 @@ include: "rules/quality_control_plots.smk"
 
 rule all:
     input:
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/node_data.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS),
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS),
         _get_auspice_files,
         "results/figures/frequencies.pdf"
         # "results/model_accuracy.tab",

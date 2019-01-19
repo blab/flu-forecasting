@@ -498,3 +498,35 @@ rule convert_node_data_to_table:
             --output {output} \
             --annotations timepoint={wildcards.timepoint}
         """
+
+rule convert_frequencies_to_table:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies
+    output:
+        table = BUILD_SEGMENT_PATH + "frequencies.tsv"
+    shell:
+        """
+        python3 scripts/frequencies_to_table.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --output {output} \
+            --annotations timepoint={wildcards.timepoint}
+        """
+
+rule merge_node_data_and_frequencies:
+    input:
+        node_data = rules.convert_node_data_to_table.output.table,
+        frequencies = rules.convert_frequencies_to_table.output.table
+    output:
+        table = BUILD_SEGMENT_PATH + "tip_attributes.tsv"
+    run:
+        node_data = pd.read_table(input.node_data)
+        frequencies = pd.read_table(input.frequencies)
+        df = node_data.merge(
+            frequencies,
+            how="inner",
+            on=["strain", "timepoint", "is_terminal"]
+        )
+
+        df.to_csv(output.table, sep="\t", index=False, header=True)
