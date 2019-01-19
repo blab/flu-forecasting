@@ -60,6 +60,30 @@ def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min
 TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)[:3]
 
 #
+# Configure amino acid distance masks.
+#
+
+# Load mask configuration including which masks map to which attributes per
+# lineage and segment.
+masks_config = pd.read_table("config/mask_config.tsv")
+
+def _get_build_mask_config(wildcards):
+    config = masks_config[(masks_config["lineage"] == wildcards.lineage) &
+                          (masks_config["segment"] == wildcards.segment)]
+    if config.shape[0] > 0:
+        return config
+    else:
+        return None
+
+def _get_mask_attribute_names_by_wildcards(wildcards):
+    config = _get_build_mask_config(wildcards)
+    return " ".join(config.loc[:, "attribute"].values)
+
+def _get_mask_names_by_wildcards(wildcards):
+    config = _get_build_mask_config(wildcards)
+    return " ".join(config.loc[:, "mask"].values)
+
+#
 # Define helper functions.
 #
 
@@ -98,7 +122,7 @@ include: "rules/quality_control_plots.smk"
 
 rule all:
     input:
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/frequencies.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS),
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/timepoints/{timepoint}/segments/{segment}/node_data.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS),
         _get_auspice_files,
         "results/figures/frequencies.pdf"
         # "results/model_accuracy.tab",

@@ -386,6 +386,29 @@ rule traits:
             --confidence
         """
 
+rule distances:
+    input:
+        tree = rules.refine.output.tree,
+        alignments = translations,
+        masks = "config/{segment}_masks.tsv"
+    params:
+        genes = gene_names,
+        attribute_names = _get_mask_attribute_names_by_wildcards,
+        mask_names = _get_mask_names_by_wildcards
+    output:
+        distances = BUILD_SEGMENT_PATH + "distances.json",
+    shell:
+        """
+        augur distance \
+            --tree {input.tree} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --masks {input.masks} \
+            --output {output} \
+            --attribute-names {params.attribute_names} \
+            --mask-names {params.mask_names}
+        """
+
 rule lbi:
     message: "Calculating LBI"
     input:
@@ -456,4 +479,22 @@ rule export:
             --output-meta {output.auspice_metadata} \
             --output-sequence {output.auspice_sequence} \
             --panels {params.panels}
+        """
+
+rule convert_node_data_to_table:
+    input:
+        tree = rules.refine.output.tree,
+        node_data = [
+            rules.lbi.output.lbi,
+            rules.distances.output.distances
+        ]
+    output:
+        table = BUILD_SEGMENT_PATH + "node_data.tsv"
+    shell:
+        """
+        python3 scripts/node_data_to_table.py \
+            --tree {input.tree} \
+            --jsons {input.node_data} \
+            --output {output} \
+            --annotations timepoint={wildcards.timepoint}
         """
