@@ -15,5 +15,5 @@ dependencies:
 - raxml
 - snakemake=5.4.0
 - pip:
-  - git+https://github.com/nextstrain/augur@ae6f2f9
+  - git+https://github.com/nextstrain/augur@master
   - rethinkdb
