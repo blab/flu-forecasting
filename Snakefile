@@ -120,10 +120,15 @@ def _get_clock_rate_by_wildcards(wildcards):
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
 
+BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
+BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
+BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
+BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
+
 #include: "rules/filter_passaged_viruses.smk"
 include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
-#include: "rules/fitness_model.smk"
+include: "rules/fitness_model.smk"
 include: "rules/quality_control_plots.smk"
 
 rule all:
