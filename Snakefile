@@ -1,4 +1,7 @@
 import pandas as pd
+import pprint
+
+from src.forecast.fitness_model import get_train_validate_timepoints
 
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
@@ -57,7 +60,10 @@ def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min
 
     return timepoints
 
-TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)[:3]
+TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)
+TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(TIMEPOINTS, 1, 1)
+pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
+TIMEPOINTS = TIMEPOINTS[:3]
 
 #
 # Configure amino acid distance masks.

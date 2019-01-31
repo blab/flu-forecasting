@@ -207,6 +207,58 @@ def project_clade_frequencies_by_delta_from_time(tree, model, time, delta, delta
     return projected_frequencies
 
 
+def get_train_validate_timepoints(timepoints, delta_time, training_window):
+    """Return all possible train-validate timepoints from the given complete list of
+    timepoints, a delta time to project forward by, and the required number of
+    timepoints to include in each training window.
+
+    Parameters
+    ----------
+    timepoints : list
+        Date/time strings to use for model training and validation
+
+    delta_time : int
+        Number of years into the future that the model will project
+
+    training_window : int
+        Number of years to include in each training window
+
+    Returns
+    -------
+    list
+        List of dictionaries containing all possible train-validate timepoints indexed by "train" and "validate" keys
+    """
+    # Convert list of date/time strings into pandas datetimes.
+    timepoints = pd.to_datetime(timepoints)
+
+    # Convert delta time and training window to pandas offsets.
+    delta_time = pd.DateOffset(years=delta_time)
+    training_window = pd.DateOffset(years=training_window)
+
+    # Filter timepoints to those with enough future years to train and project from.
+    is_valid_projection_timepoint = (timepoints + training_window + delta_time) <= timepoints[-1]
+    projection_timepoints = timepoints[is_valid_projection_timepoint].copy()
+
+    # Split valid timepoint index values into all possible train/test sets.
+    train_validate_timepoints = []
+    for start_timepoint in projection_timepoints:
+        end_timepoint = start_timepoint + training_window
+        train_timepoints = timepoints[
+            (timepoints >= start_timepoint) &
+            (timepoints <= end_timepoint)
+        ]
+        validate_timepoint = train_timepoints[-1] + delta_time
+
+        # Store train/validate timepoints as datetime strings to enable
+        # downstream use by other tools.
+        train_validate_timepoints.append({
+            "train": train_timepoints.strftime("%Y-%m-%d").tolist(),
+            "validate": validate_timepoint.strftime("%Y-%m-%d")
+        })
+
+    return train_validate_timepoints
+
+
 class fitness_model(object):
 
     def __init__(self, tree, frequencies, predictor_input, cross_validate=False, censor_frequencies=True,
