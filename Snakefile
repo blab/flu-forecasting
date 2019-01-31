@@ -1,4 +1,7 @@
 import pandas as pd
+import pprint
+
+from src.forecast.fitness_model import get_train_validate_timepoints
 
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
@@ -57,7 +60,10 @@ def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min
 
     return timepoints
 
-TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)[:3]
+TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)
+TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(TIMEPOINTS, 1, 1)
+pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
+TIMEPOINTS = TIMEPOINTS[:3]
 
 #
 # Configure amino acid distance masks.
@@ -114,10 +120,15 @@ def _get_clock_rate_by_wildcards(wildcards):
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
 
+BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
+BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
+BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
+BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
+
 #include: "rules/filter_passaged_viruses.smk"
 include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
-#include: "rules/fitness_model.smk"
+include: "rules/fitness_model.smk"
 include: "rules/quality_control_plots.smk"
 
 rule all:

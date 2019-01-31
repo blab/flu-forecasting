@@ -12,7 +12,7 @@
     "include_titer_tree": false,
     "min_tips_per_clade": 5,
     "predictors": [
-        "null"
+        "lbi"
     ],
     "standard_predictors": [
         "ep",
