@@ -570,5 +570,10 @@ rule collect_tip_attributes:
     output:
         attributes = BUILD_PATH + "tip_attributes.tsv"
     run:
+        # Concatenate tip attributes across all timepoints.
         df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
+
+        # Filter out any tips that have a frequency of zero.
+        df = df[df["frequency"] > 0].copy()
+
         df.to_csv(output["attributes"], sep="\t", index=False)
