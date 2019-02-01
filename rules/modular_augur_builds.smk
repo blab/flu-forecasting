@@ -522,6 +522,7 @@ rule convert_node_data_to_table:
         ]
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/node_data_to_table.py \
@@ -537,6 +538,7 @@ rule convert_frequencies_to_table:
         frequencies = rules.estimate_frequencies.output.frequencies
     output:
         table = BUILD_SEGMENT_PATH + "frequencies.tsv"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/frequencies_to_table.py \
@@ -563,17 +565,15 @@ rule merge_node_data_and_frequencies:
 
         df.to_csv(output.table, sep="\t", index=False, header=True)
 
-
 rule collect_tip_attributes:
     input:
         expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tip_attributes.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
     output:
         attributes = BUILD_PATH + "tip_attributes.tsv"
-    run:
-        # Concatenate tip attributes across all timepoints.
-        df = pd.concat([pd.read_table(i) for i in input], ignore_index=True)
-
-        # Filter out any tips that have a frequency of zero.
-        df = df[df["frequency"] > 0].copy()
-
-        df.to_csv(output["attributes"], sep="\t", index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+            --tables {input} \
+            --output {output.attributes}
+        """
