@@ -11,6 +11,10 @@
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 5,
+    "titers": {
+        "passages": ["cell"],
+        "assays": ["hi"]
+    },
     "predictors": [
         "lbi"
     ],

@@ -10,14 +10,14 @@ from snakemake.exceptions import IncompleteCheckpointException
 
 
 rule download_sequences:
-    message: "Downloading {wildcards.segment} sequences from fauna"
+    message: "Downloading {wildcards.lineage} {wildcards.segment} sequences from fauna"
     output:
-        sequences = "data/h3n2_{segment}.fasta"
+        sequences = "data/{lineage}_{segment}.fasta"
     params:
         fasta_fields = "strain virus accession collection_date region country division location passage_category submitting_lab age gender"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/download_sequences_{segment}.txt"
-    log: "logs/download_sequences_{segment}.log"
+    benchmark: "benchmarks/download_sequences_{lineage}_{segment}.txt"
+    log: "logs/download_sequences_{lineage}_{segment}.log"
     shell:
         """
         python3 {path_to_fauna}/vdb/download.py \
@@ -25,27 +25,29 @@ rule download_sequences:
             --virus flu \
             --fasta_fields {params.fasta_fields} \
             --resolve_method split_passage \
-            --select locus:{wildcards.segment} lineage:seasonal_h3n2 \
+            --select locus:{wildcards.segment} lineage:seasonal_{wildcards.lineage} \
             --path data \
-            --fstem h3n2_{wildcards.segment}
+            --fstem {wildcards.lineage}_{wildcards.segment}
         """
 
 rule download_titers:
-    message: "Downloading titers from fauna"
+    message: "Downloading {wildcards.lineage} {wildcards.assay} {wildcards.passage} titers from fauna"
     output:
-        titers = "data/h3n2_hi_titers.tsv"
+        titers = "data/{lineage}_{passage}_{assay}_titers.tsv"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/download_titers.txt"
-    log: "logs/download_titers.log"
+    benchmark: "benchmarks/download_titers_{lineage}_{passage}_{assay}.txt"
+    log: "logs/download_titers_{lineage}_{passage}_{assay}.log"
+    params:
+        databases = "tdb cdc_tdb"
     shell:
         """
         python3 {path_to_fauna}/tdb/download.py \
-            --database tdb cdc_tdb \
+            --database {params.databases} \
             --virus flu \
-            --subtype h3n2 \
-            --select assay_type:hi \
+            --subtype {wildcards.lineage} \
+            --select assay_type:{wildcards.assay} serum_passage_category:{wildcards.passage} \
             --path data \
-            --fstem h3n2_hi
+            --fstem {wildcards.lineage}_{wildcards.passage}_{wildcards.assay}
         """
 
 rule parse:
@@ -100,7 +102,7 @@ rule select_strains:
     input:
         sequences = expand("results/builds/filtered_{{lineage}}_{segment}.fasta", segment=SEGMENTS),
         metadata = expand("results/builds/metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
-        titers = rules.download_titers.output.titers,
+        titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         include = "config/references_{lineage}.txt"
     output:
         strains = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/strains.txt"
@@ -169,7 +171,7 @@ rule align:
         """
     input:
         sequences = rules.extract.output.sequences,
-        reference = "config/{lineage}_{segment}_outgroup.gb"
+        reference = "config/reference_{lineage}_{segment}.gb"
     output:
         alignment = BUILD_SEGMENT_PATH + "aligned.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -303,7 +305,7 @@ rule translate:
     input:
         tree = rules.refine.output.tree,
         node_data = rules.ancestral.output.node_data,
-        reference = "config/{lineage}_{segment}_outgroup.gb"
+        reference = "config/reference_{lineage}_{segment}.gb"
     output:
         node_data = BUILD_SEGMENT_PATH + "aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
@@ -387,7 +389,7 @@ rule distances:
     input:
         tree = rules.refine.output.tree,
         alignments = translations,
-        masks = "config/{segment}_masks.tsv"
+        masks = "config/masks_{lineage}_{segment}.tsv"
     params:
         genes = gene_names,
         attribute_names = _get_mask_attribute_names_by_wildcards,
@@ -430,7 +432,7 @@ rule lbi:
 
 rule titers_sub:
     input:
-        titers = rules.download_titers.output.titers,
+        titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         aa_muts = rules.translate.output,
         alignments = translations,
         tree = rules.refine.output.tree
@@ -450,7 +452,7 @@ rule titers_sub:
 
 rule titers_tree:
     input:
-        titers = rules.download_titers.output.titers,
+        titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         tree = rules.refine.output.tree
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-tree-model.json",
@@ -465,17 +467,29 @@ rule titers_tree:
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """
-    # Define inputs shared by all builds.
+    # Define inputs shared by specific builds.
     inputs = [
         rules.refine.output.node_data,
         rules.ancestral.output.node_data,
         rules.translate.output.node_data,
         rules.traits.output.node_data,
         rules.clades_by_haplotype.output.clades,
-        rules.lbi.output.lbi,
-        rules.titers_tree.output.titers_model,
-        rules.titers_sub.output.titers_model
+        rules.lbi.output.lbi
     ]
+
+    # Define segment-specific inputs for auspice JSONs.
+    # For example, antigenic assays only make sense for HA and NA.
+    if wildcards.lineage in ["h3n2"] and wildcards.segment in ["ha", "na"]:
+        inputs.extend([
+            rules.titers_tree.output.titers_model,
+            rules.titers_sub.output.titers_model
+        ])
+
+    # If the current lineage and segment have a mask configuration defined,
+    # calculate distances.
+    build_mask_config = _get_build_mask_config(wildcards)
+    if build_mask_config is not None:
+        inputs.append(rules.distances.output.distances)
 
     # Convert input files from wildcard strings to real file names.
     inputs = [input_file.format(**wildcards) for input_file in inputs]
@@ -514,12 +528,7 @@ rule export:
 rule convert_node_data_to_table:
     input:
         tree = rules.refine.output.tree,
-        node_data = [
-            rules.lbi.output.lbi,
-            rules.distances.output.distances,
-            rules.titers_tree.output.titers_model,
-            rules.titers_sub.output.titers_model
-        ]
+        node_data = _get_node_data_for_export
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
     conda: "../envs/anaconda.python3.yaml"
@@ -529,7 +538,9 @@ rule convert_node_data_to_table:
             --tree {input.tree} \
             --jsons {input.node_data} \
             --output {output} \
-            --annotations timepoint={wildcards.timepoint}
+            --annotations timepoint={wildcards.timepoint} \
+                          lineage={wildcards.lineage} \
+                          segment={wildcards.segment}
         """
 
 rule convert_frequencies_to_table:
