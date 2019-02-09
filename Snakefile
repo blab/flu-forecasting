@@ -136,6 +136,7 @@ include: "rules/quality_control_plots.smk"
 rule all:
     input:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tips_to_clades.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         _get_auspice_files,
         "results/figures/frequencies.pdf"
         # "results/model_accuracy.tab",

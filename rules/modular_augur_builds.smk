@@ -326,6 +326,7 @@ rule reconstruct_translations:
         node_data = rules.translate.output.node_data
     output:
         aa_alignment = BUILD_SEGMENT_PATH + "aa-seq_{gene}.fasta"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur reconstruct-sequences \
@@ -350,10 +351,12 @@ rule clades_by_haplotype:
         tree = rules.refine.output.tree,
         translations = translations,
     output:
-        clades = BUILD_SEGMENT_PATH + "clades.json"
+        clades = BUILD_SEGMENT_PATH + "clades.json",
+        tip_clade_table = BUILD_SEGMENT_PATH + "unannotated_tips_to_clades.tsv"
     params:
         gene_names = gene_names,
         minimum_tips = config["min_tips_per_clade"]
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/find_clades.py \
@@ -361,8 +364,21 @@ rule clades_by_haplotype:
             --translations {input.translations} \
             --gene-names {params.gene_names} \
             --minimum-tips {params.minimum_tips} \
-            --output {output.clades}
+            --output {output.clades} \
+            --output-tip-clade-table {output.tip_clade_table}
         """
+
+rule annotate_tip_clade_table:
+    input:
+        tip_clade_table = rules.clades_by_haplotype.output.tip_clade_table
+    output:
+        tip_clade_table = BUILD_SEGMENT_PATH + "tips_to_clades.tsv"
+    run:
+        df = pd.read_table(input["tip_clade_table"])
+        df["lineage"] = wildcards.lineage
+        df["segment"] = wildcards.segment
+        df["timepoint"] = wildcards.timepoint
+        df.to_csv(output["tip_clade_table"], sep="\t", index=False)
 
 rule traits:
     message: "Inferring ancestral traits for {params.columns!s}"
@@ -587,4 +603,17 @@ rule collect_tip_attributes:
         python3 scripts/collect_tables.py \
             --tables {input} \
             --output {output.attributes}
+        """
+
+rule collect_annotated_tip_clade_tables:
+    input:
+        expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tips_to_clades.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+    output:
+        tip_clade_table = BUILD_PATH + "tips_to_clades.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+            --tables {input} \
+            --output {output.tip_clade_table}
         """
