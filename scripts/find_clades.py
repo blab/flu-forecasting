@@ -4,6 +4,7 @@ import argparse
 from augur.reconstruct_sequences import load_alignments
 from augur.utils import annotate_parents_for_tree, write_json
 import Bio.Phylo
+import pandas as pd
 
 
 if __name__ == "__main__":
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     parser.add_argument("--use-incremental-ids", action="store_true", help="report an incremental integer id for each clade instead of concatenated mutations")
     parser.add_argument("--minimum-tips", type=int, default=1, help="minimum number of tips required for a clade to be assigned its own annotation")
     parser.add_argument("--output", required=True, help="JSON of clade annotations for nodes in the given tree")
+    parser.add_argument("--output-tip-clade-table", help="optional table of all clades per tip in the tree")
 
     args = parser.parse_args()
 
@@ -80,3 +82,16 @@ if __name__ == "__main__":
 
     # Write out the node annotations.
     write_json({"nodes": clades}, args.output)
+
+    # Output the optional tip-to-clade table, if requested.
+    if args.output_tip_clade_table:
+        records = []
+        for tip in tree.find_clades(terminal=True):
+            parent = tip.parent
+            while parent != tree.root:
+                records.append([tip.name, clades[parent.name]["clade_membership"]])
+                parent = parent.parent
+
+        df = pd.DataFrame(records, columns=["tip", "clade"])
+        df = df.drop_duplicates()
+        df.to_csv(args.output_tip_clade_table, sep="\t", index=False)

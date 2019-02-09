@@ -69,7 +69,8 @@ if __name__ == '__main__':
     df = pd.concat([pd.read_table(table) for table in args.tables], ignore_index=True)
 
     # Filter out any tips that have a frequency of zero.
-    df = df[df["frequency"] > 0].copy()
+    if "frequency" in df.columns:
+        df = df[df["frequency"] > 0].copy()
 
     # Apply transformations.
     if args.transforms:
