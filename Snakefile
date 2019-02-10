@@ -1,5 +1,6 @@
 import pandas as pd
 import pprint
+import sys
 
 from src.forecast.fitness_model import get_train_validate_timepoints
 
@@ -13,7 +14,7 @@ wildcard_constraints:
     viruses="\d+",
     bandwidth="[0-9]*\.?[0-9]+",
     lineage="[a-z0-9]+",
-    segment="[a-z]+",
+    segment="[a-z]+[0-9]?",
     start="\d{4}-\d{2}-\d{2}",
     end="\d{4}-\d{2}-\d{2}",
     timepoint="\d{4}-\d{2}-\d{2}"
@@ -111,13 +112,20 @@ def _get_distance_mask_names_by_segment(wildcards):
     return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
 
 def _get_clock_rate_by_wildcards(wildcards):
-    rate = {
+    rates_by_lineage_and_segment = {
         ('h3n2', 'ha'): 0.0043, ('h3n2', 'na'):0.0029,
         ('h1n1pdm', 'ha'): 0.0040, ('h1n1pdm', 'na'):0.0032,
         ('vic', 'ha'): 0.0024, ('vic', 'na'):0.0015,
         ('yam', 'ha'): 0.0019, ('yam', 'na'):0.0013
     }
-    return rate[(wildcards.lineage, wildcards.segment)]
+
+    try:
+        rate = rates_by_lineage_and_segment[(wildcards.lineage, wildcards.segment)]
+    except KeyError:
+        print(f"ERROR: No clock rate defined for {wildcards.lineage} and {wildcards.segment}", file=sys.stderr)
+        raise
+
+    return rate
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
