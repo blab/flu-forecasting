@@ -88,10 +88,12 @@ if __name__ == "__main__":
         records = []
         for tip in tree.find_clades(terminal=True):
             parent = tip.parent
+            depth = 1
             while parent != tree.root:
-                records.append([tip.name, clades[parent.name]["clade_membership"]])
+                records.append([tip.name, clades[parent.name]["clade_membership"], depth])
                 parent = parent.parent
+                depth += 1
 
-        df = pd.DataFrame(records, columns=["tip", "clade"])
-        df = df.drop_duplicates()
+        df = pd.DataFrame(records, columns=["tip", "clade", "depth"])
+        df = df.drop_duplicates(subset=["tip", "clade"])
         df.to_csv(args.output_tip_clade_table, sep="\t", index=False)
