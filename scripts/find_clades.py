@@ -94,6 +94,6 @@ if __name__ == "__main__":
                 parent = parent.parent
                 depth += 1
 
-        df = pd.DataFrame(records, columns=["tip", "clade", "depth"])
-        df = df.drop_duplicates(subset=["tip", "clade"])
+        df = pd.DataFrame(records, columns=["tip", "clade_membership", "depth"])
+        df = df.drop_duplicates(subset=["tip", "clade_membership"])
         df.to_csv(args.output_tip_clade_table, sep="\t", index=False)

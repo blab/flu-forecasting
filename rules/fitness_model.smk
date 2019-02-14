@@ -12,6 +12,7 @@ rule standardize_tip_attributes:
         predictors = PREDICTORS,
         start_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][0],
         end_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][-1]
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/standardize_predictors.py \
@@ -21,6 +22,26 @@ rule standardize_tip_attributes:
             --start-date {params.start_date} \
             --end-date {params.end_date} \
             --predictors {params.predictors}
+        """
+
+rule select_clades:
+    input:
+        attributes = rules.standardize_tip_attributes.output.attributes,
+        tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
+    output:
+        clades = BUILD_PATH + "final_clade_frequencies.tsv"
+    params:
+        primary_segment = config["fitness_model"]["primary_segment"],
+        delta_time = config["fitness_model"]["delta_time"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/select_clades.py \
+            --tip-attributes {input.attributes} \
+            --tips-to-clades {input.tips_to_clades} \
+            --primary-segment {params.primary_segment} \
+            --delta-time {params.delta_time} \
+            --output {output}
         """
 
 # rule run_fitness_model:

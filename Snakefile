@@ -64,7 +64,11 @@ def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min
     return timepoints
 
 TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)
-TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(TIMEPOINTS, 1, 1)
+TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
+    TIMEPOINTS,
+    config["fitness_model"]["delta_time"],
+    config["fitness_model"]["min_training_window"]
+)
 pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
 TIMEPOINTS = TIMEPOINTS[:3]
 
@@ -144,7 +148,7 @@ include: "rules/quality_control_plots.smk"
 rule all:
     input:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tips_to_clades.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/final_clade_frequencies.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
