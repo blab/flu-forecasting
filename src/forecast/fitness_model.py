@@ -218,7 +218,7 @@ def get_train_validate_timepoints(timepoints, delta_time, training_window):
         Date/time strings to use for model training and validation
 
     delta_time : int
-        Number of years into the future that the model will project
+        Number of months into the future that the model will project
 
     training_window : int
         Number of years to include in each training window
@@ -232,7 +232,7 @@ def get_train_validate_timepoints(timepoints, delta_time, training_window):
     timepoints = pd.to_datetime(timepoints)
 
     # Convert delta time and training window to pandas offsets.
-    delta_time = pd.DateOffset(years=delta_time)
+    delta_time = pd.DateOffset(months=delta_time)
     training_window = pd.DateOffset(years=training_window)
 
     # Filter timepoints to those with enough future years to train and project from.

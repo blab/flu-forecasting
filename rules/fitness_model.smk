@@ -32,7 +32,7 @@ rule select_clades:
         clades = BUILD_PATH + "final_clade_frequencies.tsv"
     params:
         primary_segment = config["fitness_model"]["primary_segment"],
-        delta_time = config["fitness_model"]["delta_time"]
+        delta_months = config["fitness_model"]["delta_months"]
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -40,7 +40,29 @@ rule select_clades:
             --tip-attributes {input.attributes} \
             --tips-to-clades {input.tips_to_clades} \
             --primary-segment {params.primary_segment} \
-            --delta-time {params.delta_time} \
+            --delta-months {params.delta_months} \
+            --output {output}
+        """
+
+rule run_fitness_model:
+    input:
+        attributes = rules.standardize_tip_attributes.output.attributes,
+        final_clade_frequencies = rules.select_clades.output.clades
+    output:
+        model = BUILD_PATH + "models/{predictors}.json"
+    params:
+        predictors = _get_predictor_list,
+        delta_months = config["fitness_model"]["delta_months"],
+        training_window = config["fitness_model"]["training_window"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/fit_model.py \
+            --tip-attributes {input.attributes} \
+            --final-clade-frequencies {input.final_clade_frequencies} \
+            --training-window {params.training_window} \
+            --delta-months {params.delta_months} \
+            --predictors {params.predictors} \
             --output {output}
         """
 
