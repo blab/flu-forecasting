@@ -10,7 +10,7 @@ from forecast.fitness_model import get_train_validate_timepoints
 
 
 class ExponentialGrowthModel(object):
-    def __init__(self, predictors, delta_time):
+    def __init__(self, predictors, delta_time, l1_lambda):
         """Construct an empty exponential growth model instance.
 
         Parameters
@@ -21,12 +21,16 @@ class ExponentialGrowthModel(object):
         delta_time : float
             number of years into the future to project frequencies
 
+        l1_lambda : float
+            hyperparameter to scale L1 regularization penalty for non-zero coefficients
+
         Returns
         -------
         ExponentialGrowthModel
         """
         self.predictors = predictors
         self.delta_time = delta_time
+        self.l1_lambda = l1_lambda
 
     def get_fitnesses(self, coefficients, predictors):
         """Apply the coefficients to the predictors and sum them to get strain
@@ -118,9 +122,9 @@ class ExponentialGrowthModel(object):
 
         # Calculate the error between the observed and estimated frequencies.
         error = ((frequencies["frequency_observed"] - frequencies["frequency_estimated"]) ** 2).sum()
-        number_of_records = frequencies.shape[0]
+        l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
 
-        return error / number_of_records
+        return error + l1_penalty
 
     def fit(self, X, y):
         """Fit a model to the given input data, producing beta coefficients for each of
@@ -233,7 +237,10 @@ class ExponentialGrowthModel(object):
         float :
             model error
         """
-        return self._fit(self.coef_, X, y)
+        error = self._fit(self.coef_, X, y)
+        number_of_records = X[["timepoint", "clade_membership"]].drop_duplicates().shape[0]
+
+        return error / number_of_records
 
 
 def cross_validate(model, data, targets, train_validate_timepoints):
@@ -357,6 +364,7 @@ if __name__ == "__main__":
     parser.add_argument("--predictors", required=True, nargs="+", help="tip attribute columns to use as predictors of final clade frequencies")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
+    parser.add_argument("--l1-lambda", type=float, default=0.2, help="L1 regularization lambda")
 
     args = parser.parse_args()
 
@@ -403,7 +411,8 @@ if __name__ == "__main__":
     delta_time = args.delta_months / 12.0
     model = ExponentialGrowthModel(
         predictors=args.predictors,
-        delta_time=delta_time
+        delta_time=delta_time,
+        l1_lambda=args.l1_lambda
     )
     scores = cross_validate(
         model,
