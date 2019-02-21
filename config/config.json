@@ -72,8 +72,8 @@
     "fitness_model": {
         "min_freq": 0.01,
         "max_freq": 0.99,
-        "min_training_window": 1.0,
-        "delta_time": 1,
+        "training_window": 1,
+        "delta_months": 12,
         "primary_segment": "ha"
     }
 }
