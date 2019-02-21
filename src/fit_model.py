@@ -291,25 +291,33 @@ def cross_validate(model, data, targets, train_validate_timepoints):
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
 
+        # Get the estimated frequencies for training and validation sets to export.
+        training_y_hat = model.predict(training_X)
+        validation_y_hat = model.predict(validation_X)
+
         # Convert timestamps to a serializable format.
         training_X["timepoint"] = training_X["timepoint"].dt.strftime("%Y-%m-%d")
         training_y["timepoint"] = training_y["timepoint"].dt.strftime("%Y-%m-%d")
+        training_y_hat["timepoint"] = training_y_hat["timepoint"].dt.strftime("%Y-%m-%d")
         validation_X["timepoint"] = validation_X["timepoint"].dt.strftime("%Y-%m-%d")
         validation_y["timepoint"] = validation_y["timepoint"].dt.strftime("%Y-%m-%d")
+        validation_y_hat["timepoint"] = validation_y_hat["timepoint"].dt.strftime("%Y-%m-%d")
 
         # Store training results, beta coefficients, and validation results.
         results.append({
             "predictors": model.predictors,
             "training_data": {
                 "X": training_X.to_dict(orient="records"),
-                "y": training_y.to_dict(orient="records")
+                "y": training_y.to_dict(orient="records"),
+                "y_hat": training_y_hat.to_dict(orient="records")
             },
             "training_n": training_X["clade_membership"].unique().shape[0],
             "training_error": training_error,
             "coefficients": model.coef_.tolist(),
             "validation_data": {
                 "X": validation_X.to_dict(orient="records"),
-                "y": validation_y.to_dict(orient="records")
+                "y": validation_y.to_dict(orient="records"),
+                "y_hat": validation_y_hat.to_dict(orient="records")
             },
             "validation_n": validation_X["clade_membership"].unique().shape[0],
             "validation_error": validation_error,
