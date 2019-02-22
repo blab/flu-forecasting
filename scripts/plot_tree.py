@@ -7,10 +7,18 @@ from matplotlib import gridspec
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import numpy as np
+import pandas as pd
 import sys
 
 
-def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size):
+def timestamp_to_float(time):
+    """Convert a pandas timestamp to a floating point date.
+    """
+    return time.year + ((time.month - 1) / 12.0)
+
+
+def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size,
+              start_date, end_date):
     """Plot a BioPython Phylo tree in the BALTIC-style.
     """
     # Plot H3N2 tree in BALTIC style from Bio.Phylo tree.
@@ -126,6 +134,12 @@ def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size)
     ax.tick_params(axis='y',size=0)
     ax.set_yticklabels([])
 
+    if start_date:
+        ax.set_xlim(left=timestamp_to_float(pd.to_datetime(start_date)))
+
+    if end_date:
+        ax.set_xlim(right=timestamp_to_float(pd.to_datetime(end_date)))
+
     cb1 = mpl.colorbar.ColorbarBase(
         colorbar_ax,
         cmap=cmap,
@@ -145,6 +159,8 @@ if __name__ == "__main__":
     parser.add_argument("--colorby", help="trait in tree to color by", default="num_date")
     parser.add_argument("--branch_width", help="initial branch width", type=int, default=10)
     parser.add_argument("--tip_size", help="tip size", type=int, default=10)
+    parser.add_argument("--start-date", help="earliest date to show on the x-axis")
+    parser.add_argument("--end-date", help="latest date to show on the x-axis")
     args = parser.parse_args()
 
     with open(args.tree, "r") as json_fh:
@@ -159,5 +175,7 @@ if __name__ == "__main__":
         args.output,
         args.colorby,
         args.branch_width,
-        args.tip_size
+        args.tip_size,
+        args.start_date,
+        args.end_date
     )

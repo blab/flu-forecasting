@@ -48,7 +48,13 @@ rule plot_tree:
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    shell: """python3 scripts/plot_tree.py {input} {output} &> {log}"""
+    shell:
+        """
+        python3 scripts/plot_tree.py \
+            {input} \
+            {output} \
+            --end-date {wildcards.end} &> {log}
+        """
 
 rule aggregate_tree_plots:
     input: expand(rules.plot_tree.output.tree, lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
