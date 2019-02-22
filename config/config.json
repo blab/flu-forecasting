@@ -7,7 +7,7 @@
     "end_date": "2015-10-01",
     "pivot_interval": 6,
     "min_years_per_build": 4,
-    "viruses": [2],
+    "viruses": [5],
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 5,
