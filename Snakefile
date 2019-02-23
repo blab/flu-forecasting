@@ -70,7 +70,7 @@ TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
     config["fitness_model"]["training_window"]
 )
 pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
-TIMEPOINTS = TIMEPOINTS[:5]
+TIMEPOINTS = TIMEPOINTS[:7]
 
 #
 # Configure amino acid distance masks.
