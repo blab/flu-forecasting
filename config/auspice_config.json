@@ -72,6 +72,7 @@
   ],
   "panels": [
     "tree",
-    "entropy"
+    "entropy",
+    "frequencies"
   ]
 }

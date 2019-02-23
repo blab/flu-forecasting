@@ -489,6 +489,43 @@ rule titers_tree:
             --output {output.titers_model}
         """
 
+rule tip_frequencies:
+    message:
+        """
+        Estimating tip frequencies for {input.tree}
+          - narrow bandwidth: {params.narrow_bandwidth}
+          - wide bandwidth: {params.wide_bandwidth}
+          - proportion wide: {params.proportion_wide}
+        """
+    input:
+        tree=rules.refine.output.tree,
+        metadata=rules.parse.output.metadata,
+        weights="data/region_weights.json"
+    output:
+        frequencies = "results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tip-frequencies.json"
+    params:
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
+        pivot_frequency=PIVOT_INTERVAL
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        augur frequencies \
+            --method kde \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --narrow-bandwidth {params.narrow_bandwidth} \
+            --wide-bandwidth {params.wide_bandwidth} \
+            --proportion-wide {params.proportion_wide} \
+            --weights {input.weights} \
+            --weights-attribute region \
+            --pivot-interval {params.pivot_frequency} \
+            --output {output}
+        """
+
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """

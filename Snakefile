@@ -132,7 +132,7 @@ def _get_clock_rate_by_wildcards(wildcards):
     return rate
 
 def _get_auspice_files(wildcards):
-    return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_tree.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS)
+    return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
 
 BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
 BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
