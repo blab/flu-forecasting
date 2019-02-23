@@ -235,8 +235,20 @@ def get_train_validate_timepoints(timepoints, delta_time, training_window):
     delta_time = pd.DateOffset(months=delta_time)
     training_window = pd.DateOffset(years=training_window)
 
-    # Filter timepoints to those with enough future years to train and project from.
-    is_valid_projection_timepoint = (timepoints + training_window + delta_time) <= timepoints[-1]
+    # Filter timepoints to those with enough future years to train and project
+    # from. This means timepoints must not extend beyond the last training
+    # timepoint plus its delta time in the future and the delta time in the
+    # future for the validation interval.
+    #
+    # If the timepoints range from October 2005 to October 2015, the training
+    # window is 4 years, and the delta time is 1 year, then the last validation
+    # timepoint is October 2014 and the last training timepoint is October
+    # 2013. This allows the model to train from October 2013 to October 2014 and
+    # then validate from October 2014 to 2015. Assuming there is enough data in
+    # the tree up to October 2005, the earliest point we can project from is
+    # then October 2008 such that the previous 4 years are included in that
+    # projection.
+    is_valid_projection_timepoint = (timepoints + training_window + delta_time + delta_time) <= timepoints[-1]
     projection_timepoints = timepoints[is_valid_projection_timepoint].copy()
 
     # Split valid timepoint index values into all possible train/test sets.
