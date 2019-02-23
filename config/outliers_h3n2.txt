@@ -100,10 +100,12 @@ A/India/6352/2012
 A/India/D0512577/2005
 A/Indiana/06/2013
 A/Indiana/08/2012
+A/Indiana/10/2011
 A/Indiana/10/2011-egg
 A/Indiana/103/2012
 A/Indiana/11/2013
 A/Indiana/113/2012
+A/Indiana/114/2012
 A/Indiana/115/2012
 A/Indiana/12/2012
 A/Indiana/123/2012
@@ -208,6 +210,7 @@ A/Minnesota/9/2010
 A/Nanjing/1/2010
 A/Nepal/142/2011
 A/NewJersey/53/2015
+A/OSAKA/31/2005
 A/Ohio/13/2012-egg
 A/Ohio/14/2012
 A/Ohio/15/2012
@@ -255,7 +258,6 @@ A/Ohio/88/2012
 A/Ohio/90/2012
 A/Ontario/1252/2007
 A/Ontario/RV1273/2005
-A/OSAKA/31/2005
 A/Paris/89/2015
 A/Pennsylvania/09/2011
 A/Pennsylvania/11/2011
