@@ -7,10 +7,11 @@ import pandas as pd
 from scipy.optimize import minimize
 
 from forecast.fitness_model import get_train_validate_timepoints
+from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain, sum_of_squared_errors
 
 
 class ExponentialGrowthModel(object):
-    def __init__(self, predictors, delta_time, l1_lambda):
+    def __init__(self, predictors, delta_time, l1_lambda, cost_function):
         """Construct an empty exponential growth model instance.
 
         Parameters
@@ -24,6 +25,9 @@ class ExponentialGrowthModel(object):
         l1_lambda : float
             hyperparameter to scale L1 regularization penalty for non-zero coefficients
 
+        cost_function : callable
+            function returning the error to be minimized between observed and estimated values
+
         Returns
         -------
         ExponentialGrowthModel
@@ -31,6 +35,7 @@ class ExponentialGrowthModel(object):
         self.predictors = predictors
         self.delta_time = delta_time
         self.l1_lambda = l1_lambda
+        self.cost_function = cost_function
 
     def get_fitnesses(self, coefficients, predictors):
         """Apply the coefficients to the predictors and sum them to get strain
@@ -120,9 +125,28 @@ class ExponentialGrowthModel(object):
         )
         frequencies["frequency_observed"] = frequencies["frequency_observed"].fillna(0.0)
 
+        # Calculate initial frequencies for use by cost function.
+        initial_frequencies = X.groupby([
+            "timepoint",
+            "clade_membership"
+        ])["frequency"].sum().reset_index()
+
+        # Annotate future frequencies with initial frequencies.
+        frequencies = frequencies.merge(
+            initial_frequencies,
+            how="inner",
+            on=["timepoint", "clade_membership"]
+        )
+
         # Calculate the error between the observed and estimated frequencies.
-        error = ((frequencies["frequency_observed"] - frequencies["frequency_estimated"]) ** 2).sum()
+        error = self.cost_function(
+            frequencies["frequency_observed"],
+            frequencies["frequency_estimated"],
+            initial=frequencies["frequency"]
+        )
+        print("Error: ", error)
         l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        print("Penalty: ", l1_penalty)
 
         return error + l1_penalty
 
@@ -373,6 +397,8 @@ if __name__ == "__main__":
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
     parser.add_argument("--l1-lambda", type=float, default=0.2, help="L1 regularization lambda")
+    parser.add_argument("--cost-function", default="sse", choices=["sse", "information_gain"], help="name of the function that returns the error between observed and estimated values")
+    parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
 
     args = parser.parse_args()
 
@@ -391,6 +417,20 @@ if __name__ == "__main__":
         sep="\t",
         parse_dates=["initial_timepoint", "final_timepoint"]
     )
+
+    # If a pseudocount numerator has been provided, update the given tip
+    # frequencies both from current and future timepoints.
+    if args.pseudocount is not None:
+        tips = add_pseudocounts_to_frequencies(tips, args.pseudocount)
+        print("Sum of tip frequencies by timepoint: ",
+              tips.groupby("timepoint")["frequency"].sum())
+        final_clade_tip_frequencies = add_pseudocounts_to_frequencies(
+            final_clade_tip_frequencies,
+            args.pseudocount,
+            timepoint_column="initial_timepoint"
+        )
+        print("Sum of tip frequencies by timepoint: ",
+              final_clade_tip_frequencies.groupby("initial_timepoint")["frequency"].sum())
 
     # Aggregate final clade frequencies.
     final_clade_frequencies = final_clade_tip_frequencies.groupby([
@@ -413,6 +453,12 @@ if __name__ == "__main__":
         args.training_window
     )
 
+    # Select the cost function.
+    if args.cost_function == "sse":
+        cost_function = sum_of_squared_errors
+    elif args.cost_function == "information_gain":
+        cost_function = negative_information_gain
+
     # For each train/validate split, fit a model to the training data, and
     # evaluate the model with the validation data, storing the training results,
     # beta parameters, and validation results.
@@ -420,7 +466,8 @@ if __name__ == "__main__":
     model = ExponentialGrowthModel(
         predictors=args.predictors,
         delta_time=delta_time,
-        l1_lambda=args.l1_lambda
+        l1_lambda=args.l1_lambda,
+        cost_function=cost_function
     )
     scores = cross_validate(
         model,
