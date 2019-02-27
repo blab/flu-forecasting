@@ -144,9 +144,7 @@ class ExponentialGrowthModel(object):
             frequencies["frequency_estimated"],
             initial=frequencies["frequency"]
         )
-        print("Error: ", error)
         l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
-        print("Penalty: ", l1_penalty)
 
         return error + l1_penalty
 
