@@ -41,11 +41,37 @@
       "type": "continuous",
       "key": "ne"
     },
-    "rbs": {
+    "rb": {
       "menuItem": "RBS-adjacent mutations",
       "legendTitle": "RBS-adjacent mutations",
       "type": "continuous",
-      "key": "rbs"
+      "key": "rb"
+    },
+    "ne_star": {
+      "menuItem": "Non-epitope ancestor",
+      "legendTitle": "Non-epitope ancestor",
+      "type": "continuous",
+      "key": "ne_star"
+    },
+    "dms_star": {
+      "vmin": -10.0,
+      "vmax": 10.0,
+      "menuItem": "DMS ancestor",
+      "legendTitle": "DMS ancestor",
+      "type": "continuous",
+      "key": "dms_star"
+    },
+    "ep_x": {
+      "menuItem": "epitope cross-immunity",
+      "legendTitle": "Epitope cross-immunity",
+      "type": "continuous",
+      "key": "ep_x"
+    },
+    "cTiterSub_x": {
+      "menuItem": "titer cross-immunity",
+      "legendTitle": "Titer cross-immunity",
+      "type": "continuous",
+      "key": "cTiterSub_x"
     },
     "clade_membership": {
       "menuItem": "clade",

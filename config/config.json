@@ -16,7 +16,11 @@
         "assays": ["hi"]
     },
     "predictors": [
-        "lbi"
+        "lbi",
+        "cTiterSub_x",
+        "ep_x",
+        "ne_star",
+        "dms_star"
     ],
     "standard_predictors": [
         "ep",
@@ -55,19 +59,28 @@
         "pivot_frequency": 6,
         "bandwidths": [0.02, 0.04, 0.08, 0.16, 0.25, 0.33, 0.5]
     },
-    "distance_parameters_by_segment": {
-        "ha": {
-            "attributes": ["ep", "rbs", "ne"],
-            "masks": ["wolf", "koel", "wolf_ne"]
-        },
-        "na": {
-            "attributes": ["ep"],
-            "masks": ["bhatt"]
-        }
-    },
     "lbi": {
         "tau": 0.5,
         "window": 0.1
+    },
+    "excluded_node_data_fields": [
+        "aa_muts",
+        "aa_sequences",
+        "country_confidence",
+        "ep_pairwise",
+        "muts",
+        "num_date_confidence",
+        "region_confidence",
+        "sequence"
+    ],
+    "cross_immunity": {
+        "h3n2": {
+            "ha": {
+                "distance_attributes": "ep_pairwise",
+                "immunity_attributes": "ep_x",
+                "decay_factors": "14.0"
+            }
+        }
     },
     "fitness_model": {
         "min_freq": 0.01,

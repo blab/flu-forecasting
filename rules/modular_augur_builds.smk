@@ -155,6 +155,7 @@ rule extract:
         strains = rules.get_strains_by_timepoint.output.strains
     output:
         sequences = BUILD_SEGMENT_PATH + "filtered_sequences.fasta"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/extract_sequences.py \
@@ -414,23 +415,61 @@ rule distances:
     input:
         tree = rules.refine.output.tree,
         alignments = translations,
-        masks = "config/masks_{lineage}_{segment}.tsv"
+        distance_maps = _get_distance_maps_by_lineage_and_segment,
+        date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names,
-        attribute_names = _get_mask_attribute_names_by_wildcards,
-        mask_names = _get_mask_names_by_wildcards
+        comparisons = _get_distance_comparisons_by_lineage_and_segment,
+        attribute_names = _get_distance_attributes_by_lineage_and_segment,
+        earliest_date = _get_distance_earliest_date_by_wildcards,
+        latest_date = _get_distance_latest_date_by_wildcards
     output:
         distances = BUILD_SEGMENT_PATH + "distances.json",
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur distance \
             --tree {input.tree} \
             --alignment {input.alignments} \
             --gene-names {params.genes} \
-            --masks {input.masks} \
-            --output {output} \
-            --attribute-names {params.attribute_names} \
-            --mask-names {params.mask_names}
+            --compare-to {params.comparisons} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --earliest-date {params.earliest_date} \
+            --latest-date {params.latest_date} \
+            --output {output}
+        """
+
+def _get_cross_immunity_distance_attributes_by_lineage_and_segment(wildcards):
+    return config["cross_immunity"][wildcards.lineage][wildcards.segment]["distance_attributes"]
+
+def _get_cross_immunity_attributes_by_lineage_and_segment(wildcards):
+    return config["cross_immunity"][wildcards.lineage][wildcards.segment]["immunity_attributes"]
+
+def _get_cross_immunity_decay_factors_by_lineage_and_segment(wildcards):
+    return config["cross_immunity"][wildcards.lineage][wildcards.segment]["decay_factors"]
+
+rule cross_immunities:
+    input:
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        distances = rules.distances.output.distances
+    params:
+        distance_attributes = _get_cross_immunity_distance_attributes_by_lineage_and_segment,
+        immunity_attributes = _get_cross_immunity_attributes_by_lineage_and_segment,
+        decay_factors = _get_cross_immunity_decay_factors_by_lineage_and_segment
+    output:
+        cross_immunities = BUILD_SEGMENT_PATH + "cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
+            --output {output}
         """
 
 rule lbi:
@@ -444,6 +483,7 @@ rule lbi:
         names = "lbi"
     output:
         lbi = BUILD_SEGMENT_PATH + "lbi.json"
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur lbi \
@@ -465,6 +505,7 @@ rule titers_sub:
         genes = gene_names
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-sub-model.json",
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur titers sub \
@@ -481,12 +522,78 @@ rule titers_tree:
         tree = rules.refine.output.tree
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-tree-model.json",
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         augur titers tree \
             --titers {input.titers} \
             --tree {input.tree} \
             --output {output.titers_model}
+        """
+
+rule convert_titer_model_to_distance_map:
+    input:
+        model = rules.titers_sub.output.titers_model
+    output:
+        distance_map = BUILD_SEGMENT_PATH + "titer_substitution_distance_map.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/titer_model_to_distance_map.py \
+            --model {input.model} \
+            --output {output}
+        """
+
+rule pairwise_titer_distances:
+    input:
+        tree = rules.refine.output.tree,
+        alignments = translations,
+        distance_maps = rules.convert_titer_model_to_distance_map.output.distance_map,
+        date_annotations = rules.refine.output.node_data
+    params:
+        genes = gene_names,
+        comparisons = "pairwise",
+        attribute_names = "cTiterSub_pairwise",
+        earliest_date = _get_distance_earliest_date_by_wildcards,
+        latest_date = _get_distance_latest_date_by_wildcards
+    output:
+        distances = BUILD_SEGMENT_PATH + "titer_substitution_distances.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur distance \
+            --tree {input.tree} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --compare-to {params.comparisons} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --earliest-date {params.earliest_date} \
+            --latest-date {params.latest_date} \
+            --output {output}
+        """
+
+rule titer_cross_immunities:
+    input:
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        distances = rules.pairwise_titer_distances.output.distances
+    params:
+        distance_attributes = "cTiterSub_pairwise",
+        immunity_attributes = "cTiterSub_x",
+        decay_factors = "14.0"
+    output:
+        cross_immunities = BUILD_SEGMENT_PATH + "titer_substitution_cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
+            --output {output}
         """
 
 rule tip_frequencies:
@@ -544,7 +651,9 @@ def _get_node_data_for_export(wildcards):
     if wildcards.lineage in ["h3n2"] and wildcards.segment in ["ha", "na"]:
         inputs.extend([
             rules.titers_tree.output.titers_model,
-            rules.titers_sub.output.titers_model
+            rules.titers_sub.output.titers_model,
+            rules.cross_immunities.output.cross_immunities,
+            rules.titer_cross_immunities.output.cross_immunities
         ])
 
     # If the current lineage and segment have a mask configuration defined,
@@ -587,12 +696,20 @@ rule export:
             --panels {params.panels}
         """
 
+def _get_excluded_fields_arg(wildcards):
+    if config.get("excluded_node_data_fields"):
+        return "--excluded-fields %s" % " ".join(config["excluded_node_data_fields"])
+    else:
+        return ""
+
 rule convert_node_data_to_table:
     input:
         tree = rules.refine.output.tree,
         node_data = _get_node_data_for_export
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
+    params:
+        excluded_fields_arg = _get_excluded_fields_arg
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -600,6 +717,7 @@ rule convert_node_data_to_table:
             --tree {input.tree} \
             --jsons {input.node_data} \
             --output {output} \
+            {params.excluded_fields_arg} \
             --annotations timepoint={wildcards.timepoint} \
                           lineage={wildcards.lineage} \
                           segment={wildcards.segment}

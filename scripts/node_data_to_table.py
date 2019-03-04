@@ -15,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument("--tree", required=True, help="Newick file for the tree used to construct the given node data JSONs")
     parser.add_argument("--jsons", nargs="+", required=True, help="node data JSON(s) from augur")
     parser.add_argument("--annotations", nargs="+", help="additional annotations to add to the output table in the format of 'key=value' pairs")
+    parser.add_argument("--excluded-fields", nargs="+", help="names of columns to omit from output table")
     parser.add_argument("--output", required=True, help="tab-delimited file collecting all given node data")
     parser.add_argument("--include-internal-nodes", action="store_true", help="include data associated with internal nodes in the output table")
     args = parser.parse_args()
@@ -29,6 +30,9 @@ if __name__ == '__main__':
     # Data are initially loaded with one column per node.
     # Transposition converts the table to the expected one row per node format.
     df = pd.DataFrame(node_data["nodes"]).T.rename_axis("strain").reset_index()
+
+    # Remove excluded fields.
+    df = df.drop(columns=args.excluded_fields)
 
     # Annotate the tip/internal status of each node using the tree.
     node_terminal_status_by_name = {node.name: node.is_terminal() for node in tree.find_clades()}

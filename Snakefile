@@ -78,7 +78,7 @@ TIMEPOINTS = TIMEPOINTS[:7]
 
 # Load mask configuration including which masks map to which attributes per
 # lineage and segment.
-masks_config = pd.read_table("config/mask_config.tsv")
+masks_config = pd.read_table("config/distance_maps.tsv")
 
 def _get_build_mask_config(wildcards):
     config = masks_config[(masks_config["lineage"] == wildcards.lineage) &
@@ -88,13 +88,33 @@ def _get_build_mask_config(wildcards):
     else:
         return None
 
-def _get_mask_attribute_names_by_wildcards(wildcards):
+def _get_distance_comparisons_by_lineage_and_segment(wildcards):
+    config = _get_build_mask_config(wildcards)
+    return " ".join(config.loc[:, "compare_to"].values)
+
+def _get_distance_attributes_by_lineage_and_segment(wildcards):
     config = _get_build_mask_config(wildcards)
     return " ".join(config.loc[:, "attribute"].values)
 
-def _get_mask_names_by_wildcards(wildcards):
+def _get_distance_maps_by_lineage_and_segment(wildcards):
     config = _get_build_mask_config(wildcards)
-    return " ".join(config.loc[:, "mask"].values)
+    return [
+        "config/distance_maps/{wildcards.lineage}/{wildcards.segment}/{distance_map}.json".format(wildcards=wildcards, distance_map=distance_map)
+        for distance_map in config.loc[:, "distance_map"].values
+    ]
+
+def _get_distance_earliest_date_by_wildcards(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    season_offset = pd.DateOffset(months=config["pivot_interval"])
+    tree_offset = pd.DateOffset(years=config["min_years_per_build"])
+    earliest_date = timepoint - season_offset - tree_offset
+    return earliest_date.strftime("%Y-%m-%d")
+
+def _get_distance_latest_date_by_wildcards(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    offset = pd.DateOffset(months=config["pivot_interval"])
+    latest_date = timepoint - offset
+    return latest_date.strftime("%Y-%m-%d")
 
 #
 # Define helper functions.
@@ -108,12 +128,6 @@ def _get_end_date_from_range(wildcards):
 
 def _get_predictor_list(wildcards):
     return " ".join(wildcards["predictors"].split("-"))
-
-def _get_distance_attribute_names_by_segment(wildcards):
-    return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["attributes"])
-
-def _get_distance_mask_names_by_segment(wildcards):
-    return " ".join(config["distance_parameters_by_segment"][wildcards.segment]["masks"])
 
 def _get_clock_rate_by_wildcards(wildcards):
     rates_by_lineage_and_segment = {
