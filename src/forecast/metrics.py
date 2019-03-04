@@ -5,7 +5,7 @@ import numpy as np
 
 def sum_of_squared_errors(observed, estimated, **kwargs):
     """
-    Calculates the sum of squared errors for observed and predicted frequencies.
+    Calculates the sum of squared errors for observed and estimated values.
 
     Parameters
     ----------
@@ -21,6 +21,26 @@ def sum_of_squared_errors(observed, estimated, **kwargs):
         sum of squared errors between observed and estimated values
     """
     return np.sum((observed - estimated) ** 2)
+
+
+def mean_absolute_error(observed, estimated, **kwargs):
+    """
+    Calculates the mean absolute error between observed and estimated values.
+
+    Parameters
+    ----------
+    observed : numpy.ndarray
+        observed values
+
+    estimated : numpy.ndarray
+        estimated values
+
+    Returns
+    -------
+    float :
+        mean absolute error between observed and estimated values
+    """
+    return np.mean(np.abs(observed - estimated))
 
 
 def negative_information_gain(observed, estimated, initial, **kwargs):
