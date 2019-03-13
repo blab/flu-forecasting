@@ -4,7 +4,11 @@ import argparse
 from augur.reconstruct_sequences import load_alignments
 from augur.utils import annotate_parents_for_tree, write_json
 import Bio.Phylo
+import hashlib
 import pandas as pd
+
+# Magic number of maximum length of SHA hash to keep for each clade.
+MAX_HASH_LENGTH = 7
 
 
 if __name__ == "__main__":
@@ -16,6 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("--translations", required=True, nargs="+", help="FASTA file(s) of amino acid sequences per node")
     parser.add_argument("--gene-names", required=True, nargs="+", help="gene names corresponding to translations provided")
     parser.add_argument("--use-incremental-ids", action="store_true", help="report an incremental integer id for each clade instead of concatenated mutations")
+    parser.add_argument("--use-hash-ids", action="store_true", help="report an abbreviated SHA1 hash for each clade instead of concatenated mutations")
     parser.add_argument("--minimum-tips", type=int, default=1, help="minimum number of tips required for a clade to be assigned its own annotation")
     parser.add_argument("--output", required=True, help="JSON of clade annotations for nodes in the given tree")
     parser.add_argument("--output-tip-clade-table", help="optional table of all clades per tip in the tree")
@@ -79,6 +84,10 @@ if __name__ == "__main__":
 
         for node in tree.find_clades():
             clades[node.name]["clade_membership"] = "Clade %i" % mutations_to_number[clades[node.name]["clade_membership"]]
+    elif args.use_hash_ids:
+        # Assign abbreviated SHA hashes based on concatenated mutations.
+        for node_name in clades.keys():
+            clades[node_name]["clade_membership"] = hashlib.sha256(clades[node_name]["clade_membership"].encode()).hexdigest()[:MAX_HASH_LENGTH]
 
     # Write out the node annotations.
     write_json({"nodes": clades}, args.output)

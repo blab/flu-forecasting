@@ -374,6 +374,7 @@ rule clades_by_haplotype:
             --translations {input.translations} \
             --gene-names {params.gene_names} \
             --minimum-tips {params.minimum_tips} \
+            --use-hash-ids \
             --output {output.clades} \
             --output-tip-clade-table {output.tip_clade_table}
         """
