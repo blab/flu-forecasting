@@ -596,6 +596,12 @@ rule titer_cross_immunities:
             --output {output}
         """
 
+def _get_min_date_for_augur_frequencies(wildcards):
+    return timestamp_to_float(pd.to_datetime(wildcards.start))
+
+def _get_max_date_for_augur_frequencies(wildcards):
+    return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
+
 rule tip_frequencies:
     message:
         """
@@ -614,7 +620,9 @@ rule tip_frequencies:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
         proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=PIVOT_INTERVAL
+        pivot_frequency=PIVOT_INTERVAL,
+        min_date=_get_min_date_for_augur_frequencies,
+        max_date=_get_max_date_for_augur_frequencies
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     log: "logs/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
@@ -627,6 +635,8 @@ rule tip_frequencies:
             --narrow-bandwidth {params.narrow_bandwidth} \
             --wide-bandwidth {params.wide_bandwidth} \
             --proportion-wide {params.proportion_wide} \
+            --min-date {params.min_date} \
+            --max-date {params.max_date} \
             --weights {input.weights} \
             --weights-attribute region \
             --pivot-interval {params.pivot_frequency} \
