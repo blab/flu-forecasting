@@ -87,7 +87,8 @@ if __name__ == "__main__":
     elif args.use_hash_ids:
         # Assign abbreviated SHA hashes based on concatenated mutations.
         for node_name in clades.keys():
-            clades[node_name]["clade_membership"] = hashlib.sha256(clades[node_name]["clade_membership"].encode()).hexdigest()[:MAX_HASH_LENGTH]
+            if clades[node_name]["clade_membership"] != "root":
+                clades[node_name]["clade_membership"] = hashlib.sha256(clades[node_name]["clade_membership"].encode()).hexdigest()[:MAX_HASH_LENGTH]
 
     # Write out the node annotations.
     write_json({"nodes": clades}, args.output)
@@ -98,8 +99,12 @@ if __name__ == "__main__":
         for tip in tree.find_clades(terminal=True):
             parent = tip.parent
             depth = 1
-            while parent != tree.root:
+            while True:
                 records.append([tip.name, clades[parent.name]["clade_membership"], depth])
+
+                if parent == tree.root:
+                    break
+
                 parent = parent.parent
                 depth += 1
 
