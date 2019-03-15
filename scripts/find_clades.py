@@ -44,7 +44,7 @@ if __name__ == "__main__":
     for node in tree.find_clades():
         if node == tree.root:
             clades[node.name] = {"clade_membership": "root"}
-        elif node.is_terminal() or node.count_terminals() < args.minimum_tips:
+        elif node.count_terminals() < args.minimum_tips:
             # Assign tips and small clades to the same clade annotation as their
             # immediate parent.
             clades[node.name] = clades[node.parent.name].copy()

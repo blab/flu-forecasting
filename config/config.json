@@ -10,7 +10,7 @@
     "viruses": [5],
     "number_of_samples": 1,
     "include_titer_tree": false,
-    "min_tips_per_clade": 5,
+    "min_tips_per_clade": 0,
     "titers": {
         "passages": ["cell"],
         "assays": ["hi"]
