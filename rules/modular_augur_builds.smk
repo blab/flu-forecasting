@@ -244,8 +244,7 @@ rule refine:
             --clock-rate {params.clock_rate} \
             --coalescent {params.coalescent} \
             --date-confidence \
-            --date-inference {params.date_inference} \
-            --clock-filter-iqd {params.clock_filter_iqd}
+            --date-inference {params.date_inference}
         """
 
 rule estimate_frequencies:
