@@ -1,6 +1,7 @@
 """Select clades per timepoint to use when training/validating a fitness model.
 """
 import argparse
+import numpy as np
 import pandas as pd
 
 
@@ -27,7 +28,12 @@ if __name__ == '__main__':
     ].copy()
 
     # Confirm tip frequencies sum to 1 per timepoint.
-    print(tips.groupby("timepoint")["frequency"].sum())
+    summed_tip_frequencies = tips.groupby("timepoint")["frequency"].sum()
+    print(summed_tip_frequencies)
+    assert all([
+        np.isclose(total, 1.0, atol=1e-3)
+        for total in summed_tip_frequencies
+    ])
 
     # Identify distinct clades per timepoint.
     clades = tips.loc[:, ["timepoint", "clade_membership"]].drop_duplicates().copy()
@@ -73,6 +79,10 @@ if __name__ == '__main__':
 
     # Confirm that future frequencies sum to 1.
     print(future_clade_frequencies.groupby("initial_timepoint")["frequency"].sum())
+    assert all([
+        np.isclose(total, 1.0, atol=1e-3)
+        for total in future_clade_frequencies.groupby("initial_timepoint")["frequency"].sum()
+    ])
 
     # Confirm the future frequencies of individual clades.
     print(future_clade_frequencies.groupby(["initial_timepoint", "clade_membership"])["frequency"].sum())
