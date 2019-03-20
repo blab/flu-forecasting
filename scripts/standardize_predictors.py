@@ -47,6 +47,10 @@ if __name__ == '__main__':
         print(f"Error: The requested timepoints ({args.start_date} to {args.end_date}) were not found in the given attributes table", file=sys.stderr)
         sys.exit(1)
 
+    # Fill missing predictor values with zeros.
+    for predictor in args.predictors:
+        df[predictor] = df[predictor].fillna(0.0)
+
     # Extract only the predictor values in the requested time interval.
     predictor_training_df = df.loc[valid_timepoints, args.predictors].copy()
 
