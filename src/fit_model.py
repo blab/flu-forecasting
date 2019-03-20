@@ -499,6 +499,13 @@ if __name__ == "__main__":
     # errors by cross-validation, and beta parameters across timepoints.
     model_results = summarize_cross_validation_scores(scores)
 
+    # Annotate parameters used to produce models.
+    model_results["cost_function"] = args.cost_function
+    model_results["l1_lambda"] = args.l1_lambda
+    model_results["delta_months"] = args.delta_months
+    model_results["training_window"] = args.training_window
+    model_results["pseudocount"] = args.pseudocount
+
     # Save model fitting hyperparameters, raw results, and summary of results to
     # JSON.
     with open(args.output, "w") as fh:
