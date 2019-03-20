@@ -404,7 +404,7 @@ if __name__ == "__main__":
     parser.add_argument("--predictors", required=True, nargs="+", help="tip attribute columns to use as predictors of final clade frequencies")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
-    parser.add_argument("--l1-lambda", type=float, default=0.2, help="L1 regularization lambda")
+    parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
     parser.add_argument("--cost-function", default="sse", choices=["sse", "mae", "information_gain"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
 
