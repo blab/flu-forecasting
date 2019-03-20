@@ -260,10 +260,8 @@ class ExponentialGrowthModel(object):
         float :
             model error
         """
-        error = self._fit(self.coef_, X, y)
-        number_of_records = X[["timepoint", "clade_membership"]].drop_duplicates().shape[0]
+        return self._fit(self.coef_, X, y)
 
-        return error / number_of_records
 
 def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None):
     """Calculate cross-validation scores for the given data and targets across the
