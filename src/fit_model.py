@@ -265,8 +265,7 @@ class ExponentialGrowthModel(object):
 
         return error / number_of_records
 
-
-def cross_validate(model, data, targets, train_validate_timepoints):
+def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None):
     """Calculate cross-validation scores for the given data and targets across the
     given train/validate timepoints.
 
@@ -287,11 +286,17 @@ def cross_validate(model, data, targets, train_validate_timepoints):
         and containing timepoints to use for model training and validation,
         respectively
 
+    coefficients : ndarray
+        an optional array of fixed coefficients for the given model's predictors
+        to use when calculating cross-validation error for specific models
+        (e.g., naive forecasts)
+
     Returns
     -------
     list
         a list of dictionaries containing cross-validation results with scores,
         training and validation results, and beta coefficients per timepoint
+
     """
     results = []
 
@@ -305,7 +310,11 @@ def cross_validate(model, data, targets, train_validate_timepoints):
         training_y = targets[targets["timepoint"].isin(training_timepoints)].copy()
 
         # Fit a model to the training data.
-        training_error = model.fit(training_X, training_y)
+        if coefficients is None:
+            training_error = model.fit(training_X, training_y)
+        else:
+            model.coef_ = coefficients
+            training_error = model.score(training_X, training_y)
 
         # Get validation data by timepoints.
         validation_X = data[data["timepoint"] == validation_timepoint].copy()
@@ -470,11 +479,20 @@ if __name__ == "__main__":
         l1_lambda=args.l1_lambda,
         cost_function=cost_function
     )
+
+    # If this is a naive model, set the coefficients to zero so cross-validation
+    # can run under naive model conditions.
+    if "naive" in args.predictors:
+        coefficients = np.zeros(len(args.predictors))
+    else:
+        coefficients = None
+
     scores = cross_validate(
         model,
         tips,
         final_clade_frequencies,
-        train_validate_timepoints
+        train_validate_timepoints,
+        coefficients
     )
 
     # Summarize model errors including in-sample errors by AIC, out-of-sample

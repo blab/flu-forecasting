@@ -2,9 +2,20 @@
 Rules for building fitness models from augur builds.
 """
 
-rule standardize_tip_attributes:
+rule annotate_naive_tip_attribute:
     input:
         attributes = BUILD_PATH + "tip_attributes.tsv"
+    output:
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
+    run:
+        # Annotate a predictor for a naive model with no growth.
+        df = pd.read_csv(input.attributes, sep="\t")
+        df["naive"] = 0.0
+        df.to_csv(output.attributes, sep="\t", index=False)
+
+rule standardize_tip_attributes:
+    input:
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
     output:
         attributes = BUILD_PATH + "standardized_tip_attributes.tsv",
         statistics = BUILD_PATH + "standardization_statistics.json"

@@ -16,6 +16,7 @@
         "assays": ["hi"]
     },
     "predictors": [
+        "naive",
         "lbi",
         "cTiterSub_x",
         "ep_x",
