@@ -38,7 +38,7 @@ rule download_titers:
     benchmark: "benchmarks/download_titers_{lineage}_{passage}_{assay}.txt"
     log: "logs/download_titers_{lineage}_{passage}_{assay}.log"
     params:
-        databases = "tdb cdc_tdb"
+        databases = "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb"
     shell:
         """
         python3 {path_to_fauna}/tdb/download.py \
