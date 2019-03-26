@@ -596,12 +596,6 @@ rule titer_cross_immunities:
             --output {output}
         """
 
-def _get_min_date_for_augur_frequencies(wildcards):
-    return timestamp_to_float(pd.to_datetime(wildcards.start))
-
-def _get_max_date_for_augur_frequencies(wildcards):
-    return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
-
 rule tip_frequencies:
     message:
         """
