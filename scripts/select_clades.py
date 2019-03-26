@@ -103,8 +103,5 @@ if __name__ == '__main__':
     # Confirm that future frequencies sum to 1.
     print(final_clade_frequencies.groupby("initial_timepoint")["frequency"].sum())
 
-    # Confirm future frequencies of clades.
-    print(final_clade_frequencies.groupby("initial_timepoint")["frequency"].sum())
-
     # Save clade future tip frequencies by timepoint.
     final_clade_frequencies.to_csv(args.output, sep="\t", na_rep="N/A", index=False)

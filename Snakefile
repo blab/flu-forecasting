@@ -71,6 +71,7 @@ TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
 )
 pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
 #TIMEPOINTS = TIMEPOINTS[:7]
+pprint.pprint(TIMEPOINTS)
 
 #
 # Configure amino acid distance masks.
