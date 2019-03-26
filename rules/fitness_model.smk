@@ -13,6 +13,20 @@ rule annotate_naive_tip_attribute:
         df["naive"] = 0.0
         df.to_csv(output.attributes, sep="\t", index=False)
 
+def _get_predictors_to_standardize(wildcards):
+    """Return a list of unique individual predictors accounting for those included
+    in multi-predictor definitions.
+
+    For example, returns "lbi" when that is the only predictor and returns
+    ["lbi", "ne_star"] when the predictors list includes "lbi-ne-star".
+    """
+    predictors_to_standardize = set()
+    for predictor in PREDICTORS:
+        for individual_predictor in predictor.split("-"):
+            predictors_to_standardize.add(individual_predictor)
+
+    return sorted(predictors_to_standardize)
+
 rule standardize_tip_attributes:
     input:
         attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
@@ -20,7 +34,7 @@ rule standardize_tip_attributes:
         attributes = BUILD_PATH + "standardized_tip_attributes.tsv",
         statistics = BUILD_PATH + "standardization_statistics.json"
     params:
-        predictors = PREDICTORS,
+        predictors = _get_predictors_to_standardize,
         start_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][0],
         end_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][-1]
     conda: "../envs/anaconda.python3.yaml"
