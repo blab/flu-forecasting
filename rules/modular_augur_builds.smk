@@ -355,6 +355,39 @@ def translations(wildcards):
     return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
             for gene in genes]
 
+rule mutation_frequencies:
+    message:
+        """
+        Estimating diffusion-based mutation frequencies for {wildcards.lineage} {wildcards.segment} genes: {params.gene_names}
+        """
+    input:
+        metadata = rules.parse.output.metadata,
+        translations = translations
+    output:
+        frequencies = BUILD_SEGMENT_PATH + "mutation_frequencies.json"
+    params:
+        gene_names = gene_names,
+        pivot_frequency = PIVOT_INTERVAL,
+        min_date = _get_min_date_for_augur_frequencies,
+        max_date = _get_max_date_for_augur_frequencies,
+        min_frequency = config["frequencies"]["min_mutation_frequency"]
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/mutation_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/mutation_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        augur frequencies \
+            --method diffusion \
+            --metadata {input.metadata} \
+            --alignments {input.translations} \
+            --gene-names {params.gene_names} \
+            --min-date {params.min_date} \
+            --max-date {params.max_date} \
+            --minimal-frequency {params.min_frequency} \
+            --pivot-interval {params.pivot_frequency} \
+            --output {output}
+        """
+
 rule clades_by_haplotype:
     input:
         tree = rules.refine.output.tree,
