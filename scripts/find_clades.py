@@ -4,6 +4,7 @@ import argparse
 from augur.reconstruct_sequences import load_alignments
 from augur.utils import annotate_parents_for_tree, write_json
 import Bio.Phylo
+import Bio.SeqIO
 import hashlib
 import pandas as pd
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("--tree", required=True, help="Newick tree to identify clades in")
+    parser.add_argument("--reference", required=True, help="GenBank file of reference sample to identify mutations against; should contain gene annotations to enable translation of nucleotide sequences to amino acids")
     parser.add_argument("--translations", required=True, nargs="+", help="FASTA file(s) of amino acid sequences per node")
     parser.add_argument("--gene-names", required=True, nargs="+", help="gene names corresponding to translations provided")
     parser.add_argument("--use-incremental-ids", action="store_true", help="report an incremental integer id for each clade instead of concatenated mutations")
@@ -31,7 +33,19 @@ if __name__ == "__main__":
     tree = Bio.Phylo.read(args.tree, "newick")
     tree = annotate_parents_for_tree(tree)
 
-    # Load translations and index them by gene name and node name.
+    # Load the reference and translate its sequences.
+    reference = Bio.SeqIO.read(args.reference, "genbank")
+    cds_features = [
+        feature
+        for feature in reference.features
+        if feature.type == "CDS" and "gene" in feature.qualifiers
+    ]
+
+    reference_sequences_by_gene = {}
+    for feature in cds_features:
+        reference_sequences_by_gene[feature.qualifiers["gene"][0]] = str(feature.translate(reference).seq)
+
+    # Load translations for nodes in the given tree and index them by gene name and node name.
     translations = load_alignments(args.translations, args.gene_names)
     translations_by_gene_name = {}
     for gene in translations:
@@ -39,7 +53,7 @@ if __name__ == "__main__":
         for seq in translations[gene]:
             translations_by_gene_name[gene][seq.name] = str(seq.seq)
 
-    # Annotate mutations between each node and the MRCA of all nodes.
+    # Annotate mutations between each node and the given reference sample.
     clades = {}
     for node in tree.find_clades():
         if node == tree.root:
@@ -52,8 +66,8 @@ if __name__ == "__main__":
             # Collect all mutations between the current node and the MRCA.
             mutations = []
             for gene in args.gene_names:
-                for i in range(len(translations_by_gene_name[gene][tree.root.name])):
-                    if translations_by_gene_name[gene][tree.root.name][i] != translations_by_gene_name[gene][node.name][i]:
+                for i in range(len(reference_sequences_by_gene[gene])):
+                    if reference_sequences_by_gene[gene][i] != translations_by_gene_name[gene][node.name][i]:
                         # Store mutations with gene, position, and allele like "HA1:131K".
                         mutations.append(f"{gene}:{i + 1}{translations_by_gene_name[gene][node.name][i]}")
 
