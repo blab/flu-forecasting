@@ -79,10 +79,6 @@ if __name__ == '__main__':
 
     # Confirm that future frequencies sum to 1.
     print(future_clade_frequencies.groupby("initial_timepoint")["frequency"].sum())
-    assert all([
-        np.isclose(total, 1.0, atol=1e-3)
-        for total in future_clade_frequencies.groupby("initial_timepoint")["frequency"].sum()
-    ])
 
     # Confirm the future frequencies of individual clades.
     print(future_clade_frequencies.groupby(["initial_timepoint", "clade_membership"])["frequency"].sum())
