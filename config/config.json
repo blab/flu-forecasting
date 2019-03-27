@@ -3,7 +3,7 @@
     "min_length": 900,
     "lineages": ["h3n2"],
     "segments": ["ha"],
-    "start_date": "2005-10-01",
+    "start_date": "2000-10-01",
     "end_date": "2015-10-01",
     "pivot_interval": 6,
     "min_years_per_build": 4,
@@ -89,7 +89,7 @@
     "fitness_model": {
         "min_freq": 0.01,
         "max_freq": 0.99,
-        "training_window": 1,
+        "training_window": 4,
         "delta_months": 12,
         "primary_segment": "ha",
         "cost_function": "mae",
