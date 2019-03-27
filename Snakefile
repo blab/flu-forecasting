@@ -7,7 +7,7 @@ from src.forecast.fitness_model import get_train_validate_timepoints
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: download_sequences, download_titers, remove_reference_strains_from_passaged_strains, summarize_model, aggregate_model_parameters, aggregate_model_accuracy, aggregate_tree_plots, aggregate_model_validation
+localrules: download_sequences, download_titers, aggregate_tree_plots
 
 wildcard_constraints:
     sample="sample_(\d+|titers)",
