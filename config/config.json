@@ -11,6 +11,7 @@
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 2,
+    "delta_pivots": 1,
     "titers": {
         "passages": ["cell"],
         "assays": ["hi"]
@@ -21,7 +22,8 @@
         "cTiterSub_x",
         "ep_x",
         "ne_star",
-        "dms_star"
+        "dms_star",
+        "delta_frequency"
     ],
     "standard_predictors": [
         "ep",

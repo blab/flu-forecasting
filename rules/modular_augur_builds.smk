@@ -426,6 +426,27 @@ rule annotate_tip_clade_table:
         df["timepoint"] = wildcards.timepoint
         df.to_csv(output["tip_clade_table"], sep="\t", index=False)
 
+rule delta_frequency:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        clades = rules.clades_by_haplotype.output.clades
+    output:
+        delta_frequency = BUILD_SEGMENT_PATH + "delta_frequency.json"
+    params:
+        delta_pivots = config["delta_pivots"]
+    conda: "../envs/anaconda.python3.yaml"
+    log: "logs/delta_frequency_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        python3 scripts/calculate_delta_frequency.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --clades {input.clades} \
+            --delta-pivots {params.delta_pivots} \
+            --output {output.delta_frequency} &> {log}
+        """
+
 rule traits:
     message: "Inferring ancestral traits for {params.columns!s}"
     input:
@@ -683,7 +704,8 @@ def _get_node_data_for_export(wildcards):
         rules.translate.output.node_data,
         rules.traits.output.node_data,
         rules.clades_by_haplotype.output.clades,
-        rules.lbi.output.lbi
+        rules.lbi.output.lbi,
+        rules.delta_frequency.output.delta_frequency
     ]
 
     # Define segment-specific inputs for auspice JSONs.

@@ -78,6 +78,12 @@
       "type": "discrete",
       "legendTitle": "Clade",
       "key": "clade_membership"
+    },
+    "delta_frequency": {
+      "menuItem": "frequency change",
+      "legendTitle": "Frequency change",
+      "type": "continuous",
+      "key": "delta_frequency"
     }
   },
   "geo": [
