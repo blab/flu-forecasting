@@ -82,6 +82,8 @@ rule run_fitness_model:
         cost_function = config["fitness_model"]["cost_function"],
         l1_lambda = config["fitness_model"]["l1_lambda"]
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    log: "logs/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
     shell:
         """
         python3 src/fit_model.py \
@@ -92,7 +94,7 @@ rule run_fitness_model:
             --predictors {params.predictors} \
             --cost-function {params.cost_function} \
             --l1-lambda {params.l1_lambda} \
-            --output {output}
+            --output {output} &> {log}
         """
 
 # rule run_fitness_model:
