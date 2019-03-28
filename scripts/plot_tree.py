@@ -18,7 +18,7 @@ def timestamp_to_float(time):
 
 
 def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size,
-              start_date, end_date):
+              start_date, end_date, include_color_bar):
     """Plot a BioPython Phylo tree in the BALTIC-style.
     """
     # Plot H3N2 tree in BALTIC style from Bio.Phylo tree.
@@ -43,10 +43,15 @@ def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size,
     # Setup the figure grid.
     #
 
-    fig = plt.figure(figsize=(8, 6), facecolor='w')
-    gs = gridspec.GridSpec(2, 1, height_ratios=[14, 1], width_ratios=[1], hspace=0.1, wspace=0.1)
-    ax = fig.add_subplot(gs[0])
-    colorbar_ax = fig.add_subplot(gs[1])
+    if include_color_bar:
+        fig = plt.figure(figsize=(8, 6), facecolor='w')
+        gs = gridspec.GridSpec(2, 1, height_ratios=[14, 1], width_ratios=[1], hspace=0.1, wspace=0.1)
+        ax = fig.add_subplot(gs[0])
+        colorbar_ax = fig.add_subplot(gs[1])
+    else:
+        fig = plt.figure(figsize=(8, 4), facecolor='w')
+        gs = gridspec.GridSpec(1, 1)
+        ax = fig.add_subplot(gs[0])
 
     L=len([k for k in tree.find_clades() if k.is_terminal()])
 
@@ -135,18 +140,23 @@ def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size,
     ax.set_yticklabels([])
 
     if start_date:
-        ax.set_xlim(left=timestamp_to_float(pd.to_datetime(start_date)))
+        # Always add a buffer to the left edge of the plot so data up to the
+        # given end date can be clearly seen.
+        ax.set_xlim(left=timestamp_to_float(pd.to_datetime(start_date)) - 2.0)
 
     if end_date:
-        ax.set_xlim(right=timestamp_to_float(pd.to_datetime(end_date)))
+        # Always add a buffer of 3 months to the right edge of the plot so data
+        # up to the given end date can be clearly seen.
+        ax.set_xlim(right=timestamp_to_float(pd.to_datetime(end_date)) + 0.25)
 
-    cb1 = mpl.colorbar.ColorbarBase(
-        colorbar_ax,
-        cmap=cmap,
-        norm=norm,
-        orientation='horizontal'
-    )
-    cb1.set_label(color_by_trait)
+    if include_color_bar:
+        cb1 = mpl.colorbar.ColorbarBase(
+            colorbar_ax,
+            cmap=cmap,
+            norm=norm,
+            orientation='horizontal'
+        )
+        cb1.set_label(color_by_trait)
 
     gs.tight_layout(fig)
     plt.savefig(figure_name)
@@ -161,6 +171,7 @@ if __name__ == "__main__":
     parser.add_argument("--tip_size", help="tip size", type=int, default=10)
     parser.add_argument("--start-date", help="earliest date to show on the x-axis")
     parser.add_argument("--end-date", help="latest date to show on the x-axis")
+    parser.add_argument("--include-color-bar", action="store_true", help="display a color bar for the color by option at the bottom of the plot")
     args = parser.parse_args()
 
     with open(args.tree, "r") as json_fh:
@@ -177,5 +188,6 @@ if __name__ == "__main__":
         args.branch_width,
         args.tip_size,
         args.start_date,
-        args.end_date
+        args.end_date,
+        args.include_color_bar
     )

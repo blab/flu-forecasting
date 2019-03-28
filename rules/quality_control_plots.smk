@@ -53,6 +53,7 @@ rule plot_tree:
         python3 scripts/plot_tree.py \
             {input} \
             {output} \
+            --start-date {wildcards.start} \
             --end-date {wildcards.end} &> {log}
         """
 
