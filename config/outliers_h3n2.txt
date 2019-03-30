@@ -102,6 +102,7 @@ A/Indiana/06/2013
 A/Indiana/08/2012
 A/Indiana/10/2011
 A/Indiana/10/2011-egg
+A/Indiana/10/2013
 A/Indiana/103/2012
 A/Indiana/11/2013
 A/Indiana/113/2012
@@ -206,6 +207,7 @@ A/Michigan/95/2016
 A/Michigan/96/2016
 A/Minnesota/11/2010
 A/Minnesota/11/2010-egg
+A/Minnesota/11/2012
 A/Minnesota/15/2012
 A/Minnesota/9/2010
 A/Nanjing/1/2010
