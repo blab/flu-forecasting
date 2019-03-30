@@ -106,14 +106,14 @@ def _get_distance_maps_by_lineage_and_segment(wildcards):
 
 def _get_distance_earliest_date_by_wildcards(wildcards):
     timepoint = pd.to_datetime(wildcards.timepoint)
-    season_offset = pd.DateOffset(months=config["pivot_interval"])
+    season_offset = pd.DateOffset(months=config["pivot_interval"] * 2)
     tree_offset = pd.DateOffset(years=config["min_years_per_build"])
     earliest_date = timepoint - season_offset - tree_offset
     return earliest_date.strftime("%Y-%m-%d")
 
 def _get_distance_latest_date_by_wildcards(wildcards):
     timepoint = pd.to_datetime(wildcards.timepoint)
-    offset = pd.DateOffset(months=config["pivot_interval"])
+    offset = pd.DateOffset(months=config["pivot_interval"] * 2)
     latest_date = timepoint - offset
     return latest_date.strftime("%Y-%m-%d")
 
