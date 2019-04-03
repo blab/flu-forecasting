@@ -276,9 +276,9 @@ rule estimate_frequencies:
 --pivot-frequency {params.pivot_frequency} \
 --start-date {wildcards.start} \
 --end-date {wildcards.timepoint} \
---weights {input.weights} \
---weights-attribute region \
 --include-internal-nodes &> {log}"""
+#--weights {input.weights} \
+#--weights-attribute region \
 
 rule ancestral:
     message: "Reconstructing ancestral sequences and mutations for {wildcards}"
@@ -688,11 +688,11 @@ rule tip_frequencies:
             --proportion-wide {params.proportion_wide} \
             --min-date {params.min_date} \
             --max-date {params.max_date} \
-            --weights {input.weights} \
-            --weights-attribute region \
             --pivot-interval {params.pivot_frequency} \
             --output {output}
         """
+#            --weights {input.weights} \
+#            --weights-attribute region \
 
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
