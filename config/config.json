@@ -10,8 +10,10 @@
     "viruses": [20],
     "number_of_samples": 1,
     "include_titer_tree": false,
-    "min_tips_per_clade": 20,
+    "min_tips_per_clade": 0,
     "delta_pivots": 1,
+    "months_for_distance_season": 6,
+    "max_years_for_distances": 5,
     "titers": {
         "passages": ["cell"],
         "assays": ["hi"]
