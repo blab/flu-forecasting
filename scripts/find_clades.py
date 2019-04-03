@@ -56,28 +56,35 @@ if __name__ == "__main__":
     # Annotate mutations between each node and the given reference sample.
     clades = {}
     for node in tree.find_clades():
-        if node == tree.root:
-            clades[node.name] = {"clade_membership": "root"}
-        elif node.count_terminals() < args.minimum_tips:
-            # Assign tips and small clades to the same clade annotation as their
-            # immediate parent.
-            clades[node.name] = clades[node.parent.name].copy()
+        # If using hash ids, assign clades based on hashes of the full-length
+        # amino acid sequence for each node. Otherwise, use clades based on
+        # mutations relative to the given reference.
+        if args.use_hash_ids:
+            node_sequence = "".join([translations_by_gene_name[gene][node.name] for gene in args.gene_names])
+            clades[node.name] = {"clade_membership": hashlib.sha256(node_sequence.encode()).hexdigest()[:MAX_HASH_LENGTH]}
         else:
-            # Collect all mutations between the current node and the MRCA.
-            mutations = []
-            for gene in args.gene_names:
-                for i in range(len(reference_sequences_by_gene[gene])):
-                    if reference_sequences_by_gene[gene][i] != translations_by_gene_name[gene][node.name][i]:
-                        # Store mutations with gene, position, and allele like "HA1:131K".
-                        mutations.append(f"{gene}:{i + 1}{translations_by_gene_name[gene][node.name][i]}")
-
-            if len(mutations) > 0:
-                # If this node has any mutations, concatenate them into a
-                # comma-delimited string.
-                clades[node.name] = {"clade_membership": ",".join(mutations)}
-            else:
-                # Otherwise, use the clade annotation of this node's parent.
+            if node == tree.root:
+                clades[node.name] = {"clade_membership": "root"}
+            elif node.count_terminals() < args.minimum_tips:
+                # Assign tips and small clades to the same clade annotation as their
+                # immediate parent.
                 clades[node.name] = clades[node.parent.name].copy()
+            else:
+                # Collect all mutations between the current node and the MRCA.
+                mutations = []
+                for gene in args.gene_names:
+                    for i in range(len(reference_sequences_by_gene[gene])):
+                        if reference_sequences_by_gene[gene][i] != translations_by_gene_name[gene][node.name][i]:
+                            # Store mutations with gene, position, and allele like "HA1:131K".
+                            mutations.append(f"{gene}:{i + 1}{translations_by_gene_name[gene][node.name][i]}")
+
+                if len(mutations) > 0:
+                    # If this node has any mutations, concatenate them into a
+                    # comma-delimited string.
+                    clades[node.name] = {"clade_membership": ",".join(mutations)}
+                else:
+                    # Otherwise, use the clade annotation of this node's parent.
+                    clades[node.name] = clades[node.parent.name].copy()
 
     # TODO: Remove clade annotations for internal nodes that have no tips
     # sharing the same annotation?
@@ -98,11 +105,11 @@ if __name__ == "__main__":
 
         for node in tree.find_clades():
             clades[node.name]["clade_membership"] = "Clade %i" % mutations_to_number[clades[node.name]["clade_membership"]]
-    elif args.use_hash_ids:
-        # Assign abbreviated SHA hashes based on concatenated mutations.
-        for node_name in clades.keys():
-            if clades[node_name]["clade_membership"] != "root":
-                clades[node_name]["clade_membership"] = hashlib.sha256(clades[node_name]["clade_membership"].encode()).hexdigest()[:MAX_HASH_LENGTH]
+    # elif args.use_hash_ids:
+    #     # Assign abbreviated SHA hashes based on concatenated mutations.
+    #     for node_name in clades.keys():
+    #         if clades[node_name]["clade_membership"] != "root":
+    #             clades[node_name]["clade_membership"] = hashlib.sha256(clades[node_name]["clade_membership"].encode()).hexdigest()[:MAX_HASH_LENGTH]
 
     # Write out the node annotations.
     write_json({"nodes": clades}, args.output)
