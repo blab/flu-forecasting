@@ -59,6 +59,7 @@ rule select_clades:
         primary_segment = config["fitness_model"]["primary_segment"],
         delta_months = config["fitness_model"]["delta_months"]
     conda: "../envs/anaconda.python3.yaml"
+    log: "logs/select_clades_" + BUILD_LOG_STEM + ".txt"
     shell:
         """
         python3 scripts/select_clades.py \
@@ -66,7 +67,7 @@ rule select_clades:
             --tips-to-clades {input.tips_to_clades} \
             --primary-segment {params.primary_segment} \
             --delta-months {params.delta_months} \
-            --output {output}
+            --output {output} &> {log}
         """
 
 rule run_fitness_model:
