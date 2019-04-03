@@ -118,8 +118,13 @@ if __name__ == "__main__":
     if args.output_tip_clade_table:
         records = []
         for tip in tree.find_clades(terminal=True):
+            # Note the tip's own clade assignment which may be distinct from its
+            # parent's.
+            depth = 0
+            records.append([tip.name, clades[tip.name]["clade_membership"], depth])
+
             parent = tip.parent
-            depth = 1
+            depth += 1
             while True:
                 records.append([tip.name, clades[parent.name]["clade_membership"], depth])
 
