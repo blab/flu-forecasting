@@ -26,6 +26,7 @@
         "ne_star",
         "dms_star",
         "delta_frequency",
+        "lbi-delta_frequency",
         "lbi-dms_star",
         "lbi-ep_x-ne_star"
     ],
