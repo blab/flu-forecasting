@@ -1,6 +1,6 @@
 {
     "path_to_fauna": "../fauna",
-    "min_length": 900,
+    "min_length": 1700,
     "lineages": ["h3n2"],
     "segments": ["ha"],
     "start_date": "2000-10-01",
