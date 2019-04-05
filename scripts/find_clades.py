@@ -56,19 +56,19 @@ if __name__ == "__main__":
     # Annotate mutations between each node and the given reference sample.
     clades = {}
     for node in tree.find_clades():
-        # If using hash ids, assign clades based on hashes of the full-length
-        # amino acid sequence for each node. Otherwise, use clades based on
-        # mutations relative to the given reference.
-        if args.use_hash_ids:
-            node_sequence = "".join([translations_by_gene_name[gene][node.name] for gene in args.gene_names])
-            clades[node.name] = {"clade_membership": hashlib.sha256(node_sequence.encode()).hexdigest()[:MAX_HASH_LENGTH]}
+        if node == tree.root:
+            clades[node.name] = {"clade_membership": "root"}
+        elif node.count_terminals() < args.minimum_tips:
+            # Assign tips and small clades to the same clade annotation as their
+            # immediate parent.
+            clades[node.name] = clades[node.parent.name].copy()
         else:
-            if node == tree.root:
-                clades[node.name] = {"clade_membership": "root"}
-            elif node.count_terminals() < args.minimum_tips:
-                # Assign tips and small clades to the same clade annotation as their
-                # immediate parent.
-                clades[node.name] = clades[node.parent.name].copy()
+            # If using hash ids, assign clades based on hashes of the
+            # full-length amino acid sequence for each node. Otherwise, use
+            # clades based on mutations relative to the given reference.
+            if args.use_hash_ids:
+                node_sequence = "".join([translations_by_gene_name[gene][node.name] for gene in args.gene_names])
+                clades[node.name] = {"clade_membership": hashlib.sha256(node_sequence.encode()).hexdigest()[:MAX_HASH_LENGTH]}
             else:
                 # Collect all mutations between the current node and the MRCA.
                 mutations = []
