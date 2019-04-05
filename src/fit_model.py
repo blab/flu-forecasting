@@ -48,7 +48,7 @@ class ExponentialGrowthModel(object):
             coefficients for given predictors
 
         predictors : ndarray
-            predictor values per sample (p x n matrix for p predictors and n samples)
+            predictor values per sample (n x p matrix for p predictors and n samples)
 
         Returns
         -------
