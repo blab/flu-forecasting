@@ -61,7 +61,7 @@
         "proportion_wide": 0.0,
         "pivot_frequency": 6,
         "bandwidths": [0.02, 0.04, 0.08, 0.16, 0.25, 0.33, 0.5],
-        "min_mutation_frequency": 0.05
+        "min_mutation_frequency": 0.0
     },
     "lbi": {
         "tau": 0.5,
