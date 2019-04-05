@@ -27,6 +27,14 @@ def inverse_cross_immunity_amplitude(d_ep, d_init):
     return 1 - np.exp(-d_ep / float(d_init))
 
 
+def cross_immunity_cost(d_ep, d_init):
+    """Return the cross-immunity cost corresponding to the given epitope distance
+    between two amino acid sequences and a predetermined scaling parameter that
+    controls the time period across which cross-immunity decays.
+    """
+    return np.exp(-d_ep / float(d_init))
+
+
 class fitness_predictors(object):
 
     def __init__(self, predictor_names = ['ep', 'lb', 'dfreq'], **kwargs):

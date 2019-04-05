@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from forecast.fitness_predictors import inverse_cross_immunity_amplitude
+from forecast.fitness_predictors import inverse_cross_immunity_amplitude, cross_immunity_cost
 
 
 if __name__ == '__main__':
@@ -52,17 +52,17 @@ if __name__ == '__main__':
             if sample not in cross_immunities:
                 cross_immunities[sample] = {}
 
-            # Calculate inverse cross-immunity amplitude once from all distances
-            # to the current sample. This is an increasingly positive value for
-            # samples that are increasingly distant from previous samples.
+            # Calculate cross-immunity cost from all distances to the current
+            # sample. This negative value increases for samples that are
+            # increasingly distant from previous samples.
             cross_immunity = 0.0
             for past_sample, distance in sample_distances[distance_attribute].items():
-                cross_immunity += max_frequency_per_sample[past_sample] * inverse_cross_immunity_amplitude(
+                cross_immunity += max_frequency_per_sample[past_sample] * cross_immunity_cost(
                     distance,
                     decay_factor
                 )
 
-            cross_immunities[sample][immunity_attribute] = cross_immunity
+            cross_immunities[sample][immunity_attribute] = -1 * cross_immunity
 
     # Export cross-immunities to JSON.
     with open(args.output, "w") as oh:
