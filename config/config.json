@@ -10,10 +10,10 @@
     "viruses": [20],
     "number_of_samples": 1,
     "include_titer_tree": false,
-    "min_tips_per_clade": 0,
+    "min_tips_per_clade": 10,
     "delta_pivots": 1,
-    "months_for_distance_season": 6,
-    "max_years_for_distances": 5,
+    "months_for_distance_season": 12,
+    "max_years_for_distances": 6,
     "titers": {
         "passages": ["cell"],
         "assays": ["hi"]
@@ -21,14 +21,9 @@
     "predictors": [
         "naive",
         "lbi",
-        "cTiterSub_x",
         "ep_x",
-        "ne_star",
-        "dms_star",
         "delta_frequency",
-        "lbi-delta_frequency",
-        "lbi-dms_star",
-        "lbi-ep_x-ne_star"
+        "lbi-ep_x"
     ],
     "standard_predictors": [
         "ep",
@@ -97,7 +92,7 @@
         "training_window": 6,
         "delta_months": 12,
         "primary_segment": "ha",
-        "cost_function": "sse",
+        "cost_function": "information_gain",
         "l1_lambda": 0.0
     }
 }
