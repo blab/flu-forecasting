@@ -23,6 +23,26 @@ def sum_of_squared_errors(observed, estimated, **kwargs):
     return np.sum((observed - estimated) ** 2)
 
 
+def root_mean_square_error(observed, estimated, **kwargs):
+    """
+    Calculates the root mean square error between observed and estimated values.
+
+    Parameters
+    ----------
+    observed : numpy.ndarray
+        observed values
+
+    estimated : numpy.ndarray
+        estimated values
+
+    Returns
+    -------
+    float :
+        root mean square error between observed and estimated values
+    """
+    return np.sqrt(np.mean((observed - estimated) ** 2))
+
+
 def mean_absolute_error(observed, estimated, **kwargs):
     """
     Calculates the mean absolute error between observed and estimated values.

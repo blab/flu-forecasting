@@ -8,7 +8,7 @@ from scipy.optimize import minimize
 
 from forecast.fitness_model import get_train_validate_timepoints
 from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain
-from forecast.metrics import mean_absolute_error, sum_of_squared_errors
+from forecast.metrics import mean_absolute_error, sum_of_squared_errors, root_mean_square_error
 
 
 class ExponentialGrowthModel(object):
@@ -403,7 +403,7 @@ if __name__ == "__main__":
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
     parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
-    parser.add_argument("--cost-function", default="sse", choices=["sse", "mae", "information_gain"], help="name of the function that returns the error between observed and estimated values")
+    parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
 
     args = parser.parse_args()
@@ -462,6 +462,8 @@ if __name__ == "__main__":
     # Select the cost function.
     if args.cost_function == "sse":
         cost_function = sum_of_squared_errors
+    elif args.cost_function == "rmse":
+        cost_function = root_mean_square_error
     elif args.cost_function == "mae":
         cost_function = mean_absolute_error
     elif args.cost_function == "information_gain":
