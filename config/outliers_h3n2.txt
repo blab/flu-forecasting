@@ -35,6 +35,7 @@ A/Delaware/3/2011
 A/Guam/AF2771/2011
 A/Guatemala/116/2018
 A/Hawaii/3/2012
+A/Helsinki/897/2013
 A/Helsinki/942/2013
 A/HoChiMinh/4596/2010
 A/HongKong/H090-781-V10/2009
@@ -143,6 +144,7 @@ A/Indiana/6/2013
 A/Indiana/65/2012
 A/Indiana/7/2012
 A/Indiana/7/2013
+A/Indiana/77/2012
 A/Indiana/8/2011
 A/Indiana/8/2012
 A/Indiana/8/2013
@@ -153,6 +155,7 @@ A/Indiana/99/2012
 A/Iowa/16/2009
 A/Iowa/16/2012
 A/Iowa/4/2013
+A/Iowa/8/2011
 A/Iran/140/2014
 A/Iran/227/2014
 A/Iran/234/2014
