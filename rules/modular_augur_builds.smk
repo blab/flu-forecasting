@@ -358,7 +358,7 @@ def translations(wildcards):
 rule mutation_frequencies:
     message:
         """
-        Estimating diffusion-based mutation frequencies for {wildcards.lineage} {wildcards.segment} genes: {params.gene_names}
+        Estimating KDE-based mutation frequencies for {wildcards.lineage} {wildcards.segment} genes: {params.gene_names}
         """
     input:
         metadata = rules.parse.output.metadata,
@@ -368,22 +368,26 @@ rule mutation_frequencies:
     params:
         gene_names = gene_names,
         pivot_frequency = PIVOT_INTERVAL,
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
         min_date = _get_min_date_for_augur_frequencies,
-        max_date = _get_max_date_for_augur_frequencies,
-        min_frequency = config["frequencies"]["min_mutation_frequency"]
+        max_date = _get_max_date_for_augur_frequencies
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/mutation_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     log: "logs/mutation_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur frequencies \
-            --method diffusion \
+            --method kde \
             --metadata {input.metadata} \
             --alignments {input.translations} \
             --gene-names {params.gene_names} \
             --min-date {params.min_date} \
             --max-date {params.max_date} \
-            --minimal-frequency {params.min_frequency} \
+            --narrow-bandwidth {params.narrow_bandwidth} \
+            --wide-bandwidth {params.wide_bandwidth} \
+            --proportion-wide {params.proportion_wide} \
             --pivot-interval {params.pivot_frequency} \
             --output {output}
         """
@@ -818,6 +822,30 @@ rule merge_node_data_and_frequencies:
 
         df.to_csv(output.table, sep="\t", index=False, header=True)
 
+rule mutation_frequencies_by_tip:
+    input:
+        frequencies = rules.mutation_frequencies.output.frequencies,
+        tip_attributes = rules.merge_node_data_and_frequencies.output.table,
+        translations = translations
+    output:
+        frequencies = BUILD_SEGMENT_PATH + "mutation_frequencies_by_tip.tsv"
+    params:
+        genes = gene_names,
+        max_frequency = config["frequencies"]["max_mutation_frequency"]
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/mutation_frequencies_by_tip_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/mutation_frequencies_by_tip_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    shell:
+        """
+        python3 scripts/mutation_frequencies_by_tip.py \
+            --frequencies {input.frequencies} \
+            --tips {input.tip_attributes} \
+            --gene-names {params.genes} \
+            --translations {input.translations} \
+            --max-frequency {params.max_frequency} \
+            --output {output}
+        """
+
 rule collect_tip_attributes:
     input:
         expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tip_attributes.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
@@ -842,4 +870,17 @@ rule collect_annotated_tip_clade_tables:
         python3 scripts/collect_tables.py \
             --tables {input} \
             --output {output.tip_clade_table}
+        """
+
+rule collect_mutation_frequencies_by_tip:
+    input:
+        expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/mutation_frequencies_by_tip.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+    output:
+        table = BUILD_PATH + "mutation_frequencies_by_tip.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+            --tables {input} \
+            --output {output.table}
         """
