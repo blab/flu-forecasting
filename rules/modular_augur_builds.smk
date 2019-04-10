@@ -14,7 +14,7 @@ rule download_sequences:
     output:
         sequences = "data/{lineage}_{segment}.fasta"
     params:
-        fasta_fields = "strain virus accession collection_date region country division location passage_category submitting_lab age gender"
+        fasta_fields = "strain virus accession collection_date region country division location passage_category submitting_lab age gender virus_inclusion_date"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/download_sequences_{lineage}_{segment}.txt"
     log: "logs/download_sequences_{lineage}_{segment}.log"
@@ -58,7 +58,7 @@ rule parse:
         sequences = "results/builds/sequences_{lineage}_{segment}.fasta",
         metadata = "results/builds/metadata_{lineage}_{segment}.tsv"
     params:
-        fasta_fields =  "strain virus isolate_id date region country division location passage authors age gender"
+        fasta_fields =  "strain virus isolate_id date region country division location passage authors age gender virus_inclusion_date"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
