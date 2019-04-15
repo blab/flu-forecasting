@@ -149,7 +149,7 @@ class ExponentialGrowthModel(object):
 
         return error + l1_penalty
 
-    def fit(self, X, y):
+    def fit(self, X, y, **kwargs):
         """Fit a model to the given input data, producing beta coefficients for each of
         the model's predictors.
 
@@ -181,7 +181,7 @@ class ExponentialGrowthModel(object):
         )
         self.coef_ = results.x
 
-        training_error = self.score(X, y)
+        training_error = self.score(X, y, **kwargs)
 
         return training_error
 
@@ -241,7 +241,7 @@ class ExponentialGrowthModel(object):
         estimated_frequencies = pd.concat(estimated_frequencies)
         return estimated_frequencies
 
-    def score(self, X, y):
+    def score(self, X, y, **kwargs):
         """Calculate model error between the estimated final clade frequencies for the
         given tip attributes, `X`, and the observed final clade frequencies in
         `y`.
@@ -260,7 +260,92 @@ class ExponentialGrowthModel(object):
         float :
             model error
         """
-        return self._fit(self.coef_, X, y)
+        return self._fit(self.coef_, X, y, **kwargs)
+
+
+class MutationExponentialGrowthModel(ExponentialGrowthModel):
+    def _fit(self, coefficients, X_tips, y, X_mutations):
+        # Estimate final frequencies.
+        y_hat = self.predict(X_tips, X_mutations, coefficients)
+
+        # Merge estimated and observed frequencies. The left join enables
+        # tracking of clades that die in the future and are therefore not
+        # observed in the future frequencies data frame.
+        frequencies = y_hat.merge(
+            y,
+            how="left",
+            on=["timepoint", "mutation"],
+            suffixes=["_estimated", "_observed"]
+        )
+        frequencies["frequency_observed"] = frequencies["frequency_observed"].fillna(0.0)
+
+        # Calculate initial frequencies for use by cost function.
+        initial_frequencies = X_mutations.groupby([
+            "timepoint",
+            "mutation"
+        ])["frequency"].sum().reset_index()
+
+        # Annotate future frequencies with initial frequencies.
+        frequencies = frequencies.merge(
+            initial_frequencies,
+            how="inner",
+            on=["timepoint", "mutation"]
+        )
+
+        # Calculate the error between the observed and estimated frequencies.
+        error = self.cost_function(
+            frequencies["frequency_observed"],
+            frequencies["frequency_estimated"],
+            initial=frequencies["frequency"]
+        )
+        l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+
+        return error + l1_penalty
+
+    def predict(self, X_tips, X_mutations, coefficients=None):
+        # Use model coefficients, if none are provided.
+        if coefficients is None:
+            coefficients = self.coef_
+
+        estimated_frequencies = []
+        for timepoint, timepoint_df in X_tips.groupby("timepoint"):
+            # Select predictors from the timepoint.
+            predictors = timepoint_df.loc[:, self.predictors].values
+
+            # Select frequencies from timepoint.
+            initial_frequencies = timepoint_df["frequency"].values
+
+            # Calculate fitnesses.
+            fitnesses = self.get_fitnesses(coefficients, predictors)
+
+            # Project frequencies.
+            projected_frequencies = self.project_frequencies(
+                initial_frequencies,
+                fitnesses,
+                self.delta_time
+            )
+
+            projected_timepoint_df = timepoint_df[["timepoint", "strain"]].copy()
+            projected_timepoint_df["frequency"] = projected_frequencies
+
+            # Sum the estimated frequencies by mutation.
+            timepoint_mutations = X_mutations[X_mutations["timepoint"] == timepoint].copy()
+            annotated_timepoint_mutations = timepoint_mutations.merge(
+                projected_timepoint_df,
+                on=["timepoint", "strain"],
+                suffixes=["_initial", ""]
+            )
+
+            projected_mutation_frequencies = annotated_timepoint_mutations.groupby([
+                "timepoint",
+                "mutation"
+            ])["frequency"].sum().reset_index()
+
+            estimated_frequencies.append(projected_mutation_frequencies)
+
+        # Collect all estimated frequencies by timepoint.
+        estimated_frequencies = pd.concat(estimated_frequencies)
+        return estimated_frequencies
 
 
 def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None):
