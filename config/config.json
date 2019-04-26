@@ -93,6 +93,7 @@
         "delta_months": 12,
         "primary_segment": "ha",
         "cost_function": "information_gain",
-        "l1_lambda": 0.0
+        "l1_lambda": 0.0,
+        "pseudocount": 0.000001
     }
 }

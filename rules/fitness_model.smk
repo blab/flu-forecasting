@@ -81,7 +81,8 @@ rule run_fitness_model:
         delta_months = config["fitness_model"]["delta_months"],
         training_window = config["fitness_model"]["training_window"],
         cost_function = config["fitness_model"]["cost_function"],
-        l1_lambda = config["fitness_model"]["l1_lambda"]
+        l1_lambda = config["fitness_model"]["l1_lambda"],
+        pseudocount = config["fitness_model"]["pseudocount"]
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
     log: "logs/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
@@ -95,6 +96,7 @@ rule run_fitness_model:
             --predictors {params.predictors} \
             --cost-function {params.cost_function} \
             --l1-lambda {params.l1_lambda} \
+            --pseudocount {params.pseudocount} \
             --output {output} &> {log}
         """
 

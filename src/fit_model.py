@@ -426,7 +426,7 @@ if __name__ == "__main__":
 
     # If a pseudocount numerator has been provided, update the given tip
     # frequencies both from current and future timepoints.
-    if args.pseudocount is not None:
+    if args.pseudocount is not None and args.pseudocount > 0.0:
         tips = add_pseudocounts_to_frequencies(tips, args.pseudocount)
         print("Sum of tip frequencies by timepoint: ",
               tips.groupby("timepoint")["frequency"].sum())
