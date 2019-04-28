@@ -643,7 +643,7 @@ rule convert_titer_model_to_distance_map:
             --output {output}
         """
 
-rule pairwise_titer_distances:
+rule titer_distances:
     input:
         tree = rules.refine.output.tree,
         alignments = translations,
@@ -651,8 +651,8 @@ rule pairwise_titer_distances:
         date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names,
-        comparisons = "pairwise",
-        attribute_names = "cTiterSub_pairwise",
+        comparisons = "ancestor pairwise",
+        attribute_names = "cTiterSub_star cTiterSub_pairwise",
         earliest_date = _get_distance_earliest_date_by_wildcards,
         latest_date = _get_distance_latest_date_by_wildcards
     output:
@@ -666,7 +666,7 @@ rule pairwise_titer_distances:
             --gene-names {params.genes} \
             --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} \
+            --map {input.distance_maps} {input.distance_maps} \
             --date-annotations {input.date_annotations} \
             --earliest-date {params.earliest_date} \
             --latest-date {params.latest_date} \
@@ -676,7 +676,7 @@ rule pairwise_titer_distances:
 rule titer_cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
-        distances = rules.pairwise_titer_distances.output.distances
+        distances = rules.titer_distances.output.distances
     params:
         distance_attributes = "cTiterSub_pairwise",
         immunity_attributes = "cTiterSub_x",
@@ -757,6 +757,7 @@ def _get_node_data_for_export(wildcards):
             rules.titers_tree.output.titers_model,
             rules.titers_sub.output.titers_model,
             rules.cross_immunities.output.cross_immunities,
+            rules.titer_distances.output.distances,
             rules.titer_cross_immunities.output.cross_immunities
         ])
 

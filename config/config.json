@@ -72,6 +72,7 @@
         "aa_sequences",
         "country_confidence",
         "ep_pairwise",
+        "cTiterSub_pairwise",
         "muts",
         "num_date_confidence",
         "region_confidence",
