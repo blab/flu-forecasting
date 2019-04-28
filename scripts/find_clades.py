@@ -1,11 +1,13 @@
 """Find clades in a given tree by distinct haplotypes in the given amino acid sequences corresponding to internal nodes in the tree.
 """
 import argparse
+from augur.frequency_estimators import TreeKdeFrequencies
 from augur.reconstruct_sequences import load_alignments
 from augur.utils import annotate_parents_for_tree, write_json
 import Bio.Phylo
 import Bio.SeqIO
 import hashlib
+import json
 import pandas as pd
 
 # Magic number of maximum length of SHA hash to keep for each clade.
@@ -18,12 +20,14 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("--tree", required=True, help="Newick tree to identify clades in")
+    parser.add_argument("--frequencies", required=True, help="frequencies JSON for the given tree")
     parser.add_argument("--reference", required=True, help="GenBank file of reference sample to identify mutations against; should contain gene annotations to enable translation of nucleotide sequences to amino acids")
     parser.add_argument("--translations", required=True, nargs="+", help="FASTA file(s) of amino acid sequences per node")
     parser.add_argument("--gene-names", required=True, nargs="+", help="gene names corresponding to translations provided")
     parser.add_argument("--use-incremental-ids", action="store_true", help="report an incremental integer id for each clade instead of concatenated mutations")
     parser.add_argument("--use-hash-ids", action="store_true", help="report an abbreviated SHA1 hash for each clade instead of concatenated mutations")
     parser.add_argument("--minimum-tips", type=int, default=1, help="minimum number of tips required for a clade to be assigned its own annotation")
+    parser.add_argument("--minimum-frequency", type=float, default=0.01, help="minimum frequency for a clade to be considered")
     parser.add_argument("--output", required=True, help="JSON of clade annotations for nodes in the given tree")
     parser.add_argument("--output-tip-clade-table", help="optional table of all clades per tip in the tree")
 
@@ -32,6 +36,12 @@ if __name__ == "__main__":
     # Load the tree.
     tree = Bio.Phylo.read(args.tree, "newick")
     tree = annotate_parents_for_tree(tree)
+
+    # Load frequencies.
+    with open(args.frequencies, "r") as fh:
+        frequencies_json = json.load(fh)
+
+    kde_frequencies = TreeKdeFrequencies.from_json(frequencies_json)
 
     # Load the reference and translate its sequences.
     reference = Bio.SeqIO.read(args.reference, "genbank")
@@ -58,7 +68,7 @@ if __name__ == "__main__":
     for node in tree.find_clades():
         if node == tree.root:
             clades[node.name] = {"clade_membership": "root"}
-        elif node.count_terminals() < args.minimum_tips:
+        elif node.count_terminals() < args.minimum_tips or kde_frequencies.frequencies[node.name][-1] < args.minimum_frequency:
             # Assign tips and small clades to the same clade annotation as their
             # immediate parent.
             clades[node.name] = clades[node.parent.name].copy()

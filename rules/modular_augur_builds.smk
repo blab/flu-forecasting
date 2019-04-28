@@ -416,6 +416,7 @@ rule mutation_frequencies:
 rule clades_by_haplotype:
     input:
         tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
         reference = "config/reference_{lineage}_{segment}.gb",
         translations = translations
     output:
@@ -423,17 +424,20 @@ rule clades_by_haplotype:
         tip_clade_table = BUILD_SEGMENT_PATH + "unannotated_tips_to_clades.tsv"
     params:
         gene_names = gene_names,
-        minimum_tips = config["min_tips_per_clade"]
+        minimum_tips = config["min_tips_per_clade"],
+        min_frequency = 0.0
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/find_clades_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         python3 scripts/find_clades.py \
             --tree {input.tree} \
+            --frequencies {input.frequencies} \
             --reference {input.reference} \
             --translations {input.translations} \
             --gene-names {params.gene_names} \
             --minimum-tips {params.minimum_tips} \
+            --minimum-frequency {params.min_frequency} \
             --use-hash-ids \
             --output {output.clades} \
             --output-tip-clade-table {output.tip_clade_table} &> {log}
