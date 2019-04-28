@@ -30,13 +30,13 @@ rule download_sequences:
             --fstem {wildcards.lineage}_{wildcards.segment}
         """
 
-rule download_titers:
-    message: "Downloading {wildcards.lineage} {wildcards.assay} {wildcards.passage} titers from fauna"
+rule download_all_titers_by_assay:
+    message: "Downloading {wildcards.lineage} {wildcards.assay} titers from fauna"
     output:
-        titers = "data/{lineage}_{passage}_{assay}_titers.tsv"
+        titers = "data/{lineage}_{assay}_titers.json"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/download_titers_{lineage}_{passage}_{assay}.txt"
-    log: "logs/download_titers_{lineage}_{passage}_{assay}.log"
+    benchmark: "benchmarks/download_all_titers_{lineage}_{assay}.txt"
+    log: "logs/download_all_titers_{lineage}_{assay}.log"
     params:
         databases = "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb"
     shell:
@@ -45,10 +45,35 @@ rule download_titers:
             --database {params.databases} \
             --virus flu \
             --subtype {wildcards.lineage} \
-            --select assay_type:{wildcards.assay} serum_passage_category:{wildcards.passage} \
+            --select assay_type:{wildcards.assay} \
             --path data \
-            --fstem {wildcards.lineage}_{wildcards.passage}_{wildcards.assay}
+            --fstem {wildcards.lineage}_{wildcards.assay} \
+            --ftype json
         """
+
+rule get_titers_by_passage:
+    message: "Parsing {wildcards.passage}-passaged titers for {wildcards.lineage} {wildcards.assay}"
+    input:
+        titers = rules.download_all_titers_by_assay.output.titers
+    output:
+        titers = "data/{lineage}_{passage}_{assay}_titers.tsv"
+    benchmark: "benchmarks/get_titers_{lineage}_{passage}_{assay}.txt"
+    log: "logs/get_titers_{lineage}_{passage}_{assay}.log"
+    run:
+        df = pd.read_json(input.titers)
+        passaged = (df["serum_passage_category"] == wildcards.passage)
+        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and wildcards.passage in index)
+        tsv_fields = [
+            "virus_strain",
+            "serum_strain",
+            "serum_id",
+            "source",
+            "titer",
+            "assay_type"
+        ]
+
+        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
+        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
 
 rule parse:
     message: "Parsing fasta into sequences and metadata"
