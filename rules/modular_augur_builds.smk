@@ -797,7 +797,8 @@ rule export:
             --output-tree {output.auspice_tree} \
             --output-meta {output.auspice_metadata} \
             --output-sequence {output.auspice_sequence} \
-            --panels {params.panels}
+            --panels {params.panels} \
+            --minify-json
         """
 
 def _get_excluded_fields_arg(wildcards):
