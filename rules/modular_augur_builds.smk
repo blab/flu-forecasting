@@ -123,10 +123,23 @@ rule filter:
             --output {output}
         """
 
+rule filter_metadata:
+    message:
+        """
+        Excluding strains with ambiguous dates for {wildcards.lineage} {wildcards.segment}
+        """
+    input:
+        metadata = rules.parse.output.metadata,
+    output:
+        metadata = 'results/builds/filtered_metadata_{lineage}_{segment}.tsv'
+    run:
+        df = pd.read_csv(input.metadata, sep="\t")
+        df[~df["date"].str.contains("XX")].to_csv(output.metadata, sep="\t", header=True, index=False)
+
 rule select_strains:
     input:
         sequences = expand("results/builds/filtered_{{lineage}}_{segment}.fasta", segment=SEGMENTS),
-        metadata = expand("results/builds/metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
+        metadata = expand("results/builds/filtered_metadata_{{lineage}}_{segment}.tsv", segment=SEGMENTS),
         titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         include = "config/references_{lineage}.txt"
     output:
