@@ -21,9 +21,15 @@
     "predictors": [
         "naive",
         "lbi",
+        "ep",
+        "ep_star",
         "ep_x",
         "delta_frequency",
-        "lbi-ep_x"
+        "cTiterSub",
+        "cTiterSub_star",
+        "cTiterSub_x",
+        "dms_star",
+        "ne_star"
     ],
     "standard_predictors": [
         "ep",
