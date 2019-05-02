@@ -24,6 +24,8 @@
         "ep",
         "ep_star",
         "ep_x",
+        "ep_luksza_x",
+        "ep_kratsch_x",
         "delta_frequency",
         "cTiterSub",
         "cTiterSub_star",
@@ -78,6 +80,8 @@
         "aa_sequences",
         "country_confidence",
         "ep_pairwise",
+        "ep_luksza_pairwise",
+        "ep_kratsch_pairwise",
         "cTiterSub_pairwise",
         "muts",
         "num_date_confidence",
@@ -87,9 +91,9 @@
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise",
-                "immunity_attributes": "ep_x",
-                "decay_factors": "14.0"
+                "distance_attributes": "ep_pairwise ep_luksza_pairwise ep_kratsch_pairwise",
+                "immunity_attributes": "ep_x ep_luksza_x ep_kratsch_x",
+                "decay_factors": "14.0 14.0 14.0"
             }
         }
     },
