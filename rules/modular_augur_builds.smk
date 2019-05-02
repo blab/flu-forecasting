@@ -540,6 +540,50 @@ rule distances:
             --output {output}
         """
 
+rule target_distances:
+    input:
+        tree = rules.refine.output.tree,
+        alignments = translations,
+        distance_maps = "config/distance_maps/hamming.json",
+        date_annotations = rules.refine.output.node_data
+    params:
+        genes = gene_names,
+        comparisons = "pairwise",
+        attribute_names = config["target_distance_attribute"],
+        earliest_date = _get_target_distance_earliest_date_by_wildcards,
+    output:
+        distances = BUILD_SEGMENT_PATH + "target_distances.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur distance \
+            --tree {input.tree} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --compare-to {params.comparisons} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --earliest-date {params.earliest_date} \
+            --output {output}
+        """
+
+rule convert_target_distance_json_to_table:
+    input:
+        distances = rules.target_distances.output.distances
+    output:
+        distances = BUILD_SEGMENT_PATH + "target_distances.tsv"
+    params:
+        distance_attribute = config["target_distance_attribute"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/distance_json_to_table.py \
+            --json {input.distances} \
+            --output {output.distances} \
+            --distance-attribute {params.distance_attribute}
+        """
+
 def _get_cross_immunity_distance_attributes_by_lineage_and_segment(wildcards):
     return config["cross_immunity"][wildcards.lineage][wildcards.segment]["distance_attributes"]
 
@@ -887,3 +931,15 @@ rule collect_annotated_tip_clade_tables:
             --tables {input} \
             --output {output.tip_clade_table}
         """
+
+rule collect_target_distance_tables:
+    input:
+        distances = expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/target_distances.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+    output:
+        distances = BUILD_PATH + "target_distances.tsv"
+    run:
+        df = pd.concat([
+            pd.read_csv(distance_table, sep="\t")
+            for distance_table in input.distances
+        ], ignore_index=True).drop_duplicates()
+        df.to_csv(output.distances, sep="\t", index=False, header=True)
