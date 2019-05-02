@@ -31,6 +31,9 @@
         "time": "0:15:00",
         "memory": "4096"
     },
+    "cross_immunities": {
+        "memory": "8192"
+    },
     "run_fitness_model": {
         "memory": "8192",
         "time" : "00:30:00"
