@@ -16,5 +16,5 @@ dependencies:
 - scikit-learn
 - snakemake=5.4.0
 - pip:
-  - git+https://github.com/nextstrain/augur@75d6645be2a94707642181c309700ba371e120a6
+  - git+https://github.com/nextstrain/augur@master
   - rethinkdb==2.2.0.post6
