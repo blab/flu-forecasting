@@ -26,6 +26,7 @@ path_to_fauna = config["path_to_fauna"]
 LINEAGES = config["lineages"]
 SEGMENTS = config["segments"]
 START_DATE = config["start_date"]
+END_DATE_TO_STANDARDIZE = config["end_date_to_standardize"]
 END_DATE = config["end_date"]
 PIVOT_INTERVAL = config["pivot_interval"]
 MIN_YEARS_PER_BUILD = config["min_years_per_build"]
@@ -103,6 +104,12 @@ def _get_distance_maps_by_lineage_and_segment(wildcards):
         "config/distance_maps/{wildcards.lineage}/{wildcards.segment}/{distance_map}.json".format(wildcards=wildcards, distance_map=distance_map)
         for distance_map in config.loc[:, "distance_map"].values
     ]
+
+def _get_target_distance_earliest_date_by_wildcards(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    offset = pd.DateOffset(years=config["years_back_for_target_distance"])
+    earliest_date = timepoint - offset
+    return earliest_date.strftime("%Y-%m-%d")
 
 def _get_distance_earliest_date_by_wildcards(wildcards):
     timepoint = pd.to_datetime(wildcards.timepoint)

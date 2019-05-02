@@ -35,8 +35,8 @@ rule standardize_tip_attributes:
         statistics = BUILD_PATH + "standardization_statistics.json"
     params:
         predictors = _get_predictors_to_standardize,
-        start_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][0],
-        end_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][-1]
+        start_date = START_DATE,
+        end_date = END_DATE_TO_STANDARDIZE
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """

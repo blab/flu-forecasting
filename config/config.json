@@ -4,6 +4,7 @@
     "lineages": ["h3n2"],
     "segments": ["ha"],
     "start_date": "2000-10-01",
+    "end_date_to_standardize": "2001-10-01",
     "end_date": "2015-10-01",
     "pivot_interval": 6,
     "min_years_per_build": 4,
