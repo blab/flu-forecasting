@@ -397,7 +397,7 @@ def summarize_cross_validation_scores(scores):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tip-attributes", required=True, help="tab-delimited file describing tip attributes at all timepoints with standardized predictors")
-    parser.add_argument("--final-clade-frequencies", required=True, help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
+    parser.add_argument("--final-clade-frequencies", help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
     parser.add_argument("--output", required=True, help="JSON representing the model fit with training and cross-validation results, beta coefficients for predictors, and summary statistics")
     parser.add_argument("--predictors", required=True, nargs="+", help="tip attribute columns to use as predictors of final clade frequencies")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
@@ -417,37 +417,40 @@ if __name__ == "__main__":
         parse_dates=["timepoint"]
     )
 
-    # Load final clade tip frequencies.
-    final_clade_tip_frequencies = pd.read_csv(
-        args.final_clade_frequencies,
-        sep="\t",
-        parse_dates=["initial_timepoint", "final_timepoint"]
-    )
-
-    # If a pseudocount numerator has been provided, update the given tip
-    # frequencies both from current and future timepoints.
-    if args.pseudocount is not None and args.pseudocount > 0.0:
-        tips = add_pseudocounts_to_frequencies(tips, args.pseudocount)
-        print("Sum of tip frequencies by timepoint: ",
-              tips.groupby("timepoint")["frequency"].sum())
-        final_clade_tip_frequencies = add_pseudocounts_to_frequencies(
-            final_clade_tip_frequencies,
-            args.pseudocount,
-            timepoint_column="initial_timepoint"
+    if args.final_clade_tip_frequencies:
+        # Load final clade tip frequencies.
+        final_clade_tip_frequencies = pd.read_csv(
+            args.final_clade_frequencies,
+            sep="\t",
+            parse_dates=["initial_timepoint", "final_timepoint"]
         )
-        print("Sum of tip frequencies by timepoint: ",
-              final_clade_tip_frequencies.groupby("initial_timepoint")["frequency"].sum())
 
-    # Aggregate final clade frequencies.
-    final_clade_frequencies = final_clade_tip_frequencies.groupby([
-        "initial_timepoint",
-        "clade_membership"
-    ])["frequency"].sum().reset_index()
+        # If a pseudocount numerator has been provided, update the given tip
+        # frequencies both from current and future timepoints.
+        if args.pseudocount is not None and args.pseudocount > 0.0:
+            tips = add_pseudocounts_to_frequencies(tips, args.pseudocount)
+            print("Sum of tip frequencies by timepoint: ",
+                  tips.groupby("timepoint")["frequency"].sum())
+            final_clade_tip_frequencies = add_pseudocounts_to_frequencies(
+                final_clade_tip_frequencies,
+                args.pseudocount,
+                timepoint_column="initial_timepoint"
+            )
+            print("Sum of tip frequencies by timepoint: ",
+                  final_clade_tip_frequencies.groupby("initial_timepoint")["frequency"].sum())
 
-    # Rename initial timepoint column for comparison with tip attribute data.
-    final_clade_frequencies = final_clade_frequencies.rename(
-        columns={"initial_timepoint": "timepoint"}
-    )
+        # Aggregate final clade frequencies.
+        final_clade_frequencies = final_clade_tip_frequencies.groupby([
+            "initial_timepoint",
+            "clade_membership"
+        ])["frequency"].sum().reset_index()
+
+        # Rename initial timepoint column for comparison with tip attribute data.
+        targets = final_clade_frequencies.rename(
+            columns={"initial_timepoint": "timepoint"}
+        )
+    else:
+        targets = None
 
     # Identify all available timepoints from tip attributes.
     timepoints = tips["timepoint"].dt.strftime("%Y-%m-%d").unique()
@@ -490,7 +493,7 @@ if __name__ == "__main__":
     scores = cross_validate(
         model,
         tips,
-        final_clade_frequencies,
+        targets,
         train_validate_timepoints,
         coefficients
     )
