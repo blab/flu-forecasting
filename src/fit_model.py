@@ -11,6 +11,29 @@ from forecast.metrics import add_pseudocounts_to_frequencies, negative_informati
 from forecast.metrics import mean_absolute_error, sum_of_squared_errors, root_mean_square_error
 
 
+def sum_of_differences(observed, estimated, y_diff, **kwargs):
+    """
+    Calculates the sum of squared errors for observed and estimated values.
+
+    Parameters
+    ----------
+    observed : numpy.ndarray
+        observed values
+
+    estimated : numpy.ndarray
+        estimated values
+
+    y_diff : numpy.ndarray
+        differences between observed and estimated values
+
+    Returns
+    -------
+    float :
+        sum of differences between estimated and observed future values
+    """
+    return np.sum(y_diff)
+
+
 class ExponentialGrowthModel(object):
     def __init__(self, predictors, delta_time, l1_lambda, cost_function):
         """Construct an empty exponential growth model instance.
@@ -263,7 +286,107 @@ class ExponentialGrowthModel(object):
         return self._fit(self.coef_, X, y)
 
 
-def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None):
+class DistanceExponentialGrowthModel(ExponentialGrowthModel):
+    def _fit(self, coefficients, X, y):
+        """Calculate the error between observed and estimated values for the given
+        parameters and data.
+
+        Parameters
+        ----------
+        coefficients : ndarray
+            coefficients for each of the model's predictors
+
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        y : pandas.DataFrame
+            final weighted distances at delta time in the future from each
+            timepoint in the given tip attributes table
+
+        Returns
+        -------
+        float :
+            error between estimated values using the given coefficients and
+            input data and the observed values
+        """
+        # Estimate target values.
+        y_hat = self.predict(X, coefficients)
+
+        # Merge estimated and observed target values.
+        targets = y_hat.merge(
+            y,
+            how="inner",
+            on=["timepoint", "strain"],
+            suffixes=["_estimated", "_observed"]
+        )
+
+        # Calculate the error between the observed and estimated targets.
+        error = self.cost_function(
+            targets["y_observed"],
+            targets["y_estimated"],
+            y_diff=targets["y_diff"]
+        )
+        l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+
+        return error + l1_penalty
+
+    def predict(self, X, coefficients=None):
+        """Calculate the estimated final weighted distance between tips at each
+        timepoint and at that timepoint plus delta months in the future.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        coefficients : ndarray
+            optional coefficients to use for each of the model's predictors
+            instead of the model's currently defined coefficients
+
+        Returns
+        -------
+        pandas.DataFrame
+            estimated weighted distances at delta time in the future for
+            each tip from each timepoint in the given tip attributes table
+
+        """
+        # Use model coefficients, if none are provided.
+        if coefficients is None:
+            coefficients = self.coef_
+
+        estimated_targets = []
+        for timepoint, timepoint_df in X.groupby("timepoint"):
+            # Select predictors from the timepoint.
+            predictors = timepoint_df.loc[:, self.predictors].values
+
+            # Select frequencies from timepoint.
+            initial_frequencies = timepoint_df["frequency"].values
+
+            # Calculate fitnesses.
+            fitnesses = self.get_fitnesses(coefficients, predictors)
+
+            # Project frequencies.
+            projected_frequencies = self.project_frequencies(
+                initial_frequencies,
+                fitnesses,
+                self.delta_time
+            )
+
+            # Calculate estimated distance between current tips and the future
+            # using projected frequencies and weighted distances to the present.
+            projected_timepoint_df = timepoint_df[["timepoint", "strain", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
+            projected_timepoint_df["frequency"] = projected_frequencies
+            projected_timepoint_df["y"] = projected_timepoint_df["frequency"] * projected_timepoint_df["weighted_distance_to_present"]
+            projected_timepoint_df["y_diff"] = projected_timepoint_df["frequency"] * projected_timepoint_df["weighted_distance_to_future"]
+
+            estimated_targets.append(projected_timepoint_df)
+
+        # Collect all estimated targets by timepoint.
+        estimated_targets = pd.concat(estimated_targets)
+        return estimated_targets
+
+
+def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership"):
     """Calculate cross-validation scores for the given data and targets across the
     given train/validate timepoints.
 
@@ -341,7 +464,7 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
                 "y": training_y.to_dict(orient="records"),
                 "y_hat": training_y_hat.to_dict(orient="records")
             },
-            "training_n": training_X["clade_membership"].unique().shape[0],
+            "training_n": training_X[group_by].unique().shape[0],
             "training_error": training_error,
             "coefficients": model.coef_.tolist(),
             "validation_data": {
@@ -349,7 +472,7 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
                 "y": validation_y.to_dict(orient="records"),
                 "y_hat": validation_y_hat.to_dict(orient="records")
             },
-            "validation_n": validation_X["clade_membership"].unique().shape[0],
+            "validation_n": validation_X[group_by].unique().shape[0],
             "validation_error": validation_error,
             "last_training_timepoint": training_timepoints[-1].strftime("%Y-%m-%d"),
             "validation_timepoint": validation_timepoint.strftime("%Y-%m-%d")
@@ -397,13 +520,14 @@ def summarize_cross_validation_scores(scores):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tip-attributes", required=True, help="tab-delimited file describing tip attributes at all timepoints with standardized predictors")
-    parser.add_argument("--final-clade-frequencies", help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
     parser.add_argument("--output", required=True, help="JSON representing the model fit with training and cross-validation results, beta coefficients for predictors, and summary statistics")
     parser.add_argument("--predictors", required=True, nargs="+", help="tip attribute columns to use as predictors of final clade frequencies")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
+    parser.add_argument("--target", required=True, choices=["clades", "distances"], help="target for models to fit")
+    parser.add_argument("--final-clade-frequencies", help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
     parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
-    parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain"], help="name of the function that returns the error between observed and estimated values")
+    parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
 
     args = parser.parse_args()
@@ -413,11 +537,10 @@ if __name__ == "__main__":
     tips = pd.read_csv(
         args.tip_attributes,
         sep="\t",
-        usecols=["timepoint", "strain", "clade_membership", "frequency"] + args.predictors,
         parse_dates=["timepoint"]
     )
 
-    if args.final_clade_tip_frequencies:
+    if args.target == "clades":
         # Load final clade tip frequencies.
         final_clade_tip_frequencies = pd.read_csv(
             args.final_clade_frequencies,
@@ -449,8 +572,15 @@ if __name__ == "__main__":
         targets = final_clade_frequencies.rename(
             columns={"initial_timepoint": "timepoint"}
         )
-    else:
-        targets = None
+        model_class = ExponentialGrowthModel
+        group_by_attribute = "clade_membership"
+    elif args.target == "distances":
+        # Scale each tip's weighted distance to future populations by the tip's
+        # current frequency.
+        tips["y"] = tips["frequency"] * tips["weighted_distance_to_future"]
+        targets = tips.loc[:, ["strain", "timepoint", "y"]].copy()
+        model_class = DistanceExponentialGrowthModel
+        group_by_attribute = "strain"
 
     # Identify all available timepoints from tip attributes.
     timepoints = tips["timepoint"].dt.strftime("%Y-%m-%d").unique()
@@ -471,12 +601,14 @@ if __name__ == "__main__":
         cost_function = mean_absolute_error
     elif args.cost_function == "information_gain":
         cost_function = negative_information_gain
+    elif args.cost_function == "diffsum":
+        cost_function = sum_of_differences
 
     # For each train/validate split, fit a model to the training data, and
     # evaluate the model with the validation data, storing the training results,
     # beta parameters, and validation results.
     delta_time = args.delta_months / 12.0
-    model = ExponentialGrowthModel(
+    model = model_class(
         predictors=args.predictors,
         delta_time=delta_time,
         l1_lambda=args.l1_lambda,
@@ -495,7 +627,8 @@ if __name__ == "__main__":
         tips,
         targets,
         train_validate_timepoints,
-        coefficients
+        coefficients,
+        group_by=group_by_attribute
     )
 
     # Summarize model errors including in-sample errors by AIC, out-of-sample
