@@ -7,7 +7,7 @@
     "end_date": "2015-10-01",
     "pivot_interval": 6,
     "min_years_per_build": 4,
-    "viruses": [20],
+    "viruses": [90],
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 10,
@@ -22,16 +22,16 @@
         "naive",
         "lbi",
         "ep",
-        "ep_star",
         "ep_x",
-        "ep_luksza_x",
-        "ep_kratsch_x",
-        "delta_frequency",
         "cTiterSub",
-        "cTiterSub_star",
         "cTiterSub_x",
+        "delta_frequency",
         "dms_star",
-        "ne_star"
+        "ne_star",
+        "lbi-delta_frequency",
+        "lbi-cTiterSub_x",
+        "lbi-dms_star-cTiterSub_x",
+        "lbi-ep_x-ne_star"
     ],
     "standard_predictors": [
         "ep",
@@ -105,6 +105,6 @@
         "primary_segment": "ha",
         "cost_function": "information_gain",
         "l1_lambda": 0.0,
-        "pseudocount": 0.000001
+        "pseudocount": 0.0
     }
 }
