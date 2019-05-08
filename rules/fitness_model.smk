@@ -27,9 +27,26 @@ def _get_predictors_to_standardize(wildcards):
 
     return sorted(predictors_to_standardize)
 
+rule annotate_weighted_distances_for_tip_attributes:
+    input:
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
+        distances = BUILD_PATH + "target_distances.tsv"
+    output:
+        attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
+    params:
+        delta_months = config["fitness_model"]["delta_months"]
+    shell:
+        """
+        python3 scripts/annotate_weighted_distances_for_tip_attributes.py \
+            --tip-attributes {input.attributes} \
+            --distances {input.distances} \
+            --delta-months {params.delta_months} \
+            --output {output}
+        """
+
 rule standardize_tip_attributes:
     input:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
+        attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     output:
         attributes = BUILD_PATH + "standardized_tip_attributes.tsv",
         statistics = BUILD_PATH + "standardization_statistics.json"
@@ -97,6 +114,7 @@ rule run_fitness_model:
             --cost-function {params.cost_function} \
             --l1-lambda {params.l1_lambda} \
             --pseudocount {params.pseudocount} \
+            --target distances \
             --output {output} &> {log}
         """
 

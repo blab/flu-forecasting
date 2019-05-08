@@ -20,7 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Load tip attributes.
-    df = pd.read_table(args.tip_attributes)
+    df = pd.read_csv(args.tip_attributes, sep="\t")
 
     # Confirm presence of all requested predictor columns.
     missing_columns = set(args.predictors) - set(df.columns)

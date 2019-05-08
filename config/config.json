@@ -107,8 +107,8 @@
         "training_window": 6,
         "delta_months": 12,
         "primary_segment": "ha",
-        "cost_function": "information_gain",
-        "l1_lambda": 0.0,
+        "cost_function": "diffsum",
+        "l1_lambda": 0.05,
         "pseudocount": 0.0
     }
 }
