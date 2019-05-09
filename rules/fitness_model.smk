@@ -37,7 +37,7 @@ rule annotate_weighted_distances_for_tip_attributes:
         delta_months = config["fitness_model"]["delta_months"]
     shell:
         """
-        python3 scripts/annotate_weighted_distances_for_tip_attributes.py \
+        python3 src/weighted_distances.py \
             --tip-attributes {input.attributes} \
             --distances {input.distances} \
             --delta-months {params.delta_months} \
