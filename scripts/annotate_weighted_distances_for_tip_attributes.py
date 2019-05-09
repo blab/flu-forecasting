@@ -6,6 +6,37 @@ import pandas as pd
 import sys
 
 
+def get_distances_by_sample_names(distances):
+    """Return a dictionary of distances by pairs of sample names.
+
+    Parameters
+    ----------
+    distances : pandas.DataFrame
+        data frame with the columns distance, sample, and other_sample
+
+    Returns
+    -------
+    dict :
+        dictionary of distances by pairs of sample names
+    """
+    distances_by_sample_names = {}
+    for index, row in distances.iterrows():
+        distance = row["distance"]
+        sample_a = row["sample"]
+        sample_b = row["other_sample"]
+
+        if sample_a not in distances_by_sample_names:
+            distances_by_sample_names[sample_a] = {}
+
+        if sample_b not in distances_by_sample_names:
+            distances_by_sample_names[sample_b] = {}
+
+        distances_by_sample_names[sample_a][sample_b] = distance
+        distances_by_sample_names[sample_b][sample_a] = distance
+
+    return distances_by_sample_names
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="Annotated weighted distances between viruses",
@@ -24,17 +55,7 @@ if __name__ == '__main__':
     distances = pd.read_csv(args.distances, sep="\t")
 
     # Map distances by sample names.
-    distances_by_strain = {}
-    for distance, sample_a, sample_b in distances.values:
-        if sample_a not in distances_by_strain:
-            distances_by_strain[sample_a] = {}
-
-        if sample_b not in distances_by_strain:
-            distances_by_strain[sample_b] = {}
-
-        distances_by_strain[sample_a][sample_b] = distance
-        distances_by_strain[sample_b][sample_a] = distance
-
+    distances_by_sample_names = get_distances_by_sample_names(distances)
 
     # Find valid timepoints for calculating distances to the future.
     timepoints = tips["timepoint"].drop_duplicates()
@@ -51,11 +72,11 @@ if __name__ == '__main__':
         for current_tip, current_tip_frequency in timepoint_tips.loc[:, ["strain", "frequency"]].values:
             weighted_distance_to_present = 0.0
             for other_current_tip, other_current_tip_frequency in timepoint_tips.loc[:, ["strain", "frequency"]].values:
-                weighted_distance_to_present += other_current_tip_frequency * distances_by_strain[current_tip][other_current_tip]
+                weighted_distance_to_present += other_current_tip_frequency * distances_by_sample_names[current_tip][other_current_tip]
 
             weighted_distance_to_future = 0.0
             for future_tip, future_tip_frequency in future_timepoint_tips.loc[:, ["strain", "frequency"]].values:
-                weighted_distance_to_future += future_tip_frequency * distances_by_strain[current_tip][future_tip]
+                weighted_distance_to_future += future_tip_frequency * distances_by_sample_names[current_tip][future_tip]
 
             weighted_distances.append({
                 "timepoint": timepoint,
