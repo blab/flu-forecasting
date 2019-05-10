@@ -9,6 +9,7 @@ from scipy.optimize import minimize
 from forecast.fitness_model import get_train_validate_timepoints
 from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain
 from forecast.metrics import mean_absolute_error, sum_of_squared_errors, root_mean_square_error
+from weighted_distances import get_distances_by_sample_names
 
 
 def sum_of_differences(observed, estimated, y_diff, **kwargs):
@@ -287,6 +288,10 @@ class ExponentialGrowthModel(object):
 
 
 class DistanceExponentialGrowthModel(ExponentialGrowthModel):
+    def __init__(self, predictors, delta_time, l1_lambda, cost_function, distances):
+        super().__init__(predictors, delta_time, l1_lambda, cost_function)
+        self.distances = distances
+
     def _fit(self, coefficients, X, y):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
@@ -353,6 +358,9 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         # Use model coefficients, if none are provided.
         if coefficients is None:
             coefficients = self.coef_
+            model_is_fit = True
+        else:
+            model_is_fit = False
 
         estimated_targets = []
         for timepoint, timepoint_df in X.groupby("timepoint"):
@@ -372,17 +380,33 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 self.delta_time
             )
 
-            # Calculate estimated distance between current tips and the future
-            # using projected frequencies and weighted distances to the present.
-            projected_timepoint_df = timepoint_df[["timepoint", "strain", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
-            projected_timepoint_df["frequency"] = projected_frequencies
-            projected_timepoint_df["y"] = projected_timepoint_df["frequency"] * projected_timepoint_df["weighted_distance_to_present"]
-            projected_timepoint_df["y_diff"] = projected_timepoint_df["frequency"] * projected_timepoint_df["weighted_distance_to_future"]
+            # Calculate observed distance between current tips and the future
+            # using projected frequencies and weighted distances to the future.
+            projected_timepoint_df = timepoint_df[["timepoint", "strain", "frequency", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
+            projected_timepoint_df["projected_frequency"] = projected_frequencies
+            projected_timepoint_df["y_diff"] = projected_timepoint_df["projected_frequency"] * projected_timepoint_df["weighted_distance_to_future"]
+
+            if model_is_fit:
+                # Calculate estimate distance between current tips and future tips
+                # based on projections of current tips.
+                estimated_weighted_distance_to_future = []
+                for current_tip, current_tip_frequency in projected_timepoint_df.loc[:, ["strain", "frequency"]].values:
+                    weighted_distance_to_future = 0.0
+                    for other_tip, other_tip_projected_frequency in projected_timepoint_df.loc[:, ["strain", "projected_frequency"]].values:
+                        weighted_distance_to_future += other_tip_projected_frequency * self.distances[current_tip][other_tip]
+
+                    estimated_weighted_distance_to_future.append(
+                        current_tip_frequency * weighted_distance_to_future
+                    )
+
+                projected_timepoint_df["y"] = np.array(estimated_weighted_distance_to_future)
+            else:
+                projected_timepoint_df["y"] = np.nan
 
             estimated_targets.append(projected_timepoint_df)
 
         # Collect all estimated targets by timepoint.
-        estimated_targets = pd.concat(estimated_targets)
+        estimated_targets = pd.concat(estimated_targets, ignore_index=True)
         return estimated_targets
 
 
@@ -525,6 +549,7 @@ if __name__ == "__main__":
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--target", required=True, choices=["clades", "distances"], help="target for models to fit")
     parser.add_argument("--final-clade-frequencies", help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
+    parser.add_argument("--distances", help="tab-delimited file of distances between pairs of samples")
     parser.add_argument("--training-window", type=int, default=4, help="number of years required for model training")
     parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
     parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
@@ -573,6 +598,7 @@ if __name__ == "__main__":
             columns={"initial_timepoint": "timepoint"}
         )
         model_class = ExponentialGrowthModel
+        model_kwargs = {}
         group_by_attribute = "clade_membership"
     elif args.target == "distances":
         # Scale each tip's weighted distance to future populations by the tip's
@@ -580,6 +606,9 @@ if __name__ == "__main__":
         tips["y"] = tips["frequency"] * tips["weighted_distance_to_future"]
         targets = tips.loc[:, ["strain", "timepoint", "y"]].copy()
         model_class = DistanceExponentialGrowthModel
+        distances = pd.read_csv(args.distances, sep="\t")
+        distances_by_sample_names = get_distances_by_sample_names(distances)
+        model_kwargs = {"distances": distances_by_sample_names}
         group_by_attribute = "strain"
 
     # Identify all available timepoints from tip attributes.
@@ -612,7 +641,8 @@ if __name__ == "__main__":
         predictors=args.predictors,
         delta_time=delta_time,
         l1_lambda=args.l1_lambda,
-        cost_function=cost_function
+        cost_function=cost_function,
+        **model_kwargs
     )
 
     # If this is a naive model, set the coefficients to zero so cross-validation

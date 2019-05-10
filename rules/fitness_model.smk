@@ -29,8 +29,8 @@ def _get_predictors_to_standardize(wildcards):
 
 rule annotate_weighted_distances_for_tip_attributes:
     input:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
-        distances = BUILD_PATH + "target_distances.tsv"
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
+        distances = rules.collect_target_distance_tables.output.distances
     output:
         attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     params:
@@ -90,7 +90,8 @@ rule select_clades:
 rule run_fitness_model:
     input:
         attributes = rules.standardize_tip_attributes.output.attributes,
-        final_clade_frequencies = rules.select_clades.output.clades
+        final_clade_frequencies = rules.select_clades.output.clades,
+        distances = rules.collect_target_distance_tables.output.distances
     output:
         model = BUILD_PATH + "models/{predictors}.json"
     params:
@@ -115,6 +116,7 @@ rule run_fitness_model:
             --l1-lambda {params.l1_lambda} \
             --pseudocount {params.pseudocount} \
             --target distances \
+            --distances {input.distances} \
             --output {output} &> {log}
         """
 
