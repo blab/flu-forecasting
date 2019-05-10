@@ -84,13 +84,15 @@
         "aa_sequences",
         "country_confidence",
         "ep_pairwise",
-        "ep_luksza_pairwise",
-        "ep_kratsch_pairwise",
         "cTiterSub_pairwise",
         "muts",
         "num_date_confidence",
         "region_confidence",
         "sequence"
+    ],
+    "other_excluded_node_data_fields": [
+        "ep_luksza_pairwise",
+        "ep_kratsch_pairwise"
     ],
     "cross_immunity": {
         "h3n2": {
