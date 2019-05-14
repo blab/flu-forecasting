@@ -5,6 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
+import sys
 
 from forecast.fitness_model import get_train_validate_timepoints
 from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain
@@ -61,6 +62,60 @@ class ExponentialGrowthModel(object):
         self.delta_time = delta_time
         self.l1_lambda = l1_lambda
         self.cost_function = cost_function
+
+    def calculate_mean_stds(self, X, predictors):
+        """Calculate mean standard deviations of predictors by timepoints prior to
+        fitting.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        predictors : ndarray
+            predictor values per sample (n x p matrix for p predictors and n samples)
+
+        Returns
+        -------
+        ndarray :
+            mean standard deviation per predictor across all timepoints
+
+        """
+        return X.loc[:, ["timepoint"] + predictors].groupby("timepoint").std().mean().values
+
+    def standardize_predictors(self, predictors, mean_stds):
+        """Standardize the values for the given predictors by centering on the mean of
+        each predictor and scaling by the mean standard deviation provided.
+
+        Parameters
+        ----------
+        predictors : ndarray
+            matrix of values per sample (rows) and predictor (columns)
+
+        mean_stds : ndarray
+            mean standard deviations of predictors across all training
+            timepoints
+
+        Returns
+        -------
+        ndarray :
+            standardized predictor values
+
+        """
+        centered_predictors = (predictors - np.mean(predictors, axis=0))
+        nonzero_stds = np.where(mean_stds)[0]
+
+        if len(nonzero_stds) == 0:
+            print(
+                "Warning: all mean standard deviations are zero, so predictors will not be scaled",
+                file=sys.stderr
+            )
+            return centered_predictors
+
+        standardized_predictors = centered_predictors
+        standardized_predictors[:, nonzero_stds] = standardized_predictors[:, nonzero_stds] / mean_stds[nonzero_stds]
+
+        return standardized_predictors
 
     def get_fitnesses(self, coefficients, predictors):
         """Apply the coefficients to the predictors and sum them to get strain
@@ -195,6 +250,11 @@ class ExponentialGrowthModel(object):
             model training error
 
         """
+        # Calculate mean standard deviations of predictors by timepoints prior
+        # to fitting.
+        self.mean_stds_ = self.calculate_mean_stds(X, self.predictors)
+
+        # Find coefficients that minimize the model's cost function.
         initial_coefficients = np.random.normal(size=len(self.predictors))
         results = minimize(
             self._fit,
@@ -209,7 +269,7 @@ class ExponentialGrowthModel(object):
 
         return training_error
 
-    def predict(self, X, coefficients=None):
+    def predict(self, X, coefficients=None, mean_stds=None):
         """Calculate the estimate final frequencies of all clades in the given tip
         attributes data frame using previously calculated beta coefficients.
 
@@ -222,6 +282,10 @@ class ExponentialGrowthModel(object):
             optional coefficients to use for each of the model's predictors
             instead of the model's currently defined coefficients
 
+        mean_stds : ndarray
+            optional mean standard deviations of predictors across all training
+            timepoints
+
         Returns
         -------
         pandas.DataFrame
@@ -233,16 +297,23 @@ class ExponentialGrowthModel(object):
         if coefficients is None:
             coefficients = self.coef_
 
+        if mean_stds is None:
+            mean_stds = self.mean_stds_
+
         estimated_frequencies = []
         for timepoint, timepoint_df in X.groupby("timepoint"):
             # Select predictors from the timepoint.
             predictors = timepoint_df.loc[:, self.predictors].values
 
+            # Standardize predictors by timepoint centering by means at
+            # timepoint and mean standard deviation provided.
+            standardized_predictors = self.standardize_predictors(predictors, mean_stds)
+
             # Select frequencies from timepoint.
             initial_frequencies = timepoint_df["frequency"].values
 
             # Calculate fitnesses.
-            fitnesses = self.get_fitnesses(coefficients, predictors)
+            fitnesses = self.get_fitnesses(coefficients, standardized_predictors)
 
             # Project frequencies.
             projected_frequencies = self.project_frequencies(
@@ -459,6 +530,7 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             training_error = model.fit(training_X, training_y)
         else:
             model.coef_ = coefficients
+            model.mean_stds_ = model.calculate_mean_stds(training_X, model.predictors)
             training_error = model.score(training_X, training_y)
 
         # Get validation data by timepoints.
@@ -491,6 +563,7 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             "training_n": training_X[group_by].unique().shape[0],
             "training_error": training_error,
             "coefficients": model.coef_.tolist(),
+            "mean_stds": model.mean_stds_.tolist(),
             "validation_data": {
                 "X": validation_X.to_dict(orient="records"),
                 "y": validation_y.to_dict(orient="records"),
@@ -537,6 +610,13 @@ def summarize_cross_validation_scores(scores):
     ])
     summary["coefficients_mean"] = coefficients.mean(axis=0).tolist()
     summary["coefficients_std"] = coefficients.std(axis=0).tolist()
+
+    mean_stds = np.array([
+        np.array(score["mean_stds"])
+        for score in scores
+    ])
+    summary["mean_stds_mean"] = mean_stds.mean(axis=0).tolist()
+    summary["mean_stds_std"] = mean_stds.std(axis=0).tolist()
 
     return summary
 
