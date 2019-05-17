@@ -9,7 +9,7 @@
     "end_date_to_standardize": "2005-04-01",
     "pivot_interval": 6,
     "min_years_per_build": 4,
-    "viruses": [1],
+    "viruses": [90],
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 10,
@@ -109,7 +109,8 @@
         "training_window": 6,
         "delta_months": 12,
         "primary_segment": "ha",
-        "cost_function": "sse",
+        "clade_cost_function": "information_gain",
+        "distance_cost_function": "diffsum",
         "l1_lambda": 0.0,
         "pseudocount": 0.0
     }

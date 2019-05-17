@@ -160,8 +160,11 @@ def _get_min_date_for_augur_frequencies(wildcards):
 def _get_max_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
 
-def _get_model_files(wildcards):
-    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+def _get_clade_model_files(wildcards):
+    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_clades/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+
+def _get_distance_model_files(wildcards):
+    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
@@ -183,7 +186,8 @@ rule all:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/final_clade_frequencies.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/target_distances.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        _get_model_files,
+        _get_clade_model_files,
+        _get_distance_model_files,
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
@@ -201,8 +205,11 @@ rule all:
         # "results/figures/frequencies.pdf",
         # expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
-rule models:
-    input: _get_model_files
+rule clade_models:
+    input: _get_clade_model_files
+
+rule distance_models:
+    input: _get_distance_model_files
 
 rule auspice:
     input: _get_auspice_files
