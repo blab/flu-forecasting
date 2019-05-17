@@ -81,6 +81,8 @@ class ExponentialGrowthModel(object):
             mean standard deviation per predictor across all timepoints
 
         """
+        # Note that the pandas standard deviation method ignores missing data
+        # whereas numpy requires the use of specific NaN-aware functions (nanstd).
         return X.loc[:, ["timepoint"] + predictors].groupby("timepoint").std().mean().values
 
     def standardize_predictors(self, predictors, mean_stds):
@@ -102,7 +104,15 @@ class ExponentialGrowthModel(object):
             standardized predictor values
 
         """
-        centered_predictors = (predictors - np.mean(predictors, axis=0))
+        # Determine mean value of each predictor, ignoring missing data.
+        predictor_means = np.nanmean(predictors, axis=0)
+
+        # Center all predictors to the mean and replace missing data with zeros
+        # to place them at the mean.
+        centered_predictors = np.nan_to_num(predictors - predictor_means)
+
+        # Select predictors with non-zero standard deviations where scaling is
+        # possible.
         nonzero_stds = np.where(mean_stds)[0]
 
         if len(nonzero_stds) == 0:
@@ -112,6 +122,7 @@ class ExponentialGrowthModel(object):
             )
             return centered_predictors
 
+        # Scale the centered predictors to unit scale.
         standardized_predictors = centered_predictors
         standardized_predictors[:, nonzero_stds] = standardized_predictors[:, nonzero_stds] / mean_stds[nonzero_stds]
 
