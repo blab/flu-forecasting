@@ -68,7 +68,7 @@ rule standardize_tip_attributes:
 
 rule select_clades:
     input:
-        attributes = rules.standardize_tip_attributes.output.attributes,
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
         tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
     output:
         clades = BUILD_PATH + "final_clade_frequencies.tsv"
