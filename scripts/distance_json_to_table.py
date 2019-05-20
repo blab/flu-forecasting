@@ -16,7 +16,7 @@ if __name__ == '__main__':
     parser.add_argument("--distance-attribute", required=True, help="name of the distance attribute to export")
     args = parser.parse_args()
 
-    # Load frequencies.
+    # Load distances.
     with open(args.json, "r") as fh:
         distances_json = json.load(fh)
 
