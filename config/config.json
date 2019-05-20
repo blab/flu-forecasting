@@ -85,6 +85,8 @@
         "country_confidence",
         "ep_pairwise",
         "cTiterSub_pairwise",
+        "ep_luksza_pairwise",
+        "ep_kratsch_pairwise",
         "muts",
         "num_date_confidence",
         "region_confidence",
