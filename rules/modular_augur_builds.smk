@@ -545,26 +545,22 @@ rule target_distances:
         tree = rules.refine.output.tree,
         alignments = translations,
         distance_maps = "config/distance_maps/hamming.json",
-        date_annotations = rules.refine.output.node_data
+        frequencies = rules.estimate_frequencies.output.frequencies
     params:
         genes = gene_names,
-        comparisons = "pairwise",
-        attribute_names = config["target_distance_attribute"],
-        earliest_date = _get_target_distance_earliest_date_by_wildcards,
+        attribute_names = config["target_distance_attribute"]
     output:
         distances = BUILD_SEGMENT_PATH + "target_distances.json",
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
-        augur distance \
+        python3 scripts/calculate_target_distances.py \
             --tree {input.tree} \
+            --frequencies {input.frequencies} \
             --alignment {input.alignments} \
             --gene-names {params.genes} \
-            --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
             --map {input.distance_maps} \
-            --date-annotations {input.date_annotations} \
-            --earliest-date {params.earliest_date} \
             --output {output}
         """
 
