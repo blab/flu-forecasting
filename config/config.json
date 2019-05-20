@@ -8,7 +8,7 @@
     "start_date_to_standardize": "2004-10-01",
     "end_date_to_standardize": "2005-04-01",
     "pivot_interval": 6,
-    "min_years_per_build": 4,
+    "min_years_per_build": 1,
     "viruses": [90],
     "number_of_samples": 1,
     "include_titer_tree": false,
