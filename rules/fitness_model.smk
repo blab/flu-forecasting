@@ -4,7 +4,7 @@ Rules for building fitness models from augur builds.
 
 rule annotate_naive_tip_attribute:
     input:
-        attributes = BUILD_PATH + "tip_attributes.tsv"
+        attributes = rules.collect_tip_attributes.output.attributes
     output:
         attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
     run:
@@ -42,28 +42,6 @@ rule annotate_weighted_distances_for_tip_attributes:
             --distances {input.distances} \
             --delta-months {params.delta_months} \
             --output {output}
-        """
-
-rule standardize_tip_attributes:
-    input:
-        attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
-    output:
-        attributes = BUILD_PATH + "standardized_tip_attributes.tsv",
-        statistics = BUILD_PATH + "standardization_statistics.json"
-    params:
-        predictors = _get_predictors_to_standardize,
-        start_date = START_DATE_TO_STANDARDIZE,
-        end_date = END_DATE_TO_STANDARDIZE
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/standardize_predictors.py \
-            --tip-attributes {input.attributes} \
-            --standardized-attributes {output.attributes} \
-            --statistics {output.statistics} \
-            --start-date {params.start_date} \
-            --end-date {params.end_date} \
-            --predictors {params.predictors}
         """
 
 rule select_clades:
