@@ -30,7 +30,7 @@ def _get_predictors_to_standardize(wildcards):
 rule annotate_weighted_distances_for_tip_attributes:
     input:
         attributes = rules.annotate_naive_tip_attribute.output.attributes,
-        distances = rules.collect_target_distance_tables.output.distances
+        distances = rules.target_distances.output.distances
     output:
         attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     params:
@@ -121,7 +121,7 @@ rule fit_models_by_clades:
 rule fit_models_by_distances:
     input:
         attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
-        distances = rules.collect_target_distance_tables.output.distances
+        distances = rules.target_distances.output.distances
     output:
         model = BUILD_PATH + "models_by_distances/{predictors}.json"
     params:

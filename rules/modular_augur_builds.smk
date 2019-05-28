@@ -393,6 +393,23 @@ def translations(wildcards):
     return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
             for gene in genes]
 
+rule convert_translations_to_json:
+    input:
+        tree = rules.refine.output.tree,
+        translations = translations
+    output:
+        translations = BUILD_SEGMENT_PATH + "aa_seq.json"
+    params:
+        gene_names = gene_names
+    shell:
+        """
+        python3 scripts/convert_translations_to_json.py \
+            --tree {input.tree} \
+            --alignment {input.translations} \
+            --gene-names {params.gene_names} \
+            --output {output.translations}
+        """
+
 rule mutation_frequencies:
     message:
         """
@@ -538,46 +555,6 @@ rule distances:
             --earliest-date {params.earliest_date} \
             --latest-date {params.latest_date} \
             --output {output}
-        """
-
-rule target_distances:
-    input:
-        tree = rules.refine.output.tree,
-        alignments = translations,
-        distance_maps = "config/distance_maps/hamming.json",
-        frequencies = rules.estimate_frequencies.output.frequencies
-    params:
-        genes = gene_names,
-        attribute_names = config["target_distance_attribute"]
-    output:
-        distances = BUILD_SEGMENT_PATH + "target_distances.json",
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/calculate_target_distances.py \
-            --tree {input.tree} \
-            --frequencies {input.frequencies} \
-            --alignment {input.alignments} \
-            --gene-names {params.genes} \
-            --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} \
-            --output {output}
-        """
-
-rule convert_target_distance_json_to_table:
-    input:
-        distances = rules.target_distances.output.distances
-    output:
-        distances = BUILD_SEGMENT_PATH + "target_distances.tsv"
-    params:
-        distance_attribute = config["target_distance_attribute"]
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/distance_json_to_table.py \
-            --json {input.distances} \
-            --output {output.distances} \
-            --distance-attribute {params.distance_attribute}
         """
 
 def _get_cross_immunity_distance_attributes_by_lineage_and_segment(wildcards):
@@ -784,6 +761,7 @@ def _get_node_data_for_export(wildcards):
         rules.refine.output.node_data,
         rules.ancestral.output.node_data,
         rules.translate.output.node_data,
+        rules.convert_translations_to_json.output.translations,
         rules.traits.output.node_data,
         rules.clades_by_haplotype.output.clades,
         rules.lbi.output.lbi,
@@ -928,14 +906,18 @@ rule collect_annotated_tip_clade_tables:
             --output {output.tip_clade_table}
         """
 
-rule collect_target_distance_tables:
+rule target_distances:
     input:
-        distances = expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/target_distances.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+        attributes = rules.collect_tip_attributes.output.attributes
     output:
-        distances = BUILD_PATH + "target_distances.tsv"
-    run:
-        df = pd.concat([
-            pd.read_csv(distance_table, sep="\t")
-            for distance_table in input.distances
-        ], ignore_index=True).drop_duplicates()
-        df.to_csv(output.distances, sep="\t", index=False, header=True)
+        distances = BUILD_PATH + "target_distances.tsv",
+    params:
+        delta_months = config["fitness_model"]["delta_months"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/calculate_target_distances.py \
+            --tip-attributes {input.attributes} \
+            --delta-months {params.delta_months} \
+            --output {output}
+        """
