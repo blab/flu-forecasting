@@ -506,7 +506,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
             )
 
             # Confirm that all projected frequencies are proper numbers.
-            assert np.isnan(projected_frequencies).sum() == 0:
+            assert np.isnan(projected_frequencies).sum() == 0
 
             # Calculate observed distance between current tips and the future
             # using projected frequencies and weighted distances to the future.
