@@ -62,8 +62,9 @@ if __name__ == '__main__':
     # given timepoint.
     weighted_distances = []
     for timepoint in valid_timepoints:
+        future_timepoint = timepoint + pd.DateOffset(months=args.delta_months)
         timepoint_tips = tips[tips["timepoint"] == timepoint]
-        future_timepoint_tips = tips[tips["timepoint"] == (timepoint + pd.DateOffset(years=1))]
+        future_timepoint_tips = tips[tips["timepoint"] == future_timepoint]
 
         for current_tip, current_tip_frequency in timepoint_tips.loc[:, ["strain", "frequency"]].values:
             weighted_distance_to_present = 0.0
