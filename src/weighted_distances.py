@@ -33,6 +33,41 @@ def get_distances_by_sample_names(distances):
     return distances_by_sample_names
 
 
+def get_distance_matrix_by_sample_names(samples_a, samples_b, distances):
+    """Return a matrix of distances between pairs of given sample sets.
+
+    Parameters
+    ----------
+    samples_a, samples_b : list
+        names of samples whose pairwise distances should populate the matrix
+        with the first samples in rows and the second samples in columns
+
+    distances : dict
+        dictionary of distances by pairs of sample names
+
+    Returns
+    -------
+    ndarray :
+        matrix of pairwise distances between the given samples
+
+
+    >>> samples_a = ["a", "b"]
+    >>> samples_b = ["c", "d"]
+    >>> distances = {"a": {"c": 1, "d": 2}, "b": {"c": 3, "d": 4}}
+    >>> get_distance_matrix_by_sample_names(samples_a, samples_b, distances)
+    array([[1., 2.],
+           [3., 4.]])
+    >>>
+
+    """
+    matrix = np.zeros((len(samples_a), len(samples_b)))
+    for i, sample_a in enumerate(samples_a):
+        for j, sample_b in enumerate(samples_b):
+            matrix[i, j] = distances[sample_a][sample_b]
+
+    return matrix
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="Annotated weighted distances between viruses",

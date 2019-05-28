@@ -1,6 +1,7 @@
 """Fit a model for the given data using the requested predictors and evaluate the model by time series cross-validation.
 """
 import argparse
+import cv2
 import json
 import numpy as np
 import pandas as pd
@@ -10,7 +11,7 @@ import sys
 from forecast.fitness_model import get_train_validate_timepoints
 from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain
 from forecast.metrics import mean_absolute_error, sum_of_squared_errors, root_mean_square_error
-from weighted_distances import get_distances_by_sample_names
+from weighted_distances import get_distances_by_sample_names, get_distance_matrix_by_sample_names
 
 
 def sum_of_differences(observed, estimated, y_diff, **kwargs):
@@ -399,25 +400,56 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         # Estimate target values.
         y_hat = self.predict(X, coefficients)
 
-        # Merge estimated and observed target values.
-        targets = y_hat.merge(
-            y,
-            how="inner",
-            on=["timepoint", "strain"],
-            suffixes=["_estimated", "_observed"]
-        )
+        # Calculate EMD for each timepoint in the estimated values and sum that
+        # distance across all timepoints.
+        error = 0.0
+        for timepoint, timepoint_df in y_hat.groupby("timepoint"):
+            samples_a = timepoint_df["strain"]
+            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
 
-        # Calculate the error between the observed and estimated targets.
-        error = self.cost_function(
-            targets["y_observed"],
-            targets["y_estimated"],
-            y_diff=targets["y_diff"]
-        )
+            future_timepoint_df = y[y["timepoint"] == timepoint]
+            if future_timepoint_df.shape[0] == 0:
+                print("Skipping timepoint %s since there is no future information" % timepoint, file=sys.stderr)
+                continue
+
+            samples_b = future_timepoint_df["strain"]
+            sample_b_frequencies = future_timepoint_df["frequency"].values.astype(np.float32)
+
+            distance_matrix = get_distance_matrix_by_sample_names(
+                samples_a,
+                samples_b,
+                self.distances
+            ).astype(np.float32)
+
+            emd, _, flow = cv2.EMD(
+                sample_a_frequencies,
+                sample_b_frequencies,
+                cv2.DIST_USER,
+                cost=distance_matrix
+            )
+            print("EMD for %s: %.2f" % (timepoint, emd), file=sys.stderr)
+            error += emd
+
+        # # Merge estimated and observed target values.
+        # targets = y_hat.merge(
+        #     y,
+        #     how="inner",
+        #     on=["timepoint", "strain"],
+        #     suffixes=["_estimated", "_observed"]
+        # )
+
+        # # Calculate the error between the observed and estimated targets.
+        # error = self.cost_function(
+        #     targets["y_observed"],
+        #     targets["y_estimated"],
+        #     y_diff=targets["y_diff"],
+
+        # )
         l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
 
         return error + l1_penalty
 
-    def predict(self, X, coefficients=None):
+    def predict(self, X, coefficients=None, mean_stds=None):
         """Calculate the estimated final weighted distance between tips at each
         timepoint and at that timepoint plus delta months in the future.
 
@@ -429,6 +461,10 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         coefficients : ndarray
             optional coefficients to use for each of the model's predictors
             instead of the model's currently defined coefficients
+
+        mean_stds : ndarray
+            optional mean standard deviations of predictors across all training
+            timepoints
 
         Returns
         -------
@@ -444,16 +480,23 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         else:
             model_is_fit = False
 
+        if mean_stds is None:
+            mean_stds = self.mean_stds_
+
         estimated_targets = []
         for timepoint, timepoint_df in X.groupby("timepoint"):
             # Select predictors from the timepoint.
             predictors = timepoint_df.loc[:, self.predictors].values
 
+            # Standardize predictors by timepoint centering by means at
+            # timepoint and mean standard deviation provided.
+            standardized_predictors = self.standardize_predictors(predictors, mean_stds)
+
             # Select frequencies from timepoint.
             initial_frequencies = timepoint_df["frequency"].values
 
             # Calculate fitnesses.
-            fitnesses = self.get_fitnesses(coefficients, predictors)
+            fitnesses = self.get_fitnesses(coefficients, standardized_predictors)
 
             # Project frequencies.
             projected_frequencies = self.project_frequencies(
@@ -462,13 +505,17 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 self.delta_time
             )
 
+            # Confirm that all projected frequencies are proper numbers.
+            assert np.isnan(projected_frequencies).sum() == 0:
+
             # Calculate observed distance between current tips and the future
             # using projected frequencies and weighted distances to the future.
             projected_timepoint_df = timepoint_df[["timepoint", "strain", "frequency", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
             projected_timepoint_df["projected_frequency"] = projected_frequencies
-            projected_timepoint_df["y_diff"] = projected_timepoint_df["projected_frequency"] * projected_timepoint_df["weighted_distance_to_future"]
 
-            if model_is_fit or self.cost_function != sum_of_differences:
+            #projected_timepoint_df["y_diff"] = projected_timepoint_df["y"] * projected_timepoint_df["weighted_distance_to_future"]
+
+            if model_is_fit:
                 # Calculate estimate distance between current tips and future tips
                 # based on projections of current tips.
                 estimated_weighted_distance_to_future = []
@@ -695,7 +742,13 @@ if __name__ == "__main__":
         # Scale each tip's weighted distance to future populations by the tip's
         # current frequency.
         tips["y"] = tips["frequency"] * tips["weighted_distance_to_future"]
-        targets = tips.loc[:, ["strain", "timepoint", "y"]].copy()
+
+        # Get strain frequency per timepoint and subtract delta time from
+        # timepoint to align strain frequencies with the previous timepoint and
+        # make them appropriate as targets for the model.
+        targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_future", "y"]].copy()
+        targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=args.delta_months)
+
         model_class = DistanceExponentialGrowthModel
         distances = pd.read_csv(args.distances, sep="\t")
         distances_by_sample_names = get_distances_by_sample_names(distances)
