@@ -13,6 +13,9 @@ from forecast.metrics import add_pseudocounts_to_frequencies, negative_informati
 from forecast.metrics import mean_absolute_error, sum_of_squared_errors, root_mean_square_error
 from weighted_distances import get_distances_by_sample_names, get_distance_matrix_by_sample_names
 
+MAX_PROJECTED_FREQUENCY = 1e3
+FREQUENCY_TOLERANCE = 1e-3
+
 
 def sum_of_differences(observed, estimated, y_diff, **kwargs):
     """
@@ -173,11 +176,22 @@ class ExponentialGrowthModel(object):
         # Exponentiate the fitnesses and multiply them by strain frequencies.
         projected_frequencies = initial_frequencies * np.exp(fitnesses * self.delta_time)
 
+        # Replace infinite values a very large number that can still be summed
+        # across all timepoints. This addresses the case of buffer overflows in
+        # exponentiation which can produce both of these problematic values.
+        projected_frequencies[np.isinf(projected_frequencies)] = MAX_PROJECTED_FREQUENCY
+
         # Sum the projected frequencies.
         total_projected_frequencies = projected_frequencies.sum()
 
         # Normalize the projected frequencies.
         projected_frequencies = projected_frequencies / total_projected_frequencies
+
+        # Confirm that projected frequencies sum to 1.
+        assert np.isclose(projected_frequencies.sum(), np.ones(1), atol=FREQUENCY_TOLERANCE)
+
+        # Confirm that all projected frequencies are proper numbers.
+        assert np.isnan(projected_frequencies).sum() == 0
 
         return projected_frequencies
 
@@ -502,9 +516,6 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 fitnesses,
                 self.delta_time
             )
-
-            # Confirm that all projected frequencies are proper numbers.
-            assert np.isnan(projected_frequencies).sum() == 0
 
             # Calculate observed distance between current tips and the future
             # using projected frequencies and weighted distances to the future.
