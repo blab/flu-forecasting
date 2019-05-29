@@ -34,7 +34,7 @@
     "cross_immunities": {
         "memory": "8192"
     },
-    "run_fitness_model": {
+    "fit_models_by_distances": {
         "memory": "8192",
         "time" : "00:30:00"
     },
