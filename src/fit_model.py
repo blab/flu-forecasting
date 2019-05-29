@@ -408,9 +408,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
             sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
 
             future_timepoint_df = y[y["timepoint"] == timepoint]
-            if future_timepoint_df.shape[0] == 0:
-                print("Skipping timepoint %s since there is no future information" % timepoint, file=sys.stderr)
-                continue
+            assert future_timepoint_df.shape[0] > 0
 
             samples_b = future_timepoint_df["strain"]
             sample_b_frequencies = future_timepoint_df["frequency"].values.astype(np.float32)
@@ -525,7 +523,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                         weighted_distance_to_future += other_tip_projected_frequency * self.distances[current_tip][other_tip]
 
                     estimated_weighted_distance_to_future.append(
-                        current_tip_frequency * weighted_distance_to_future
+                        (1 - current_tip_frequency) * weighted_distance_to_future
                     )
 
                 projected_timepoint_df["y"] = np.array(estimated_weighted_distance_to_future)
@@ -603,12 +601,10 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         validation_y_hat = model.predict(validation_X)
 
         # Convert timestamps to a serializable format.
-        training_X["timepoint"] = training_X["timepoint"].dt.strftime("%Y-%m-%d")
-        training_y["timepoint"] = training_y["timepoint"].dt.strftime("%Y-%m-%d")
-        training_y_hat["timepoint"] = training_y_hat["timepoint"].dt.strftime("%Y-%m-%d")
-        validation_X["timepoint"] = validation_X["timepoint"].dt.strftime("%Y-%m-%d")
-        validation_y["timepoint"] = validation_y["timepoint"].dt.strftime("%Y-%m-%d")
-        validation_y_hat["timepoint"] = validation_y_hat["timepoint"].dt.strftime("%Y-%m-%d")
+        for df in [training_X, training_y, training_y_hat, validation_X, validation_y, validation_y_hat]:
+            for column in ["timepoint", "future_timepoint"]:
+                if column in df.columns:
+                    df[column] = df[column].dt.strftime("%Y-%m-%d")
 
         # Store training results, beta coefficients, and validation results.
         results.append({
@@ -739,14 +735,16 @@ if __name__ == "__main__":
         model_kwargs = {}
         group_by_attribute = "clade_membership"
     elif args.target == "distances":
-        # Scale each tip's weighted distance to future populations by the tip's
-        # current frequency.
-        tips["y"] = tips["frequency"] * tips["weighted_distance_to_future"]
+        # Scale each tip's weighted distance to future populations by one minus
+        # the tip's current frequency. This ensures that lower frequency tips do
+        # not considered closer to the future.
+        tips["y"] = (1 - tips["frequency"]) * tips["weighted_distance_to_future"]
 
         # Get strain frequency per timepoint and subtract delta time from
         # timepoint to align strain frequencies with the previous timepoint and
         # make them appropriate as targets for the model.
         targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_future", "y"]].copy()
+        targets["future_timepoint"] = targets["timepoint"]
         targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=args.delta_months)
 
         model_class = DistanceExponentialGrowthModel
