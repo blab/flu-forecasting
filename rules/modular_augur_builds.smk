@@ -279,6 +279,7 @@ rule refine:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
+            --no-covariance \
             --clock-rate {params.clock_rate} \
             --coalescent {params.coalescent} \
             --date-confidence \
@@ -629,6 +630,7 @@ rule titers_sub:
             --alignment {input.alignments} \
             --gene-names {params.genes} \
             --tree {input.tree} \
+            --allow-empty-model \
             --output {output.titers_model}
         """
 
@@ -644,6 +646,7 @@ rule titers_tree:
         augur titers tree \
             --titers {input.titers} \
             --tree {input.tree} \
+            --allow-empty-model \
             --output {output.titers_model}
         """
 
