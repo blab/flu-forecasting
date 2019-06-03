@@ -533,9 +533,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                     for other_tip, other_tip_projected_frequency in projected_timepoint_df.loc[:, ["strain", "projected_frequency"]].values:
                         weighted_distance_to_future += other_tip_projected_frequency * self.distances[current_tip][other_tip]
 
-                    estimated_weighted_distance_to_future.append(
-                        (1 - current_tip_frequency) * weighted_distance_to_future
-                    )
+                    estimated_weighted_distance_to_future.append(weighted_distance_to_future)
 
                 projected_timepoint_df["y"] = np.array(estimated_weighted_distance_to_future)
             else:
@@ -749,7 +747,7 @@ if __name__ == "__main__":
         # Scale each tip's weighted distance to future populations by one minus
         # the tip's current frequency. This ensures that lower frequency tips do
         # not considered closer to the future.
-        tips["y"] = (1 - tips["frequency"]) * tips["weighted_distance_to_future"]
+        tips["y"] = tips["weighted_distance_to_future"]
 
         # Get strain frequency per timepoint and subtract delta time from
         # timepoint to align strain frequencies with the previous timepoint and
