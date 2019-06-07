@@ -267,7 +267,8 @@ rule refine:
         coalescent = "const",
         date_inference = "marginal",
         clock_filter_iqd = 4,
-        clock_rate = _get_clock_rate_by_wildcards
+        clock_rate = _get_clock_rate_by_wildcards,
+        clock_std_dev = _get_clock_std_dev_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/refine_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
@@ -279,8 +280,10 @@ rule refine:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
+            --clock-filter-iqd {params.clock_filter_iqd} \
             --no-covariance \
             --clock-rate {params.clock_rate} \
+            --clock-std-dev {params.clock_std_dev} \
             --coalescent {params.coalescent} \
             --date-confidence \
             --date-inference {params.date_inference}

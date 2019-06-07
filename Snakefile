@@ -154,6 +154,9 @@ def _get_clock_rate_by_wildcards(wildcards):
 
     return rate
 
+def _get_clock_std_dev_by_wildcards(wildcards):
+    return 0.2 * _get_clock_rate_by_wildcards(wildcards)
+
 def _get_min_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.start))
 
