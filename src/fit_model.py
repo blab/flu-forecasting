@@ -195,7 +195,7 @@ class ExponentialGrowthModel(object):
 
         return projected_frequencies
 
-    def _fit(self, coefficients, X, y):
+    def _fit(self, coefficients, X, y, use_l1_penalty=True):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
 
@@ -250,7 +250,11 @@ class ExponentialGrowthModel(object):
             frequencies["frequency_estimated"],
             initial=frequencies["frequency"]
         )
-        l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+
+        if use_l1_penalty:
+            l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        else:
+            l1_penalty = 0.0
 
         return error + l1_penalty
 
@@ -381,7 +385,7 @@ class ExponentialGrowthModel(object):
         float :
             model error
         """
-        return self._fit(self.coef_, X, y)
+        return self._fit(self.coef_, X, y, use_l1_penalty=False)
 
 
 class DistanceExponentialGrowthModel(ExponentialGrowthModel):
@@ -389,7 +393,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         super().__init__(predictors, delta_time, l1_lambda, cost_function)
         self.distances = distances
 
-    def _fit(self, coefficients, X, y):
+    def _fit(self, coefficients, X, y, use_l1_penalty=True):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
 
@@ -457,7 +461,12 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         #     y_diff=targets["y_diff"],
 
         # )
-        l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        #error = error / float(count)
+
+        if use_l1_penalty:
+            l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        else:
+            l1_penalty = 0.0
 
         return error + l1_penalty
 
