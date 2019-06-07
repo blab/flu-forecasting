@@ -236,6 +236,7 @@ rule tree:
     conda: "../envs/anaconda.python3.yaml"
     shadow: "minimal"
     benchmark: "benchmarks/tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     threads: 4
     shell:
         """
@@ -243,7 +244,7 @@ rule tree:
             --alignment {input.alignment} \
             --output {output.tree} \
             --method iqtree \
-            --nthreads {threads}
+            --nthreads {threads} &> {log}
         """
 
 rule refine:
@@ -271,6 +272,7 @@ rule refine:
         clock_std_dev = _get_clock_std_dev_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/refine_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/refine_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur refine \
@@ -286,7 +288,7 @@ rule refine:
             --clock-std-dev {params.clock_std_dev} \
             --coalescent {params.coalescent} \
             --date-confidence \
-            --date-inference {params.date_inference}
+            --date-inference {params.date_inference} &> {log}
         """
 
 rule estimate_frequencies:
@@ -333,13 +335,14 @@ rule ancestral:
         inference = "joint"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/ancestral_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/ancestral_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur ancestral \
             --tree {input.tree} \
             --alignment {input.alignment} \
             --output {output.node_data} \
-            --inference {params.inference}
+            --inference {params.inference} &> {log}
         """
 
 rule translate:
@@ -352,13 +355,14 @@ rule translate:
         node_data = BUILD_SEGMENT_PATH + "aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/translate_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/translate_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur translate \
             --tree {input.tree} \
             --ancestral-sequences {input.node_data} \
             --reference-sequence {input.reference} \
-            --output {output.node_data}
+            --output {output.node_data} &> {log}
         """
 
 rule reconstruct_translations:
@@ -369,6 +373,8 @@ rule reconstruct_translations:
     output:
         aa_alignment = BUILD_SEGMENT_PATH + "aa-seq_{gene}.fasta"
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur reconstruct-sequences \
@@ -376,7 +382,7 @@ rule reconstruct_translations:
             --mutations {input.node_data} \
             --gene {wildcards.gene} \
             --output {output.aa_alignment} \
-            --internal-nodes
+            --internal-nodes &> {log}
         """
 
 genes_to_translate = {
