@@ -3,10 +3,12 @@
     "min_length": 1700,
     "lineages": ["h3n2"],
     "segments": ["ha"],
-    "start_date": "2000-10-01",
+    "start_date": "1994-10-01",
     "end_date": "2015-10-01",
+    "start_date_to_standardize": "2004-10-01",
+    "end_date_to_standardize": "2005-04-01",
     "pivot_interval": 6,
-    "min_years_per_build": 4,
+    "min_years_per_build": 1,
     "viruses": [90],
     "number_of_samples": 1,
     "include_titer_tree": false,
@@ -14,6 +16,8 @@
     "delta_pivots": 1,
     "months_for_distance_season": 12,
     "max_years_for_distances": 6,
+    "years_back_for_target_distance": 3,
+    "target_distance_attribute": "hamming",
     "titers": {
         "passages": ["cell"],
         "assays": ["hi"]
@@ -80,13 +84,17 @@
         "aa_sequences",
         "country_confidence",
         "ep_pairwise",
+        "cTiterSub_pairwise",
         "ep_luksza_pairwise",
         "ep_kratsch_pairwise",
-        "cTiterSub_pairwise",
         "muts",
         "num_date_confidence",
         "region_confidence",
         "sequence"
+    ],
+    "other_excluded_node_data_fields": [
+        "ep_luksza_pairwise",
+        "ep_kratsch_pairwise"
     ],
     "cross_immunity": {
         "h3n2": {
@@ -103,7 +111,8 @@
         "training_window": 6,
         "delta_months": 12,
         "primary_segment": "ha",
-        "cost_function": "information_gain",
+        "clade_cost_function": "information_gain",
+        "distance_cost_function": "diffsum",
         "l1_lambda": 0.0,
         "pseudocount": 0.0
     }

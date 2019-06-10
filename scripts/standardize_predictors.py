@@ -20,7 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Load tip attributes.
-    df = pd.read_table(args.tip_attributes)
+    df = pd.read_csv(args.tip_attributes, sep="\t")
 
     # Confirm presence of all requested predictor columns.
     missing_columns = set(args.predictors) - set(df.columns)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     start_date = pd.to_datetime(args.start_date)
     end_date = pd.to_datetime(args.end_date)
     valid_timepoints = (start_date <= df["timepoint"]) & (df["timepoint"] <= end_date)
-    if valid_timepoints.shape[0] == 0:
+    if valid_timepoints.sum() == 0:
         print(f"Error: The requested timepoints ({args.start_date} to {args.end_date}) were not found in the given attributes table", file=sys.stderr)
         sys.exit(1)
 

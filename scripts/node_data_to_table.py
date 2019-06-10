@@ -31,8 +31,8 @@ if __name__ == '__main__':
     # Transposition converts the table to the expected one row per node format.
     df = pd.DataFrame(node_data["nodes"]).T.rename_axis("strain").reset_index()
 
-    # Remove excluded fields.
-    df = df.drop(columns=args.excluded_fields)
+    # Remove excluded fields if they are in the data frame.
+    df = df.drop(columns=[field for field in args.excluded_fields if field in df.columns])
 
     # Annotate the tip/internal status of each node using the tree.
     node_terminal_status_by_name = {node.name: node.is_terminal() for node in tree.find_clades()}

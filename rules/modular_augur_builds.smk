@@ -236,6 +236,7 @@ rule tree:
     conda: "../envs/anaconda.python3.yaml"
     shadow: "minimal"
     benchmark: "benchmarks/tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     threads: 4
     shell:
         """
@@ -243,7 +244,7 @@ rule tree:
             --alignment {input.alignment} \
             --output {output.tree} \
             --method iqtree \
-            --nthreads {threads}
+            --nthreads {threads} &> {log}
         """
 
 rule refine:
@@ -267,9 +268,11 @@ rule refine:
         coalescent = "const",
         date_inference = "marginal",
         clock_filter_iqd = 4,
-        clock_rate = _get_clock_rate_by_wildcards
+        clock_rate = _get_clock_rate_by_wildcards,
+        clock_std_dev = _get_clock_std_dev_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/refine_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/refine_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur refine \
@@ -279,10 +282,13 @@ rule refine:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
+            --clock-filter-iqd {params.clock_filter_iqd} \
+            --no-covariance \
             --clock-rate {params.clock_rate} \
+            --clock-std-dev {params.clock_std_dev} \
             --coalescent {params.coalescent} \
             --date-confidence \
-            --date-inference {params.date_inference}
+            --date-inference {params.date_inference} &> {log}
         """
 
 rule estimate_frequencies:
@@ -329,13 +335,14 @@ rule ancestral:
         inference = "joint"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/ancestral_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/ancestral_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur ancestral \
             --tree {input.tree} \
             --alignment {input.alignment} \
             --output {output.node_data} \
-            --inference {params.inference}
+            --inference {params.inference} &> {log}
         """
 
 rule translate:
@@ -348,13 +355,14 @@ rule translate:
         node_data = BUILD_SEGMENT_PATH + "aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/translate_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/translate_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur translate \
             --tree {input.tree} \
             --ancestral-sequences {input.node_data} \
             --reference-sequence {input.reference} \
-            --output {output.node_data}
+            --output {output.node_data} &> {log}
         """
 
 rule reconstruct_translations:
@@ -365,6 +373,8 @@ rule reconstruct_translations:
     output:
         aa_alignment = BUILD_SEGMENT_PATH + "aa-seq_{gene}.fasta"
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM + ".txt"
     shell:
         """
         augur reconstruct-sequences \
@@ -372,7 +382,7 @@ rule reconstruct_translations:
             --mutations {input.node_data} \
             --gene {wildcards.gene} \
             --output {output.aa_alignment} \
-            --internal-nodes
+            --internal-nodes &> {log}
         """
 
 genes_to_translate = {
@@ -392,6 +402,23 @@ def translations(wildcards):
     genes = gene_names(wildcards)
     return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
             for gene in genes]
+
+rule convert_translations_to_json:
+    input:
+        tree = rules.refine.output.tree,
+        translations = translations
+    output:
+        translations = BUILD_SEGMENT_PATH + "aa_seq.json"
+    params:
+        gene_names = gene_names
+    shell:
+        """
+        python3 scripts/convert_translations_to_json.py \
+            --tree {input.tree} \
+            --alignment {input.translations} \
+            --gene-names {params.gene_names} \
+            --output {output.translations}
+        """
 
 rule mutation_frequencies:
     message:
@@ -612,6 +639,7 @@ rule titers_sub:
             --alignment {input.alignments} \
             --gene-names {params.genes} \
             --tree {input.tree} \
+            --allow-empty-model \
             --output {output.titers_model}
         """
 
@@ -627,6 +655,7 @@ rule titers_tree:
         augur titers tree \
             --titers {input.titers} \
             --tree {input.tree} \
+            --allow-empty-model \
             --output {output.titers_model}
         """
 
@@ -744,6 +773,7 @@ def _get_node_data_for_export(wildcards):
         rules.refine.output.node_data,
         rules.ancestral.output.node_data,
         rules.translate.output.node_data,
+        rules.convert_translations_to_json.output.translations,
         rules.traits.output.node_data,
         rules.clades_by_haplotype.output.clades,
         rules.lbi.output.lbi,
@@ -886,4 +916,20 @@ rule collect_annotated_tip_clade_tables:
         python3 scripts/collect_tables.py \
             --tables {input} \
             --output {output.tip_clade_table}
+        """
+
+rule target_distances:
+    input:
+        attributes = rules.collect_tip_attributes.output.attributes
+    output:
+        distances = BUILD_PATH + "target_distances.tsv",
+    params:
+        delta_months = config["fitness_model"]["delta_months"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/calculate_target_distances.py \
+            --tip-attributes {input.attributes} \
+            --delta-months {params.delta_months} \
+            --output {output}
         """

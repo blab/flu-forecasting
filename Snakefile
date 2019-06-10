@@ -7,7 +7,7 @@ from src.forecast.fitness_model import get_train_validate_timepoints
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: download_sequences, download_all_titers_by_assay, filter_metadata, aggregate_tree_plots
+localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter, aggregate_tree_plots
 
 wildcard_constraints:
     sample="sample_(\d+|titers)",
@@ -27,6 +27,8 @@ LINEAGES = config["lineages"]
 SEGMENTS = config["segments"]
 START_DATE = config["start_date"]
 END_DATE = config["end_date"]
+START_DATE_TO_STANDARDIZE = config["start_date_to_standardize"]
+END_DATE_TO_STANDARDIZE = config["end_date_to_standardize"]
 PIVOT_INTERVAL = config["pivot_interval"]
 MIN_YEARS_PER_BUILD = config["min_years_per_build"]
 VIRUSES = config["viruses"]
@@ -104,6 +106,12 @@ def _get_distance_maps_by_lineage_and_segment(wildcards):
         for distance_map in config.loc[:, "distance_map"].values
     ]
 
+def _get_target_distance_earliest_date_by_wildcards(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    offset = pd.DateOffset(years=config["years_back_for_target_distance"])
+    earliest_date = timepoint - offset
+    return earliest_date.strftime("%Y-%m-%d")
+
 def _get_distance_earliest_date_by_wildcards(wildcards):
     timepoint = pd.to_datetime(wildcards.timepoint)
     season_offset = pd.DateOffset(months=config["months_for_distance_season"])
@@ -146,14 +154,20 @@ def _get_clock_rate_by_wildcards(wildcards):
 
     return rate
 
+def _get_clock_std_dev_by_wildcards(wildcards):
+    return 0.2 * _get_clock_rate_by_wildcards(wildcards)
+
 def _get_min_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.start))
 
 def _get_max_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
 
-def _get_model_files(wildcards):
-    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+def _get_clade_model_files(wildcards):
+    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_clades/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+
+def _get_distance_model_files(wildcards):
+    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
@@ -174,7 +188,9 @@ rule all:
     input:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/final_clade_frequencies.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        _get_model_files,
+        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/target_distances.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
+        _get_clade_model_files,
+        _get_distance_model_files,
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
@@ -192,8 +208,11 @@ rule all:
         # "results/figures/frequencies.pdf",
         # expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
-rule models:
-    input: _get_model_files
+rule clade_models:
+    input: _get_clade_model_files
+
+rule distance_models:
+    input: _get_distance_model_files
 
 rule auspice:
     input: _get_auspice_files

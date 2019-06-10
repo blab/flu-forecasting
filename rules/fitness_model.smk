@@ -4,7 +4,7 @@ Rules for building fitness models from augur builds.
 
 rule annotate_naive_tip_attribute:
     input:
-        attributes = BUILD_PATH + "tip_attributes.tsv"
+        attributes = rules.collect_tip_attributes.output.attributes
     output:
         attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
     run:
@@ -27,31 +27,26 @@ def _get_predictors_to_standardize(wildcards):
 
     return sorted(predictors_to_standardize)
 
-rule standardize_tip_attributes:
+rule annotate_weighted_distances_for_tip_attributes:
     input:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
+        distances = rules.target_distances.output.distances
     output:
-        attributes = BUILD_PATH + "standardized_tip_attributes.tsv",
-        statistics = BUILD_PATH + "standardization_statistics.json"
+        attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     params:
-        predictors = _get_predictors_to_standardize,
-        start_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][0],
-        end_date = TRAIN_VALIDATE_TIMEPOINTS[0]["train"][-1]
-    conda: "../envs/anaconda.python3.yaml"
+        delta_months = config["fitness_model"]["delta_months"]
     shell:
         """
-        python3 scripts/standardize_predictors.py \
+        python3 src/weighted_distances.py \
             --tip-attributes {input.attributes} \
-            --standardized-attributes {output.attributes} \
-            --statistics {output.statistics} \
-            --start-date {params.start_date} \
-            --end-date {params.end_date} \
-            --predictors {params.predictors}
+            --distances {input.distances} \
+            --delta-months {params.delta_months} \
+            --output {output}
         """
 
 rule select_clades:
     input:
-        attributes = rules.standardize_tip_attributes.output.attributes,
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
         tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
     output:
         clades = BUILD_PATH + "final_clade_frequencies.tsv"
@@ -70,22 +65,22 @@ rule select_clades:
             --output {output} &> {log}
         """
 
-rule run_fitness_model:
+rule fit_models_by_clades:
     input:
-        attributes = rules.standardize_tip_attributes.output.attributes,
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
         final_clade_frequencies = rules.select_clades.output.clades
     output:
-        model = BUILD_PATH + "models/{predictors}.json"
+        model = BUILD_PATH + "models_by_clades/{predictors}.json"
     params:
         predictors = _get_predictor_list,
         delta_months = config["fitness_model"]["delta_months"],
         training_window = config["fitness_model"]["training_window"],
-        cost_function = config["fitness_model"]["cost_function"],
+        cost_function = config["fitness_model"]["clade_cost_function"],
         l1_lambda = config["fitness_model"]["l1_lambda"],
         pseudocount = config["fitness_model"]["pseudocount"]
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
-    log: "logs/fitness_model_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    benchmark: "benchmarks/fitness_model_clades_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    log: "logs/fitness_model_clades_" + BUILD_LOG_STEM + "_{predictors}.txt"
     shell:
         """
         python3 src/fit_model.py \
@@ -97,6 +92,36 @@ rule run_fitness_model:
             --cost-function {params.cost_function} \
             --l1-lambda {params.l1_lambda} \
             --pseudocount {params.pseudocount} \
+            --target clades \
+            --output {output} &> {log}
+        """
+
+rule fit_models_by_distances:
+    input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        distances = rules.target_distances.output.distances
+    output:
+        model = BUILD_PATH + "models_by_distances/{predictors}.json"
+    params:
+        predictors = _get_predictor_list,
+        delta_months = config["fitness_model"]["delta_months"],
+        training_window = config["fitness_model"]["training_window"],
+        cost_function = config["fitness_model"]["distance_cost_function"],
+        l1_lambda = config["fitness_model"]["l1_lambda"]
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/fitness_model_distances_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    log: "logs/fitness_model_distances_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    shell:
+        """
+        python3 src/fit_model.py \
+            --tip-attributes {input.attributes} \
+            --training-window {params.training_window} \
+            --delta-months {params.delta_months} \
+            --predictors {params.predictors} \
+            --cost-function {params.cost_function} \
+            --l1-lambda {params.l1_lambda} \
+            --target distances \
+            --distances {input.distances} \
             --output {output} &> {log}
         """
 
