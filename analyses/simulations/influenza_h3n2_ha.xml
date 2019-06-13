@@ -78,6 +78,10 @@
           <lowFitness>0.95</lowFitness>
           <minimumFitness>0.9</minimumFitness>
         </fitness>
+        <fluctuate>
+		  <rate>0.001</rate>
+		  <fitnessLimit>0</fitnessLimit>
+		</fluctuate>
       </purifyingFitness>
 
       <purifyingFitness>
