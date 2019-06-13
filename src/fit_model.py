@@ -291,7 +291,7 @@ class ExponentialGrowthModel(object):
             initial_coefficients,
             args=(X, y),
             method="Nelder-Mead",
-            options={"disp": True}
+            options={"disp": False}
         )
         self.coef_ = results.x
 
@@ -421,8 +421,10 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         # Calculate EMD for each timepoint in the estimated values and sum that
         # distance across all timepoints.
         error = 0.0
+        count = 0
         for timepoint, timepoint_df in y_hat.groupby("timepoint"):
             samples_a = timepoint_df["strain"]
+            sample_a_initial_frequencies = timepoint_df["frequency"].values.astype(np.float32)
             sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
 
             future_timepoint_df = y[y["timepoint"] == timepoint]
@@ -437,14 +439,26 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 self.distances
             ).astype(np.float32)
 
-            emd, _, flow = cv2.EMD(
+            model_emd, _, model_flow = cv2.EMD(
                 sample_a_frequencies,
                 sample_b_frequencies,
                 cv2.DIST_USER,
                 cost=distance_matrix
             )
-            print("EMD for %s: %.2f" % (timepoint, emd), file=sys.stderr)
-            error += emd
+
+            null_emd, _, null_flow = cv2.EMD(
+                sample_a_initial_frequencies,
+                sample_b_frequencies,
+                cv2.DIST_USER,
+                cost=distance_matrix
+            )
+
+            # print("EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, model_emd, (model_flow != 0).sum(), model_flow.flatten().shape[0]), file=sys.stderr)
+            # print("Null EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, null_emd, (null_flow != 0).sum(), null_flow.flatten().shape[0]), file=sys.stderr)
+            # print(model_flow[model_flow != 0].flatten())
+            # print(null_flow[null_flow != 0].flatten())
+            error += (model_emd)
+            count += 1
 
         # # Merge estimated and observed target values.
         # targets = y_hat.merge(
@@ -461,7 +475,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         #     y_diff=targets["y_diff"],
 
         # )
-        #error = error / float(count)
+        error = error / float(count)
 
         if use_l1_penalty:
             l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
@@ -602,10 +616,12 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         # Fit a model to the training data.
         if coefficients is None:
             training_error = model.fit(training_X, training_y)
+            null_training_error = model._fit(np.zeros_like(model.coef_), training_X, training_y)
         else:
             model.coef_ = coefficients
             model.mean_stds_ = model.calculate_mean_stds(training_X, model.predictors)
             training_error = model.score(training_X, training_y)
+            null_training_error = training_error
 
         # Get validation data by timepoints.
         validation_X = data[data["timepoint"] == validation_timepoint].copy()
@@ -613,6 +629,19 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
 
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
+        null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
+
+        print(
+            "%s\t%s\t%.1f\t%.1f\t%.1f\t%.1f\t%.2f" % (
+                training_timepoints[-1].strftime("%Y-%m"),
+                validation_timepoint.strftime("%Y-%m"),
+                training_error,
+                null_training_error,
+                validation_error,
+                null_validation_error,
+                model.coef_[0]
+            )
+        )
 
         # Get the estimated frequencies for training and validation sets to export.
         training_y_hat = model.predict(training_X)
