@@ -89,8 +89,7 @@
         "ep_kratsch_pairwise",
         "muts",
         "num_date_confidence",
-        "region_confidence",
-        "sequence"
+        "region_confidence"
     ],
     "other_excluded_node_data_fields": [
         "ep_luksza_pairwise",
