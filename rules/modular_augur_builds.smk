@@ -2,7 +2,6 @@
 Rules to build auspice JSONs from sequences and titers using modular augur.
 """
 # Imports.
-from augur.frequency_estimators import get_pivots, timestamp_to_float
 import json
 import pandas as pd
 from pathlib import Path
@@ -831,12 +830,6 @@ rule export:
             --panels {params.panels} \
             --minify-json
         """
-
-def _get_excluded_fields_arg(wildcards):
-    if config.get("excluded_node_data_fields"):
-        return "--excluded-fields %s" % " ".join(config["excluded_node_data_fields"])
-    else:
-        return ""
 
 rule convert_node_data_to_table:
     input:

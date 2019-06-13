@@ -1,3 +1,5 @@
+from augur.frequency_estimators import get_pivots, timestamp_to_float
+import numpy as np
 import pandas as pd
 import pprint
 import sys
@@ -162,6 +164,16 @@ def _get_min_date_for_augur_frequencies(wildcards):
 
 def _get_max_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
+
+def _get_excluded_fields_arg(wildcards):
+    if config.get("excluded_node_data_fields"):
+        return "--excluded-fields %s" % " ".join(config["excluded_node_data_fields"])
+    else:
+        return ""
+
+#
+# Define helper functions for Snakemake outputs
+#
 
 def _get_clade_model_files(wildcards):
     return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_clades/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
