@@ -194,6 +194,29 @@ def _get_excluded_fields_arg(wildcards):
     else:
         return ""
 
+genes_to_translate = {
+    'ha': ['SigPep', 'HA1', 'HA2'],
+    'na': ['NA']
+}
+def gene_names(wildcards=None, segment=None):
+    if wildcards and wildcards.segment in genes_to_translate:
+        genes = genes_to_translate[wildcards.segment]
+    elif segment in genes_to_translate:
+        genes = genes_to_translate[segment]
+    else:
+        print(f"WARNING: Genes to translate are not defined for {wildcards.segment}, defaulting to '{wildcards.segment.upper()}'")
+        genes = [wildcards.segment.upper()]
+
+    return genes
+
+def translations(wildcards=None, segment=None, path=None):
+    genes = gene_names(wildcards, segment)
+    if path is None:
+        path = BUILD_SEGMENT_PATH
+
+    return [path + "aa-seq_%s.fasta" % gene
+            for gene in genes]
+
 #
 # Define helper functions for Snakemake outputs
 #

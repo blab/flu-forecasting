@@ -384,24 +384,6 @@ rule reconstruct_translations:
             --internal-nodes &> {log}
         """
 
-genes_to_translate = {
-    'ha': ['SigPep', 'HA1', 'HA2'],
-    'na': ['NA']
-}
-def gene_names(wildcards):
-    if wildcards.segment in genes_to_translate:
-        genes = genes_to_translate[wildcards.segment]
-    else:
-        print(f"WARNING: Genes to translate are not defined for {wildcards.segment}, defaulting to '{wildcards.segment.upper()}'")
-        genes = [wildcards.segment.upper()]
-
-    return genes
-
-def translations(wildcards):
-    genes = gene_names(wildcards)
-    return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
-            for gene in genes]
-
 rule convert_translations_to_json:
     input:
         tree = rules.refine.output.tree,
