@@ -74,9 +74,9 @@ TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
     config["fitness_model"]["delta_months"],
     config["fitness_model"]["training_window"]
 )
-pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
+#pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
 #TIMEPOINTS = TIMEPOINTS[:7]
-pprint.pprint(TIMEPOINTS)
+#pprint.pprint(TIMEPOINTS)
 
 #
 # Configure amino acid distance masks.
@@ -237,10 +237,11 @@ BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
 BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
 
 #include: "rules/filter_passaged_viruses.smk"
-include: "rules/modular_augur_builds.smk"
+#include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
-include: "rules/fitness_model.smk"
-include: "rules/quality_control_plots.smk"
+#include: "rules/fitness_model.smk"
+#include: "rules/quality_control_plots.smk"
+include: "rules/datasets_simulations.smk"
 
 rule all:
     input:
