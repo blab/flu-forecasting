@@ -6,7 +6,7 @@ BUILD_TIMEPOINT_PATH_SIMULATIONS = BUILD_PATH_SIMULATIONS + "timepoints/{timepoi
 BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}_{timepoint}"
 
 START_DATE_SIMULATIONS = "2010-10-01"
-END_DATE_SIMULATIONS = "2030-10-01"
+END_DATE_SIMULATIONS = "2020-10-01"
 TIMEPOINTS_SIMULATIONS = _get_timepoints_for_build_interval(
     START_DATE_SIMULATIONS,
     END_DATE_SIMULATIONS,
@@ -64,8 +64,8 @@ def _get_proportion_to_subsample_from_wildcards(wildcards):
 
 rule subsample_simulations:
     input:
-       sequences = "data/simulations/HA_sequences_full.fasta"
-       #sequences = "data/simulations/frequency_1.fasta"
+       #sequences = "data/simulations/HA_sequences_full.fasta"
+       sequences = "analyses/simulations/simulated_HA_sequences.fasta"
     output:
        sequences = "results/datasets/h3_simulated_{percentage}pct/original_sequences.fasta"
     params:
@@ -79,12 +79,13 @@ rule subsample_simulations:
 
 rule parse_simulated_sequences:
     input:
-        sequences = rules.subsample_simulations.output.sequences
+        #sequences = rules.subsample_simulations.output.sequences
+        sequences = "analyses/simulations/simulated_HA_sequences.fasta"
     output:
         sequences = "results/datasets/h3_simulated_{percentage}pct/sequences.fasta",
         metadata = "results/datasets/h3_simulated_{percentage}pct/metadata.tsv"
     params:
-        fasta_fields = "strain num_date"
+        fasta_fields = "strain generation"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -103,15 +104,60 @@ rule standardize_simulated_sequence_dates:
         metadata = "results/datasets/h3_simulated_{percentage}pct/corrected_metadata.tsv"
     run:
         df = pd.read_csv(input.metadata, sep="\t")
-        #df["num_date"] = 2000.0 + (df["generation"] / 100.0)
-        df["num_date"] = df["num_date"] + 2000.0
+        df["num_date"] = 2000.0 + (df["generation"] / 100.0)
         df["date"] = df["num_date"].apply(float_to_datestring)
+        df["year"]  = pd.to_datetime(df["date"]).dt.year
+        df["month"]  = pd.to_datetime(df["date"]).dt.month
         df.to_csv(output.metadata, header=True, index=False, sep="\t")
+
+
+rule filter_simulated:
+    input:
+        sequences = rules.parse_simulated_sequences.output.sequences,
+        metadata = rules.standardize_simulated_sequence_dates.output.metadata
+    output:
+        sequences = 'results/datasets/h3_simulated_{percentage}pct/filtered_sequences.fasta'
+    params:
+        # Skip the first 1,000 generations (or 1000 / 100 years) for simulation burn-in.
+        min_date = 2010.0,
+        group_by = "year month",
+        sequences_per_month = 2
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/filter_h3_simulated_{percentage}pct.txt"
+    shell:
+        """
+        augur filter \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --min-date {params.min_date} \
+            --group-by {params.group_by} \
+            --sequences-per-group {params.sequences_per_month} \
+            --output {output}
+        """
+
+
+rule filter_metadata_simulated:
+    input:
+        sequences = rules.filter_simulated.output.sequences,
+        metadata = rules.standardize_simulated_sequence_dates.output.metadata,
+    output:
+        metadata = "results/datasets/h3_simulated_{percentage}pct/filtered_metadata.tsv"
+    run:
+        # Get a list of all samples that passed the sequence filtering step.
+        sequences = Bio.SeqIO.parse(input.sequences, "fasta")
+        sample_ids = [sequence.id for sequence in sequences]
+
+        # Load all metadata.
+        metadata = pd.read_csv(input.metadata, sep="\t")
+        filtered_metadata = metadata[metadata["strain"].isin(sample_ids)].copy()
+
+        # Save only the metadata records that have entries in the filtered sequences.
+        filtered_metadata.to_csv(output.metadata, sep="\t", header=True, index=False)
 
 
 rule get_strains_for_simulated_sequences:
     input:
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata
+        metadata = rules.filter_metadata_simulated.output.metadata
     output:
         strains = "results/datasets/h3_simulated_{percentage}pct/strains.txt"
     run:
@@ -121,7 +167,7 @@ rule get_strains_for_simulated_sequences:
 
 rule get_strains_by_timepoint:
     input:
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata
+        metadata = rules.filter_metadata_simulated.output.metadata
     output:
         strains = BUILD_TIMEPOINT_PATH_SIMULATIONS + "strains.txt"
     conda: "../envs/anaconda.python3.yaml"
@@ -206,7 +252,7 @@ rule refine_simulated:
     input:
         tree = rules.tree_simulated.output.tree,
         alignment = rules.align_simulated.output.alignment,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata
+        metadata = rules.filter_metadata_simulated.output.metadata
     output:
         tree = BUILD_TIMEPOINT_PATH_SIMULATIONS + "tree.nwk",
         node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "branch_lengths.json"
@@ -233,14 +279,45 @@ rule refine_simulated:
         """
 
 
+rule estimate_frequencies_simulated:
+    message:
+        """
+        Estimating frequencies for {input.tree}
+          - narrow bandwidth: {params.narrow_bandwidth}
+          - wide bandwidth: {params.wide_bandwidth}
+          - proportion wide: {params.proportion_wide}
+        """
+    input:
+        tree=rules.refine_simulated.output.tree,
+        metadata=rules.filter_metadata_simulated.output.metadata,
+        weights="data/region_weights.json"
+    output:
+        frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "frequencies.json"
+    params:
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
+        pivot_frequency=PIVOT_INTERVAL
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell: """python3 scripts/frequencies.py {input.tree} {input.metadata} {output} \
+--narrow-bandwidth {params.narrow_bandwidth} \
+--wide-bandwidth {params.wide_bandwidth} \
+--proportion-wide {params.proportion_wide} \
+--pivot-frequency {params.pivot_frequency} \
+--start-date {wildcards.start} \
+--end-date {wildcards.timepoint} \
+--include-internal-nodes &> {log}"""
+
+
 rule ancestral_simulated:
     message: "Reconstructing ancestral sequences and mutations for {wildcards}"
     input:
         tree = rules.refine_simulated.output.tree,
         alignment = rules.align_simulated.output.alignment
     output:
-        node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "nt_muts.json",
-        sequences = BUILD_TIMEPOINT_PATH_SIMULATIONS + "nt.fasta"
+        node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "nt_muts.json"
     params:
         inference = "joint"
     conda: "../envs/anaconda.python3.yaml"
@@ -251,22 +328,83 @@ rule ancestral_simulated:
         augur ancestral \
             --tree {input.tree} \
             --alignment {input.alignment} \
-            --output-json {output.node_data} \
-            --output-fasta {output.sequences} \
+            --output {output.node_data} \
             --inference {params.inference} &> {log}
+        """
+
+
+rule translate_simulated:
+    message: "Translating amino acid sequences"
+    input:
+        tree = rules.refine_simulated.output.tree,
+        node_data = rules.ancestral_simulated.output.node_data,
+        reference = "config/reference_h3n2_ha.gb"
+    output:
+        node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "aa_muts.json"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/translate_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/translate_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    shell:
+        """
+        augur translate \
+            --tree {input.tree} \
+            --ancestral-sequences {input.node_data} \
+            --reference-sequence {input.reference} \
+            --output {output.node_data} &> {log}
+        """
+
+
+rule reconstruct_translations_simulated:
+    message: "Reconstructing translations for {wildcards.gene}"
+    input:
+        tree = rules.refine_simulated.output.tree,
+        node_data = rules.translate_simulated.output.node_data
+    output:
+        aa_alignment = BUILD_TIMEPOINT_PATH_SIMULATIONS + "aa-seq_{gene}.fasta"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/reconstruct_translations_{gene}_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    shell:
+        """
+        augur reconstruct-sequences \
+            --tree {input.tree} \
+            --mutations {input.node_data} \
+            --gene {wildcards.gene} \
+            --output {output.aa_alignment} \
+            --internal-nodes &> {log}
+        """
+
+
+rule convert_translations_to_json_simulated:
+    input:
+        tree = rules.refine_simulated.output.tree,
+        translations = translations(segment="ha", path=BUILD_TIMEPOINT_PATH_SIMULATIONS)
+    output:
+        translations = BUILD_TIMEPOINT_PATH_SIMULATIONS + "aa_seq.json"
+    params:
+        gene_names = gene_names(segment="ha")
+    shell:
+        """
+        python3 scripts/convert_translations_to_json.py \
+            --tree {input.tree} \
+            --alignment {input.translations} \
+            --gene-names {params.gene_names} \
+            --output {output.translations}
         """
 
 
 rule distances_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
-        alignments = rules.ancestral_simulated.output.sequences,
-        epitope_distance_map = "config/distance_maps/simulated_epitopes_map.json",
-        nonepitope_distance_map = "config/distance_maps/simulated_nonepitopes_map.json"
+        alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH_SIMULATIONS),
+        distance_maps = _get_distance_maps_for_simulations,
+        date_annotations = rules.refine_simulated.output.node_data
     params:
-        genes = "HA1",
-        comparisons = "root root",
-        attribute_names = "ep ne"
+        genes = gene_names(segment="ha"),
+        comparisons = _get_distance_comparisons_for_simulations,
+        attribute_names = _get_distance_attributes_for_simulations,
+        earliest_date = _get_distance_earliest_date_by_wildcards,
+        latest_date = _get_distance_latest_date_by_wildcards
     output:
         distances = BUILD_TIMEPOINT_PATH_SIMULATIONS + "distances.json",
     conda: "../envs/anaconda.python3.yaml"
@@ -278,7 +416,45 @@ rule distances_simulated:
             --gene-names {params.genes} \
             --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
-            --map {input.epitope_distance_map} {input.nonepitope_distance_map} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --earliest-date {params.earliest_date} \
+            --latest-date {params.latest_date} \
+            --output {output}
+        """
+
+
+def _get_cross_immunity_distance_attributes_for_simulations(wildcards):
+    return config["cross_immunity"]["h3n2"]["ha"]["distance_attributes"]
+
+
+def _get_cross_immunity_attributes_for_simulations(wildcards):
+    return config["cross_immunity"]["h3n2"]["ha"]["immunity_attributes"]
+
+
+def _get_cross_immunity_decay_factors_for_simulations(wildcards):
+    return config["cross_immunity"]["h3n2"]["ha"]["decay_factors"]
+
+
+rule cross_immunities_simulated:
+    input:
+        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        distances = rules.distances_simulated.output.distances
+    params:
+        distance_attributes = _get_cross_immunity_distance_attributes_for_simulations,
+        immunity_attributes = _get_cross_immunity_attributes_for_simulations,
+        decay_factors = _get_cross_immunity_decay_factors_for_simulations
+    output:
+        cross_immunities = BUILD_TIMEPOINT_PATH_SIMULATIONS + "cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
             --output {output}
         """
 
@@ -317,7 +493,7 @@ rule tip_frequencies_simulated:
         """
     input:
         tree=rules.refine_simulated.output.tree,
-        metadata=rules.standardize_simulated_sequence_dates.output.metadata,
+        metadata=rules.filter_metadata_simulated.output.metadata,
         weights="data/region_weights.json"
     output:
         frequencies = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tip-frequencies.json"
@@ -356,7 +532,10 @@ def _get_node_data_for_export_simulated(wildcards):
     inputs = [
         rules.refine_simulated.output.node_data,
         rules.ancestral_simulated.output.node_data,
+        rules.translate_simulated.output.node_data,
+        rules.convert_translations_to_json_simulated.output.translations,
         rules.distances_simulated.output.distances,
+        rules.cross_immunities_simulated.output.cross_immunities,
         rules.lbi_simulated.output.lbi
     ]
 
@@ -368,7 +547,7 @@ def _get_node_data_for_export_simulated(wildcards):
 rule export_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata,
+        metadata = rules.filter_metadata_simulated.output.metadata,
         auspice_config = "config/auspice_config.json",
         node_data = _get_node_data_for_export_simulated,
         colors = "config/colors.tsv"
@@ -377,7 +556,7 @@ rule export_simulated:
         auspice_metadata = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_meta.json"
 #        auspice_sequence = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_seq.json",
     params:
-        panels = "tree entropy"
+        panels = "tree entropy frequencies"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -413,38 +592,6 @@ rule convert_node_data_to_table_simulated:
             --annotations timepoint={wildcards.timepoint} \
                           lineage=simulated
         """
-
-
-rule estimate_frequencies_simulated:
-    message:
-        """
-        Estimating frequencies for {input.tree}
-          - narrow bandwidth: {params.narrow_bandwidth}
-          - wide bandwidth: {params.wide_bandwidth}
-          - proportion wide: {params.proportion_wide}
-        """
-    input:
-        tree=rules.refine_simulated.output.tree,
-        metadata=rules.standardize_simulated_sequence_dates.output.metadata,
-        weights="data/region_weights.json"
-    output:
-        frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "frequencies.json"
-    params:
-        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
-        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
-        proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=PIVOT_INTERVAL
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
-    log: "logs/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
-    shell: """python3 scripts/frequencies.py {input.tree} {input.metadata} {output} \
---narrow-bandwidth {params.narrow_bandwidth} \
---wide-bandwidth {params.wide_bandwidth} \
---proportion-wide {params.proportion_wide} \
---pivot-frequency {params.pivot_frequency} \
---start-date {wildcards.start} \
---end-date {wildcards.timepoint} \
---include-internal-nodes &> {log}"""
 
 
 rule convert_frequencies_to_table_simulated:

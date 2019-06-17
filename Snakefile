@@ -1,4 +1,5 @@
 from augur.frequency_estimators import get_pivots, timestamp_to_float
+import Bio.SeqIO
 import numpy as np
 import pandas as pd
 import pprint
@@ -126,6 +127,28 @@ def _get_distance_latest_date_by_wildcards(wildcards):
     offset = pd.DateOffset(months=config["months_for_distance_season"])
     latest_date = timepoint - offset
     return latest_date.strftime("%Y-%m-%d")
+
+#
+# Distance functions for simulations.
+#
+
+def _get_distance_attributes_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha")]
+    return " ".join(config.loc[:, "attribute"].values)
+
+def _get_distance_maps_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha")]
+    return [
+        "config/distance_maps/h3n2/ha/{distance_map}.json".format(distance_map=distance_map)
+        for distance_map in config.loc[:, "distance_map"].values
+    ]
+
+def _get_distance_comparisons_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha")]
+    return " ".join(config.loc[:, "compare_to"].values)
 
 #
 # Define helper functions.
