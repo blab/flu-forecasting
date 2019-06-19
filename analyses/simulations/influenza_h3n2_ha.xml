@@ -126,10 +126,10 @@
 
     <samplingSchedule>
       <sampler>
-        <atFrequency>10</atFrequency>
+        <atFrequency>8</atFrequency>
         <fileName>simulated_HA_sequences.fasta</fileName>
         <alignment>
-          <sampleSize>10</sampleSize>
+          <sampleSize>20</sampleSize>
           <format>FASTA</format>
           <label>sample_%g_%s|%g</label>
         </alignment>
