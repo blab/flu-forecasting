@@ -6,7 +6,7 @@ BUILD_TIMEPOINT_PATH_SIMULATIONS = BUILD_PATH_SIMULATIONS + "timepoints/{timepoi
 BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}_{timepoint}"
 
 START_DATE_SIMULATIONS = "2010-10-01"
-END_DATE_SIMULATIONS = "2020-10-01"
+END_DATE_SIMULATIONS = "2030-10-01"
 TIMEPOINTS_SIMULATIONS = _get_timepoints_for_build_interval(
     START_DATE_SIMULATIONS,
     END_DATE_SIMULATIONS,
@@ -121,7 +121,7 @@ rule filter_simulated:
         # Skip the first 1,000 generations (or 1000 / 100 years) for simulation burn-in.
         min_date = 2010.0,
         group_by = "year month",
-        sequences_per_month = 2
+        sequences_per_month = 10
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/filter_h3_simulated_{percentage}pct.txt"
     shell:
