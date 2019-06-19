@@ -711,7 +711,6 @@ rule target_distances_simulated:
         python3 scripts/calculate_target_distances.py \
             --tip-attributes {input.attributes} \
             --delta-months {params.delta_months} \
-            --sequence-attribute-name sequence \
             --output {output}
         """
 
