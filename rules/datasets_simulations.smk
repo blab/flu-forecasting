@@ -393,6 +393,59 @@ rule convert_translations_to_json_simulated:
         """
 
 
+rule clades_by_haplotype_simulated:
+    input:
+        tree = rules.refine_simulated.output.tree,
+        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        reference = "config/reference_h3n2_ha.gb",
+        translations = translations(segment="ha", path=BUILD_TIMEPOINT_PATH_SIMULATIONS)
+    output:
+        clades = BUILD_TIMEPOINT_PATH_SIMULATIONS + "clades.json",
+        tip_clade_table = BUILD_TIMEPOINT_PATH_SIMULATIONS + "unannotated_tips_to_clades.tsv"
+    params:
+        gene_names = gene_names(segment="ha"),
+        minimum_tips = config["min_tips_per_clade"],
+        min_frequency = 0.0
+    conda: "../envs/anaconda.python3.yaml"
+    log: "logs/find_clades_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell:
+        """
+        python3 scripts/find_clades.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --reference {input.reference} \
+            --translations {input.translations} \
+            --gene-names {params.gene_names} \
+            --minimum-tips {params.minimum_tips} \
+            --minimum-frequency {params.min_frequency} \
+            --use-hash-ids \
+            --output {output.clades} \
+            --output-tip-clade-table {output.tip_clade_table} &> {log}
+        """
+
+
+rule delta_frequency_simulated:
+    input:
+        tree = rules.refine_simulated.output.tree,
+        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        clades = rules.clades_by_haplotype_simulated.output.clades
+    output:
+        delta_frequency = BUILD_TIMEPOINT_PATH_SIMULATIONS + "delta_frequency.json"
+    params:
+        delta_pivots = config["delta_pivots"]
+    conda: "../envs/anaconda.python3.yaml"
+    log: "logs/delta_frequency_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell:
+        """
+        python3 scripts/calculate_delta_frequency.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --clades {input.clades} \
+            --delta-pivots {params.delta_pivots} \
+            --output {output.delta_frequency} &> {log}
+        """
+
+
 rule distances_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
@@ -534,6 +587,8 @@ def _get_node_data_for_export_simulated(wildcards):
         rules.ancestral_simulated.output.node_data,
         rules.translate_simulated.output.node_data,
         rules.convert_translations_to_json_simulated.output.translations,
+        rules.clades_by_haplotype_simulated.output.clades,
+        rules.delta_frequency_simulated.output.delta_frequency,
         rules.distances_simulated.output.distances,
         rules.cross_immunities_simulated.output.cross_immunities,
         rules.lbi_simulated.output.lbi
