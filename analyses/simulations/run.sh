@@ -36,4 +36,4 @@ augur distance --tree tree.nwk --alignment aa-seq_SigPep.fasta aa-seq_HA1.fasta 
 
 augur export --tree tree.nwk --metadata metadata.tsv --auspice-config ../../config/auspice_config.json --colors ../../config/colors.tsv --output-tree test_tree.json --output-meta test_meta.json --node-data branch_lengths.json nt_muts.json aa_muts.json lbi.json distances.json --output-sequence test_seq.json
 
-augur frequencies --method kde --metadata metadata.tsv --tree tree.nwk --min-date 2000.0 --max-date 2020.08 --output test_tip-frequencies.json
+augur frequencies --method kde --metadata metadata.tsv --tree tree.nwk --output test_tip-frequencies.json
