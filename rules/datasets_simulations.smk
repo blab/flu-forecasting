@@ -5,6 +5,7 @@ BUILD_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}"
 BUILD_TIMEPOINT_PATH_SIMULATIONS = BUILD_PATH_SIMULATIONS + "timepoints/{timepoint}/"
 BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}_{timepoint}"
 
+PERCENTAGE = 100
 START_DATE_SIMULATIONS = "2010-10-01"
 END_DATE_SIMULATIONS = "2030-10-01"
 TIMEPOINTS_SIMULATIONS = _get_timepoints_for_build_interval(
@@ -773,3 +774,30 @@ rule fit_models_by_distances_simulated:
             --distances {input.distances} \
             --output {output} &> {log}
         """
+
+
+rule plot_tree_simulated:
+    input:
+        auspice_tree = rules.export_simulated.output.auspice_tree
+    output:
+        tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tree.pdf"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    params:
+        start = START_DATE_SIMULATIONS,
+        end = END_DATE_SIMULATIONS
+    shell:
+        """
+        python3 scripts/plot_tree.py \
+            {input} \
+            {output} \
+            --start-date {params.start} \
+            --end-date {params.end} &> {log}
+        """
+
+rule aggregate_tree_plots_simulated:
+    input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
+    output:
+        trees="results/figures/trees_simulated.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
