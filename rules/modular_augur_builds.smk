@@ -613,6 +613,8 @@ rule titers_sub:
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-sub-model.json",
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur titers sub \
@@ -621,7 +623,7 @@ rule titers_sub:
             --gene-names {params.genes} \
             --tree {input.tree} \
             --allow-empty-model \
-            --output {output.titers_model}
+            --output {output.titers_model} &> {log}
         """
 
 rule titers_tree:
@@ -631,13 +633,15 @@ rule titers_tree:
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-tree-model.json",
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur titers tree \
             --titers {input.titers} \
             --tree {input.tree} \
             --allow-empty-model \
-            --output {output.titers_model}
+            --output {output.titers_model} &> {log}
         """
 
 rule convert_titer_model_to_distance_map:
