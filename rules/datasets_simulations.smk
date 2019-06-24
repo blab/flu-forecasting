@@ -166,7 +166,7 @@ rule get_strains_for_simulated_sequences:
         df["strain"].to_csv(output.strains, header=False, index=False)
 
 
-rule get_strains_by_timepoint:
+rule get_strains_by_timepoint_simulated:
     input:
         metadata = rules.filter_metadata_simulated.output.metadata
     output:
@@ -184,7 +184,7 @@ rule get_strains_by_timepoint:
 rule extract_simulated:
     input:
         sequences = rules.parse_simulated_sequences.output.sequences,
-        strains = rules.get_strains_by_timepoint.output.strains
+        strains = rules.get_strains_by_timepoint_simulated.output.strains
     output:
         sequences = BUILD_TIMEPOINT_PATH_SIMULATIONS + "filtered_sequences.fasta"
     conda: "../envs/anaconda.python3.yaml"

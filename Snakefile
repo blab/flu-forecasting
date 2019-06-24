@@ -237,10 +237,10 @@ BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
 BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
 
 #include: "rules/filter_passaged_viruses.smk"
-#include: "rules/modular_augur_builds.smk"
+include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
-#include: "rules/fitness_model.smk"
-#include: "rules/quality_control_plots.smk"
+include: "rules/fitness_model.smk"
+include: "rules/quality_control_plots.smk"
 include: "rules/datasets_simulations.smk"
 
 rule all:
