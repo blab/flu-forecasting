@@ -1,6 +1,6 @@
 {
     "path_to_fauna": "../fauna",
-    "min_length": 1700,
+    "min_length": 900,
     "lineages": ["h3n2"],
     "segments": ["ha"],
     "start_date": "1994-10-01",
@@ -9,7 +9,7 @@
     "end_date_to_standardize": "2005-04-01",
     "pivot_interval": 6,
     "min_years_per_build": 1,
-    "viruses": [90],
+    "viruses": [10],
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 10,
@@ -32,9 +32,7 @@
         "delta_frequency",
         "dms_star",
         "ne_star",
-        "lbi-delta_frequency",
-        "lbi-cTiterSub_x",
-        "lbi-dms_star-cTiterSub_x",
+        "lbi-cTiterSub_x-dms_star",
         "lbi-ep_x-ne_star"
     ],
     "standard_predictors": [
