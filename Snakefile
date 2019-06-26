@@ -227,6 +227,9 @@ def _get_clade_model_files(wildcards):
 def _get_distance_model_files(wildcards):
     return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
 
+def _get_simulated_distance_model_files(wildcards):
+    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_distances/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
+
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
 
@@ -250,6 +253,7 @@ rule all:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/target_distances.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         _get_clade_model_files,
         _get_distance_model_files,
+        _get_simulated_distance_model_files,
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
@@ -272,6 +276,9 @@ rule clade_models:
 
 rule distance_models:
     input: _get_distance_model_files
+
+rule distance_models_simulated:
+    input: _get_simulated_distance_model_files
 
 rule auspice:
     input: _get_auspice_files

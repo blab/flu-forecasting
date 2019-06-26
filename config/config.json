@@ -35,6 +35,21 @@
         "lbi-cTiterSub_x-dms_star",
         "lbi-ep_x-ne_star"
     ],
+    "predictors_simulated": [
+        "naive",
+        "lbi",
+        "ep",
+        "ep_x",
+        "delta_frequency",
+        "dms_star",
+        "ne",
+        "ne_star",
+        "ep-ne",
+        "ep_x-ne_star",
+        "lbi-ne",
+        "lbi-ep-ne",
+        "lbi-ep_x-ne_star"
+    ],
     "standard_predictors": [
         "ep",
         "ne",

@@ -19,6 +19,7 @@ TRAIN_VALIDATE_TIMEPOINTS_SIMULATIONS = get_train_validate_timepoints(
     config["fitness_model"]["delta_months"],
     config["fitness_model"]["training_window"]
 )
+PREDICTORS_SIMULATED = config["predictors_simulated"]
 
 #pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS_SIMULATIONS)
 #pprint.pprint(TIMEPOINTS_SIMULATIONS)
