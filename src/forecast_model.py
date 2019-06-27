@@ -63,4 +63,5 @@ if __name__ == "__main__":
 
     # Forecast given tips.
     forecasts = model.predict(tips)
+    forecasts["weighted_distance_to_future_by_%s" % "-".join(predictors)] = forecasts["y"]
     forecasts.to_csv(args.output, sep="\t", index=False, header=True)
