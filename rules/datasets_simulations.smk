@@ -478,6 +478,35 @@ rule distances_simulated:
             --output {output}
         """
 
+rule pairwise_distances_simulated:
+    input:
+        tree = rules.refine_simulated.output.tree,
+        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH_SIMULATIONS),
+        distance_maps = _get_pairwise_distance_maps_for_simulations,
+        date_annotations = rules.refine_simulated.output.node_data
+    params:
+        genes = gene_names(segment="ha"),
+        attribute_names = _get_pairwise_distance_attributes_for_simulations,
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_TIMEPOINT_PATH_SIMULATIONS + "pairwise_distances.json",
+    benchmark: "benchmarks/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
 
 def _get_cross_immunity_distance_attributes_for_simulations(wildcards):
     return config["cross_immunity"]["h3n2"]["ha"]["distance_attributes"]
@@ -494,7 +523,7 @@ def _get_cross_immunity_decay_factors_for_simulations(wildcards):
 rule cross_immunities_simulated:
     input:
         frequencies = rules.estimate_frequencies_simulated.output.frequencies,
-        distances = rules.distances_simulated.output.distances
+        distances = rules.pairwise_distances_simulated.output.distances
     params:
         distance_attributes = _get_cross_immunity_distance_attributes_for_simulations,
         immunity_attributes = _get_cross_immunity_attributes_for_simulations,

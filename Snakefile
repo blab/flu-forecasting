@@ -134,12 +134,29 @@ def _get_distance_latest_date_by_wildcards(wildcards):
 
 def _get_distance_attributes_for_simulations(wildcards):
     config = masks_config[(masks_config["lineage"] == "h3n2") &
-                          (masks_config["segment"] == "ha")]
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
+    return " ".join(config.loc[:, "attribute"].values)
+
+def _get_pairwise_distance_attributes_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] == "pairwise")]
     return " ".join(config.loc[:, "attribute"].values)
 
 def _get_distance_maps_for_simulations(wildcards):
     config = masks_config[(masks_config["lineage"] == "h3n2") &
-                          (masks_config["segment"] == "ha")]
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
+    return [
+        "config/distance_maps/h3n2/ha/{distance_map}.json".format(distance_map=distance_map)
+        for distance_map in config.loc[:, "distance_map"].values
+    ]
+
+def _get_pairwise_distance_maps_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] == "pairwise")]
     return [
         "config/distance_maps/h3n2/ha/{distance_map}.json".format(distance_map=distance_map)
         for distance_map in config.loc[:, "distance_map"].values
@@ -147,7 +164,8 @@ def _get_distance_maps_for_simulations(wildcards):
 
 def _get_distance_comparisons_for_simulations(wildcards):
     config = masks_config[(masks_config["lineage"] == "h3n2") &
-                          (masks_config["segment"] == "ha")]
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
     return " ".join(config.loc[:, "compare_to"].values)
 
 #
