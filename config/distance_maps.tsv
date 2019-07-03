@@ -8,7 +8,6 @@ h3n2	ha	ancestor	ne_star	wolf_nonepitope
 h3n2	ha	ancestor	dms_star	dms_mutation_effect
 h3n2	ha	pairwise	ep_pairwise	wolf
 h3n2	ha	pairwise	ep_luksza_pairwise	luksza
-h3n2	ha	pairwise	ep_kratsch_pairwise	kratsch_antigenic_patches
 h3n2	na	root	ep	bhatt
 h3n2	na	root	ne	bhatt_nonepitope
 h1n1pdm	ha	root	ep	canton
