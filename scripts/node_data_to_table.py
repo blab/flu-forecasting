@@ -13,6 +13,7 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("--tree", required=True, help="Newick file for the tree used to construct the given node data JSONs")
+    parser.add_argument("--metadata", help="file with metadata associated with viral sequences, one for each segment")
     parser.add_argument("--jsons", nargs="+", required=True, help="node data JSON(s) from augur")
     parser.add_argument("--annotations", nargs="+", help="additional annotations to add to the output table in the format of 'key=value' pairs")
     parser.add_argument("--excluded-fields", nargs="+", help="names of columns to omit from output table")
@@ -23,6 +24,9 @@ if __name__ == '__main__':
     # Load tree.
     tree = Bio.Phylo.read(args.tree, "newick")
 
+    # Load metadata for samples.
+    metadata = pd.read_csv(args.metadata, sep="\t")
+
     # Load one or more node data JSONs into a single dictionary indexed by node name.
     node_data = read_node_data(args.jsons)
 
@@ -30,6 +34,9 @@ if __name__ == '__main__':
     # Data are initially loaded with one column per node.
     # Transposition converts the table to the expected one row per node format.
     df = pd.DataFrame(node_data["nodes"]).T.rename_axis("strain").reset_index()
+
+    # Annotate node data with per sample metadata.
+    df = df.merge(metadata, on="strain", suffixes=["", "_metadata"])
 
     # Remove excluded fields if they are in the data frame.
     df = df.drop(columns=[field for field in args.excluded_fields if field in df.columns])

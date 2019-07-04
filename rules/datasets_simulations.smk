@@ -87,7 +87,7 @@ rule parse_simulated_sequences:
         sequences = "results/datasets/h3_simulated_{percentage}pct/sequences.fasta",
         metadata = "results/datasets/h3_simulated_{percentage}pct/metadata.tsv"
     params:
-        fasta_fields = "strain generation"
+        fasta_fields = "strain generation fitness"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -110,7 +110,8 @@ rule standardize_simulated_sequence_dates:
         df["date"] = df["num_date"].apply(float_to_datestring)
         df["year"]  = pd.to_datetime(df["date"]).dt.year
         df["month"]  = pd.to_datetime(df["date"]).dt.month
-        df.to_csv(output.metadata, header=True, index=False, sep="\t")
+
+        df[df["fitness"] > 0].to_csv(output.metadata, header=True, index=False, sep="\t")
 
 
 rule filter_simulated:
@@ -662,6 +663,7 @@ rule export_simulated:
 rule convert_node_data_to_table_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
+        metadata = rules.filter_metadata_simulated.output.metadata,
         node_data = _get_node_data_for_export_simulated
     output:
         table = BUILD_TIMEPOINT_PATH_SIMULATIONS + "node_data.tsv"
@@ -672,6 +674,7 @@ rule convert_node_data_to_table_simulated:
         """
         python3 scripts/node_data_to_table.py \
             --tree {input.tree} \
+            --metadata {input.metadata} \
             --jsons {input.node_data} \
             --output {output} \
             {params.excluded_fields_arg} \

@@ -37,6 +37,7 @@
     ],
     "predictors_simulated": [
         "naive",
+        "fitness",
         "lbi",
         "ep",
         "ep_x",
