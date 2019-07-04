@@ -641,7 +641,8 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
                 validation_error,
                 null_validation_error,
                 model.coef_[0]
-            )
+            ),
+            flush=True
         )
 
         # Get the estimated frequencies for training and validation sets to export.
