@@ -718,9 +718,22 @@ rule merge_node_data_and_frequencies_simulated:
         df.to_csv(output.table, sep="\t", index=False, header=True)
 
 
+def _get_simulated_tip_attributes_by_wildcards(wildcards):
+    timepoints_simulations = _get_timepoints_for_build_interval(
+        wildcards.start,
+        wildcards.end,
+        PIVOT_INTERVAL,
+        MIN_YEARS_PER_BUILD
+    )
+
+    return expand(
+        BUILD_PATH_SIMULATIONS.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tip_attributes.tsv",
+        timepoint=timepoints_simulations
+    )
+
 rule collect_tip_attributes_simulated:
     input:
-        expand(BUILD_PATH_SIMULATIONS.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tip_attributes.tsv", timepoint=TIMEPOINTS_SIMULATIONS)
+        _get_simulated_tip_attributes_by_wildcards
     output:
         attributes = BUILD_PATH_SIMULATIONS + "tip_attributes.tsv"
     conda: "../envs/anaconda.python3.yaml"
