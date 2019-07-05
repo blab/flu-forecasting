@@ -1,0 +1,73 @@
+
+\section*{Introduction}
+
+Seasonal influenza virus infects 5--15\% of the global population every year causing an estimated 250,000 to 500,000 deaths annually \cite{flufactsheet}.
+Vaccination remains the most effective public health response available.
+However, frequent viral mutation results in viruses that escape previously acquired human immunity.
+The World Health Organization (WHO) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, accurate vaccine strain selection requires a prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
+Current vaccine predictions favor viruses that are distinct from prior vaccine viruses in the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
+The hemagglutination inhibition (HI) assay \cite{hirst1943studies} is used to measure the degree of cross-reactivity between pairs of circulating viruses.
+HI assays are fundamental for vaccine strain selection, but they are laborious and low-throughput compared to genome sequencing \cite{Wood:2012ii}.
+As a result, researchers have developed computational methods to predict influenza fitness from sequence data alone \cite{Luksza:2014hj,Steinbruck:2014kq,Neher:2014eu}.
+
+Despite the promise of these sequence-only models, they explicitly omit experimental measurements of antigenic or functional phenotypes.
+Recent developments in computational methods and influenza virology have made it feasible to integrate these important metrics of influenza fitness into a single predictive model.
+For example, phenotypic measurements of antigenic drift are now accessible through phylogenetic models \cite{Neher:2016hy} and functional phenotypes for HA are available from deep mutational scanning experiments \cite{Lee2018}.
+We describe an approach to integrate previously disparate sequence-only models of influenza evolution with high-quality experimental measurements of antigenic drift and functional constraint.
+
+\textit{Brief summary of model implementation here.}
+
+\section*{Results}
+
+\subsection*{Models accurately forecast evolution of simulated populations of A/H3N2-like viruses}
+
+To test our model framework, we simulated the long-term evolution of five independent populations of A/H3N2-like viruses for 5,000 generations each using SANTA-SIM \cite{Jariani2019}.
+We seeded each simulated population with the full length HA from A/Beijing/32/1992 such that all simulated sequences contained the signal peptide, HA1, and HA2 domains.
+We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
+We additionally defined exposure-dependent selection for 129 putative epitope sites in HA1 \cite{Wolf:2006da} to impose an effect of cross-immunity that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
+These selective constraints produce phylogenetic structures and accumulation of epitope and non-epitope mutations that are consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
+
+Next, we fit models to 20 years of simulated sequences corresponding to generations 1000--3000 where 100 generations represents one year.
+In the absence of any experimental data for these simulated sequences, we only fit models with sequence-based fitness metrics including epitope cross-immunity, non-epitope mutations, LBI, and delta frequency.
+
+\textit{Model results here for sequence-based metrics relative to naive model}
+
+\textit{Repeat simulations with multiple epochs to show model coefficients can reflect these underlying changes to evolutionary constraints.}
+
+\subsection*{Models based on X metrics most accurately forecast natural populations of A/H3N2 viruses}
+
+\subsection*{Model accuracy and coefficients reflect historical patterns of A/H3N2 evolution}
+
+\subsection*{Composite models outperform models with individual fitness metrics}
+
+\subsection*{Models enable selection of vaccine candidate strains}
+
+\subsection*{Forecasts predict the rise of 3c3.A and A1b clades in February 2020}
+
+\section*{Discussion}
+
+\section*{Methods}
+
+\subsection*{Strain selection}
+
+\subsection*{Multiple sequence alignment}
+
+\subsection*{Phylogenetic interference}
+
+\subsection*{Frequency estimation}
+
+\subsection*{Fitness model}
+
+\subsection*{Model fitting and evaluation}
+
+\subsubsection*{Model targets}
+
+\subsubsection*{Time-series cross-validation}
+
+\subsection*{Fitness metrics}
+
+\subsubsection*{Antigenic drift}
+
+\subsubsection*{Functional constraint}
+
+\subsubsection*{Clade growth}
