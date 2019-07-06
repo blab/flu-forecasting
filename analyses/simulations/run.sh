@@ -2,11 +2,11 @@
 
 java -jar ~/projects/santa-sim/dist/santa.jar influenza_h3n2_ha.xml
 
-#seqtk sample simulated_HA_sequences.fasta 0.05 > simulated_HA_sequences_5pct.fasta
-seqtk sample simulated_HA_sequences.fasta 0.2 > simulated_HA_sequences_20pct.fasta
+seqtk sample simulated_HA_sequences.fasta 0.05 > simulated_HA_sequences_5pct.fasta
+#seqtk sample simulated_HA_sequences.fasta 0.2 > simulated_HA_sequences_20pct.fasta
 
-#augur parse --sequences simulated_HA_sequences_5pct.fasta --output-sequences sequences.fasta --output-metadata original_metadata.tsv --fields strain generation
-augur parse --sequences simulated_HA_sequences_20pct.fasta --output-sequences sequences.fasta --output-metadata original_metadata.tsv --fields strain generation
+augur parse --sequences simulated_HA_sequences_5pct.fasta --output-sequences sequences.fasta --output-metadata original_metadata.tsv --fields strain generation fitness
+#augur parse --sequences simulated_HA_sequences_20pct.fasta --output-sequences sequences.fasta --output-metadata original_metadata.tsv --fields strain generation
 
 # Manual python step to add dates to metadata from generations
 # from augur.frequency_estimators import float_to_datestring
