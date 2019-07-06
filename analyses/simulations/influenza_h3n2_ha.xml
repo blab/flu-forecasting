@@ -122,17 +122,17 @@
     </replicator>
 
     <epoch>
-      <generationCount>5000</generationCount>
+      <generationCount>4000</generationCount>
     </epoch>
 
     <samplingSchedule>
       <sampler>
-        <atFrequency>8</atFrequency>
+        <atFrequency>4</atFrequency>
         <fileName>simulated_HA_sequences.fasta</fileName>
         <alignment>
-          <sampleSize>20</sampleSize>
+          <sampleSize>10</sampleSize>
           <format>FASTA</format>
-          <label>sample_%g_%s|%g</label>
+          <label>sample_%g_%s|%g|%f</label>
         </alignment>
       </sampler>
       <sampler>
