@@ -39,16 +39,11 @@
         "naive",
         "fitness",
         "lbi",
-        "ep",
         "ep_x",
         "delta_frequency",
-        "dms_star",
-        "ne",
         "ne_star",
-        "ep-ne",
         "ep_x-ne_star",
-        "lbi-ne",
-        "lbi-ep-ne",
+        "lbi-ne_star",
         "lbi-ep_x-ne_star"
     ],
     "standard_predictors": [
@@ -90,8 +85,8 @@
         "min_mutation_frequency": 0.0
     },
     "lbi": {
-        "tau": 0.5,
-        "window": 0.1
+        "tau": 0.25,
+        "window": 0.75
     },
     "excluded_node_data_fields": [
         "aa_muts",
@@ -106,16 +101,12 @@
         "region_confidence",
         "sequence"
     ],
-    "other_excluded_node_data_fields": [
-        "ep_luksza_pairwise",
-        "ep_kratsch_pairwise"
-    ],
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise ep_luksza_pairwise ep_kratsch_pairwise",
-                "immunity_attributes": "ep_x ep_luksza_x ep_kratsch_x",
-                "decay_factors": "14.0 14.0 14.0"
+                "distance_attributes": "ep_pairwise ep_luksza_pairwise",
+                "immunity_attributes": "ep_x ep_luksza_x",
+                "decay_factors": "14.0 14.0"
             }
         }
     },
@@ -127,7 +118,7 @@
         "primary_segment": "ha",
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",
-        "l1_lambda": 0.0,
+        "l1_lambda": 0.5,
         "pseudocount": 0.0
     }
 }
