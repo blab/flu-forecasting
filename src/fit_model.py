@@ -393,7 +393,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         super().__init__(predictors, delta_time, l1_lambda, cost_function)
         self.distances = distances
 
-    def _fit(self, coefficients, X, y, use_l1_penalty=True):
+    def _fit_emd(self, coefficients, X, y, use_l1_penalty=True):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
 
@@ -439,6 +439,8 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 self.distances
             ).astype(np.float32)
 
+            # Estimate the distance between the model's estimated future and the
+            # observed future populations.
             model_emd, _, model_flow = cv2.EMD(
                 sample_a_frequencies,
                 sample_b_frequencies,
@@ -446,6 +448,8 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 cost=distance_matrix
             )
 
+            # Estimate the distance between the current and future populations
+            # (the naive model of no frequency changes).
             null_emd, _, null_flow = cv2.EMD(
                 sample_a_initial_frequencies,
                 sample_b_frequencies,
@@ -453,11 +457,13 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 cost=distance_matrix
             )
 
-            # print("EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, model_emd, (model_flow != 0).sum(), model_flow.flatten().shape[0]), file=sys.stderr)
-            # print("Null EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, null_emd, (null_flow != 0).sum(), null_flow.flatten().shape[0]), file=sys.stderr)
+            #print("EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, model_emd, (model_flow != 0).sum(), model_flow.flatten().shape[0]), file=sys.stderr)
+            #print("Null EMD for %s: %.2f with %i of %i nonzero flow cells\n" % (timepoint, null_emd, (null_flow != 0).sum(), null_flow.flatten().shape[0]), file=sys.stderr)
+
             # print(model_flow[model_flow != 0].flatten())
             # print(null_flow[null_flow != 0].flatten())
-            error += (model_emd)
+            #error += ((model_emd - null_emd) / null_emd) * 100
+            error += model_emd
             count += 1
 
         # # Merge estimated and observed target values.
@@ -476,6 +482,67 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
         # )
         error = error / float(count)
+
+        if use_l1_penalty:
+            l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        else:
+            l1_penalty = 0.0
+
+        return error + l1_penalty
+
+    def _fit(self, coefficients, X, y, use_l1_penalty=True):
+        """Calculate the error between observed and estimated values for the given
+        parameters and data.
+
+        Parameters
+        ----------
+        coefficients : ndarray
+            coefficients for each of the model's predictors
+
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        y : pandas.DataFrame
+            final weighted distances at delta time in the future from each
+            timepoint in the given tip attributes table
+
+        Returns
+        -------
+        float :
+            error between estimated values using the given coefficients and
+            input data and the observed values
+        """
+        # Estimate target values.
+        y_hat = self.predict(X, coefficients)
+
+        # Calculate EMD for each timepoint in the estimated values and sum that
+        # distance across all timepoints.
+        error = 0.0
+        null_error = 0.0
+        count = 0
+        for timepoint, timepoint_df in y_hat.groupby("timepoint"):
+            samples_a = timepoint_df["strain"]
+            sample_a_initial_frequencies = timepoint_df["frequency"].values.astype(np.float32)
+            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
+            sample_a_weighted_distance_to_future = timepoint_df["weighted_distance_to_future"].values
+
+            d_t_u = (sample_a_initial_frequencies * sample_a_weighted_distance_to_future).sum()
+            d_u_hat_u = (sample_a_frequencies * sample_a_weighted_distance_to_future).sum()
+
+            error += d_u_hat_u
+            null_error += d_t_u
+
+            #error += (d_u_hat_u - d_u_u) / d_t_u
+            count += 1
+
+        null_error = null_error / float(count)
+        error = error / float(count)
+
+        #print("null = %s" % null_error)
+        #print("model / null = %s" % (error / null_error))
+
+        #error = ((error - null_error) / null_error) * 100
+        #print("model = %s" % error)
 
         if use_l1_penalty:
             l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
