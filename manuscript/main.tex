@@ -15,22 +15,49 @@ Recent developments in computational methods and influenza virology have made it
 For example, phenotypic measurements of antigenic drift are now accessible through phylogenetic models \cite{Neher:2016hy} and functional phenotypes for HA are available from deep mutational scanning experiments \cite{Lee2018}.
 We describe an approach to integrate previously disparate sequence-only models of influenza evolution with high-quality experimental measurements of antigenic drift and functional constraint.
 
-\textit{Brief summary of model implementation here.}
+\textit{Brief summary of model implementation here including reference to Fig.~\ref{fig:model}.}
 
 \section*{Results}
 
-\subsection*{Models accurately forecast evolution of simulated populations of A/H3N2-like viruses}
+\subsection*{Models accurately forecast evolution of simulated populations of {A/H3N2-like viruses}}
 
-To test our model framework, we simulated the long-term evolution of five independent populations of A/H3N2-like viruses for 5,000 generations each using SANTA-SIM \cite{Jariani2019}.
-We seeded each simulated population with the full length HA from A/Beijing/32/1992 such that all simulated sequences contained the signal peptide, HA1, and HA2 domains.
+The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions at epitopes that enable escape from adaptive immunity and purifying selection on domains required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
+To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we first simulated the long-term evolution of five independent populations of A/H3N2-like viruses for 5,000 generations each using SANTA-SIM \cite{Jariani2019}.
+We seeded each simulated population with the full length HA from A/Beijing/32/1992 such that all simulated sequences contained signal peptide, HA1, and HA2 domains.
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
 We additionally defined exposure-dependent selection for 129 putative epitope sites in HA1 \cite{Wolf:2006da} to impose an effect of cross-immunity that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
-These selective constraints produce phylogenetic structures and accumulation of epitope and non-epitope mutations that are consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
+These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
 
-Next, we fit models to 20 years of simulated sequences corresponding to generations 1000--3000 where 100 generations represents one year.
-In the absence of any experimental data for these simulated sequences, we only fit models with sequence-based fitness metrics including epitope cross-immunity, non-epitope mutations, LBI, and delta frequency.
+Under the evolutionary constraints of our simulations, we expected the models to learn positive coefficients for cross-immunity and negative coefficients for non-epitope mutations corresponding to the fitness benefits of novel epitope sequences and costs of accumulating deleterious mutations.
+We reasoned that because LBI and delta frequency measure the recent success of samples without any mechanistic explanation for that success, these two models should be assigned positive coefficients and should outperform the individual mutation models by being able to simultaneously represent benefits of epitope mutations and costs of non-epitope mutations with a single metric.
+To achieve the same accuracy from mutation-only models, we anticipated that these two models would need to be combined.
+To test these hypotheses, we trained models for each individual fitness metric on 20 years of simulated sequences corresponding to generations 1000--3000 where 100 generations represents one year.
+As a positive control, we trained a model on the true fitness of each sample as measured by the simulator.
+To control for variability in distances between seasons, we evaluated all models relative to the observed distance between seasons (the adjusted distance between seasons).
+This distance corresponded to a model without an exponential growth parameter which we labeled as the ``naive'' model.
 
-\textit{Model results here for sequence-based metrics relative to naive model}
+The average distance per year between populations averaged 18 +/- 5 amino acids in the naive model (Supplemental Fig.~\ref{sup_fig:weighted_distance_between_timepoints}).
+On average, all models reduced this distance with LBI performing the best by reducing this distance to the future by over four amino acids (Fig.~\ref{fig:model_accuracy_and_coefficients_for_simulated_populations}).
+As expected, the true fitness metric always outperformed the naive model.
+The non-epitope metric also consistently outperformed the naive model, predicting the future nearly as well as the true fitness.
+Surprisingly, cross-immunity did not accurately forecast future populations, receiving instead an average coefficient near zero in most training windows.
+While the delta frequency metric was not as accurate as LBI, it was considerably less variable with an average adjusted distance similar to the non-epitope metric.
+Interestingly, the coefficients for non-epitope mutations, LBI, and delta frequency were stably non-zero across all training windows with standard deviations ranging from 0.16 to 0.42.
+In contrast, the true fitness metric's coefficients gradually varied more over time with a standard deviation of 0.62.
+
+\begin{figure*}[t]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/model-accuracy-and-coefficients-for-simulated-populations.png}
+  \caption{Model a) accuracy and b) coefficients for simulated populations of A/H3N2-like viruses.}
+  \label{fig:model_accuracy_and_coefficients_for_simulated_populations}
+  \end{center}
+\end{figure*}
+
+We tested our hypothesis that composite models of cross-immunity and non-epitope mutations would perform as well as LBI or delta frequency.
+We further tested the relationship between LBI and these two individual metrics by fitting composite models with all combinations of these three predictors.
+Surprisingly, cross-immunity provided no additional accuracy to the non-epitope metric, while neither of these mutation-based metrics provided any improvement over LBI (Supplemental Fig.~\ref{sup_fig:composite_model_accuracy_and_coefficients_for_simulated_populations}).
+In the latter models, LBI maintained a consistent coefficient across all training windows while the models assigned both cross-immunity and non-epitope metrics coefficients near zero.
+These results suggest that non-epitope mutations and LBI are mutually exclusive and either metric is sufficient to forecast the evolution of these simulated populations.
 
 \textit{Repeat simulations with multiple epochs to show model coefficients can reflect these underlying changes to evolutionary constraints.}
 
