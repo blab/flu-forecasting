@@ -76,8 +76,8 @@ class ExponentialGrowthModel(object):
         X : pandas.DataFrame
             standardized tip attributes by timepoint
 
-        predictors : ndarray
-            predictor values per sample (n x p matrix for p predictors and n samples)
+        predictors : list
+            names of predictors for which mean standard deviations should be calculated
 
         Returns
         -------
