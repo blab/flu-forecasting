@@ -91,24 +91,28 @@ if __name__ == '__main__':
     # Find valid timepoints for calculating distances to the future.
     timepoints = tips["timepoint"].drop_duplicates()
     last_timepoint = timepoints.max() - pd.DateOffset(months=args.delta_months)
-    valid_timepoints = timepoints[timepoints <= last_timepoint]
 
     # Calculate weighted distance to the present and future for each sample at a
     # given timepoint.
     weighted_distances = []
-    for timepoint in valid_timepoints:
+    for timepoint in timepoints:
         future_timepoint = timepoint + pd.DateOffset(months=args.delta_months)
         timepoint_tips = tips[tips["timepoint"] == timepoint]
         future_timepoint_tips = tips[tips["timepoint"] == future_timepoint]
 
         for current_tip, current_tip_frequency in timepoint_tips.loc[:, ["strain", "frequency"]].values:
+            # Calculate the distance to the present for all timepoints.
             weighted_distance_to_present = 0.0
             for other_current_tip, other_current_tip_frequency in timepoint_tips.loc[:, ["strain", "frequency"]].values:
                 weighted_distance_to_present += other_current_tip_frequency * distances_by_sample_names[current_tip][other_current_tip]
 
-            weighted_distance_to_future = 0.0
-            for future_tip, future_tip_frequency in future_timepoint_tips.loc[:, ["strain", "frequency"]].values:
-                weighted_distance_to_future += future_tip_frequency * distances_by_sample_names[current_tip][future_tip]
+            # Calculate the distance to the future only for valid timepoints (those with future information).
+            if timepoint <= last_timepoint:
+                weighted_distance_to_future = 0.0
+                for future_tip, future_tip_frequency in future_timepoint_tips.loc[:, ["strain", "frequency"]].values:
+                    weighted_distance_to_future += future_tip_frequency * distances_by_sample_names[current_tip][future_tip]
+            else:
+                weighted_distance_to_future = np.nan
 
             weighted_distances.append({
                 "timepoint": timepoint,
