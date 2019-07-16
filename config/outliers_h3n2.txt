@@ -393,9 +393,11 @@ A/SriLanka/35/2018
 A/StPetersburg/5/2009
 A/StPetersburg/5/2009-egg
 A/Sydney/53/2015
+A/Taiwan/17/2006
 A/Taiwan/937/2009
 A/Tehran/748/2012
 A/Thailand/CU-CB166/2014
+A/Utah/10/2012
 A/WesternAustralia/79/2005
 A/WestVirginia/10/2012
 A/WestVirginia/16/2012

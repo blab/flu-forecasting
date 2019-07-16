@@ -76,8 +76,8 @@ class ExponentialGrowthModel(object):
         X : pandas.DataFrame
             standardized tip attributes by timepoint
 
-        predictors : ndarray
-            predictor values per sample (n x p matrix for p predictors and n samples)
+        predictors : list
+            names of predictors for which mean standard deviations should be calculated
 
         Returns
         -------
@@ -291,7 +291,7 @@ class ExponentialGrowthModel(object):
             initial_coefficients,
             args=(X, y),
             method="Nelder-Mead",
-            options={"disp": True}
+            options={"disp": False}
         )
         self.coef_ = results.x
 
@@ -393,6 +393,103 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         super().__init__(predictors, delta_time, l1_lambda, cost_function)
         self.distances = distances
 
+    def _fit_emd(self, coefficients, X, y, use_l1_penalty=True):
+        """Calculate the error between observed and estimated values for the given
+        parameters and data.
+
+        Parameters
+        ----------
+        coefficients : ndarray
+            coefficients for each of the model's predictors
+
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        y : pandas.DataFrame
+            final weighted distances at delta time in the future from each
+            timepoint in the given tip attributes table
+
+        Returns
+        -------
+        float :
+            error between estimated values using the given coefficients and
+            input data and the observed values
+        """
+        # Estimate target values.
+        y_hat = self.predict(X, coefficients)
+
+        # Calculate EMD for each timepoint in the estimated values and sum that
+        # distance across all timepoints.
+        error = 0.0
+        count = 0
+        for timepoint, timepoint_df in y_hat.groupby("timepoint"):
+            samples_a = timepoint_df["strain"]
+            sample_a_initial_frequencies = timepoint_df["frequency"].values.astype(np.float32)
+            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
+
+            future_timepoint_df = y[y["timepoint"] == timepoint]
+            assert future_timepoint_df.shape[0] > 0
+
+            samples_b = future_timepoint_df["strain"]
+            sample_b_frequencies = future_timepoint_df["frequency"].values.astype(np.float32)
+
+            distance_matrix = get_distance_matrix_by_sample_names(
+                samples_a,
+                samples_b,
+                self.distances
+            ).astype(np.float32)
+
+            # Estimate the distance between the model's estimated future and the
+            # observed future populations.
+            model_emd, _, model_flow = cv2.EMD(
+                sample_a_frequencies,
+                sample_b_frequencies,
+                cv2.DIST_USER,
+                cost=distance_matrix
+            )
+
+            # Estimate the distance between the current and future populations
+            # (the naive model of no frequency changes).
+            # null_emd, _, null_flow = cv2.EMD(
+            #     sample_a_initial_frequencies,
+            #     sample_b_frequencies,
+            #     cv2.DIST_USER,
+            #     cost=distance_matrix
+            # )
+
+            #print("EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, model_emd, (model_flow != 0).sum(), model_flow.flatten().shape[0]), file=sys.stderr)
+            #print("Null EMD for %s: %.2f with %i of %i nonzero flow cells\n" % (timepoint, null_emd, (null_flow != 0).sum(), null_flow.flatten().shape[0]), file=sys.stderr)
+
+            # print(model_flow[model_flow != 0].flatten())
+            # print(null_flow[null_flow != 0].flatten())
+            #error += ((model_emd - null_emd) / null_emd) * 100
+            error += model_emd
+            count += 1
+
+        # # Merge estimated and observed target values.
+        # targets = y_hat.merge(
+        #     y,
+        #     how="inner",
+        #     on=["timepoint", "strain"],
+        #     suffixes=["_estimated", "_observed"]
+        # )
+
+        # # Calculate the error between the observed and estimated targets.
+        # error = self.cost_function(
+        #     targets["y_observed"],
+        #     targets["y_estimated"],
+        #     y_diff=targets["y_diff"],
+
+        # )
+        error = error / float(count)
+
+        if use_l1_penalty:
+            l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        else:
+            l1_penalty = 0.0
+
+        return error + l1_penalty
+
     def _fit(self, coefficients, X, y, use_l1_penalty=True):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
@@ -421,47 +518,39 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         # Calculate EMD for each timepoint in the estimated values and sum that
         # distance across all timepoints.
         error = 0.0
+        null_error = 0.0
+        count = 0
         for timepoint, timepoint_df in y_hat.groupby("timepoint"):
             samples_a = timepoint_df["strain"]
-            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
+            sample_a_initial_frequencies = timepoint_df["frequency"].values
+            sample_a_frequencies = timepoint_df["projected_frequency"].values
+            sample_a_weighted_distance_to_future = timepoint_df["weighted_distance_to_future"].values
 
             future_timepoint_df = y[y["timepoint"] == timepoint]
             assert future_timepoint_df.shape[0] > 0
 
             samples_b = future_timepoint_df["strain"]
-            sample_b_frequencies = future_timepoint_df["frequency"].values.astype(np.float32)
+            sample_b_frequencies = future_timepoint_df["frequency"].values
+            sample_b_weighted_distance_to_present = future_timepoint_df["weighted_distance_to_present"].values
 
-            distance_matrix = get_distance_matrix_by_sample_names(
-                samples_a,
-                samples_b,
-                self.distances
-            ).astype(np.float32)
+            d_t_u = (sample_a_initial_frequencies * sample_a_weighted_distance_to_future).sum()
+            d_u_hat_u = (sample_a_frequencies * sample_a_weighted_distance_to_future).sum()
+            d_u_u = (sample_b_frequencies * sample_b_weighted_distance_to_present).sum()
 
-            emd, _, flow = cv2.EMD(
-                sample_a_frequencies,
-                sample_b_frequencies,
-                cv2.DIST_USER,
-                cost=distance_matrix
-            )
-            print("EMD for %s: %.2f" % (timepoint, emd), file=sys.stderr)
-            error += emd
+            #error += d_u_hat_u
+            null_error += d_t_u
 
-        # # Merge estimated and observed target values.
-        # targets = y_hat.merge(
-        #     y,
-        #     how="inner",
-        #     on=["timepoint", "strain"],
-        #     suffixes=["_estimated", "_observed"]
-        # )
+            error += (d_u_hat_u - d_u_u) / d_t_u
+            count += 1
 
-        # # Calculate the error between the observed and estimated targets.
-        # error = self.cost_function(
-        #     targets["y_observed"],
-        #     targets["y_estimated"],
-        #     y_diff=targets["y_diff"],
+        null_error = null_error / float(count)
+        error = error / float(count)
 
-        # )
-        #error = error / float(count)
+        #print("null = %s" % null_error)
+        #print("model / null = %s" % (error / null_error))
+
+        #error = ((error - null_error) / null_error) * 100
+        #print("model = %s" % error)
 
         if use_l1_penalty:
             l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
@@ -529,6 +618,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
             # Calculate observed distance between current tips and the future
             # using projected frequencies and weighted distances to the future.
             projected_timepoint_df = timepoint_df[["timepoint", "strain", "frequency", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
+            projected_timepoint_df["fitness"] = fitnesses
             projected_timepoint_df["projected_frequency"] = projected_frequencies
 
             #projected_timepoint_df["y_diff"] = projected_timepoint_df["y"] * projected_timepoint_df["weighted_distance_to_future"]
@@ -555,7 +645,8 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         return estimated_targets
 
 
-def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership"):
+def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership",
+                   include_attributes=False):
     """Calculate cross-validation scores for the given data and targets across the
     given train/validate timepoints.
 
@@ -581,6 +672,15 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         to use when calculating cross-validation error for specific models
         (e.g., naive forecasts)
 
+    group_by : string
+        column of the tip attributes by which they should be grouped to
+        calculate the total number of samples in the model (e.g., group by clade
+        or strain)
+
+    include_attributes : boolean
+        specifies whether tip attribute data used to train/validate models
+        should be included in the output per training window
+
     Returns
     -------
     list
@@ -602,10 +702,12 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         # Fit a model to the training data.
         if coefficients is None:
             training_error = model.fit(training_X, training_y)
+            null_training_error = model._fit(np.zeros_like(model.coef_), training_X, training_y)
         else:
             model.coef_ = coefficients
             model.mean_stds_ = model.calculate_mean_stds(training_X, model.predictors)
             training_error = model.score(training_X, training_y)
+            null_training_error = training_error
 
         # Get validation data by timepoints.
         validation_X = data[data["timepoint"] == validation_timepoint].copy()
@@ -613,6 +715,19 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
 
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
+        null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
+        print(
+            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f" % (
+                training_timepoints[-1].strftime("%Y-%m"),
+                validation_timepoint.strftime("%Y-%m"),
+                training_error,
+                null_training_error,
+                validation_error,
+                null_validation_error,
+                model.coef_[0]
+            ),
+            flush=True
+        )
 
         # Get the estimated frequencies for training and validation sets to export.
         training_y_hat = model.predict(training_X)
@@ -625,10 +740,9 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
                     df[column] = df[column].dt.strftime("%Y-%m-%d")
 
         # Store training results, beta coefficients, and validation results.
-        results.append({
+        result = {
             "predictors": model.predictors,
             "training_data": {
-                "X": training_X.to_dict(orient="records"),
                 "y": training_y.to_dict(orient="records"),
                 "y_hat": training_y_hat.to_dict(orient="records")
             },
@@ -637,7 +751,6 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             "coefficients": model.coef_.tolist(),
             "mean_stds": model.mean_stds_.tolist(),
             "validation_data": {
-                "X": validation_X.to_dict(orient="records"),
                 "y": validation_y.to_dict(orient="records"),
                 "y_hat": validation_y_hat.to_dict(orient="records")
             },
@@ -645,7 +758,14 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             "validation_error": validation_error,
             "last_training_timepoint": training_timepoints[-1].strftime("%Y-%m-%d"),
             "validation_timepoint": validation_timepoint.strftime("%Y-%m-%d")
-        })
+        }
+
+        # Include tip attributes, if requested.
+        if include_attributes:
+            result["training_data"]["X"] = training_X.to_dict(orient="records")
+            result["validation_data"]["X"] = validation_X.to_dict(orient="records")
+
+        results.append(result)
 
     # Return results for all validation timepoints.
     return results
@@ -706,6 +826,7 @@ if __name__ == "__main__":
     parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
     parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
+    parser.add_argument("--include-attributes", action="store_true", help="include attribute data used to train/validate models in the cross-validation output")
 
     args = parser.parse_args()
 
@@ -761,7 +882,7 @@ if __name__ == "__main__":
         # Get strain frequency per timepoint and subtract delta time from
         # timepoint to align strain frequencies with the previous timepoint and
         # make them appropriate as targets for the model.
-        targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_future", "y"]].copy()
+        targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_present", "weighted_distance_to_future", "y"]].copy()
         targets["future_timepoint"] = targets["timepoint"]
         targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=args.delta_months)
 
@@ -818,7 +939,8 @@ if __name__ == "__main__":
         targets,
         train_validate_timepoints,
         coefficients,
-        group_by=group_by_attribute
+        group_by=group_by_attribute,
+        include_attributes=args.include_attributes
     )
 
     # Summarize model errors including in-sample errors by AIC, out-of-sample

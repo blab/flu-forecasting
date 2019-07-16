@@ -2,7 +2,6 @@
 Rules to build auspice JSONs from sequences and titers using modular augur.
 """
 # Imports.
-from augur.frequency_estimators import get_pivots, timestamp_to_float
 import json
 import pandas as pd
 from pathlib import Path
@@ -282,7 +281,6 @@ rule refine:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
-            --clock-filter-iqd {params.clock_filter_iqd} \
             --no-covariance \
             --clock-rate {params.clock_rate} \
             --clock-std-dev {params.clock_std_dev} \
@@ -385,24 +383,6 @@ rule reconstruct_translations:
             --internal-nodes &> {log}
         """
 
-genes_to_translate = {
-    'ha': ['SigPep', 'HA1', 'HA2'],
-    'na': ['NA']
-}
-def gene_names(wildcards):
-    if wildcards.segment in genes_to_translate:
-        genes = genes_to_translate[wildcards.segment]
-    else:
-        print(f"WARNING: Genes to translate are not defined for {wildcards.segment}, defaulting to '{wildcards.segment.upper()}'")
-        genes = [wildcards.segment.upper()]
-
-    return genes
-
-def translations(wildcards):
-    genes = gene_names(wildcards)
-    return [BUILD_SEGMENT_PATH + "aa-seq_%s.fasta" % gene
-            for gene in genes]
-
 rule convert_translations_to_json:
     input:
         tree = rules.refine.output.tree,
@@ -465,7 +445,7 @@ rule clades_by_haplotype:
     params:
         gene_names = gene_names,
         minimum_tips = config["min_tips_per_clade"],
-        min_frequency = 0.0
+        min_frequency = config["min_frequency_per_clade"]
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/find_clades_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
@@ -495,15 +475,50 @@ rule annotate_tip_clade_table:
         df["timepoint"] = wildcards.timepoint
         df.to_csv(output["tip_clade_table"], sep="\t", index=False)
 
+rule estimate_diffusion_frequencies:
+    message:
+        """
+        Estimating diffusion frequencies for {input.tree}
+        """
+    input:
+        tree=rules.refine.output.tree,
+        metadata=rules.parse.output.metadata
+    output:
+        frequencies = BUILD_SEGMENT_PATH + "diffusion_frequencies.json"
+    params:
+        pivot_frequency = PIVOT_INTERVAL,
+        stiffness = config["frequencies"]["stiffness"],
+        inertia = config["frequencies"]["inertia"],
+        min_freq = config["frequencies"]["min_freq"],
+        min_date = _get_min_date_for_augur_frequencies,
+        max_date = _get_max_date_for_augur_frequencies
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell: """augur frequencies \
+        --method diffusion \
+        --tree {input.tree} \
+        --metadata {input.metadata} \
+        --output {output} \
+        --include-internal-nodes \
+        --ignore-char X \
+        --stiffness {params.stiffness} \
+        --inertia {params.inertia} \
+        --minimal-frequency {params.min_freq} \
+        --pivot-interval {params.pivot_frequency} \
+        --min-date {params.min_date} \
+        --max-date {params.max_date} &> {log}"""
+
 rule delta_frequency:
     input:
         tree = rules.refine.output.tree,
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.estimate_diffusion_frequencies.output.frequencies,
         clades = rules.clades_by_haplotype.output.clades
     output:
         delta_frequency = BUILD_SEGMENT_PATH + "delta_frequency.json"
     params:
-        delta_pivots = config["delta_pivots"]
+        delta_pivots = config["delta_pivots"],
+        method = "diffusion"
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/delta_frequency_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
@@ -511,6 +526,7 @@ rule delta_frequency:
         python3 scripts/calculate_delta_frequency.py \
             --tree {input.tree} \
             --frequencies {input.frequencies} \
+            --frequency-method {params.method} \
             --clades {input.clades} \
             --delta-pivots {params.delta_pivots} \
             --output {output.delta_frequency} &> {log}
@@ -567,6 +583,36 @@ rule distances:
             --output {output}
         """
 
+rule pairwise_distances:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        alignments = translations,
+        distance_maps = _get_pairwise_distance_maps_for_simulations,
+        date_annotations = rules.refine.output.node_data
+    params:
+        genes = gene_names,
+        attribute_names = _get_pairwise_distance_attributes_for_simulations,
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_SEGMENT_PATH + "pairwise_distances.json",
+    benchmark: "benchmarks/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
+
 def _get_cross_immunity_distance_attributes_by_lineage_and_segment(wildcards):
     return config["cross_immunity"][wildcards.lineage][wildcards.segment]["distance_attributes"]
 
@@ -579,7 +625,7 @@ def _get_cross_immunity_decay_factors_by_lineage_and_segment(wildcards):
 rule cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
-        distances = rules.distances.output.distances
+        distances = rules.pairwise_distances.output.distances
     params:
         distance_attributes = _get_cross_immunity_distance_attributes_by_lineage_and_segment,
         immunity_attributes = _get_cross_immunity_attributes_by_lineage_and_segment,
@@ -621,26 +667,49 @@ rule lbi:
             --window {params.window}
         """
 
+def _get_min_date_for_translation_filter(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    min_date = timepoint - pd.DateOffset(years=config["years_for_titer_alignments"])
+    return min_date.strftime("%Y-%m-%d")
+
+rule filter_translations_by_date:
+    input:
+        alignments = rules.reconstruct_translations.output.aa_alignment,
+        branch_lengths = rules.refine.output.node_data
+    output:
+        alignments = BUILD_SEGMENT_PATH + "filtered-aa-seq_{gene}.fasta"
+    params:
+        min_date = _get_min_date_for_translation_filter
+    shell:
+        """
+        python3 scripts/filter_translations.py \
+            --alignment {input.alignments} \
+            --branch-lengths {input.branch_lengths} \
+            --min-date {params.min_date} \
+            --output {output}
+        """
+
 rule titers_sub:
     input:
         titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         aa_muts = rules.translate.output,
-        alignments = translations,
+        alignments = filtered_translations,
         tree = rules.refine.output.tree
     params:
         genes = gene_names
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-sub-model.json",
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur titers sub \
             --titers {input.titers} \
             --alignment {input.alignments} \
             --gene-names {params.genes} \
-            --tree {input.tree} \
             --allow-empty-model \
-            --output {output.titers_model}
+            --output {output.titers_model} &> {log}
         """
 
 rule titers_tree:
@@ -650,13 +719,15 @@ rule titers_tree:
     output:
         titers_model = BUILD_SEGMENT_PATH + "titers-tree-model.json",
     conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
         augur titers tree \
             --titers {input.titers} \
             --tree {input.tree} \
             --allow-empty-model \
-            --output {output.titers_model}
+            --output {output.titers_model} &> {log}
         """
 
 rule convert_titer_model_to_distance_map:
@@ -680,8 +751,8 @@ rule titer_distances:
         date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names,
-        comparisons = "ancestor pairwise",
-        attribute_names = "cTiterSub_star cTiterSub_pairwise",
+        comparisons = "root ancestor pairwise",
+        attribute_names = "cTiterSub cTiterSub_star cTiterSub_pairwise",
         earliest_date = _get_distance_earliest_date_by_wildcards,
         latest_date = _get_distance_latest_date_by_wildcards
     output:
@@ -695,7 +766,7 @@ rule titer_distances:
             --gene-names {params.genes} \
             --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} {input.distance_maps} \
+            --map {input.distance_maps} {input.distance_maps} {input.distance_maps} \
             --date-annotations {input.date_annotations} \
             --earliest-date {params.earliest_date} \
             --latest-date {params.latest_date} \
@@ -832,15 +903,10 @@ rule export:
             --minify-json
         """
 
-def _get_excluded_fields_arg(wildcards):
-    if config.get("excluded_node_data_fields"):
-        return "--excluded-fields %s" % " ".join(config["excluded_node_data_fields"])
-    else:
-        return ""
-
 rule convert_node_data_to_table:
     input:
         tree = rules.refine.output.tree,
+        metadata = rules.parse.output.metadata,
         node_data = _get_node_data_for_export
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
@@ -851,6 +917,7 @@ rule convert_node_data_to_table:
         """
         python3 scripts/node_data_to_table.py \
             --tree {input.tree} \
+            --metadata {input.metadata} \
             --jsons {input.node_data} \
             --output {output} \
             {params.excluded_fields_arg} \

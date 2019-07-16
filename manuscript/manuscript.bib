@@ -1440,10 +1440,20 @@
 	Title = {{Predictive modeling of influenza shows the promise of applied evolutionary biology.}},
 	Year = {2017}}
 
-@article{Sagulenko:2017he,
-	Author = {{Sagulenko, Pavel} and {Puller, Vadim} and {Neher, Richard}},
-	Title = {{TreeTime: maximum likelihood phylodynamic analysis}},
-	Year = {2017}}
+@article{Sagulenko2018,
+    author = {Sagulenko, Pavel and Puller, Vadim and Neher, Richard A},
+    title = "{TreeTime: Maximum-likelihood phylodynamic analysis}",
+    journal = {Virus Evolution},
+    volume = {4},
+    number = {1},
+    year = {2018},
+    month = {01},
+    abstract = "{Mutations that accumulate in the genome of cells or viruses can be used to infer their evolutionary history. In the case of rapidly evolving organisms, genomes can reveal their detailed spatiotemporal spread. Such phylodynamic analyses are particularly useful to understand the epidemiology of rapidly evolving viral pathogens. As the number of genome sequences available for different pathogens has increased dramatically over the last years, phylodynamic analysis with traditional methods becomes challenging as these methods scale poorly with growing datasets. Here, we present TreeTime, a Python-based framework for phylodynamic analysis using an approximate Maximum Likelihood approach. TreeTime can estimate ancestral states, infer evolution models, reroot trees to maximize temporal signals, estimate molecular clock phylogenies and population size histories. The runtime of TreeTime scales linearly with dataset size.}",
+    issn = {2057-1577},
+    doi = {10.1093/ve/vex042},
+    url = {https://doi.org/10.1093/ve/vex042},
+    eprint = {http://oup.prod.sis.lan/ve/article-pdf/4/1/vex042/23361340/vex042.pdf},
+}
 
 @article{Faria:2011fy,
 	Author = {Faria, Nuno Rodrigues and Suchard, Marc A and Rambaut, Andrew and Lemey, Philippe},
@@ -1602,6 +1612,16 @@
 	Title = {{Epochal evolution shapes the phylodynamics of interpandemic influenza A (H3N2) in humans.}},
 	Volume = {314},
 	Year = {2006}}
+
+@article{Koelle:2015dh,
+author = {Koelle, Katia and Rasmussen, David A},
+title = {{The effects of a deleterious mutation load on patterns of influenza A/H3N2's antigenic evolution in humans.}},
+journal = {Elife},
+year = {2015},
+volume = {4},
+pages = {e07361},
+month = sep
+}
 
 @article{Fowler:2014gq,
 author = {Fowler, Douglas M and Fields, Stanley},
@@ -1829,4 +1849,64 @@ volume = {31},
 number = {10},
 pages = {776--788},
 month = oct
+}
+
+@article{Jariani2019,
+author = {Jariani, Abbas and Warth, Christopher and Deforche, Koen and Libin, Pieter and Drummond, Alexei J and Rambaut, Andrew and Matsen IV, Frederick A and Theys, Kristof},
+title = {{SANTA-SIM: simulating viral sequence evolution dynamics under selection and recombination}},
+journal = {Virus Evolution},
+year = {2019},
+volume = {5},
+number = {1},
+month = mar
+}
+
+@article{Neher2013,
+author = {Neher, Richard A.},
+title = {Genetic Draft, Selective Interference, and Population Genetics of Rapid Adaptation},
+journal = {Annual Review of Ecology, Evolution, and Systematics},
+volume = {44},
+number = {1},
+pages = {195-215},
+year = {2013},
+doi = {10.1146/annurev-ecolsys-110512-135920}}
+
+@article{Katoh2002,
+    author = {Katoh, Kazutaka and Misawa, Kazuharu and Kuma, Kei‐ichi and Miyata, Takashi},
+    title = "{MAFFT: a novel method for rapid multiple sequence alignment based on fast Fourier transform}",
+    journal = {Nucleic Acids Research},
+    volume = {30},
+    number = {14},
+    pages = {3059-3066},
+    year = {2002},
+    month = {07},
+    abstract = "{A multiple sequence alignment program, MAFFT, has been developed. The CPU time is drastically reduced as compared with existing methods. MAFFT includes two novel techniques. (i) Homo logous regions are rapidly identified by the fast Fourier transform (FFT), in which an amino acid sequence is converted to a sequence composed of volume and polarity values of each amino acid residue. (ii) We propose a simplified scoring system that performs well for reducing CPU time and increasing the accuracy of alignments even for sequences having large insertions or extensions as well as distantly related sequences of similar length. Two different heuristics, the progressive method (FFT‐NS‐2) and the iterative refinement method (FFT‐NS‐i), are implemented in MAFFT. The performances of FFT‐NS‐2 and FFT‐NS‐i were compared with other methods by computer simulations and benchmark tests; the CPU time of FFT‐NS‐2 is drastically reduced as compared with CLUSTALW with comparable accuracy. FFT‐NS‐i is over 100 times faster than T‐COFFEE, when the number of input sequences exceeds 60, without sacrificing the accuracy.}",
+    issn = {0305-1048},
+    doi = {10.1093/nar/gkf436},
+    url = {https://doi.org/10.1093/nar/gkf436},
+    eprint = {http://oup.prod.sis.lan/nar/article-pdf/30/14/3059/9488148/gkf436.pdf},
+}
+
+@article{Nguyen2014,
+    author = {Nguyen, Lam-Tung and Schmidt, Heiko A. and von Haeseler, Arndt and Minh, Bui Quang},
+    title = "{IQ-TREE: A Fast and Effective Stochastic Algorithm for Estimating Maximum-Likelihood Phylogenies}",
+    journal = {Molecular Biology and Evolution},
+    volume = {32},
+    number = {1},
+    pages = {268-274},
+    year = {2014},
+    month = {11},
+    abstract = "{Large phylogenomics data sets require fast tree inference methods, especially for maximum-likelihood (ML) phylogenies. Fast programs exist, but due to inherent heuristics to find optimal trees, it is not clear whether the best tree is found. Thus, there is need for additional approaches that employ different search strategies to find ML trees and that are at the same time as fast as currently available ML programs. We show that a combination of hill-climbing approaches and a stochastic perturbation method can be time-efficiently implemented. If we allow the same CPU time as RAxML and PhyML, then our software IQ-TREE found higher likelihoods between 62.2\\% and 87.1\\% of the studied alignments, thus efficiently exploring the tree-space. If we use the IQ-TREE stopping rule, RAxML and PhyML are faster in 75.7\\% and 47.1\\% of the DNA alignments and 42.2\\% and 100\\% of the protein alignments, respectively. However, the range of obtaining higher likelihoods with IQ-TREE improves to 73.3–97.1\\%. IQ-TREE is freely available at http://www.cibiv.at/software/iqtree.}",
+    issn = {0737-4038},
+    doi = {10.1093/molbev/msu300},
+    url = {https://doi.org/10.1093/molbev/msu300},
+    eprint = {http://oup.prod.sis.lan/mbe/article-pdf/32/1/268/13171186/msu300.pdf},
+}
+
+@Misc{SciPy,
+  author =    {Eric Jones and Travis Oliphant and Pearu Peterson and others},
+  title =     {{SciPy}: Open source scientific tools for {Python}},
+  year =      {2001--},
+  url = "http://www.scipy.org/",
+  note = {[Online; accessed July 16, 2019]}
 }

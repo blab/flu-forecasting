@@ -1,3 +1,6 @@
+from augur.frequency_estimators import get_pivots, timestamp_to_float
+import Bio.SeqIO
+import numpy as np
 import pandas as pd
 import pprint
 import sys
@@ -10,7 +13,7 @@ SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter, aggregate_tree_plots
 
 wildcard_constraints:
-    sample="sample_(\d+|titers)",
+    sample="sample_(\d+|titers)|luksza_lassig",
     viruses="\d+",
     bandwidth="[0-9]*\.?[0-9]+",
     lineage="[a-z0-9]+",
@@ -71,9 +74,9 @@ TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
     config["fitness_model"]["delta_months"],
     config["fitness_model"]["training_window"]
 )
-pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
+#pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
 #TIMEPOINTS = TIMEPOINTS[:7]
-pprint.pprint(TIMEPOINTS)
+#pprint.pprint(TIMEPOINTS)
 
 #
 # Configure amino acid distance masks.
@@ -126,6 +129,46 @@ def _get_distance_latest_date_by_wildcards(wildcards):
     return latest_date.strftime("%Y-%m-%d")
 
 #
+# Distance functions for simulations.
+#
+
+def _get_distance_attributes_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
+    return " ".join(config.loc[:, "attribute"].values)
+
+def _get_pairwise_distance_attributes_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] == "pairwise")]
+    return " ".join(config.loc[:, "attribute"].values)
+
+def _get_distance_maps_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
+    return [
+        "config/distance_maps/h3n2/ha/{distance_map}.json".format(distance_map=distance_map)
+        for distance_map in config.loc[:, "distance_map"].values
+    ]
+
+def _get_pairwise_distance_maps_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] == "pairwise")]
+    return [
+        "config/distance_maps/h3n2/ha/{distance_map}.json".format(distance_map=distance_map)
+        for distance_map in config.loc[:, "distance_map"].values
+    ]
+
+def _get_distance_comparisons_for_simulations(wildcards):
+    config = masks_config[(masks_config["lineage"] == "h3n2") &
+                          (masks_config["segment"] == "ha") &
+                          (masks_config["compare_to"] != "pairwise")]
+    return " ".join(config.loc[:, "compare_to"].values)
+
+#
 # Define helper functions.
 #
 
@@ -163,11 +206,58 @@ def _get_min_date_for_augur_frequencies(wildcards):
 def _get_max_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
 
+def _get_excluded_fields_arg(wildcards):
+    if config.get("excluded_node_data_fields"):
+        return "--excluded-fields %s" % " ".join(config["excluded_node_data_fields"])
+    else:
+        return ""
+
+genes_to_translate = {
+    'ha': ['SigPep', 'HA1', 'HA2'],
+    'na': ['NA']
+}
+def gene_names(wildcards=None, segment=None):
+    if wildcards and wildcards.segment in genes_to_translate:
+        genes = genes_to_translate[wildcards.segment]
+    elif segment in genes_to_translate:
+        genes = genes_to_translate[segment]
+    else:
+        print(f"WARNING: Genes to translate are not defined for {wildcards.segment}, defaulting to '{wildcards.segment.upper()}'")
+        genes = [wildcards.segment.upper()]
+
+    return genes
+
+def translations(wildcards=None, segment=None, path=None):
+    genes = gene_names(wildcards, segment)
+    if path is None:
+        path = BUILD_SEGMENT_PATH
+
+    return [path + "aa-seq_%s.fasta" % gene
+            for gene in genes]
+
+def filtered_translations(wildcards=None, segment=None, path=None):
+    genes = gene_names(wildcards, segment)
+    if path is None:
+        path = BUILD_SEGMENT_PATH
+
+    return [path + "filtered-aa-seq_%s.fasta" % gene
+            for gene in genes]
+
+#
+# Define helper functions for Snakemake outputs
+#
+
 def _get_clade_model_files(wildcards):
     return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_clades/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
 
 def _get_distance_model_files(wildcards):
     return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+
+def _get_simulated_clade_model_files(wildcards):
+    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_clades/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
+
+def _get_simulated_distance_model_files(wildcards):
+    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_distances/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
@@ -183,6 +273,7 @@ include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
 include: "rules/fitness_model.smk"
 include: "rules/quality_control_plots.smk"
+include: "rules/datasets_simulations.smk"
 
 rule all:
     input:
@@ -191,6 +282,7 @@ rule all:
         expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/target_distances.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
         _get_clade_model_files,
         _get_distance_model_files,
+        _get_simulated_distance_model_files,
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
@@ -213,6 +305,12 @@ rule clade_models:
 
 rule distance_models:
     input: _get_distance_model_files
+
+rule clade_models_simulated:
+    input: _get_simulated_clade_model_files
+
+rule distance_models_simulated:
+    input: _get_simulated_distance_model_files
 
 rule auspice:
     input: _get_auspice_files
