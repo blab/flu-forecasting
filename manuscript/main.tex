@@ -75,19 +75,51 @@ These results suggest that non-epitope mutations and LBI are mutually exclusive 
 
 \section*{Methods}
 
-\subsection*{Strain selection}
+\subsection*{Simulation of influenza A/H3N2-like populations}
 
-\subsection*{Multiple sequence alignment}
+\subsection*{Strain selection for natural populations}
+
+For model training and validation, we selected XX HA sequences of length >=1,700 nucleotides that were sampled between October 1994 and October 2015.
+To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 10 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
+We excluded all samples with ambiguous year, month, and day annotations and prioritized samples with more available HI titer measurements.
+
+For model testing, we extended the set of training and validation sequences to include HA sequences that were sampled between October 2015 and April 2019.
+We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
 
 \subsection*{Phylogenetic interference}
 
+For each timepoint in model training, validation, and testing, we selected the subsampled HA sequences with collection dates up to that timepoint.
+We aligned sequences with the augur align command \cite{Hadfield2018} and MAFFT v7.407 \cite{Katoh2002}.
+We inferred initial phylogenies for HA sequences at each timepoint with IQ-TREE v1.6.10 \cite{Nguyen2014}.
+To reconstruct time-resolved phylogenies, we applied TreeTime v0.5.6 \cite{Sagulenko2018} with the augur refine command.
+
 \subsection*{Frequency estimation}
 
-\subsection*{Fitness model}
+To account for uncertainty in collection date and sampling error, we applied a kernel density estimation (KDE) approach to calculate global sample frequencies.
+Specifically, we constructed a Gaussian kernel for each sample with the mean at the reported collection date and a variance of one month, roughly corresponding to the average lag time between sample collection and submission to the GISAID database.
+We estimated the frequency of each sample at each timepoint by calculating the cumulative density function of each KDE between the current and previous timepoint and normalizing the resulting values to sum to one.
+We implemented this logic in the augur frequencies command.
 
 \subsection*{Model fitting and evaluation}
 
-\subsubsection*{Model targets}
+As in \cite{Luksza:2014hj}, we assumed that influenza A/H3N2 populations can be described by an exponential growth model.
+Under this model, we estimated the future frequency of the global population, $\hat{X}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
+
+$$
+\hat{X}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
+$$
+
+We defined the fitness of each sample at time $t$ as the additive combination of one or more fitness metrics, $f_{i,m}$, scaled by fitness coefficients, $\beta_{m}$.
+For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the mean weighted Hamming distance between the estimated and observed future populations as defined by,
+
+$$
+\Delta(X(t + \Delta{t}), \hat{X}(t + \Delta{t})) = \frac{(\sum_{i}x_{i}\exp(f_{i}(t))(\sum_{j}x_{j}d_{i,j})) - (\sum_{j}x_{j}(\sum_{j'}x_{j'}d_{j,j'}))}{(\sum_{i}x_{i}(\sum_{j}x_{j}d_{i,j}))},
+$$
+
+where the first term in the numerator measures the mean distance between estimated and observed populations, the second term accounts for the diversity of the future population, and the denominator accounts for the diversity between the current and future populations.
+When the sequence diversity of the estimated and observed future populations are equal, the metric evaluates to zero.
+When the estimated sequence diversity is closer to the center of the future population's observed diversity, the metric evaluates to a negative proportion.
+We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
 
 \subsubsection*{Time-series cross-validation}
 
