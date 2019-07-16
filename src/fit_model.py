@@ -716,9 +716,8 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
         null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
-
         print(
-            "%s\t%s\t%.1f\t%.1f\t%.1f\t%.1f\t%.2f" % (
+            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f" % (
                 training_timepoints[-1].strftime("%Y-%m"),
                 validation_timepoint.strftime("%Y-%m"),
                 training_error,
