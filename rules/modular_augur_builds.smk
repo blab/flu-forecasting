@@ -281,7 +281,6 @@ rule refine:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
-            --clock-filter-iqd {params.clock_filter_iqd} \
             --no-covariance \
             --clock-rate {params.clock_rate} \
             --clock-std-dev {params.clock_std_dev} \
