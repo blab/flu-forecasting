@@ -103,6 +103,24 @@
       "type": "continuous",
       "key": "ep_x_slow"
     },
+    "cTiter": {
+      "menuItem": "titer tree",
+      "legendTitle": "Titer tree",
+      "type": "continuous",
+      "key": "cTiter"
+    },
+    "cTiterSub": {
+      "menuItem": "titer sub (root)",
+      "legendTitle": "Titer sub (root)",
+      "type": "continuous",
+      "key": "cTiterSub"
+    },
+     "cTiterSub_star": {
+      "menuItem": "titer sub (ancestor)",
+      "legendTitle": "Titer sub (ancestor)",
+      "type": "continuous",
+      "key": "cTiterSub_star"
+    },
     "cTiterSub_x": {
       "menuItem": "titer cross-immunity",
       "legendTitle": "Titer cross-immunity",

@@ -602,11 +602,33 @@ rule lbi:
             --window {params.window}
         """
 
+def _get_min_date_for_translation_filter(wildcards):
+    timepoint = pd.to_datetime(wildcards.timepoint)
+    min_date = timepoint - pd.DateOffset(years=config["years_for_titer_alignments"])
+    return min_date.strftime("%Y-%m-%d")
+
+rule filter_translations_by_date:
+    input:
+        alignments = rules.reconstruct_translations.output.aa_alignment,
+        branch_lengths = rules.refine.output.node_data
+    output:
+        alignments = BUILD_SEGMENT_PATH + "filtered-aa-seq_{gene}.fasta"
+    params:
+        min_date = _get_min_date_for_translation_filter
+    shell:
+        """
+        python3 scripts/filter_translations.py \
+            --alignment {input.alignments} \
+            --branch-lengths {input.branch_lengths} \
+            --min-date {params.min_date} \
+            --output {output}
+        """
+
 rule titers_sub:
     input:
         titers = expand("data/{{lineage}}_{passage}_{assay}_titers.tsv", passage=TITER_PASSAGES, assay=TITER_ASSAYS),
         aa_muts = rules.translate.output,
-        alignments = translations,
+        alignments = filtered_translations,
         tree = rules.refine.output.tree
     params:
         genes = gene_names
@@ -621,7 +643,6 @@ rule titers_sub:
             --titers {input.titers} \
             --alignment {input.alignments} \
             --gene-names {params.genes} \
-            --tree {input.tree} \
             --allow-empty-model \
             --output {output.titers_model} &> {log}
         """
@@ -665,8 +686,8 @@ rule titer_distances:
         date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names,
-        comparisons = "ancestor pairwise",
-        attribute_names = "cTiterSub_star cTiterSub_pairwise",
+        comparisons = "root ancestor pairwise",
+        attribute_names = "cTiterSub cTiterSub_star cTiterSub_pairwise",
         earliest_date = _get_distance_earliest_date_by_wildcards,
         latest_date = _get_distance_latest_date_by_wildcards
     output:
@@ -680,7 +701,7 @@ rule titer_distances:
             --gene-names {params.genes} \
             --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} {input.distance_maps} \
+            --map {input.distance_maps} {input.distance_maps} {input.distance_maps} \
             --date-annotations {input.date_annotations} \
             --earliest-date {params.earliest_date} \
             --latest-date {params.latest_date} \
