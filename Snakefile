@@ -253,6 +253,9 @@ def _get_clade_model_files(wildcards):
 def _get_distance_model_files(wildcards):
     return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
 
+def _get_simulated_clade_model_files(wildcards):
+    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_clades/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
+
 def _get_simulated_distance_model_files(wildcards):
     return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_distances/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
 
@@ -302,6 +305,9 @@ rule clade_models:
 
 rule distance_models:
     input: _get_distance_model_files
+
+rule clade_models_simulated:
+    input: _get_simulated_clade_model_files
 
 rule distance_models_simulated:
     input: _get_simulated_distance_model_files

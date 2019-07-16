@@ -829,6 +829,74 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
         """
 
 
+rule collect_annotated_tip_clade_tables_simulated:
+    input:
+        expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tips_to_clades.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+    output:
+        tip_clade_table = BUILD_PATH_SIMULATIONS + "tips_to_clades.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+            --tables {input} \
+            --output {output.tip_clade_table}
+        """
+
+
+rule select_clades_simulated:
+    input:
+        attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
+        tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
+    output:
+        clades = BUILD_PATH_SIMULATIONS + "final_clade_frequencies.tsv"
+    params:
+        primary_segment = config["fitness_model"]["primary_segment"],
+        delta_months = config["fitness_model"]["delta_months"]
+    conda: "../envs/anaconda.python3.yaml"
+    log: "logs/select_clades_" + BUILD_LOG_STEM_SIMULATIONS + ".txt"
+    shell:
+        """
+        python3 scripts/select_clades.py \
+            --tip-attributes {input.attributes} \
+            --tips-to-clades {input.tips_to_clades} \
+            --primary-segment {params.primary_segment} \
+            --delta-months {params.delta_months} \
+            --output {output} &> {log}
+        """
+
+
+rule fit_models_by_clades_simulated:
+    input:
+        attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
+        final_clade_frequencies = rules.select_clades_simulated.output.clades
+    output:
+        model = BUILD_PATH_SIMULATIONS + "models_by_clades/{predictors}.json"
+    params:
+        predictors = _get_predictor_list,
+        delta_months = config["fitness_model"]["delta_months"],
+        training_window = config["fitness_model"]["training_window"],
+        cost_function = config["fitness_model"]["clade_cost_function"],
+        l1_lambda = config["fitness_model"]["l1_lambda"],
+        pseudocount = config["fitness_model"]["pseudocount"]
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
+    log: "logs/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
+    shell:
+        """
+        python3 src/fit_model.py \
+            --tip-attributes {input.attributes} \
+            --final-clade-frequencies {input.final_clade_frequencies} \
+            --training-window {params.training_window} \
+            --delta-months {params.delta_months} \
+            --predictors {params.predictors} \
+            --cost-function {params.cost_function} \
+            --l1-lambda {params.l1_lambda} \
+            --pseudocount {params.pseudocount} \
+            --target clades \
+            --output {output} &> {log}
+        """
+
+
 rule fit_models_by_distances_simulated:
     input:
         attributes = rules.annotate_weighted_distances_for_tip_attributes_simulated.output.attributes,
