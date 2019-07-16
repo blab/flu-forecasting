@@ -13,7 +13,7 @@ SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter, aggregate_tree_plots
 
 wildcard_constraints:
-    sample="sample_(\d+|titers)",
+    sample="sample_(\d+|titers)|luksza_lassig",
     viruses="\d+",
     bandwidth="[0-9]*\.?[0-9]+",
     lineage="[a-z0-9]+",
