@@ -102,6 +102,8 @@ We implemented this logic in the augur frequencies command.
 
 \subsection*{Model fitting and evaluation}
 
+\subsubsection*{Fitness model}
+
 As in \cite{Luksza:2014hj}, we assumed that influenza A/H3N2 populations can be described by an exponential growth model.
 Under this model, we estimated the future frequency of the global population, $\hat{X}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
@@ -110,6 +112,9 @@ $$
 $$
 
 We defined the fitness of each sample at time $t$ as the additive combination of one or more fitness metrics, $f_{i,m}$, scaled by fitness coefficients, $\beta_{m}$.
+
+\subsubsection*{Model target}
+
 For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the mean weighted Hamming distance between the estimated and observed future populations as defined by,
 
 $$
@@ -122,6 +127,13 @@ When the estimated sequence diversity is closer to the center of the future popu
 We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
 
 \subsubsection*{Time-series cross-validation}
+
+To obtain unbiased estimates for the out-of-sample errors of our models, we adopted the standard cross-validation strategy of training, validation, and testing.
+We divided our available data into an initial training and validation set spanning October 1994 to October 2015 and an additional testing set spanning October 2015 to April 2019.
+We partitioned our training and validation data into six month seasons corresponding to winter in the Northern Hemisphere (October--April) and the Southern Hemisphere (April--October) and trained models to estimate frequencies of populations one year into the future from each season in six-year sliding windows.
+To calculate validation error for each training window, we applied the resulting model coefficients to estimate the future frequencies for the year after the last timepoint in the training window.
+These validation errors informed our tuning of hyperparameters including a L1 regularization of the fitness coefficients, the LBI neighborhood parameter $\tau$, and the length of the training window itself.
+Finally, we fixed the coefficients for each model at the mean values across all training windows and applied these fixed models to the test data to estimate the true forecasting accuracy of each model on previously unobserved data.
 
 \subsection*{Fitness metrics}
 
