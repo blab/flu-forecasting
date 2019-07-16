@@ -1,6 +1,6 @@
 {
     "path_to_fauna": "../fauna",
-    "min_length": 900,
+    "min_length":  1700,
     "lineages": ["h3n2"],
     "segments": ["ha"],
     "start_date": "1994-10-01",
@@ -17,7 +17,7 @@
     "min_frequency_per_clade": 0.01,
     "delta_pivots": 1,
     "months_for_distance_season": 12,
-    "max_years_for_distances": 6,
+    "max_years_for_distances": 3,
     "years_back_for_target_distance": 3,
     "target_distance_attribute": "hamming",
     "titers": {
@@ -28,6 +28,7 @@
         "naive",
         "lbi",
         "ep",
+        "ep_star",
         "ep_x",
         "cTiter",
         "cTiterSub",
@@ -36,7 +37,9 @@
         "delta_frequency",
         "dms_star",
         "ne_star",
-        "lbi-cTiterSub_x-dms_star",
+        "lbi-delta_frequency",
+        "lbi-ne_star",
+        "lbi-cTiter-ne_star",
         "lbi-ep_x-ne_star"
     ],
     "predictors_simulated": [
@@ -86,7 +89,10 @@
         "proportion_wide": 0.0,
         "pivot_frequency": 6,
         "bandwidths": [0.02, 0.04, 0.08, 0.16, 0.25, 0.33, 0.5],
-        "min_mutation_frequency": 0.0
+        "min_mutation_frequency": 0.0,
+        "stiffness": 20,
+        "inertia": 0.2,
+        "min_freq": 0.01
     },
     "lbi": {
         "tau": 0.25,
@@ -108,9 +114,9 @@
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise ep_luksza_pairwise",
-                "immunity_attributes": "ep_x ep_luksza_x",
-                "decay_factors": "14.0 14.0"
+                "distance_attributes": "ep_pairwise",
+                "immunity_attributes": "ep_x",
+                "decay_factors": "14.0"
             }
         }
     },
@@ -122,7 +128,7 @@
         "primary_segment": "ha",
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",
-        "l1_lambda": 0.5,
+        "l1_lambda": 0.01,
         "pseudocount": 0.0
     }
 }
