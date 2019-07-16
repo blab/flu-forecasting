@@ -314,6 +314,41 @@ rule estimate_frequencies_simulated:
 --include-internal-nodes &> {log}"""
 
 
+rule estimate_diffusion_frequencies_simulated:
+    message:
+        """
+        Estimating diffusion frequencies for {input.tree}
+        """
+    input:
+        tree=rules.refine_simulated.output.tree,
+        metadata=rules.filter_metadata_simulated.output.metadata
+    output:
+        frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "diffusion_frequencies.json"
+    params:
+        pivot_frequency = PIVOT_INTERVAL,
+        stiffness = config["frequencies"]["stiffness"],
+        inertia = config["frequencies"]["inertia"],
+        min_freq = config["frequencies"]["min_freq"],
+        min_date = _get_min_date_for_augur_frequencies,
+        max_date = _get_max_date_for_augur_frequencies
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell: """augur frequencies \
+        --method diffusion \
+        --tree {input.tree} \
+        --metadata {input.metadata} \
+        --output {output} \
+        --include-internal-nodes \
+        --ignore-char X \
+        --stiffness {params.stiffness} \
+        --inertia {params.inertia} \
+        --minimal-frequency {params.min_freq} \
+        --pivot-interval {params.pivot_frequency} \
+        --min-date {params.min_date} \
+        --max-date {params.max_date} &> {log}"""
+
+
 rule ancestral_simulated:
     message: "Reconstructing ancestral sequences and mutations for {wildcards}"
     input:
@@ -430,12 +465,13 @@ rule clades_by_haplotype_simulated:
 rule delta_frequency_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        frequencies = rules.estimate_diffusion_frequencies_simulated.output.frequencies,
         clades = rules.clades_by_haplotype_simulated.output.clades
     output:
         delta_frequency = BUILD_TIMEPOINT_PATH_SIMULATIONS + "delta_frequency.json"
     params:
-        delta_pivots = config["delta_pivots"]
+        delta_pivots = config["delta_pivots"],
+        method = "diffusion"
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/delta_frequency_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
     shell:
@@ -443,6 +479,7 @@ rule delta_frequency_simulated:
         python3 scripts/calculate_delta_frequency.py \
             --tree {input.tree} \
             --frequencies {input.frequencies} \
+            --frequency-method {params.method} \
             --clades {input.clades} \
             --delta-pivots {params.delta_pivots} \
             --output {output.delta_frequency} &> {log}
