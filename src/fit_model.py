@@ -645,7 +645,8 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         return estimated_targets
 
 
-def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership"):
+def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership",
+                   include_attributes=False):
     """Calculate cross-validation scores for the given data and targets across the
     given train/validate timepoints.
 
@@ -670,6 +671,15 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
         an optional array of fixed coefficients for the given model's predictors
         to use when calculating cross-validation error for specific models
         (e.g., naive forecasts)
+
+    group_by : string
+        column of the tip attributes by which they should be grouped to
+        calculate the total number of samples in the model (e.g., group by clade
+        or strain)
+
+    include_attributes : boolean
+        specifies whether tip attribute data used to train/validate models
+        should be included in the output per training window
 
     Returns
     -------
@@ -731,10 +741,9 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
                     df[column] = df[column].dt.strftime("%Y-%m-%d")
 
         # Store training results, beta coefficients, and validation results.
-        results.append({
+        result = {
             "predictors": model.predictors,
             "training_data": {
-                "X": training_X.to_dict(orient="records"),
                 "y": training_y.to_dict(orient="records"),
                 "y_hat": training_y_hat.to_dict(orient="records")
             },
@@ -743,7 +752,6 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             "coefficients": model.coef_.tolist(),
             "mean_stds": model.mean_stds_.tolist(),
             "validation_data": {
-                "X": validation_X.to_dict(orient="records"),
                 "y": validation_y.to_dict(orient="records"),
                 "y_hat": validation_y_hat.to_dict(orient="records")
             },
@@ -751,7 +759,14 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
             "validation_error": validation_error,
             "last_training_timepoint": training_timepoints[-1].strftime("%Y-%m-%d"),
             "validation_timepoint": validation_timepoint.strftime("%Y-%m-%d")
-        })
+        }
+
+        # Include tip attributes, if requested.
+        if include_attributes:
+            result["training_data"]["X"] = training_X.to_dict(orient="records")
+            result["validation_data"]["X"] = validation_X.to_dict(orient="records")
+
+        results.append(result)
 
     # Return results for all validation timepoints.
     return results
@@ -812,6 +827,7 @@ if __name__ == "__main__":
     parser.add_argument("--l1-lambda", type=float, default=0.0, help="L1 regularization lambda")
     parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
+    parser.add_argument("--include-attributes", action="store_true", help="include attribute data used to train/validate models in the cross-validation output")
 
     args = parser.parse_args()
 
@@ -924,7 +940,8 @@ if __name__ == "__main__":
         targets,
         train_validate_timepoints,
         coefficients,
-        group_by=group_by_attribute
+        group_by=group_by_attribute,
+        include_attributes=args.include_attributes
     )
 
     # Summarize model errors including in-sample errors by AIC, out-of-sample
