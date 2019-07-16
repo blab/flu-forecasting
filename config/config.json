@@ -14,6 +14,7 @@
     "number_of_samples": 1,
     "include_titer_tree": false,
     "min_tips_per_clade": 10,
+    "min_frequency_per_clade": 0.01,
     "delta_pivots": 1,
     "months_for_distance_season": 12,
     "max_years_for_distances": 6,

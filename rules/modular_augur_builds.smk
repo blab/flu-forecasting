@@ -445,7 +445,7 @@ rule clades_by_haplotype:
     params:
         gene_names = gene_names,
         minimum_tips = config["min_tips_per_clade"],
-        min_frequency = 0.0
+        min_frequency = config["min_frequency_per_clade"]
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/find_clades_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
