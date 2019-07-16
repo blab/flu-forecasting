@@ -906,6 +906,7 @@ rule export:
 rule convert_node_data_to_table:
     input:
         tree = rules.refine.output.tree,
+        metadata = rules.parse.output.metadata,
         node_data = _get_node_data_for_export
     output:
         table = BUILD_SEGMENT_PATH + "node_data.tsv"
@@ -916,6 +917,7 @@ rule convert_node_data_to_table:
         """
         python3 scripts/node_data_to_table.py \
             --tree {input.tree} \
+            --metadata {input.metadata} \
             --jsons {input.node_data} \
             --output {output} \
             {params.excluded_fields_arg} \
