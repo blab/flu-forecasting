@@ -450,12 +450,12 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
             # Estimate the distance between the current and future populations
             # (the naive model of no frequency changes).
-            null_emd, _, null_flow = cv2.EMD(
-                sample_a_initial_frequencies,
-                sample_b_frequencies,
-                cv2.DIST_USER,
-                cost=distance_matrix
-            )
+            # null_emd, _, null_flow = cv2.EMD(
+            #     sample_a_initial_frequencies,
+            #     sample_b_frequencies,
+            #     cv2.DIST_USER,
+            #     cost=distance_matrix
+            # )
 
             #print("EMD for %s: %.2f with %i of %i nonzero flow cells" % (timepoint, model_emd, (model_flow != 0).sum(), model_flow.flatten().shape[0]), file=sys.stderr)
             #print("Null EMD for %s: %.2f with %i of %i nonzero flow cells\n" % (timepoint, null_emd, (null_flow != 0).sum(), null_flow.flatten().shape[0]), file=sys.stderr)
@@ -522,17 +522,25 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         count = 0
         for timepoint, timepoint_df in y_hat.groupby("timepoint"):
             samples_a = timepoint_df["strain"]
-            sample_a_initial_frequencies = timepoint_df["frequency"].values.astype(np.float32)
-            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
+            sample_a_initial_frequencies = timepoint_df["frequency"].values
+            sample_a_frequencies = timepoint_df["projected_frequency"].values
             sample_a_weighted_distance_to_future = timepoint_df["weighted_distance_to_future"].values
+
+            future_timepoint_df = y[y["timepoint"] == timepoint]
+            assert future_timepoint_df.shape[0] > 0
+
+            samples_b = future_timepoint_df["strain"]
+            sample_b_frequencies = future_timepoint_df["frequency"].values
+            sample_b_weighted_distance_to_present = future_timepoint_df["weighted_distance_to_present"].values
 
             d_t_u = (sample_a_initial_frequencies * sample_a_weighted_distance_to_future).sum()
             d_u_hat_u = (sample_a_frequencies * sample_a_weighted_distance_to_future).sum()
+            d_u_u = (sample_b_frequencies * sample_b_weighted_distance_to_present).sum()
 
-            error += d_u_hat_u
+            #error += d_u_hat_u
             null_error += d_t_u
 
-            #error += (d_u_hat_u - d_u_u) / d_t_u
+            error += (d_u_hat_u - d_u_u) / d_t_u
             count += 1
 
         null_error = null_error / float(count)
@@ -859,7 +867,7 @@ if __name__ == "__main__":
         # Get strain frequency per timepoint and subtract delta time from
         # timepoint to align strain frequencies with the previous timepoint and
         # make them appropriate as targets for the model.
-        targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_future", "y"]].copy()
+        targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_present", "weighted_distance_to_future", "y"]].copy()
         targets["future_timepoint"] = targets["timepoint"]
         targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=args.delta_months)
 
