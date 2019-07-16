@@ -583,6 +583,36 @@ rule distances:
             --output {output}
         """
 
+rule pairwise_distances:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        alignments = translations,
+        distance_maps = _get_pairwise_distance_maps_for_simulations,
+        date_annotations = rules.refine.output.node_data
+    params:
+        genes = gene_names,
+        attribute_names = _get_pairwise_distance_attributes_for_simulations,
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_SEGMENT_PATH + "pairwise_distances.json",
+    benchmark: "benchmarks/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/pairwise_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
+
 def _get_cross_immunity_distance_attributes_by_lineage_and_segment(wildcards):
     return config["cross_immunity"][wildcards.lineage][wildcards.segment]["distance_attributes"]
 
@@ -595,7 +625,7 @@ def _get_cross_immunity_decay_factors_by_lineage_and_segment(wildcards):
 rule cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
-        distances = rules.distances.output.distances
+        distances = rules.pairwise_distances.output.distances
     params:
         distance_attributes = _get_cross_immunity_distance_attributes_by_lineage_and_segment,
         immunity_attributes = _get_cross_immunity_attributes_by_lineage_and_segment,
