@@ -30,7 +30,7 @@ We describe an approach to integrate previously disparate sequence-only models o
 \subsection*{Models accurately forecast evolution of simulated populations of {A/H3N2-like viruses}}
 
 The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions at epitopes that enable escape from adaptive immunity and purifying selection on domains required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
-To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we first simulated the long-term evolution of five independent populations of A/H3N2-like viruses for 5,000 generations each using SANTA-SIM \cite{Jariani2019}.
+To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of five independent populations of A/H3N2-like viruses for 4,000 generations each using SANTA-SIM \cite{Jariani2019}.
 We seeded each simulated population with the full length HA from A/Beijing/32/1992 such that all simulated sequences contained signal peptide, HA1, and HA2 domains.
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
 We additionally defined exposure-dependent selection for 129 putative epitope sites in HA1 \cite{Wolf:2006da} to impose an effect of cross-immunity that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
@@ -39,20 +39,18 @@ These selective constraints produced phylogenetic structures and accumulation of
 Under the evolutionary constraints of our simulations, we expected the models to learn positive coefficients for cross-immunity and negative coefficients for non-epitope mutations corresponding to the fitness benefits of novel epitope sequences and costs of accumulating deleterious mutations.
 We reasoned that because LBI and delta frequency measure the recent success of samples without any mechanistic explanation for that success, these two models should be assigned positive coefficients and should outperform the individual mutation models by being able to simultaneously represent benefits of epitope mutations and costs of non-epitope mutations with a single metric.
 To achieve the same accuracy from mutation-only models, we anticipated that these two models would need to be combined.
-To test these hypotheses, we trained models for each individual fitness metric on 20 years of simulated sequences corresponding to generations 1000--3000 where 100 generations represents one year.
+To test these hypotheses, we trained models for each individual fitness metric on 20 years of simulated sequences corresponding to generations 1000--3000 where 100 generations represent one year.
 As a positive control, we trained a model on the true fitness of each sample as measured by the simulator.
-To control for variability in distances between seasons, we evaluated all models relative to the observed distance between seasons (the adjusted distance between seasons).
-This distance corresponded to a model without an exponential growth parameter which we labeled as the ``naive'' model.
+As a negative control, we evaluated a ``naive''  model under which there was no change in population composition over the one year forecasting period.
+To control for genetic diversity within and between seasons, we evaluated all model forecasts by the average distance between the estimated and observed future population sequences (Methods).
 
-The average distance per year between populations under the naive model of no frequency change was 0.10 +/- 0.17 (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
-The naive model accurately approximated the future in five out of 23 validation timepoints (22\%).
-All biologically-informed models consistently reduced this distance with estimates by LBI accurately estimating the future in 22 of 23 timepoints (96\%) with an average distance of -0.16 +/- 0.16 (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
-As expected, the true fitness metric always outperformed the naive model.
-The non-epitope metric also consistently outperformed the naive model, predicting the future nearly as well as the true fitness.
-Surprisingly, cross-immunity did not accurately forecast future populations and was consistently assigned a weakly negative coefficient.
-While the delta frequency metric was not as accurate as LBI, it was consistently more accurate than the naive model with an average distance similar to the non-epitope metric.
-The coefficients for all metrics except for the true fitness were stably non-zero across all training windows.
-In contrast, the true fitness metric's coefficients gradually decreased over time.
+As expected, the true fitness model consistently estimated a distance to the future of zero or less than zero, with the exception of two timepoints that almost all models failed to estimate properly (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
+The naive model consistently underestimated the observed change in simulated populations, accurately approximating the future in just five of 23 timepoints (22\%) with an average distance of 0.10 +/- 0.17 (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
+In contrast, all biologically-informed models except for epitope cross-immunity accurately estimated the distance to the future with average distances less than zero.
+Consistent with the importance of purifying selection in the simulation parameters, the non-epitope mutations model had an average distance to the future of -0.01 +/- 0.18 and received an average coefficient of -2.43 +/- 0.53.
+Surprisingly, epitope cross-immunity did not perform well and received a negative average coefficient, despite the anticipated benefit of epitope mutations that could escape exposure-dependent fitness penalties.
+LBI outperformed all other models including the true fitness model, by accurately estimating the future in 22 of 23 timepoints (96\%) with an average distance of -0.16 +/- 0.16.
+The improved performance of LBI and delta frequency over the individual mutation-based metrics matched our expectations that a single metric could represent the fitness of multiple evolutionary constraints.
 
 \begin{figure*}[t]
   \begin{center}
@@ -62,11 +60,14 @@ In contrast, the true fitness metric's coefficients gradually decreased over tim
   \end{center}
 \end{figure*}
 
-We tested our hypothesis that composite models of cross-immunity and non-epitope mutations would perform as well as LBI or delta frequency.
-We further tested the relationship between LBI and these two individual metrics by fitting composite models with all combinations of these three predictors.
-Surprisingly, cross-immunity provided no additional accuracy to the non-epitope metric, while neither of these mutation-based metrics provided any improvement over LBI (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-In the latter models, LBI maintained a consistent coefficient across all training windows while the models assigned both cross-immunity and non-epitope metrics coefficients near zero.
-These results suggest that non-epitope mutations and LBI are mutually exclusive and either metric is sufficient to forecast the evolution of these simulated populations.
+To test our hypothesis that composite models of epitope cross-immunity and non-epitope mutations would perform as well as LBI or delta frequency, we learned parameters for this composite model.
+Surpisingly, we found that the composite mutation model did not perform better than the individual mutation models and actually performed slightly worse than the non-epitope model with more variability in estimated distance to the future (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+
+To determine which evolutionary constraints LBI represented, we fit two additional composite models including LBI and non-epitope mutations and LBI with both mutation metrics.
+We reasoned that the coefficients learned by these composite models should reflect the relative contribution of each individual metric to the model accuracy.
+For example, if LBI measures antigenic advance, we would expect the values of the LBI and cross-immunity coefficients to be mutually exclusive such that increase in LBI coefficient is associated with decrease in the cross-immunity coefficient (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+Interestingly, we found that the coefficients of the mutation metrics were almost always zero while the LBI coefficients were nearly identical to the coefficients of the individual LBI model.
+These results indicate that the predictive contributions of both cross-immunity and non-epitope mutations can be accounted for by LBI alone.
 
 \textit{Repeat simulations with multiple epochs to show model coefficients can reflect these underlying changes to evolutionary constraints.}
 
