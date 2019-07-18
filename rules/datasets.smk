@@ -29,7 +29,7 @@ rule run_simulation:
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
-        cd data/{wildcards.type}/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/../dist/santa-sim/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/../{input.simulation_config}
+        cd data/{wildcards.type}/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/dist/santa-sim/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/{input.simulation_config}
         """
 
 
