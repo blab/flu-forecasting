@@ -1,4 +1,45 @@
 {
+    "datasets": {
+        "simulated": {
+            "sample_0": {
+                "seed": 0,
+                "viruses_per_month": 10
+            },
+            "sample_1": {
+                "seed": 1,
+                "viruses_per_month": 10
+            },
+            "sample_2": {
+                "seed": 2,
+                "viruses_per_month": 10
+            }
+        }
+    },
+    "builds": {
+        "simulated": {
+            "sample_0": {
+                "sequences": "data/simulated/sample_0/filtered_sequences.fasta",
+                "metadata": "data/simulated/sample_0/filtered_metadata.tsv",
+                "strains": "data/simulated/sample_0/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01"
+            },
+            "sample_1": {
+                "sequences": "data/simulated/sample_1/filtered_sequences.fasta",
+                "metadata": "data/simulated/sample_1/filtered_metadata.tsv",
+                "strains": "data/simulated/sample_1/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01"
+            },
+            "sample_2": {
+                "sequences": "data/simulated/sample_2/filtered_sequences.fasta",
+                "metadata": "data/simulated/sample_2/filtered_metadata.tsv",
+                "strains": "data/simulated/sample_2/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01"
+            }
+        }
+    },
     "path_to_fauna": "../fauna",
     "min_length":  1700,
     "lineages": ["h3n2"],

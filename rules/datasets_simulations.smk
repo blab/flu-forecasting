@@ -1,11 +1,10 @@
 """Rules for generating simulated HA sequences for validation of forecasting models.
 """
-BUILD_PATH_SIMULATIONS = "results/builds/simulations/{percentage}/{start}--{end}/"
-BUILD_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}"
+BUILD_PATH_SIMULATIONS = "results/builds/{type}/{sample}/"
+BUILD_LOG_STEM_SIMULATIONS = "{type}_{sample}"
 BUILD_TIMEPOINT_PATH_SIMULATIONS = BUILD_PATH_SIMULATIONS + "timepoints/{timepoint}/"
-BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{percentage}_{start}_{end}_{timepoint}"
+BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{type}_{sample}_{timepoint}"
 
-PERCENTAGE = 100
 START_DATE_SIMULATIONS = "2010-10-01"
 END_DATE_SIMULATIONS = "2030-10-01"
 TIMEPOINTS_SIMULATIONS = _get_timepoints_for_build_interval(
@@ -60,133 +59,32 @@ def float_to_datestring(time):
     return "%s-%02d-%02d" % (year, month, day)
 
 
-def _get_proportion_to_subsample_from_wildcards(wildcards):
-    return round(int(wildcards.percentage) / 100.0, 2)
+def _get_sequences_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["sequences"]
 
+def _get_metadata_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["metadata"]
 
-rule subsample_simulations:
-    input:
-       #sequences = "data/simulations/HA_sequences_full.fasta"
-       sequences = "analyses/simulations/simulated_HA_sequences.fasta"
-    output:
-       sequences = "results/datasets/h3_simulated_{percentage}pct/original_sequences.fasta"
-    params:
-        proportion = _get_proportion_to_subsample_from_wildcards
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        seqtk sample {input.sequences} {params.proportion} > {output.sequences}
-        """
+def _get_strains_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["strains"]
 
+def _get_start_date_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["start_date"]
 
-rule parse_simulated_sequences:
-    input:
-        #sequences = rules.subsample_simulations.output.sequences
-        sequences = "analyses/simulations/simulated_HA_sequences.fasta"
-    output:
-        sequences = "results/datasets/h3_simulated_{percentage}pct/sequences.fasta",
-        metadata = "results/datasets/h3_simulated_{percentage}pct/metadata.tsv"
-    params:
-        fasta_fields = "strain generation fitness"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur parse \
-            --sequences {input.sequences} \
-            --output-sequences {output.sequences} \
-            --output-metadata {output.metadata} \
-            --fields {params.fasta_fields}
-        """
+def _get_end_date_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["end_date"]
 
+def _get_min_date_for_augur_frequencies_by_wildcards(wildcards):
+    return timestamp_to_float(pd.to_datetime(_get_start_date_by_wildcards(wildcards)))
 
-rule standardize_simulated_sequence_dates:
-    input:
-        metadata = rules.parse_simulated_sequences.output.metadata
-    output:
-        metadata = "results/datasets/h3_simulated_{percentage}pct/corrected_metadata.tsv"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["num_date"] = 2000.0 + (df["generation"] / 100.0)
-        df["date"] = df["num_date"].apply(float_to_datestring)
-        df["year"]  = pd.to_datetime(df["date"]).dt.year
-        df["month"]  = pd.to_datetime(df["date"]).dt.month
-
-        df[df["fitness"] > 0].to_csv(output.metadata, header=True, index=False, sep="\t")
-
-
-rule filter_simulated:
-    input:
-        sequences = rules.parse_simulated_sequences.output.sequences,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata
-    output:
-        sequences = 'results/datasets/h3_simulated_{percentage}pct/filtered_sequences.fasta'
-    params:
-        # Skip the first 1,000 generations (or 1000 / 100 years) for simulation burn-in.
-        min_date = 2010.0,
-        group_by = "year month",
-        sequences_per_month = 10
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/filter_h3_simulated_{percentage}pct.txt"
-    shell:
-        """
-        augur filter \
-            --sequences {input.sequences} \
-            --metadata {input.metadata} \
-            --min-date {params.min_date} \
-            --group-by {params.group_by} \
-            --sequences-per-group {params.sequences_per_month} \
-            --output {output}
-        """
-
-
-rule filter_metadata_simulated:
-    input:
-        sequences = rules.filter_simulated.output.sequences,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata,
-    output:
-        metadata = "results/datasets/h3_simulated_{percentage}pct/filtered_metadata.tsv"
-    run:
-        # Get a list of all samples that passed the sequence filtering step.
-        sequences = Bio.SeqIO.parse(input.sequences, "fasta")
-        sample_ids = [sequence.id for sequence in sequences]
-
-        # Load all metadata.
-        metadata = pd.read_csv(input.metadata, sep="\t")
-        filtered_metadata = metadata[metadata["strain"].isin(sample_ids)].copy()
-
-        # Save only the metadata records that have entries in the filtered sequences.
-        filtered_metadata.to_csv(output.metadata, sep="\t", header=True, index=False)
-
-
-rule get_strains_for_simulated_sequences:
-    input:
-        metadata = rules.filter_metadata_simulated.output.metadata
-    output:
-        strains = "results/datasets/h3_simulated_{percentage}pct/strains.txt"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["strain"].to_csv(output.strains, header=False, index=False)
-
-
-rule get_strains_by_timepoint_simulated:
-    input:
-        metadata = rules.filter_metadata_simulated.output.metadata
-    output:
-        strains = BUILD_TIMEPOINT_PATH_SIMULATIONS + "strains.txt"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/partition_strains_by_timepoint.py \
-            {input.metadata} \
-            {wildcards.timepoint} \
-            {output}
-        """
+def _get_max_date_for_augur_frequencies_by_wildcards(wildcards):
+    return timestamp_to_float(pd.to_datetime(_get_end_date_by_wildcards(wildcards)))
 
 
 rule extract_simulated:
     input:
-        sequences = rules.parse_simulated_sequences.output.sequences,
-        strains = rules.get_strains_by_timepoint_simulated.output.strains
+        sequences = _get_sequences_by_wildcards,
+        strains = _get_strains_by_wildcards,
     output:
         sequences = BUILD_TIMEPOINT_PATH_SIMULATIONS + "filtered_sequences.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -255,7 +153,7 @@ rule refine_simulated:
     input:
         tree = rules.tree_simulated.output.tree,
         alignment = rules.align_simulated.output.alignment,
-        metadata = rules.filter_metadata_simulated.output.metadata
+        metadata = _get_metadata_by_wildcards
     output:
         tree = BUILD_TIMEPOINT_PATH_SIMULATIONS + "tree.nwk",
         node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "branch_lengths.json"
@@ -291,16 +189,18 @@ rule estimate_frequencies_simulated:
           - proportion wide: {params.proportion_wide}
         """
     input:
-        tree=rules.refine_simulated.output.tree,
-        metadata=rules.filter_metadata_simulated.output.metadata,
-        weights="data/region_weights.json"
+        tree = rules.refine_simulated.output.tree,
+        metadata = _get_metadata_by_wildcards,
+        weights = "data/region_weights.json"
     output:
         frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "frequencies.json"
     params:
-        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
-        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
-        proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=PIVOT_INTERVAL
+        narrow_bandwidth = config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth = config["frequencies"]["wide_bandwidth"],
+        proportion_wide = config["frequencies"]["proportion_wide"],
+        pivot_frequency = PIVOT_INTERVAL,
+        start_date = _get_start_date_by_wildcards,
+        end_date = _get_end_date_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
     log: "logs/estimate_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
@@ -309,7 +209,7 @@ rule estimate_frequencies_simulated:
 --wide-bandwidth {params.wide_bandwidth} \
 --proportion-wide {params.proportion_wide} \
 --pivot-frequency {params.pivot_frequency} \
---start-date {wildcards.start} \
+--start-date {params.start_date} \
 --end-date {wildcards.timepoint} \
 --include-internal-nodes &> {log}"""
 
@@ -320,8 +220,8 @@ rule estimate_diffusion_frequencies_simulated:
         Estimating diffusion frequencies for {input.tree}
         """
     input:
-        tree=rules.refine_simulated.output.tree,
-        metadata=rules.filter_metadata_simulated.output.metadata
+        tree = rules.refine_simulated.output.tree,
+        metadata = _get_metadata_by_wildcards
     output:
         frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "diffusion_frequencies.json"
     params:
@@ -329,8 +229,8 @@ rule estimate_diffusion_frequencies_simulated:
         stiffness = config["frequencies"]["stiffness"],
         inertia = config["frequencies"]["inertia"],
         min_freq = config["frequencies"]["min_freq"],
-        min_date = _get_min_date_for_augur_frequencies,
-        max_date = _get_max_date_for_augur_frequencies
+        min_date = _get_min_date_for_augur_frequencies_by_wildcards,
+        max_date = _get_max_date_for_augur_frequencies_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
     log: "logs/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
@@ -614,9 +514,9 @@ rule tip_frequencies_simulated:
           - proportion wide: {params.proportion_wide}
         """
     input:
-        tree=rules.refine_simulated.output.tree,
-        metadata=rules.filter_metadata_simulated.output.metadata,
-        weights="data/region_weights.json"
+        tree = rules.refine_simulated.output.tree,
+        metadata = _get_metadata_by_wildcards,
+        weights = "data/region_weights.json"
     output:
         frequencies = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tip-frequencies.json"
     params:
@@ -624,8 +524,8 @@ rule tip_frequencies_simulated:
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
         proportion_wide=config["frequencies"]["proportion_wide"],
         pivot_frequency=PIVOT_INTERVAL,
-        min_date=_get_min_date_for_augur_frequencies,
-        max_date=_get_max_date_for_augur_frequencies
+        min_date=_get_min_date_for_augur_frequencies_by_wildcards,
+        max_date=_get_max_date_for_augur_frequencies_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
     log: "logs/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
@@ -671,7 +571,7 @@ def _get_node_data_for_export_simulated(wildcards):
 rule export_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
-        metadata = rules.filter_metadata_simulated.output.metadata,
+        metadata = _get_metadata_by_wildcards,
         auspice_config = "config/auspice_config.json",
         node_data = _get_node_data_for_export_simulated,
         colors = "config/colors.tsv"
@@ -700,7 +600,7 @@ rule export_simulated:
 rule convert_node_data_to_table_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
-        metadata = rules.filter_metadata_simulated.output.metadata,
+        metadata = _get_metadata_by_wildcards,
         node_data = _get_node_data_for_export_simulated
     output:
         table = BUILD_TIMEPOINT_PATH_SIMULATIONS + "node_data.tsv"
@@ -756,9 +656,12 @@ rule merge_node_data_and_frequencies_simulated:
 
 
 def _get_simulated_tip_attributes_by_wildcards(wildcards):
+    start_date = config["builds"][wildcards.type][wildcards.sample]["start_date"]
+    end_date = config["builds"][wildcards.type][wildcards.sample]["end_date"]
+
     timepoints_simulations = _get_timepoints_for_build_interval(
-        wildcards.start,
-        wildcards.end,
+        start_date,
+        end_date,
         PIVOT_INTERVAL,
         MIN_YEARS_PER_BUILD
     )
@@ -829,72 +732,72 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
         """
 
 
-rule collect_annotated_tip_clade_tables_simulated:
-    input:
-        expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tips_to_clades.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
-    output:
-        tip_clade_table = BUILD_PATH_SIMULATIONS + "tips_to_clades.tsv"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/collect_tables.py \
-            --tables {input} \
-            --output {output.tip_clade_table}
-        """
+# rule collect_annotated_tip_clade_tables_simulated:
+#     input:
+#         expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tips_to_clades.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
+#     output:
+#         tip_clade_table = BUILD_PATH_SIMULATIONS + "tips_to_clades.tsv"
+#     conda: "../envs/anaconda.python3.yaml"
+#     shell:
+#         """
+#         python3 scripts/collect_tables.py \
+#             --tables {input} \
+#             --output {output.tip_clade_table}
+#         """
 
 
-rule select_clades_simulated:
-    input:
-        attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
-        tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
-    output:
-        clades = BUILD_PATH_SIMULATIONS + "final_clade_frequencies.tsv"
-    params:
-        primary_segment = config["fitness_model"]["primary_segment"],
-        delta_months = config["fitness_model"]["delta_months"]
-    conda: "../envs/anaconda.python3.yaml"
-    log: "logs/select_clades_" + BUILD_LOG_STEM_SIMULATIONS + ".txt"
-    shell:
-        """
-        python3 scripts/select_clades.py \
-            --tip-attributes {input.attributes} \
-            --tips-to-clades {input.tips_to_clades} \
-            --primary-segment {params.primary_segment} \
-            --delta-months {params.delta_months} \
-            --output {output} &> {log}
-        """
+# rule select_clades_simulated:
+#     input:
+#         attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
+#         tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
+#     output:
+#         clades = BUILD_PATH_SIMULATIONS + "final_clade_frequencies.tsv"
+#     params:
+#         primary_segment = config["fitness_model"]["primary_segment"],
+#         delta_months = config["fitness_model"]["delta_months"]
+#     conda: "../envs/anaconda.python3.yaml"
+#     log: "logs/select_clades_" + BUILD_LOG_STEM_SIMULATIONS + ".txt"
+#     shell:
+#         """
+#         python3 scripts/select_clades.py \
+#             --tip-attributes {input.attributes} \
+#             --tips-to-clades {input.tips_to_clades} \
+#             --primary-segment {params.primary_segment} \
+#             --delta-months {params.delta_months} \
+#             --output {output} &> {log}
+#         """
 
 
-rule fit_models_by_clades_simulated:
-    input:
-        attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
-        final_clade_frequencies = rules.select_clades_simulated.output.clades
-    output:
-        model = BUILD_PATH_SIMULATIONS + "models_by_clades/{predictors}.json"
-    params:
-        predictors = _get_predictor_list,
-        delta_months = config["fitness_model"]["delta_months"],
-        training_window = config["fitness_model"]["training_window"],
-        cost_function = config["fitness_model"]["clade_cost_function"],
-        l1_lambda = config["fitness_model"]["l1_lambda"],
-        pseudocount = config["fitness_model"]["pseudocount"]
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
-    log: "logs/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
-    shell:
-        """
-        python3 src/fit_model.py \
-            --tip-attributes {input.attributes} \
-            --final-clade-frequencies {input.final_clade_frequencies} \
-            --training-window {params.training_window} \
-            --delta-months {params.delta_months} \
-            --predictors {params.predictors} \
-            --cost-function {params.cost_function} \
-            --l1-lambda {params.l1_lambda} \
-            --pseudocount {params.pseudocount} \
-            --target clades \
-            --output {output} &> {log}
-        """
+# rule fit_models_by_clades_simulated:
+#     input:
+#         attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
+#         final_clade_frequencies = rules.select_clades_simulated.output.clades
+#     output:
+#         model = BUILD_PATH_SIMULATIONS + "models_by_clades/{predictors}.json"
+#     params:
+#         predictors = _get_predictor_list,
+#         delta_months = config["fitness_model"]["delta_months"],
+#         training_window = config["fitness_model"]["training_window"],
+#         cost_function = config["fitness_model"]["clade_cost_function"],
+#         l1_lambda = config["fitness_model"]["l1_lambda"],
+#         pseudocount = config["fitness_model"]["pseudocount"]
+#     conda: "../envs/anaconda.python3.yaml"
+#     benchmark: "benchmarks/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
+#     log: "logs/fitness_model_clades_" + BUILD_LOG_STEM_SIMULATIONS + "_{predictors}.txt"
+#     shell:
+#         """
+#         python3 src/fit_model.py \
+#             --tip-attributes {input.attributes} \
+#             --final-clade-frequencies {input.final_clade_frequencies} \
+#             --training-window {params.training_window} \
+#             --delta-months {params.delta_months} \
+#             --predictors {params.predictors} \
+#             --cost-function {params.cost_function} \
+#             --l1-lambda {params.l1_lambda} \
+#             --pseudocount {params.pseudocount} \
+#             --target clades \
+#             --output {output} &> {log}
+#         """
 
 
 rule fit_models_by_distances_simulated:
@@ -947,8 +850,8 @@ rule plot_tree_simulated:
             --end-date {params.end} &> {log}
         """
 
-rule aggregate_tree_plots_simulated:
-    input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
-    output:
-        trees="results/figures/trees_simulated.pdf"
-    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+# rule aggregate_tree_plots_simulated:
+#     input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
+#     output:
+#         trees="results/figures/trees_simulated.pdf"
+#     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
