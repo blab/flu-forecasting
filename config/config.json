@@ -11,7 +11,8 @@
             },
             "sample_2": {
                 "seed": 2,
-                "viruses_per_month": 10
+                "viruses_per_month": 10,
+                "description": "Simulated populations with stronger exposure penalty of 0.2 instead of 0.03"
             }
         }
     },
