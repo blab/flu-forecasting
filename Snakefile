@@ -10,16 +10,10 @@ from src.forecast.fitness_model import get_train_validate_timepoints
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter, aggregate_tree_plots
+localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter
 
 wildcard_constraints:
-    sample="sample_(\d+|titers)|luksza_lassig",
-    viruses="\d+",
-    bandwidth="[0-9]*\.?[0-9]+",
-    lineage="[a-z0-9]+",
-    segment="[a-z]+[0-9]?",
-    start="\d{4}-\d{2}-\d{2}",
-    end="\d{4}-\d{2}-\d{2}",
+    type="(natural|simulated)",
     timepoint="\d{4}-\d{2}-\d{2}"
 
 # Load configuration parameters.
@@ -168,10 +162,6 @@ def _get_distance_comparisons_for_simulations(wildcards):
                           (masks_config["compare_to"] != "pairwise")]
     return " ".join(config.loc[:, "compare_to"].values)
 
-#
-# Define helper functions.
-#
-
 def _get_start_date_from_range(wildcards):
     return "%s-10-01" % wildcards["year_range"].split("-")[0]
 
@@ -269,10 +259,11 @@ BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
 BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
 
 #include: "rules/filter_passaged_viruses.smk"
-include: "rules/modular_augur_builds.smk"
+#include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"
-include: "rules/fitness_model.smk"
-include: "rules/quality_control_plots.smk"
+#include: "rules/fitness_model.smk"
+#include: "rules/quality_control_plots.smk"
+include: "rules/utils.smk"
 include: "rules/datasets.smk"
 include: "rules/datasets_simulations.smk"
 

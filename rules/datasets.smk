@@ -1,35 +1,27 @@
 """
 Rules to build simulated datasets.
 """
-from augur.frequency_estimators import float_to_datestring
-import Bio.SeqIO
-import os
-import pandas as pd
+# Set template for root path of any given dataset.
+# Datasets are defined by their type (e.g., natural, simulated, etc.) and their sample name.
+DATA_SIMULATED_ROOT_PATH = "data/simulated/{sample}/"
+DATA_NATURAL_ROOT_PATH = "data/natural/{sample}/"
 
-# Set snakemake directory
-SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
-
-DATA_SIMULATED_ROOT_PATH = "data/{type}/{sample}/"
-
-
-def _get_viruses_per_month(wildcards):
-    return config["datasets"][wildcards.type][wildcards.sample]["viruses_per_month"]
-
-def _get_simulation_seed(wildcards):
-    return config["datasets"][wildcards.type][wildcards.sample]["seed"]
+#
+# Rules for simulated datasets
+#
 
 
 rule run_simulation:
     input:
-        simulation_config = "data/{type}/{sample}/influenza_h3n2_ha.xml"
+        simulation_config = DATA_SIMULATED_ROOT_PATH + "influenza_h3n2_ha.xml"
     output:
-        sequences = "data/{type}/{sample}/simulated_HA_sequences.fasta"
+        sequences = DATA_SIMULATED_ROOT_PATH + "simulated_HA_sequences.fasta"
     params:
         seed = _get_simulation_seed
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
-        cd data/{wildcards.type}/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/dist/santa-sim/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/{input.simulation_config}
+        cd data/simulated/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/dist/santa-sim/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/{input.simulation_config}
         """
 
 
@@ -79,7 +71,7 @@ rule filter_simulated:
         group_by = "year month",
         viruses_per_month = _get_viruses_per_month
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/filter_{type}_{sample}.txt"
+    benchmark: "benchmarks/filter_simulated_{sample}.txt"
     shell:
         """
         augur filter \
@@ -119,3 +111,179 @@ rule get_strains_for_simulated_sequences:
     run:
         df = pd.read_csv(input.metadata, sep="\t")
         df["strain"].to_csv(output.strains, header=False, index=False)
+
+
+#
+# Rules for natural datasets
+#
+
+
+rule download_sequences:
+    output:
+        sequences = "data/natural/{sample}/original_sequences.fasta"
+    params:
+        fasta_fields = _get_fasta_fields,
+        lineage = _get_lineage,
+        segment = _get_segment
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/download_sequences_natural_{sample}.txt"
+    log: "logs/download_sequences_natural_{sample}.log"
+    shell:
+        """
+        python3 {path_to_fauna}/vdb/download.py \
+            --database vdb \
+            --virus flu \
+            --fasta_fields {params.fasta_fields} \
+            --resolve_method split_passage \
+            --select locus:{params.segment} lineage:seasonal_{params.lineage} \
+            --path data/natural/{wildcards.sample} \
+            --fstem original_sequences
+        """
+
+
+rule download_all_titers_by_assay:
+    output:
+        titers = DATA_NATURAL_ROOT_PATH + "complete_titers.json"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/download_all_titers_natural_{sample}.txt"
+    log: "logs/download_all_titers_natural_{sample}.log"
+    params:
+        databases = _get_titer_databases,
+        lineage = _get_lineage,
+        assay = _get_titer_assay
+    shell:
+        """
+        python3 {path_to_fauna}/tdb/download.py \
+            --database {params.databases} \
+            --virus flu \
+            --subtype {params.lineage} \
+            --select assay_type:{params.assay} \
+            --path data/natural/{wildcards.sample} \
+            --fstem complete \
+            --ftype json
+        """
+
+
+rule get_titers_by_passage:
+    input:
+        titers = rules.download_all_titers_by_assay.output.titers
+    output:
+        titers = DATA_NATURAL_ROOT_PATH + "titers.tsv"
+    params:
+        passage = _get_titer_passage
+    benchmark: "benchmarks/get_titers_natural_{sample}.txt"
+    log: "logs/get_titers_natural_{sample}.log"
+    run:
+        df = pd.read_json(input.titers)
+        passaged = (df["serum_passage_category"] == params.passage)
+        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
+        tsv_fields = [
+            "virus_strain",
+            "serum_strain",
+            "serum_id",
+            "source",
+            "titer",
+            "assay_type"
+        ]
+
+        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
+        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+
+
+rule parse:
+    input:
+        sequences = rules.download_sequences.output.sequences
+    output:
+        sequences = DATA_NATURAL_ROOT_PATH + "sequences.fasta",
+        metadata = DATA_NATURAL_ROOT_PATH + "metadata.tsv"
+    params:
+        fasta_fields = _get_fasta_fields
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur parse \
+            --sequences {input.sequences} \
+            --output-sequences {output.sequences} \
+            --output-metadata {output.metadata} \
+            --fields {params.fasta_fields}
+        """
+
+
+rule filter:
+    input:
+        metadata = rules.parse.output.metadata,
+        sequences = rules.parse.output.sequences,
+        exclude = _get_outliers
+    output:
+        sequences = protected(DATA_NATURAL_ROOT_PATH + "filtered_sequences.fasta")
+    params:
+        min_length = _get_min_sequence_length
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/filter_natural_{sample}.txt"
+    shell:
+        """
+        augur filter \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --min-length {params.min_length} \
+            --exclude {input.exclude} \
+            --exclude-where country=? region=? passage=egg \
+            --output {output}
+        """
+
+
+rule filter_metadata:
+    input:
+        metadata = rules.parse.output.metadata,
+    output:
+        metadata = DATA_NATURAL_ROOT_PATH + "filtered_metadata.tsv"
+    run:
+        df = pd.read_csv(input.metadata, sep="\t")
+
+        # Exclude strains with ambiguous collection dates.
+        df[~df["date"].str.contains("XX")].to_csv(output.metadata, sep="\t", header=True, index=False)
+
+
+rule select_strains:
+    input:
+        sequences = rules.filter.output.sequences,
+        metadata = rules.filter_metadata.output.metadata,
+        titers = rules.get_titers_by_passage.output.titers,
+        include = _get_required_strains
+    output:
+        strains = DATA_NATURAL_ROOT_PATH + "strains.txt"
+    params:
+        viruses_per_month = _get_viruses_per_month,
+        lineage = _get_lineage,
+        segment = _get_segment,
+        start_date = _get_start_date_for_dataset,
+        end_date = _get_end_date_for_dataset,
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/select_strains_natural_{sample}.txt"
+    log: "logs/select_strains_natural_{sample}.log"
+    shell:
+        """
+        python3 scripts/select_strains.py \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --segments {params.segment} \
+            --include {input.include} \
+            --lineage {params.lineage} \
+            --time-interval {params.start_date} {params.end_date} \
+            --viruses_per_month {params.viruses_per_month} \
+            --titers {input.titers} \
+            --output {output.strains}
+        """
+
+
+rule extract_strain_metadata:
+    input:
+        strains = rules.select_strains.output.strains,
+        metadata = rules.filter_metadata.output.metadata
+    output:
+        metadata = protected(DATA_NATURAL_ROOT_PATH + "strains_metadata.tsv")
+    run:
+        strains = pd.read_table(input.strains, header=None, names=["strain"])
+        metadata = pd.read_table(input.metadata)
+        selected_metadata = strains.merge(metadata, how="left", on="strain")
+        selected_metadata.to_csv(output.metadata, sep="\t", index=False)

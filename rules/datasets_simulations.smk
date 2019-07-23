@@ -5,23 +5,6 @@ BUILD_LOG_STEM_SIMULATIONS = "{type}_{sample}"
 BUILD_TIMEPOINT_PATH_SIMULATIONS = BUILD_PATH_SIMULATIONS + "timepoints/{timepoint}/"
 BUILD_SEGMENT_LOG_STEM_SIMULATIONS = "{type}_{sample}_{timepoint}"
 
-START_DATE_SIMULATIONS = "2010-10-01"
-END_DATE_SIMULATIONS = "2030-10-01"
-TIMEPOINTS_SIMULATIONS = _get_timepoints_for_build_interval(
-    START_DATE_SIMULATIONS,
-    END_DATE_SIMULATIONS,
-    PIVOT_INTERVAL,
-    MIN_YEARS_PER_BUILD
-)
-TRAIN_VALIDATE_TIMEPOINTS_SIMULATIONS = get_train_validate_timepoints(
-    TIMEPOINTS_SIMULATIONS,
-    config["fitness_model"]["delta_months"],
-    config["fitness_model"]["training_window"]
-)
-PREDICTORS_SIMULATED = config["predictors_simulated"]
-
-#pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS_SIMULATIONS)
-#pprint.pprint(TIMEPOINTS_SIMULATIONS)
 
 def float_to_datestring(time):
     """Convert a floating point date to a date string
@@ -59,32 +42,25 @@ def float_to_datestring(time):
     return "%s-%02d-%02d" % (year, month, day)
 
 
-def _get_sequences_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["sequences"]
-
-def _get_metadata_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["metadata"]
-
-def _get_strains_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["strains"]
-
-def _get_start_date_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["start_date"]
-
-def _get_end_date_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["end_date"]
-
-def _get_min_date_for_augur_frequencies_by_wildcards(wildcards):
-    return timestamp_to_float(pd.to_datetime(_get_start_date_by_wildcards(wildcards)))
-
-def _get_max_date_for_augur_frequencies_by_wildcards(wildcards):
-    return timestamp_to_float(pd.to_datetime(_get_end_date_by_wildcards(wildcards)))
+rule get_strains_by_timepoint_simulated:
+    input:
+        metadata = _get_metadata_by_wildcards
+    output:
+        strains = BUILD_TIMEPOINT_PATH_SIMULATIONS + "strains.txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/partition_strains_by_timepoint.py \
+            {input.metadata} \
+            {wildcards.timepoint} \
+            {output}
+        """
 
 
 rule extract_simulated:
     input:
         sequences = _get_sequences_by_wildcards,
-        strains = _get_strains_by_wildcards,
+        strains = rules.get_strains_by_timepoint_simulated.output.strains,
     output:
         sequences = BUILD_TIMEPOINT_PATH_SIMULATIONS + "filtered_sequences.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -240,7 +216,6 @@ rule estimate_diffusion_frequencies_simulated:
         --metadata {input.metadata} \
         --output {output} \
         --include-internal-nodes \
-        --ignore-char X \
         --stiffness {params.stiffness} \
         --inertia {params.inertia} \
         --minimal-frequency {params.min_freq} \
@@ -839,8 +814,8 @@ rule plot_tree_simulated:
     benchmark: "benchmarks/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
     log: "logs/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
     params:
-        start = START_DATE_SIMULATIONS,
-        end = END_DATE_SIMULATIONS
+        start = _get_start_date_by_wildcards,
+        end = _get_end_date_by_wildcards
     shell:
         """
         python3 scripts/plot_tree.py \
