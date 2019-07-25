@@ -68,6 +68,9 @@ def _get_start_date_for_dataset(wildcards):
 def _get_end_date_for_dataset(wildcards):
     return config["datasets"][wildcards.sample]["end_date"]
 
+def _get_reference(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["reference"]
+
 def _get_pivot_interval(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["pivot_interval"]
 

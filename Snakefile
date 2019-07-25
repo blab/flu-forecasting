@@ -14,6 +14,7 @@ localrules: download_sequences, download_all_titers_by_assay, filter_metadata, f
 
 wildcard_constraints:
     type="(natural|simulated)",
+    sample="\w+",
     timepoint="\d{4}-\d{2}-\d{2}"
 
 # Load configuration parameters.
@@ -174,16 +175,34 @@ def _get_clock_rate_by_wildcards(wildcards):
         ('yam', 'ha'): 0.0019, ('yam', 'na'):0.0013
     }
 
+    dataset = config["datasets"][wildcards.sample]
+    lineage = dataset["lineage"]
+    segment = dataset["segment"]
+
     try:
-        rate = rates_by_lineage_and_segment[(wildcards.lineage, wildcards.segment)]
+        rate = rates_by_lineage_and_segment[(lineage, segment)]
     except KeyError:
-        print(f"ERROR: No clock rate defined for {wildcards.lineage} and {wildcards.segment}", file=sys.stderr)
-        raise
+        rate = None
 
     return rate
 
-def _get_clock_std_dev_by_wildcards(wildcards):
-    return 0.2 * _get_clock_rate_by_wildcards(wildcards)
+def _get_clock_rate_argument(wildcards):
+    rate = _get_clock_rate_by_wildcards(wildcards)
+    if rate is None:
+        argument = ""
+    else:
+        argument = "--clock-rate %.5f" % rate
+
+    return argument
+
+def _get_clock_std_dev_argument(wildcards):
+    rate = _get_clock_rate_by_wildcards(wildcards)
+    if rate is None:
+        argument = ""
+    else:
+        argument = "--clock-std-dev %.5f" % (0.2 * rate)
+
+    return argument
 
 def _get_min_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.start))

@@ -74,13 +74,9 @@ rule extract_simulated:
 
 
 rule align_simulated:
-    message:
-        """
-        Aligning sequences for {wildcards}
-          - filling gaps with N
-        """
     input:
         sequences = rules.extract_simulated.output.sequences,
+        reference = _get_reference
     output:
         alignment = BUILD_TIMEPOINT_PATH_SIMULATIONS + "aligned.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -90,7 +86,9 @@ rule align_simulated:
         """
         augur align \
             --sequences {input.sequences} \
+            --reference-sequence {input.reference} \
             --output {output.alignment} \
+            --remove-reference \
             --fill-gaps \
             --nthreads {threads}
         """
@@ -118,14 +116,6 @@ rule tree_simulated:
 
 
 rule refine_simulated:
-    message:
-        """
-        Refining tree ({wildcards})
-          - estimate timetree
-          - use {params.coalescent} coalescent timescale
-          - estimate {params.date_inference} node dates
-          - filter tips more than {params.clock_filter_iqd} IQDs from clock expectation
-        """
     input:
         tree = rules.tree_simulated.output.tree,
         alignment = rules.align_simulated.output.alignment,
@@ -136,7 +126,8 @@ rule refine_simulated:
     params:
         coalescent = "const",
         date_inference = "marginal",
-        clock_filter_iqd = 4
+        clock_rate = _get_clock_rate_argument,
+        clock_std_dev = _get_clock_std_dev_argument
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/refine_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
     log: "logs/refine_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
@@ -149,7 +140,9 @@ rule refine_simulated:
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
             --timetree \
-            --clock-filter-iqd {params.clock_filter_iqd} \
+            --no-covariance \
+            {params.clock_rate} \
+            {params.clock_std_dev} \
             --coalescent {params.coalescent} \
             --date-confidence \
             --date-inference {params.date_inference} &> {log}
@@ -174,7 +167,7 @@ rule estimate_frequencies_simulated:
         narrow_bandwidth = config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth = config["frequencies"]["wide_bandwidth"],
         proportion_wide = config["frequencies"]["proportion_wide"],
-        pivot_frequency = PIVOT_INTERVAL,
+        pivot_frequency = _get_pivot_interval,
         start_date = _get_start_date_by_wildcards,
         end_date = _get_end_date_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
@@ -201,7 +194,7 @@ rule estimate_diffusion_frequencies_simulated:
     output:
         frequencies = BUILD_TIMEPOINT_PATH_SIMULATIONS + "diffusion_frequencies.json"
     params:
-        pivot_frequency = PIVOT_INTERVAL,
+        pivot_frequency = _get_pivot_interval,
         stiffness = config["frequencies"]["stiffness"],
         inertia = config["frequencies"]["inertia"],
         min_freq = config["frequencies"]["min_freq"],
@@ -361,10 +354,33 @@ rule delta_frequency_simulated:
         """
 
 
+rule traits:
+    message: "Inferring ancestral traits for {params.columns!s}"
+    input:
+        tree = rules.refine_simulated.output.tree,
+        metadata = _get_metadata_by_wildcards
+    output:
+        node_data = BUILD_TIMEPOINT_PATH_SIMULATIONS + "traits.json",
+    params:
+        columns = "region country"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/traits_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    shell:
+        """
+        augur traits \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --output {output.node_data} \
+            --columns {params.columns} \
+            --confidence
+        """
+
+
 rule distances_simulated:
     input:
         tree = rules.refine_simulated.output.tree,
         alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH_SIMULATIONS),
+        # TODO: define distance maps in build configs
         distance_maps = _get_distance_maps_for_simulations,
         date_annotations = rules.refine_simulated.output.node_data
     params:
@@ -390,6 +406,7 @@ rule distances_simulated:
             --latest-date {params.latest_date} \
             --output {output}
         """
+
 
 rule pairwise_distances_simulated:
     input:
@@ -420,6 +437,7 @@ rule pairwise_distances_simulated:
             --years-back-to-compare {params.years_back_to_compare} \
             --output {output} &> {log}
         """
+
 
 def _get_cross_immunity_distance_attributes_for_simulations(wildcards):
     return config["cross_immunity"]["h3n2"]["ha"]["distance_attributes"]
@@ -480,6 +498,136 @@ rule lbi_simulated:
         """
 
 
+rule filter_translations_by_date:
+    input:
+        alignments = rules.reconstruct_translations_simulated.output.aa_alignment,
+        branch_lengths = rules.refine_simulated.output.node_data
+    output:
+        alignments = BUILD_TIMEPOINT_PATH_SIMULATIONS + "filtered-aa-seq_{gene}.fasta"
+    params:
+        min_date = _get_min_date_for_translation_filter
+    shell:
+        """
+        python3 scripts/filter_translations.py \
+            --alignment {input.alignments} \
+            --branch-lengths {input.branch_lengths} \
+            --min-date {params.min_date} \
+            --output {output}
+        """
+
+
+rule titers_sub:
+    input:
+        titers = _get_titers_by_wildcards,
+        aa_muts = rules.translate_simulated.output,
+        alignments = filtered_translations,
+        tree = rules.refine_simulated.output.tree
+    params:
+        genes = gene_names
+    output:
+        titers_model = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titers-sub-model.json",
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_sub_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/titers_sub_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell:
+        """
+        augur titers sub \
+            --titers {input.titers} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --allow-empty-model \
+            --output {output.titers_model} &> {log}
+        """
+
+
+rule titers_tree:
+    input:
+        titers = _get_titers_by_wildcards,
+        tree = rules.refine_simulated.output.tree
+    output:
+        titers_model = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titers-tree-model.json",
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/titers_tree_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".txt"
+    log: "logs/titers_tree_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + ".log"
+    shell:
+        """
+        augur titers tree \
+            --titers {input.titers} \
+            --tree {input.tree} \
+            --allow-empty-model \
+            --output {output.titers_model} &> {log}
+        """
+
+
+rule convert_titer_model_to_distance_map:
+    input:
+        model = rules.titers_sub.output.titers_model
+    output:
+        distance_map = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titer_substitution_distance_map.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/titer_model_to_distance_map.py \
+            --model {input.model} \
+            --output {output}
+        """
+
+
+rule titer_distances:
+    input:
+        tree = rules.refine_simulated.output.tree,
+        alignments = translations,
+        distance_maps = rules.convert_titer_model_to_distance_map.output.distance_map,
+        date_annotations = rules.refine_simulated.output.node_data
+    params:
+        # TODO: move these params to builds in config file
+        genes = gene_names,
+        comparisons = "root ancestor pairwise",
+        attribute_names = "cTiterSub cTiterSub_star cTiterSub_pairwise",
+        earliest_date = _get_distance_earliest_date_by_wildcards,
+        latest_date = _get_distance_latest_date_by_wildcards
+    output:
+        distances = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titer_substitution_distances.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur distance \
+            --tree {input.tree} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --compare-to {params.comparisons} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} {input.distance_maps} {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --earliest-date {params.earliest_date} \
+            --latest-date {params.latest_date} \
+            --output {output}
+        """
+
+
+rule titer_cross_immunities:
+    input:
+        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        distances = rules.titer_distances.output.distances
+    params:
+        distance_attributes = "cTiterSub_pairwise",
+        immunity_attributes = "cTiterSub_x",
+        decay_factors = "14.0"
+    output:
+        cross_immunities = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titer_substitution_cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
+            --output {output}
+        """
+
+
 rule tip_frequencies_simulated:
     message:
         """
@@ -493,12 +641,12 @@ rule tip_frequencies_simulated:
         metadata = _get_metadata_by_wildcards,
         weights = "data/region_weights.json"
     output:
-        frequencies = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tip-frequencies.json"
+        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tip-frequencies.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
         proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=PIVOT_INTERVAL,
+        pivot_frequency=_get_pivot_interval,
         min_date=_get_min_date_for_augur_frequencies_by_wildcards,
         max_date=_get_max_date_for_augur_frequencies_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
@@ -538,6 +686,16 @@ def _get_node_data_for_export_simulated(wildcards):
         rules.lbi_simulated.output.lbi
     ]
 
+    # Define node data that only make sense for natural populations
+    # such as titer models.
+    if wildcards.type == "natural":
+        inputs.extend([
+            rules.traits.output.node_data,
+            rules.titers_tree.output.titers_model,
+            rules.titer_distances.output.distances,
+            rules.titer_cross_immunities.output.cross_immunities
+        ])
+
     # Convert input files from wildcard strings to real file names.
     inputs = [input_file.format(**wildcards) for input_file in inputs]
     return inputs
@@ -551,9 +709,8 @@ rule export_simulated:
         node_data = _get_node_data_for_export_simulated,
         colors = "config/colors.tsv"
     output:
-        auspice_tree = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tree.json",
-        auspice_metadata = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_meta.json"
-#        auspice_sequence = "results/auspice/simulated_flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_seq.json",
+        auspice_tree = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_tree.json",
+        auspice_metadata = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM_SIMULATIONS + "_meta.json"
     params:
         panels = "tree entropy frequencies"
     conda: "../envs/anaconda.python3.yaml"
@@ -580,7 +737,9 @@ rule convert_node_data_to_table_simulated:
     output:
         table = BUILD_TIMEPOINT_PATH_SIMULATIONS + "node_data.tsv"
     params:
-        excluded_fields_arg = _get_excluded_fields_arg
+        excluded_fields_arg = _get_excluded_fields_arg,
+        lineage = _get_lineage,
+        segment = _get_segment
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -591,7 +750,8 @@ rule convert_node_data_to_table_simulated:
             --output {output} \
             {params.excluded_fields_arg} \
             --annotations timepoint={wildcards.timepoint} \
-                          lineage=simulated
+                          lineage={params.lineage} \
+                          segment={params.segment}
         """
 
 
@@ -631,20 +791,24 @@ rule merge_node_data_and_frequencies_simulated:
 
 
 def _get_simulated_tip_attributes_by_wildcards(wildcards):
-    start_date = config["builds"][wildcards.type][wildcards.sample]["start_date"]
-    end_date = config["builds"][wildcards.type][wildcards.sample]["end_date"]
+    build = config["builds"][wildcards.type][wildcards.sample]
+    start_date = build["start_date"]
+    end_date = build["end_date"]
+    pivot_interval = build["pivot_interval"]
+    min_years_per_build = build["min_years_per_build"]
 
     timepoints_simulations = _get_timepoints_for_build_interval(
         start_date,
         end_date,
-        PIVOT_INTERVAL,
-        MIN_YEARS_PER_BUILD
+        pivot_interval,
+        min_years_per_build
     )
 
     return expand(
         BUILD_PATH_SIMULATIONS.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tip_attributes.tsv",
         timepoint=timepoints_simulations
     )
+
 
 rule collect_tip_attributes_simulated:
     input:
