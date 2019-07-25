@@ -19,30 +19,6 @@ wildcard_constraints:
 # Load configuration parameters.
 configfile: "config/config.json"
 
-path_to_fauna = config["path_to_fauna"]
-LINEAGES = config["lineages"]
-SEGMENTS = config["segments"]
-START_DATE = config["start_date"]
-END_DATE = config["end_date"]
-START_DATE_TO_STANDARDIZE = config["start_date_to_standardize"]
-END_DATE_TO_STANDARDIZE = config["end_date_to_standardize"]
-PIVOT_INTERVAL = config["pivot_interval"]
-MIN_YEARS_PER_BUILD = config["min_years_per_build"]
-VIRUSES = config["viruses"]
-TITER_PASSAGES = config["titers"]["passages"]
-TITER_ASSAYS = config["titers"]["assays"]
-PREDICTORS = config["predictors"]
-BANDWIDTHS = config["frequencies"]["bandwidths"]
-MIN_LENGTH = config["min_length"]
-
-# Construct a list of samples to build trees for including an optional tree
-# where sequences with titer measurements are preferred.
-NUMBER_OF_SAMPLES = config["number_of_samples"]
-SAMPLES = list(range(NUMBER_OF_SAMPLES))
-if config["include_titer_tree"]:
-    SAMPLES += ["titers"]
-SAMPLES = ["sample_%s" % sample for sample in SAMPLES]
-
 # Construct a list of timepoints for the requested start/end dates.
 def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min_years_per_build):
     # Find all potential timepoints.
@@ -62,15 +38,34 @@ def _get_timepoints_for_build_interval(start_date, end_date, pivot_interval, min
 
     return timepoints
 
-TIMEPOINTS = _get_timepoints_for_build_interval(START_DATE, END_DATE, PIVOT_INTERVAL, MIN_YEARS_PER_BUILD)
-TRAIN_VALIDATE_TIMEPOINTS = get_train_validate_timepoints(
-    TIMEPOINTS,
-    config["fitness_model"]["delta_months"],
-    config["fitness_model"]["training_window"]
-)
-#pprint.pprint(TRAIN_VALIDATE_TIMEPOINTS)
-#TIMEPOINTS = TIMEPOINTS[:7]
-#pprint.pprint(TIMEPOINTS)
+path_to_fauna = config["path_to_fauna"]
+
+TIMEPOINT_TYPES = []
+TIMEPOINT_SAMPLES = []
+TIMEPOINTS = []
+PREDICTOR_TYPES = []
+PREDICTOR_SAMPLES = []
+PREDICTORS = []
+for build_type, builds_by_type in config["builds"].items():
+    for sample, build in builds_by_type.items():
+        # Limit Snakemake rules to active builds.
+        if build["active"]:
+            timepoints_for_build = _get_timepoints_for_build_interval(
+                build["start_date"],
+                build["end_date"],
+                build["pivot_interval"],
+                build["min_years_per_build"]
+            )
+
+            for timepoint in timepoints_for_build:
+                TIMEPOINT_TYPES.append(build_type)
+                TIMEPOINT_SAMPLES.append(sample)
+                TIMEPOINTS.append(timepoint)
+
+            for predictor in build["predictors"]:
+                PREDICTOR_TYPES.append(build_type)
+                PREDICTOR_SAMPLES.append(sample)
+                PREDICTORS.append(predictor)
 
 #
 # Configure amino acid distance masks.
@@ -207,20 +202,21 @@ genes_to_translate = {
     'na': ['NA']
 }
 def gene_names(wildcards=None, segment=None):
-    if wildcards and wildcards.segment in genes_to_translate:
-        genes = genes_to_translate[wildcards.segment]
-    elif segment in genes_to_translate:
+    if segment is None:
+        segment = _get_segment(wildcards)
+
+    if segment in genes_to_translate:
         genes = genes_to_translate[segment]
     else:
-        print(f"WARNING: Genes to translate are not defined for {wildcards.segment}, defaulting to '{wildcards.segment.upper()}'")
-        genes = [wildcards.segment.upper()]
+        print(f"WARNING: Genes to translate are not defined for {segment}, defaulting to '{segment.upper()}'", file=sys.stderr)
+        genes = [segment.upper()]
 
     return genes
 
 def translations(wildcards=None, segment=None, path=None):
     genes = gene_names(wildcards, segment)
     if path is None:
-        path = BUILD_SEGMENT_PATH
+        path = BUILD_TIMEPOINT_PATH_SIMULATIONS
 
     return [path + "aa-seq_%s.fasta" % gene
             for gene in genes]
@@ -228,7 +224,7 @@ def translations(wildcards=None, segment=None, path=None):
 def filtered_translations(wildcards=None, segment=None, path=None):
     genes = gene_names(wildcards, segment)
     if path is None:
-        path = BUILD_SEGMENT_PATH
+        path = BUILD_TIMEPOINT_PATH_SIMULATIONS
 
     return [path + "filtered-aa-seq_%s.fasta" % gene
             for gene in genes]
@@ -238,19 +234,13 @@ def filtered_translations(wildcards=None, segment=None, path=None):
 #
 
 def _get_clade_model_files(wildcards):
-    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_clades/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
+    return expand("results/builds/{type}/{sample}/models_by_clades/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
 
 def _get_distance_model_files(wildcards):
-    return expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/models_by_distances/{predictors}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, predictors=PREDICTORS)
-
-def _get_simulated_clade_model_files(wildcards):
-    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_clades/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
-
-def _get_simulated_distance_model_files(wildcards):
-    return expand("results/builds/simulations/{percentage}/{start}--{end}/models_by_distances/{predictors}.json", percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, predictors=PREDICTORS_SIMULATED)
+    return expand("results/builds/{type}/{sample}/models_by_distances/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
 
 def _get_auspice_files(wildcards):
-    return expand("results/auspice/flu_{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}_{filetype}.json", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE, timepoint=TIMEPOINTS, segment=SEGMENTS, filetype=["tree", "tip-frequencies"])
+    return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
 
 BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
 BUILD_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}"
@@ -269,12 +259,8 @@ include: "rules/datasets_simulations.smk"
 
 rule all:
     input:
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/tip_attributes.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/final_clade_frequencies.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        expand("results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/target_distances.tsv", lineage=LINEAGES, viruses=VIRUSES, sample=SAMPLES, start=START_DATE, end=END_DATE),
-        _get_clade_model_files,
+        #_get_clade_model_files,
         _get_distance_model_files,
-        _get_simulated_distance_model_files,
         _get_auspice_files,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
@@ -290,19 +276,12 @@ rule all:
         # "results/figures/model_parameters.pdf",
         # "results/figures/sequence_distributions.pdf",
         # "results/figures/frequencies.pdf",
-        # expand("results/builds/flu_{lineage}_{year_range}y_{viruses}v_{sample}/strains_metadata.tsv", lineage="h3n2", year_range=YEAR_RANGES, viruses=VIRUSES, sample=SAMPLES)
 
 rule clade_models:
     input: _get_clade_model_files
 
 rule distance_models:
     input: _get_distance_model_files
-
-rule clade_models_simulated:
-    input: _get_simulated_clade_model_files
-
-rule distance_models_simulated:
-    input: _get_simulated_distance_model_files
 
 rule auspice:
     input: _get_auspice_files

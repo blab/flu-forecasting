@@ -122,7 +122,7 @@ rule download_sequences:
     output:
         sequences = "data/natural/{sample}/original_sequences.fasta"
     params:
-        fasta_fields = _get_fasta_fields,
+        fasta_fields = _get_fauna_fields,
         lineage = _get_lineage,
         segment = _get_segment
     conda: "../envs/anaconda.python3.yaml"

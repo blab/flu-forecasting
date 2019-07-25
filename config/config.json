@@ -16,7 +16,8 @@
         "natural_sample_0_with_10_vpm": {
             "lineage": "h3n2",
             "segment": "ha",
-            "fasta_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage_category submitting_lab age gender",
             "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
             "titer_assay": "hi",
             "titer_passage": "cell",
