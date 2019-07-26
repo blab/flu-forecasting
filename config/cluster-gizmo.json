@@ -45,6 +45,12 @@
         "time": "0:15:00",
         "memory": "4096"
     },
+    "reconstruct_translations": {
+        "memory": "4096"
+    },
+    "reconstruct_translations_simulated": {
+        "memory": "4096"
+    },
     "cross_immunities": {
         "memory": "8192"
     },
