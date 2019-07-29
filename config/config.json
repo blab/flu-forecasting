@@ -53,8 +53,18 @@
                 "end_date": "2030-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "active": false,
-                "reference": "config/reference_h3n2_ha.gb"
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "fitness",
+                    "ep_x",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
             }
         },
         "natural": {
