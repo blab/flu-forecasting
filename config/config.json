@@ -121,7 +121,7 @@
     "min_frequency_per_clade": 0.01,
     "delta_pivots": 1,
     "months_for_distance_season": 12,
-    "max_years_for_distances": 3,
+    "max_years_for_distances": 1,
     "years_back_for_target_distance": 3,
     "target_distance_attribute": "hamming",
     "titers": {
