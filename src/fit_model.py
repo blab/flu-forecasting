@@ -600,6 +600,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
             # Standardize predictors by timepoint centering by means at
             # timepoint and mean standard deviation provided.
+            mean_stds = timepoint_df.loc[:, self.predictors].std().values
             standardized_predictors = self.standardize_predictors(predictors, mean_stds)
 
             # Select frequencies from timepoint.
