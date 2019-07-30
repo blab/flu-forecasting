@@ -285,7 +285,7 @@ class ExponentialGrowthModel(object):
         self.mean_stds_ = self.calculate_mean_stds(X, self.predictors)
 
         # Find coefficients that minimize the model's cost function.
-        initial_coefficients = np.random.normal(size=len(self.predictors))
+        initial_coefficients = np.zeros(len(self.predictors))
         results = minimize(
             self._fit,
             initial_coefficients,
