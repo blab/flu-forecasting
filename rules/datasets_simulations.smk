@@ -944,7 +944,9 @@ rule fit_models_by_distances_simulated:
         attributes = rules.annotate_weighted_distances_for_tip_attributes_simulated.output.attributes,
         distances = rules.target_distances_simulated.output.distances
     output:
-        model = BUILD_PATH_SIMULATIONS + "models_by_distances/{predictors}.json"
+        model = BUILD_PATH_SIMULATIONS + "models_by_distances/{predictors}.json",
+        errors = BUILD_PATH_SIMULATIONS + "models_by_distances_errors/{predictors}.tsv",
+        coefficients = BUILD_PATH_SIMULATIONS + "models_by_distances_coefficients/{predictors}.tsv"
     params:
         predictors = _get_predictor_list,
         delta_months = config["fitness_model"]["delta_months"],
@@ -965,8 +967,29 @@ rule fit_models_by_distances_simulated:
             --l1-lambda {params.l1_lambda} \
             --target distances \
             --distances {input.distances} \
-            --output {output} &> {log}
+            --errors-by-timepoint {output.errors} \
+            --coefficients-by-timepoint {output.coefficients} \
+            --output {output.model} &> {log}
         """
+
+
+rule annotate_distance_models:
+    input:
+        errors = rules.fit_models_by_distances_simulated.output.errors,
+        coefficients = rules.fit_models_by_distances_simulated.output.coefficients
+    output:
+        errors = BUILD_PATH_SIMULATIONS + "annotated_models_by_distances_errors/{predictors}.tsv",
+        coefficients = BUILD_PATH_SIMULATIONS + "annotated_models_by_distances_coefficients/{predictors}.tsv"
+    run:
+        errors = pd.read_csv(input.errors, sep="\t")
+        errors["type"] = wildcards.type
+        errors["sample"] = wildcards.sample
+        errors.to_csv(output.errors, sep="\t", header=True, index=False)
+
+        coefficients = pd.read_csv(input.coefficients, sep="\t")
+        coefficients["type"] = wildcards.type
+        coefficients["sample"] = wildcards.sample
+        coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
 
 
 rule plot_tree_simulated:

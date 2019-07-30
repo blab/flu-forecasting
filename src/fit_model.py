@@ -814,6 +814,60 @@ def summarize_cross_validation_scores(scores):
     return summary
 
 
+def get_errors_by_timepoint(scores):
+    """Convert cross-validation errors into a data frame by timepoint and predictors.
+
+    Parameters
+    ----------
+    scores : list
+        a list of cross-validation results including training errors,
+        cross-validation errors, and beta coefficients
+
+    Returns
+    -------
+    pandas.DataFrame
+    """
+    predictors = "-".join(scores[0]["predictors"])
+    errors_by_time = []
+    for score in scores:
+        errors_by_time.append({
+            "predictors": predictors,
+            "validation_timepoint": pd.to_datetime(score["validation_timepoint"]),
+            "validation_error": score["validation_error"],
+            "validation_n": score["validation_n"]
+        })
+
+    return pd.DataFrame(errors_by_time)
+
+
+def get_coefficients_by_timepoint(scores):
+    """Convert model coefficients into a data frame by timepoint and predictors.
+
+    Parameters
+    ----------
+    scores : list
+        a list of cross-validation results including training errors,
+        cross-validation errors, and beta coefficients
+
+    Returns
+    -------
+    pandas.DataFrame
+    """
+    predictors = "-".join(scores[0]["predictors"])
+    coefficients_by_time = []
+    for score in scores:
+        for predictor, coefficient in zip(score["predictors"], score["coefficients"]):
+            coefficients_by_time.append({
+                "predictors": predictors,
+                "predictor": predictor,
+                "coefficient": coefficient,
+                "validation_timepoint": pd.to_datetime(score["validation_timepoint"])
+            })
+
+    print(coefficients_by_time)
+    return pd.DataFrame(coefficients_by_time)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tip-attributes", required=True, help="tab-delimited file describing tip attributes at all timepoints with standardized predictors")
@@ -828,6 +882,8 @@ if __name__ == "__main__":
     parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
     parser.add_argument("--include-attributes", action="store_true", help="include attribute data used to train/validate models in the cross-validation output")
+    parser.add_argument("--errors-by-timepoint", help="optional data frame of cross-validation errors by validation timepoint")
+    parser.add_argument("--coefficients-by-timepoint", help="optional data frame of coefficients by validation timepoint")
 
     args = parser.parse_args()
 
@@ -959,3 +1015,13 @@ if __name__ == "__main__":
     # JSON.
     with open(args.output, "w") as fh:
         json.dump(model_results, fh, indent=1)
+
+    # Save errors by timepoint, if requested.
+    if args.errors_by_timepoint:
+        errors_by_timepoint_df = get_errors_by_timepoint(scores)
+        errors_by_timepoint_df.to_csv(args.errors_by_timepoint, sep="\t", header=True, index=False)
+
+    # Save coefficients by timepoint, if requested.
+    if args.coefficients_by_timepoint:
+        coefficients_by_timepoint_df = get_coefficients_by_timepoint(scores)
+        coefficients_by_timepoint_df.to_csv(args.coefficients_by_timepoint, sep="\t", header=True, index=False)

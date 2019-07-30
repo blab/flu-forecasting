@@ -258,6 +258,12 @@ def _get_clade_model_files(wildcards):
 def _get_distance_model_files(wildcards):
     return expand("results/builds/{type}/{sample}/models_by_distances/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
 
+def _get_distance_model_errors(wildcards):
+    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_errors/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
+
+def _get_distance_model_coefficients(wildcards):
+    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_coefficients/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
+
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
 
@@ -301,6 +307,24 @@ rule clade_models:
 
 rule distance_models:
     input: _get_distance_model_files
+
+rule distance_models_errors:
+    input:
+        errors = _get_distance_model_errors
+    output:
+        errors = "results/distance_model_errors.tsv"
+    run:
+        df = pd.concat([pd.read_csv(error_file, sep="\t") for error_file in input.errors], ignore_index=True)
+        df.to_csv(output.errors, sep="\t", header=True, index=False)
+
+rule distance_models_coefficients:
+    input:
+        coefficients = _get_distance_model_coefficients
+    output:
+        coefficients = "results/distance_model_coefficients.tsv"
+    run:
+        df = pd.concat([pd.read_csv(coefficient_file, sep="\t") for coefficient_file in input.coefficients], ignore_index=True)
+        df.to_csv(output.coefficients, sep="\t", header=True, index=False)
 
 rule auspice:
     input: _get_auspice_files
