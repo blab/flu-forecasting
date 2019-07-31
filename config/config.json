@@ -1,23 +1,169 @@
 {
+    "datasets": {
+        "simulated_sample_0": {
+            "seed": 0,
+            "lineage": "simulated",
+            "segment": "ha",
+            "viruses_per_month": 10
+        },
+        "simulated_sample_1": {
+            "seed": 1,
+            "lineage": "simulated",
+            "segment": "ha",
+            "viruses_per_month": 10
+        },
+        "simulated_sample_2": {
+            "description": "Simulated populations with stronger exposure penalty of 0.2 instead of 0.03",
+            "seed": 2,
+            "lineage": "simulated",
+            "segment": "ha",
+            "viruses_per_month": 10
+        },
+        "natural_sample_0_with_10_vpm": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "viruses_per_month": 10,
+            "min_sequence_length": 1700,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
+            "start_date": "1994-10-01",
+            "end_date": "2015-10-01"
+        },
+        "natural_sample_1_with_10_vpm": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "viruses_per_month": 10,
+            "min_sequence_length": 900,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
+            "start_date": "1994-10-01",
+            "end_date": "2015-10-01"
+        },
+        "luksza_lassig": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell"
+        }
+    },
+    "builds": {
+        "simulated": {
+            "simulated_sample_0": {
+                "description": "Analysis of simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_0/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_0/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_0/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "fitness",
+                    "ep_x",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
+            }
+        },
+        "natural": {
+            "luksza_lassig": {
+                "description": "Manually curated build including sequences from Luksza and Lassig 2014",
+                "sequences": "data/natural/luksza_lassig/sequences_luksza.fasta",
+                "metadata": "data/natural/luksza_lassig/metadata_luksza.tsv",
+                "titers": "data/natural/luksza_lassig/titers.tsv",
+                "start_date": "1992-10-01",
+                "end_date": "2012-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep_x",
+                    "cTiter",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
+            },
+            "natural_sample_0_with_10_vpm": {
+                "description": "Sparse sampling of viruses over 21 years of H3N2 evolution",
+                "sequences": "data/natural/natural_sample_0_with_10_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_0_with_10_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_0_with_10_vpm/titers.tsv",
+                "start_date": "1994-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_x",
+                    "cTiter",
+                    "cTiterSub",
+                    "ne_star",
+                    "dms_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
+            },
+            "natural_sample_1_with_10_vpm": {
+                "description": "Sparse sampling of viruses over 21 years of H3N2 evolution allowing for sequences >900 bp long",
+                "sequences": "data/natural/natural_sample_1_with_10_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_10_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_10_vpm/titers.tsv",
+                "start_date": "1994-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_x",
+                    "cTiter",
+                    "cTiterSub",
+                    "ne_star",
+                    "dms_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
+            }
+        }
+    },
     "path_to_fauna": "../fauna",
-    "min_length":  1700,
-    "lineages": ["h3n2"],
-    "segments": ["ha"],
-    "start_date": "1994-10-01",
-    "end_date": "2015-10-01",
-    "start_date_to_standardize": "2004-10-01",
-    "end_date_to_standardize": "2005-04-01",
-    "pivot_interval": 6,
-    "min_years_per_build": 1,
     "years_for_titer_alignments": 10,
-    "viruses": [10],
-    "number_of_samples": 1,
-    "include_titer_tree": false,
     "min_tips_per_clade": 10,
     "min_frequency_per_clade": 0.01,
     "delta_pivots": 1,
     "months_for_distance_season": 12,
-    "max_years_for_distances": 3,
+    "max_years_for_distances": 5,
     "years_back_for_target_distance": 3,
     "target_distance_attribute": "hamming",
     "titers": {
@@ -52,36 +198,6 @@
         "ep_x-ne_star",
         "lbi-ne_star",
         "lbi-ep_x-ne_star"
-    ],
-    "standard_predictors": [
-        "ep",
-        "ne",
-        "ep_x",
-        "ne_star",
-        "lbi",
-        "cTiterSub",
-        "dms",
-        "ep_x-ne_star",
-        "ep_x-ne_star-lbi",
-        "lbi-cTiterSub-dms",
-        "ep_x-ne_star-lbi-cTiterSub-dms"
-    ],
-    "all_predictors": [
-        "null",
-        "freq",
-        "future_fitness",
-        "ep_x",
-        "ne_star",
-        "lbi",
-        "cLbi",
-        "cTiterSub",
-        "cTiterSub-dms",
-        "ne_star-cTiterSub",
-        "ep_x-cTiterSub",
-        "ep_x-ne_star",
-        "ep_x-lbi",
-        "ep_x-ne_star-lbi",
-        "ep_x-ne_star-lbi-cTiterSub"
     ],
     "frequencies": {
         "narrow_bandwidth": 0.0833,

@@ -1,6 +1,7 @@
 """Calculate cross-immunity for individual samples against past samples based on given pairwise distances and scaled by past frequencies.
 """
 import argparse
+from augur.utils import read_node_data
 import json
 
 from forecast.fitness_predictors import inverse_cross_immunity_amplitude, cross_immunity_cost
@@ -13,9 +14,11 @@ if __name__ == '__main__':
     )
     parser.add_argument("--frequencies", required=True, help="JSON of frequencies per sample")
     parser.add_argument("--distances", required=True, help="JSON of distances between samples")
+    parser.add_argument("--date-annotations", required=True, help="JSON of branch lengths and date annotations from augur refine for samples in the given tree")
     parser.add_argument("--distance-attributes", nargs="+", required=True, help="names of attributes to use from the given distances JSON")
     parser.add_argument("--immunity-attributes", nargs="+", required=True, help="names of attributes to use for the calculated cross-immunities")
     parser.add_argument("--decay-factors", nargs="+", required=True, type=float, help="list of decay factors (d_0) for each given immunity attribute")
+    parser.add_argument("--years-to-wane", required=True, type=int, help="number of years after which immunity wanes completely")
     parser.add_argument("--output", required=True, help="cross-immunities calculated from the given distances and frequencies")
     args = parser.parse_args()
 
@@ -34,6 +37,12 @@ if __name__ == '__main__':
         distances = json.load(fh)
 
     distances = distances["nodes"]
+
+    # Load date annotations and annotate tree with them.
+    date_annotations = read_node_data(args.date_annotations)
+    date_by_node_name = {}
+    for node, annotations in date_annotations["nodes"].items():
+        date_by_node_name[node] = annotations["numdate"]
 
     """
   "A/Acre/15093/2010": {
@@ -57,7 +66,11 @@ if __name__ == '__main__':
             # increasingly distant from previous samples.
             cross_immunity = 0.0
             for past_sample, distance in sample_distances[distance_attribute].items():
-                cross_immunity += max_frequency_per_sample[past_sample] * cross_immunity_cost(
+                # Calculate effect of waning immunity.
+                waning_effect = max(1 - ((date_by_node_name[sample] - date_by_node_name[past_sample]) / args.years_to_wane), 0)
+
+                # Calculate cost of cross-immunity with waning.
+                cross_immunity += waning_effect * max_frequency_per_sample[past_sample] * cross_immunity_cost(
                     distance,
                     decay_factor
                 )
