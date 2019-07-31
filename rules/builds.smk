@@ -6,7 +6,7 @@ BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
 BUILD_SEGMENT_LOG_STEM = "{type}_{sample}_{timepoint}"
 
 
-rule get_strains_by_timepoint_simulated:
+rule get_strains_by_timepoint:
     input:
         metadata = _get_metadata_by_wildcards
     output:
@@ -21,10 +21,10 @@ rule get_strains_by_timepoint_simulated:
         """
 
 
-rule extract_simulated:
+rule extract:
     input:
         sequences = _get_sequences_by_wildcards,
-        strains = rules.get_strains_by_timepoint_simulated.output.strains,
+        strains = rules.get_strains_by_timepoint.output.strains,
     output:
         sequences = BUILD_TIMEPOINT_PATH + "filtered_sequences.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -37,9 +37,9 @@ rule extract_simulated:
         """
 
 
-rule align_simulated:
+rule align:
     input:
-        sequences = rules.extract_simulated.output.sequences,
+        sequences = rules.extract.output.sequences,
         reference = _get_reference
     output:
         alignment = BUILD_TIMEPOINT_PATH + "aligned.fasta"
@@ -58,10 +58,10 @@ rule align_simulated:
         """
 
 
-rule tree_simulated:
+rule tree:
     message: "Building tree ({wildcards})"
     input:
-        alignment = rules.align_simulated.output.alignment
+        alignment = rules.align.output.alignment
     output:
         tree = BUILD_TIMEPOINT_PATH + "tree_raw.nwk"
     conda: "../envs/anaconda.python3.yaml"
@@ -79,10 +79,10 @@ rule tree_simulated:
         """
 
 
-rule refine_simulated:
+rule refine:
     input:
-        tree = rules.tree_simulated.output.tree,
-        alignment = rules.align_simulated.output.alignment,
+        tree = rules.tree.output.tree,
+        alignment = rules.align.output.alignment,
         metadata = _get_metadata_by_wildcards
     output:
         tree = BUILD_TIMEPOINT_PATH + "tree.nwk",
@@ -113,7 +113,7 @@ rule refine_simulated:
         """
 
 
-rule estimate_frequencies_simulated:
+rule estimate_frequencies:
     message:
         """
         Estimating frequencies for {input.tree}
@@ -122,7 +122,7 @@ rule estimate_frequencies_simulated:
           - proportion wide: {params.proportion_wide}
         """
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards,
         weights = "data/region_weights.json"
     output:
@@ -147,13 +147,13 @@ rule estimate_frequencies_simulated:
 --include-internal-nodes &> {log}"""
 
 
-rule estimate_diffusion_frequencies_simulated:
+rule estimate_diffusion_frequencies:
     message:
         """
         Estimating diffusion frequencies for {input.tree}
         """
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards
     output:
         frequencies = BUILD_TIMEPOINT_PATH + "diffusion_frequencies.json"
@@ -181,11 +181,11 @@ rule estimate_diffusion_frequencies_simulated:
         --max-date {params.max_date} &> {log}"""
 
 
-rule ancestral_simulated:
+rule ancestral:
     message: "Reconstructing ancestral sequences and mutations for {wildcards}"
     input:
-        tree = rules.refine_simulated.output.tree,
-        alignment = rules.align_simulated.output.alignment
+        tree = rules.refine.output.tree,
+        alignment = rules.align.output.alignment
     output:
         node_data = BUILD_TIMEPOINT_PATH + "nt_muts.json"
     params:
@@ -203,11 +203,11 @@ rule ancestral_simulated:
         """
 
 
-rule translate_simulated:
+rule translate:
     message: "Translating amino acid sequences"
     input:
-        tree = rules.refine_simulated.output.tree,
-        node_data = rules.ancestral_simulated.output.node_data,
+        tree = rules.refine.output.tree,
+        node_data = rules.ancestral.output.node_data,
         reference = "config/reference_h3n2_ha.gb"
     output:
         node_data = BUILD_TIMEPOINT_PATH + "aa_muts.json"
@@ -224,11 +224,11 @@ rule translate_simulated:
         """
 
 
-rule reconstruct_translations_simulated:
+rule reconstruct_translations:
     message: "Reconstructing translations for {wildcards.gene}"
     input:
-        tree = rules.refine_simulated.output.tree,
-        node_data = rules.translate_simulated.output.node_data
+        tree = rules.refine.output.tree,
+        node_data = rules.translate.output.node_data
     output:
         aa_alignment = BUILD_TIMEPOINT_PATH + "aa-seq_{gene}.fasta"
     conda: "../envs/anaconda.python3.yaml"
@@ -245,9 +245,9 @@ rule reconstruct_translations_simulated:
         """
 
 
-rule convert_translations_to_json_simulated:
+rule convert_translations_to_json:
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         translations = translations(segment="ha", path=BUILD_TIMEPOINT_PATH)
     output:
         translations = BUILD_TIMEPOINT_PATH + "aa_seq.json"
@@ -263,10 +263,10 @@ rule convert_translations_to_json_simulated:
         """
 
 
-rule clades_by_haplotype_simulated:
+rule clades_by_haplotype:
     input:
-        tree = rules.refine_simulated.output.tree,
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
         reference = "config/reference_h3n2_ha.gb",
         translations = translations(segment="ha", path=BUILD_TIMEPOINT_PATH)
     output:
@@ -294,11 +294,11 @@ rule clades_by_haplotype_simulated:
         """
 
 
-rule delta_frequency_simulated:
+rule delta_frequency:
     input:
-        tree = rules.refine_simulated.output.tree,
-        frequencies = rules.estimate_diffusion_frequencies_simulated.output.frequencies,
-        clades = rules.clades_by_haplotype_simulated.output.clades
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_diffusion_frequencies.output.frequencies,
+        clades = rules.clades_by_haplotype.output.clades
     output:
         delta_frequency = BUILD_TIMEPOINT_PATH + "delta_frequency.json"
     params:
@@ -321,7 +321,7 @@ rule delta_frequency_simulated:
 rule traits:
     message: "Inferring ancestral traits for {params.columns!s}"
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards
     output:
         node_data = BUILD_TIMEPOINT_PATH + "traits.json",
@@ -340,13 +340,13 @@ rule traits:
         """
 
 
-rule distances_simulated:
+rule distances:
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH),
         # TODO: define distance maps in build configs
         distance_maps = _get_distance_maps_for_simulations,
-        date_annotations = rules.refine_simulated.output.node_data
+        date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names(segment="ha"),
         comparisons = _get_distance_comparisons_for_simulations,
@@ -372,13 +372,13 @@ rule distances_simulated:
         """
 
 
-rule pairwise_distances_simulated:
+rule pairwise_distances:
     input:
-        tree = rules.refine_simulated.output.tree,
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
         alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH),
         distance_maps = _get_pairwise_distance_maps_for_simulations,
-        date_annotations = rules.refine_simulated.output.node_data
+        date_annotations = rules.refine.output.node_data
     params:
         genes = gene_names(segment="ha"),
         attribute_names = _get_pairwise_distance_attributes_for_simulations,
@@ -415,11 +415,11 @@ def _get_cross_immunity_decay_factors_for_simulations(wildcards):
     return config["cross_immunity"]["h3n2"]["ha"]["decay_factors"]
 
 
-rule cross_immunities_simulated:
+rule cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
-        distances = rules.pairwise_distances_simulated.output.distances,
-        date_annotations = rules.refine_simulated.output.node_data
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        distances = rules.pairwise_distances.output.distances,
+        date_annotations = rules.refine.output.node_data
     params:
         distance_attributes = _get_cross_immunity_distance_attributes_for_simulations,
         immunity_attributes = _get_cross_immunity_attributes_for_simulations,
@@ -442,11 +442,11 @@ rule cross_immunities_simulated:
         """
 
 
-rule lbi_simulated:
+rule lbi:
     message: "Calculating LBI"
     input:
-        tree = rules.refine_simulated.output.tree,
-        branch_lengths = rules.refine_simulated.output.node_data
+        tree = rules.refine.output.tree,
+        branch_lengths = rules.refine.output.node_data
     params:
         tau = config["lbi"]["tau"],
         window = config["lbi"]["window"],
@@ -468,8 +468,8 @@ rule lbi_simulated:
 
 rule filter_translations_by_date:
     input:
-        alignments = rules.reconstruct_translations_simulated.output.aa_alignment,
-        branch_lengths = rules.refine_simulated.output.node_data
+        alignments = rules.reconstruct_translations.output.aa_alignment,
+        branch_lengths = rules.refine.output.node_data
     output:
         alignments = BUILD_TIMEPOINT_PATH + "filtered-aa-seq_{gene}.fasta"
     params:
@@ -487,9 +487,9 @@ rule filter_translations_by_date:
 rule titers_sub:
     input:
         titers = _get_titers_by_wildcards,
-        aa_muts = rules.translate_simulated.output,
+        aa_muts = rules.translate.output,
         alignments = filtered_translations,
-        tree = rules.refine_simulated.output.tree
+        tree = rules.refine.output.tree
     params:
         genes = gene_names
     output:
@@ -511,7 +511,7 @@ rule titers_sub:
 rule titers_tree:
     input:
         titers = _get_titers_by_wildcards,
-        tree = rules.refine_simulated.output.tree
+        tree = rules.refine.output.tree
     output:
         titers_model = BUILD_TIMEPOINT_PATH + "titers-tree-model.json",
     conda: "../envs/anaconda.python3.yaml"
@@ -543,10 +543,10 @@ rule convert_titer_model_to_distance_map:
 
 rule titer_distances:
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         alignments = translations,
         distance_maps = rules.convert_titer_model_to_distance_map.output.distance_map,
-        date_annotations = rules.refine_simulated.output.node_data
+        date_annotations = rules.refine.output.node_data
     params:
         # TODO: move these params to builds in config file
         genes = gene_names,
@@ -575,9 +575,9 @@ rule titer_distances:
 
 rule titer_cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies,
+        frequencies = rules.estimate_frequencies.output.frequencies,
         distances = rules.titer_distances.output.distances,
-        date_annotations = rules.refine_simulated.output.node_data
+        date_annotations = rules.refine.output.node_data
     params:
         distance_attributes = "cTiterSub_pairwise",
         immunity_attributes = "cTiterSub_x",
@@ -600,7 +600,7 @@ rule titer_cross_immunities:
         """
 
 
-rule tip_frequencies_simulated:
+rule tip_frequencies:
     message:
         """
         Estimating tip frequencies for {input.tree}
@@ -609,7 +609,7 @@ rule tip_frequencies_simulated:
           - proportion wide: {params.proportion_wide}
         """
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards,
         weights = "data/region_weights.json"
     output:
@@ -642,20 +642,20 @@ rule tip_frequencies_simulated:
 #            --weights-attribute region \
 
 
-def _get_node_data_for_export_simulated(wildcards):
+def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """
     # Define inputs shared by specific builds.
     inputs = [
-        rules.refine_simulated.output.node_data,
-        rules.ancestral_simulated.output.node_data,
-        rules.translate_simulated.output.node_data,
-        rules.convert_translations_to_json_simulated.output.translations,
-        rules.clades_by_haplotype_simulated.output.clades,
-        rules.delta_frequency_simulated.output.delta_frequency,
-        rules.distances_simulated.output.distances,
-        rules.cross_immunities_simulated.output.cross_immunities,
-        rules.lbi_simulated.output.lbi
+        rules.refine.output.node_data,
+        rules.ancestral.output.node_data,
+        rules.translate.output.node_data,
+        rules.convert_translations_to_json.output.translations,
+        rules.clades_by_haplotype.output.clades,
+        rules.delta_frequency.output.delta_frequency,
+        rules.distances.output.distances,
+        rules.cross_immunities.output.cross_immunities,
+        rules.lbi.output.lbi
     ]
 
     # Define node data that only make sense for natural populations
@@ -673,12 +673,12 @@ def _get_node_data_for_export_simulated(wildcards):
     return inputs
 
 
-rule export_simulated:
+rule export:
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards,
         auspice_config = "config/auspice_config.json",
-        node_data = _get_node_data_for_export_simulated,
+        node_data = _get_node_data_for_export,
         colors = "config/colors.tsv"
     output:
         auspice_tree = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.json",
@@ -701,11 +701,11 @@ rule export_simulated:
         """
 
 
-rule convert_node_data_to_table_simulated:
+rule convert_node_data_to_table:
     input:
-        tree = rules.refine_simulated.output.tree,
+        tree = rules.refine.output.tree,
         metadata = _get_metadata_by_wildcards,
-        node_data = _get_node_data_for_export_simulated
+        node_data = _get_node_data_for_export
     output:
         table = BUILD_TIMEPOINT_PATH + "node_data.tsv"
     params:
@@ -727,10 +727,10 @@ rule convert_node_data_to_table_simulated:
         """
 
 
-rule convert_frequencies_to_table_simulated:
+rule convert_frequencies_to_table:
     input:
-        tree = rules.refine_simulated.output.tree,
-        frequencies = rules.estimate_frequencies_simulated.output.frequencies
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies
     output:
         table = BUILD_TIMEPOINT_PATH + "frequencies.tsv"
     conda: "../envs/anaconda.python3.yaml"
@@ -744,10 +744,10 @@ rule convert_frequencies_to_table_simulated:
         """
 
 
-rule merge_node_data_and_frequencies_simulated:
+rule merge_node_data_and_frequencies:
     input:
-        node_data = rules.convert_node_data_to_table_simulated.output.table,
-        frequencies = rules.convert_frequencies_to_table_simulated.output.table
+        node_data = rules.convert_node_data_to_table.output.table,
+        frequencies = rules.convert_frequencies_to_table.output.table
     output:
         table = BUILD_TIMEPOINT_PATH + "tip_attributes.tsv"
     run:
@@ -762,14 +762,14 @@ rule merge_node_data_and_frequencies_simulated:
         df.to_csv(output.table, sep="\t", index=False, header=True)
 
 
-def _get_simulated_tip_attributes_by_wildcards(wildcards):
+def _get_tip_attributes_by_wildcards(wildcards):
     build = config["builds"][wildcards.type][wildcards.sample]
     start_date = build["start_date"]
     end_date = build["end_date"]
     pivot_interval = build["pivot_interval"]
     min_years_per_build = build["min_years_per_build"]
 
-    timepoints_simulations = _get_timepoints_for_build_interval(
+    timepoints = _get_timepoints_for_build_interval(
         start_date,
         end_date,
         pivot_interval,
@@ -778,13 +778,13 @@ def _get_simulated_tip_attributes_by_wildcards(wildcards):
 
     return expand(
         BUILD_PATH.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tip_attributes.tsv",
-        timepoint=timepoints_simulations
+        timepoint=timepoints
     )
 
 
-rule collect_tip_attributes_simulated:
+rule collect_tip_attributes:
     input:
-        _get_simulated_tip_attributes_by_wildcards
+        _get_tip_attributes_by_wildcards
     output:
         attributes = BUILD_PATH + "tip_attributes.tsv"
     conda: "../envs/anaconda.python3.yaml"
@@ -796,9 +796,9 @@ rule collect_tip_attributes_simulated:
         """
 
 
-rule target_distances_simulated:
+rule target_distances:
     input:
-        attributes = rules.collect_tip_attributes_simulated.output.attributes
+        attributes = rules.collect_tip_attributes.output.attributes
     output:
         distances = BUILD_PATH + "target_distances.tsv",
     params:
@@ -813,9 +813,9 @@ rule target_distances_simulated:
         """
 
 
-rule annotate_naive_tip_attribute_simulated:
+rule annotate_naive_tip_attribute:
     input:
-        attributes = rules.collect_tip_attributes_simulated.output.attributes
+        attributes = rules.collect_tip_attributes.output.attributes
     output:
         attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
     run:
@@ -825,10 +825,10 @@ rule annotate_naive_tip_attribute_simulated:
         df.to_csv(output.attributes, sep="\t", index=False)
 
 
-rule annotate_weighted_distances_for_tip_attributes_simulated:
+rule annotate_weighted_distances_for_tip_attributes:
     input:
-        attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
-        distances = rules.target_distances_simulated.output.distances
+        attributes = rules.annotate_naive_tip_attribute.output.attributes,
+        distances = rules.target_distances.output.distances
     output:
         attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     params:
@@ -843,7 +843,7 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
         """
 
 
-# rule collect_annotated_tip_clade_tables_simulated:
+# rule collect_annotated_tip_clade_tables:
 #     input:
 #         expand("results/builds/{{lineage}}/{{viruses}}_viruses_per_month/{{sample}}/{{start}}--{{end}}/timepoints/{timepoint}/segments/{segment}/tips_to_clades.tsv", timepoint=TIMEPOINTS, segment=SEGMENTS)
 #     output:
@@ -857,9 +857,9 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
 #         """
 
 
-# rule select_clades_simulated:
+# rule select_clades:
 #     input:
-#         attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
+#         attributes = rules.annotate_naive_tip_attribute.output.attributes,
 #         tips_to_clades = rules.collect_annotated_tip_clade_tables.output.tip_clade_table
 #     output:
 #         clades = BUILD_PATH + "final_clade_frequencies.tsv"
@@ -879,10 +879,10 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
 #         """
 
 
-# rule fit_models_by_clades_simulated:
+# rule fit_models_by_clades:
 #     input:
-#         attributes = rules.annotate_naive_tip_attribute_simulated.output.attributes,
-#         final_clade_frequencies = rules.select_clades_simulated.output.clades
+#         attributes = rules.annotate_naive_tip_attribute.output.attributes,
+#         final_clade_frequencies = rules.select_clades.output.clades
 #     output:
 #         model = BUILD_PATH + "models_by_clades/{predictors}.json"
 #     params:
@@ -911,10 +911,10 @@ rule annotate_weighted_distances_for_tip_attributes_simulated:
 #         """
 
 
-rule fit_models_by_distances_simulated:
+rule fit_models_by_distances:
     input:
-        attributes = rules.annotate_weighted_distances_for_tip_attributes_simulated.output.attributes,
-        distances = rules.target_distances_simulated.output.distances
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        distances = rules.target_distances.output.distances
     output:
         model = BUILD_PATH + "models_by_distances/{predictors}.json",
         errors = BUILD_PATH + "models_by_distances_errors/{predictors}.tsv",
@@ -947,8 +947,8 @@ rule fit_models_by_distances_simulated:
 
 rule annotate_distance_models:
     input:
-        errors = rules.fit_models_by_distances_simulated.output.errors,
-        coefficients = rules.fit_models_by_distances_simulated.output.coefficients
+        errors = rules.fit_models_by_distances.output.errors,
+        coefficients = rules.fit_models_by_distances.output.coefficients
     output:
         errors = BUILD_PATH + "annotated_models_by_distances_errors/{predictors}.tsv",
         coefficients = BUILD_PATH + "annotated_models_by_distances_coefficients/{predictors}.tsv"
@@ -964,14 +964,14 @@ rule annotate_distance_models:
         coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
 
 
-rule plot_tree_simulated:
+rule plot_tree:
     input:
-        auspice_tree = rules.export_simulated.output.auspice_tree
+        auspice_tree = rules.export.output.auspice_tree
     output:
         tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.pdf"
     conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/plot_tree_simulated_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
     params:
         start = _get_start_date_by_wildcards,
         end = _get_end_date_by_wildcards
