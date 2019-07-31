@@ -235,7 +235,7 @@ def gene_names(wildcards=None, segment=None):
 def translations(wildcards=None, segment=None, path=None):
     genes = gene_names(wildcards, segment)
     if path is None:
-        path = BUILD_TIMEPOINT_PATH_SIMULATIONS
+        path = BUILD_TIMEPOINT_PATH
 
     return [path + "aa-seq_%s.fasta" % gene
             for gene in genes]
@@ -243,7 +243,7 @@ def translations(wildcards=None, segment=None, path=None):
 def filtered_translations(wildcards=None, segment=None, path=None):
     genes = gene_names(wildcards, segment)
     if path is None:
-        path = BUILD_TIMEPOINT_PATH_SIMULATIONS
+        path = BUILD_TIMEPOINT_PATH
 
     return [path + "filtered-aa-seq_%s.fasta" % gene
             for gene in genes]
@@ -266,12 +266,6 @@ def _get_distance_model_coefficients(wildcards):
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
-
-BUILD_PATH = "results/builds/{lineage}/{viruses}_viruses_per_month/{sample}/{start}--{end}/"
-BUILD_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}"
-BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
-BUILD_SEGMENT_PATH = BUILD_TIMEPOINT_PATH + "segments/{segment}/"
-BUILD_SEGMENT_LOG_STEM = "{lineage}_{viruses}_{sample}_{start}_{end}_{timepoint}_{segment}"
 
 #include: "rules/modular_augur_builds.smk"
 #include: "rules/frequency_bandwidths.smk"

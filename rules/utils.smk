@@ -2,6 +2,41 @@
 # Define helper functions.
 #
 
+def float_to_datestring(time):
+    """Convert a floating point date to a date string
+
+    >>> float_to_datestring(2010.75)
+    '2010-10-01'
+    >>> float_to_datestring(2011.25)
+    '2011-04-01'
+    >>> float_to_datestring(2011.0)
+    '2011-01-01'
+    >>> float_to_datestring(2011.0 + 11.0 / 12)
+    '2011-12-01'
+
+    In some cases, the given float value can be truncated leading to unexpected
+    conversion between floating point and integer values. This function should
+    account for these errors by rounding months to the nearest integer.
+
+    >>> float_to_datestring(2011.9166666666665)
+    '2011-12-01'
+    >>> float_to_datestring(2016.9609856262834)
+    '2016-12-01'
+    """
+    year = int(time)
+
+    # After accounting for the current year, extract the remainder and convert
+    # it to a month using the inverse of the logic used to create the floating
+    # point date. If the float date is sufficiently close to the end of the
+    # year, rounding can produce a 13th month.
+    month = min(int(np.rint(((time - year) * 12) + 1)), 12)
+
+    # Floating point dates do not encode day information, so we always assume
+    # they refer to the start of a given month.
+    day = 1
+
+    return "%s-%02d-%02d" % (year, month, day)
+
 def _get_sequences_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["sequences"]
 
