@@ -68,7 +68,7 @@
                 "end_date": "2030-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -92,7 +92,7 @@
                 "end_date": "2012-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
