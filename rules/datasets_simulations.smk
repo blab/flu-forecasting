@@ -454,11 +454,13 @@ def _get_cross_immunity_decay_factors_for_simulations(wildcards):
 rule cross_immunities_simulated:
     input:
         frequencies = rules.estimate_frequencies_simulated.output.frequencies,
-        distances = rules.pairwise_distances_simulated.output.distances
+        distances = rules.pairwise_distances_simulated.output.distances,
+        date_annotations = rules.refine_simulated.output.node_data
     params:
         distance_attributes = _get_cross_immunity_distance_attributes_for_simulations,
         immunity_attributes = _get_cross_immunity_attributes_for_simulations,
-        decay_factors = _get_cross_immunity_decay_factors_for_simulations
+        decay_factors = _get_cross_immunity_decay_factors_for_simulations,
+        years_to_wane = config["max_years_for_distances"]
     output:
         cross_immunities = BUILD_TIMEPOINT_PATH_SIMULATIONS + "cross_immunity.json",
     conda: "../envs/anaconda.python3.yaml"
@@ -467,9 +469,11 @@ rule cross_immunities_simulated:
         python3 src/cross_immunity.py \
             --frequencies {input.frequencies} \
             --distances {input.distances} \
+            --date-annotations {input.date_annotations} \
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
+            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
@@ -608,11 +612,13 @@ rule titer_distances:
 rule titer_cross_immunities:
     input:
         frequencies = rules.estimate_frequencies_simulated.output.frequencies,
-        distances = rules.titer_distances.output.distances
+        distances = rules.titer_distances.output.distances,
+        date_annotations = rules.refine_simulated.output.node_data
     params:
         distance_attributes = "cTiterSub_pairwise",
         immunity_attributes = "cTiterSub_x",
-        decay_factors = "14.0"
+        decay_factors = "14.0",
+        years_to_wane = config["max_years_for_distances"]
     output:
         cross_immunities = BUILD_TIMEPOINT_PATH_SIMULATIONS + "titer_substitution_cross_immunity.json",
     conda: "../envs/anaconda.python3.yaml"
@@ -621,9 +627,11 @@ rule titer_cross_immunities:
         python3 src/cross_immunity.py \
             --frequencies {input.frequencies} \
             --distances {input.distances} \
+            --date-annotations {input.date_annotations} \
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
+            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
