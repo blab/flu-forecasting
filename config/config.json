@@ -118,8 +118,10 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
+                    "ep",
                     "ep_x",
                     "cTiter",
+                    "cTiterSub",
                     "ne_star",
                     "dms_star",
                     "lbi",
@@ -141,8 +143,10 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
+                    "ep",
                     "ep_x",
                     "cTiter",
+                    "cTiterSub",
                     "ne_star",
                     "dms_star",
                     "lbi",
