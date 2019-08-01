@@ -102,8 +102,8 @@ def flu_subsampling(metadata, viruses_per_month, time_interval, titer_fname=None
     # Filter metadata by date using the given time interval. Using numeric dates
     # here allows users to define time intervals to the day and filter viruses
     # at that same level of precision.
-    time_interval_start = numeric_date(time_interval[1])
-    time_interval_end = numeric_date(time_interval[0])
+    time_interval_start = round(numeric_date(time_interval[1]), 2)
+    time_interval_end = round(numeric_date(time_interval[0]), 2)
     metadata = {
         strain: record
         for strain, record in metadata.items()
