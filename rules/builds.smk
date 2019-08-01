@@ -297,8 +297,7 @@ rule clades_by_haplotype:
 rule delta_frequency:
     input:
         tree = rules.refine.output.tree,
-        frequencies = rules.estimate_diffusion_frequencies.output.frequencies,
-        clades = rules.clades_by_haplotype.output.clades
+        frequencies = rules.estimate_diffusion_frequencies.output.frequencies
     output:
         delta_frequency = BUILD_TIMEPOINT_PATH + "delta_frequency.json"
     params:
@@ -312,7 +311,6 @@ rule delta_frequency:
             --tree {input.tree} \
             --frequencies {input.frequencies} \
             --frequency-method {params.method} \
-            --clades {input.clades} \
             --delta-pivots {params.delta_pivots} \
             --output {output.delta_frequency} &> {log}
         """
