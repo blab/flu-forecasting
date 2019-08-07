@@ -102,6 +102,7 @@ ENV/
 
 *.png
 .snakemake
+*.svg
 *.pdf
 *.gif
 *.tab
@@ -112,3 +113,11 @@ ENV/
 *.txt
 *.tsv
 *.json
+*.gz
+.Rhistory
+
+# latex
+*.aux
+*.bbl
+*.blg
+*.idx
