@@ -12,20 +12,15 @@ if __name__ == '__main__':
     )
     parser.add_argument("--tip-attributes", required=True, help="tab-delimited file describing tip attributes at all timepoints")
     parser.add_argument("--tips-to-clades", required=True, help="tab-delimited file of all clades per tip and timepoint")
-    parser.add_argument("--primary-segment", required=True, help="name of the gene segment from which clades will be selected")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--output", required=True, help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
     args = parser.parse_args()
 
-    primary_segment = args.primary_segment
     delta_time_offset = pd.DateOffset(months=args.delta_months)
 
     # Load tip attributes, subsetting to relevant frequency and time information.
     tips = pd.read_csv(args.tip_attributes, sep="\t", parse_dates=["timepoint"])
-    tips = tips.loc[
-        tips["segment"] == primary_segment,
-        ["strain", "clade_membership", "timepoint", "frequency"]
-    ].copy()
+    tips = tips.loc[:, ["strain", "clade_membership", "timepoint", "frequency"]].copy()
 
     # Confirm tip frequencies sum to 1 per timepoint.
     summed_tip_frequencies = tips.groupby("timepoint")["frequency"].sum()
@@ -44,10 +39,7 @@ if __name__ == '__main__':
 
     # Load mapping of tips to all possible clades at each timepoint.
     tips_to_clades = pd.read_csv(args.tips_to_clades, sep="\t", parse_dates=["timepoint"])
-    tips_to_clades = tips_to_clades.loc[
-        tips_to_clades["segment"] == primary_segment,
-        ["tip", "clade_membership", "depth", "timepoint"]
-    ].copy()
+    tips_to_clades = tips_to_clades.loc[:, ["tip", "clade_membership", "depth", "timepoint"]].copy()
 
     # Get all tip-clade combinations by timepoint for the distinct clades.
     future_tips_by_clades = clades.merge(

@@ -30,6 +30,7 @@ if __name__ == "__main__":
     parser.add_argument("--minimum-frequency", type=float, default=0.01, help="minimum frequency for a clade to be considered")
     parser.add_argument("--output", required=True, help="JSON of clade annotations for nodes in the given tree")
     parser.add_argument("--output-tip-clade-table", help="optional table of all clades per tip in the tree")
+    parser.add_argument("--annotations", nargs="+", help="additional annotations to add to the tip clade output table in the format of 'key=value' pairs")
 
     args = parser.parse_args()
 
@@ -146,4 +147,13 @@ if __name__ == "__main__":
 
         df = pd.DataFrame(records, columns=["tip", "clade_membership", "depth"])
         df = df.drop_duplicates(subset=["tip", "clade_membership"])
+
+        # Add any additional annotations requested by the user in the format of
+        # "key=value" pairs where each key becomes a new column with the given
+        # value.
+        if args.annotations:
+            for annotation in args.annotations:
+                key, value = annotation.split("=")
+                df[key] = value
+
         df.to_csv(args.output_tip_clade_table, sep="\t", index=False)
