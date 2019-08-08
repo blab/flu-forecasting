@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser.add_argument("--tree", required=True, help="Newick tree")
     parser.add_argument("--frequencies", required=True, help="frequencies JSON")
     parser.add_argument("--frequency-method", required=True, choices=["kde", "diffusion"], help="method used to estimate frequencies")
-    parser.add_argument("--clades", required=True, help="JSON of clade annotations for nodes in the given tree")
+    parser.add_argument("--clades", help="JSON of clade annotations for nodes in the given tree")
     parser.add_argument("--delta-pivots", type=int, default=1, help="number of frequency pivots to look back in time for change in frequency calculation")
     parser.add_argument("--output", required=True, help="JSON of delta frequency annotations for nodes in the given tree")
 
