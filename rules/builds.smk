@@ -161,8 +161,7 @@ rule estimate_diffusion_frequencies:
         pivot_frequency = _get_pivot_interval,
         stiffness = config["frequencies"]["stiffness"],
         inertia = config["frequencies"]["inertia"],
-        min_freq = config["frequencies"]["min_freq"],
-        min_date = _get_min_date_for_augur_frequencies_by_wildcards,
+        min_date = _get_min_date_for_diffusion_frequencies_by_wildcards,
         max_date = _get_max_date_for_augur_frequencies_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/estimate_diffusion_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
@@ -175,7 +174,6 @@ rule estimate_diffusion_frequencies:
         --include-internal-nodes \
         --stiffness {params.stiffness} \
         --inertia {params.inertia} \
-        --minimal-frequency {params.min_freq} \
         --pivot-interval {params.pivot_frequency} \
         --min-date {params.min_date} \
         --max-date {params.max_date} &> {log}"""
