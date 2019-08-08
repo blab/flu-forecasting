@@ -1,9 +1,9 @@
 {
     "__default__": {
-        "time" : "00:15:00",
+        "time" : "00:05:00",
         "cores" : 1,
-        "memory": "512",
-        "disk": "6000",
+        "memory": "256",
+        "disk": "1000",
         "name": "{rule}.{wildcards}",
         "stdout": "log/cluster/{rule}.{wildcards}.%j.out",
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
@@ -57,6 +57,15 @@
     "distances": {
         "memory": "8192",
         "time" : "00:30:00"
+    },
+    "convert_frequencies_to_table": {
+        "time": "00:02:00"
+    },
+    "convert_diffusion_frequencies_to_table": {
+        "time": "00:02:00"
+    },
+    "merge_node_data_and_frequencies": {
+        "time": "00:02:00"
     },
     "fit_models_by_distances": {
         "memory": "8192",
