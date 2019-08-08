@@ -247,7 +247,9 @@
         "min_mutation_frequency": 0.0,
         "stiffness": 20,
         "inertia": 0.2,
-        "min_freq": 0.01
+        "min_freq": 0.01,
+        "preferred_method": "kde",
+        "max_years_for_diffusion": 2
     },
     "lbi": {
         "tau": 0.25,

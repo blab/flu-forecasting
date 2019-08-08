@@ -14,9 +14,11 @@ if __name__ == '__main__':
     )
     parser.add_argument("--tree", required=True, help="Newick file for the tree used to estimate the given frequencies")
     parser.add_argument("--frequencies", required=True, help="frequencies JSON")
+    parser.add_argument("--method", required=True, choices=["kde", "diffusion"], help="method used to estimate frequencies")
     parser.add_argument("--annotations", nargs="+", help="additional annotations to add to the output table in the format of 'key=value' pairs")
     parser.add_argument("--output", required=True, help="tab-delimited file with frequency per node at the last available timepoint")
     parser.add_argument("--include-internal-nodes", action="store_true", help="include data associated with internal nodes in the output table")
+    parser.add_argument("--minimum-frequency", type=float, default=1e-5, help="minimum frequency to keep below which values will be zeroed and all others renormalized to sum to one")
     args = parser.parse_args()
 
     # Load tree.
@@ -26,14 +28,22 @@ if __name__ == '__main__':
     with open(args.frequencies, "r") as fh:
         frequencies_json = json.load(fh)
 
-    frequencies = frequencies_json["data"]["frequencies"]
+    if args.method == "kde":
+        frequencies = frequencies_json["data"]["frequencies"]
+    else:
+        frequencies = {
+            node_name: region_frequencies["global"]
+            for node_name, region_frequencies in frequencies_json.items()
+            if node_name not in ["pivots", "counts"]
+        }
 
     # Collect the last frequency for each node keeping only terminal nodes
     # (tips) unless internal nodes are also requested.
+    frequency_key = "%s_frequency" % args.method
     records = [
         {
             "strain": node.name,
-            "frequency": float(frequencies[node.name][-1]),
+            frequency_key: float(frequencies[node.name][-1]),
             "is_terminal": node.is_terminal()
         }
         for node in tree.find_clades()
@@ -42,6 +52,13 @@ if __name__ == '__main__':
 
     # Convert frequencies data into a data frame.
     df = pd.DataFrame(records)
+
+    # Replace records whose frequency values are below the requested minimum
+    # with zeros and renormalize the remaining records to sum to one.
+    to_zero = df[frequency_key] < args.minimum_frequency
+    not_to_zero = ~to_zero
+    df.loc[to_zero, frequency_key] = 0.0
+    df.loc[not_to_zero, frequency_key] = df.loc[not_to_zero, frequency_key] / df.loc[not_to_zero, frequency_key].sum()
 
     # Add any additional annotations requested by the user in the format of
     # "key=value" pairs where each key becomes a new column with the given

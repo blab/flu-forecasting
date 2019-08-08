@@ -731,12 +731,35 @@ rule convert_frequencies_to_table:
         frequencies = rules.estimate_frequencies.output.frequencies
     output:
         table = BUILD_TIMEPOINT_PATH + "frequencies.tsv"
+    params:
+        method = "kde"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/frequencies_to_table.py \
             --tree {input.tree} \
             --frequencies {input.frequencies} \
+            --method {params.method} \
+            --output {output} \
+            --annotations timepoint={wildcards.timepoint}
+        """
+
+
+rule convert_diffusion_frequencies_to_table:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_diffusion_frequencies.output.frequencies
+    output:
+        table = BUILD_TIMEPOINT_PATH + "diffusion_frequencies.tsv"
+    params:
+        method = "diffusion"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/frequencies_to_table.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --method {params.method} \
             --output {output} \
             --annotations timepoint={wildcards.timepoint}
         """
@@ -745,14 +768,20 @@ rule convert_frequencies_to_table:
 rule merge_node_data_and_frequencies:
     input:
         node_data = rules.convert_node_data_to_table.output.table,
-        frequencies = rules.convert_frequencies_to_table.output.table
+        kde_frequencies = rules.convert_frequencies_to_table.output.table,
+        diffusion_frequencies = rules.convert_diffusion_frequencies_to_table.output.table
     output:
         table = BUILD_TIMEPOINT_PATH + "tip_attributes.tsv"
     run:
         node_data = pd.read_table(input.node_data)
-        frequencies = pd.read_table(input.frequencies)
+        kde_frequencies = pd.read_table(input.kde_frequencies)
+        diffusion_frequencies = pd.read_table(input.diffusion_frequencies)
         df = node_data.merge(
-            frequencies,
+            kde_frequencies,
+            how="inner",
+            on=["strain", "timepoint", "is_terminal"]
+        ).merge(
+            diffusion_frequencies,
             how="inner",
             on=["strain", "timepoint", "is_terminal"]
         )
@@ -794,9 +823,35 @@ rule collect_tip_attributes:
         """
 
 
-rule target_distances:
+rule annotate_naive_tip_attribute:
     input:
         attributes = rules.collect_tip_attributes.output.attributes
+    output:
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
+    params:
+        preferred_frequency_method = config["frequencies"]["preferred_method"]
+    run:
+        # Annotate a predictor for a naive model with no growth.
+        df = pd.read_csv(input.attributes, sep="\t")
+        df["naive"] = 0.0
+        df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
+        df = df[df["frequency"] > 0.0].copy()
+
+        # Normalize fitness for simulated populations.
+        if "fitness" in df.columns:
+            max_fitness_per_timepoint = df.groupby("timepoint")["fitness"].max().reset_index().rename(columns={"fitness": "max_fitness"})
+            df = df.merge(
+                max_fitness_per_timepoint,
+                on=["timepoint"]
+            )
+            df["normalized_fitness"] = df["fitness"] / df["max_fitness"]
+
+        df.to_csv(output.attributes, sep="\t", index=False)
+
+
+rule target_distances:
+    input:
+        attributes = rules.annotate_naive_tip_attribute.output.attributes
     output:
         distances = BUILD_PATH + "target_distances.tsv",
     params:
@@ -809,18 +864,6 @@ rule target_distances:
             --delta-months {params.delta_months} \
             --output {output}
         """
-
-
-rule annotate_naive_tip_attribute:
-    input:
-        attributes = rules.collect_tip_attributes.output.attributes
-    output:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
-    run:
-        # Annotate a predictor for a naive model with no growth.
-        df = pd.read_csv(input.attributes, sep="\t")
-        df["naive"] = 0.0
-        df.to_csv(output.attributes, sep="\t", index=False)
 
 
 rule annotate_weighted_distances_for_tip_attributes:
