@@ -112,10 +112,8 @@
                 "predictors": [
                     "naive",
                     "ep_x",
-                    "cTiter",
                     "ne_star",
                     "lbi",
-                    "delta_frequency",
                     "ep_x-ne_star",
                     "lbi-ep_x-ne_star"
                 ]
