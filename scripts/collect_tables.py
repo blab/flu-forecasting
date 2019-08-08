@@ -68,10 +68,6 @@ if __name__ == '__main__':
     # Concatenate tip attributes across all timepoints.
     df = pd.concat([pd.read_table(table) for table in args.tables], ignore_index=True)
 
-    # Filter out any tips that have a frequency of zero.
-    if "frequency" in df.columns:
-        df = df[df["frequency"] > 0].copy()
-
     # Apply transformations.
     if args.transforms:
         for transform in args.transforms:
