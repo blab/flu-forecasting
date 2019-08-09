@@ -179,6 +179,46 @@ rule estimate_diffusion_frequencies:
         --max-date {params.max_date} &> {log}"""
 
 
+rule convert_frequencies_to_table:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies
+    output:
+        table = BUILD_TIMEPOINT_PATH + "frequencies.tsv"
+    params:
+        method = "kde"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/frequencies_to_table.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --method {params.method} \
+            --output {output} \
+            --annotations timepoint={wildcards.timepoint}
+        """
+
+
+rule convert_diffusion_frequencies_to_table:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_diffusion_frequencies.output.frequencies
+    output:
+        table = BUILD_TIMEPOINT_PATH + "diffusion_frequencies.tsv"
+    params:
+        method = "diffusion"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/frequencies_to_table.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --method {params.method} \
+            --output {output} \
+            --annotations timepoint={wildcards.timepoint}
+        """
+
+
 rule ancestral:
     message: "Reconstructing ancestral sequences and mutations for {wildcards}"
     input:
@@ -588,6 +628,24 @@ rule titer_cross_immunities:
         """
 
 
+rule normalize_fitness:
+    input:
+        metadata = _get_metadata_by_wildcards,
+        frequencies = rules.convert_frequencies_to_table.output.table
+    output:
+        fitness = BUILD_TIMEPOINT_PATH + "normalized_fitness.json"
+    params:
+        preferred_frequency_method = config["frequencies"]["preferred_method"]
+    shell:
+        """
+        python3 scripts/normalize_fitness.py \
+            --metadata {input.metadata} \
+            --frequencies-table {input.frequencies} \
+            --frequency-method {params.preferred_frequency_method} \
+            --output {output.fitness}
+        """
+
+
 rule tip_frequencies:
     message:
         """
@@ -655,6 +713,10 @@ def _get_node_data_for_export(wildcards):
             rules.titer_distances.output.distances,
             rules.titer_cross_immunities.output.cross_immunities
         ])
+    elif wildcards.type == "simulated":
+        inputs.extend([
+            rules.normalize_fitness.output.fitness
+        ])
 
     # Convert input files from wildcard strings to real file names.
     inputs = [input_file.format(**wildcards) for input_file in inputs]
@@ -712,46 +774,6 @@ rule convert_node_data_to_table:
             --annotations timepoint={wildcards.timepoint} \
                           lineage={params.lineage} \
                           segment={params.segment}
-        """
-
-
-rule convert_frequencies_to_table:
-    input:
-        tree = rules.refine.output.tree,
-        frequencies = rules.estimate_frequencies.output.frequencies
-    output:
-        table = BUILD_TIMEPOINT_PATH + "frequencies.tsv"
-    params:
-        method = "kde"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/frequencies_to_table.py \
-            --tree {input.tree} \
-            --frequencies {input.frequencies} \
-            --method {params.method} \
-            --output {output} \
-            --annotations timepoint={wildcards.timepoint}
-        """
-
-
-rule convert_diffusion_frequencies_to_table:
-    input:
-        tree = rules.refine.output.tree,
-        frequencies = rules.estimate_diffusion_frequencies.output.frequencies
-    output:
-        table = BUILD_TIMEPOINT_PATH + "diffusion_frequencies.tsv"
-    params:
-        method = "diffusion"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/frequencies_to_table.py \
-            --tree {input.tree} \
-            --frequencies {input.frequencies} \
-            --method {params.method} \
-            --output {output} \
-            --annotations timepoint={wildcards.timepoint}
         """
 
 

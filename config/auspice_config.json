@@ -19,6 +19,12 @@
       "type": "continuous",
       "key": "fitness"
     },
+    "normalized_fitness": {
+      "menuItem": "normalized fitness",
+      "legendTitle": "Normalized fitness",
+      "type": "continuous",
+      "key": "normalized_fitness"
+    },
     "offspring": {
       "menuItem": "offspring",
       "legendTitle": "Offspring",
