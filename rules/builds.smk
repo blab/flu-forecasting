@@ -264,29 +264,20 @@ rule convert_translations_to_json:
 rule clades_by_haplotype:
     input:
         tree = rules.refine.output.tree,
-        frequencies = rules.estimate_frequencies.output.frequencies,
-        reference = "config/reference_h3n2_ha.gb",
         translations = translations(segment="ha", path=BUILD_TIMEPOINT_PATH)
     output:
         clades = BUILD_TIMEPOINT_PATH + "clades.json",
         tip_clade_table = BUILD_TIMEPOINT_PATH + "tips_to_clades.tsv"
     params:
         gene_names = gene_names(segment="ha"),
-        minimum_tips = config["min_tips_per_clade"],
-        min_frequency = config["min_frequency_per_clade"]
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/find_clades_" + BUILD_SEGMENT_LOG_STEM + ".log"
     shell:
         """
-        python3 scripts/find_clades.py \
+        python3 scripts/nonoverlapping_clades.py \
             --tree {input.tree} \
-            --frequencies {input.frequencies} \
-            --reference {input.reference} \
             --translations {input.translations} \
             --gene-names {params.gene_names} \
-            --minimum-tips {params.minimum_tips} \
-            --minimum-frequency {params.min_frequency} \
-            --use-hash-ids \
             --annotations timepoint={wildcards.timepoint} \
             --output {output.clades} \
             --output-tip-clade-table {output.tip_clade_table} &> {log}
