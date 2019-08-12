@@ -828,17 +828,23 @@ rule annotate_naive_tip_attribute:
         df["naive"] = 0.0
         df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
         df = df[df["frequency"] > 0.0].copy()
-
-        # Normalize fitness for simulated populations.
-        if "fitness" in df.columns:
-            max_fitness_per_timepoint = df.groupby("timepoint")["fitness"].max().reset_index().rename(columns={"fitness": "max_fitness"})
-            df = df.merge(
-                max_fitness_per_timepoint,
-                on=["timepoint"]
-            )
-            df["normalized_fitness"] = df["fitness"] / df["max_fitness"]
-
         df.to_csv(output.attributes, sep="\t", index=False)
+
+
+rule annotate_observed_offspring:
+    input:
+        tree = _get_final_tree_for_wildcards,
+        attributes = rules.annotate_naive_tip_attribute.output.attributes
+    output:
+        attributes = BUILD_PATH + "tip_attributes_with_offspring.tsv",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/annotate_offspring.py \
+            --tree {input.tree} \
+            --tip-attributes {input.attributes} \
+            --output {output.attributes}
+        """
 
 
 rule target_distances:
@@ -860,7 +866,7 @@ rule target_distances:
 
 rule annotate_weighted_distances_for_tip_attributes:
     input:
-        attributes = rules.annotate_naive_tip_attribute.output.attributes,
+        attributes = rules.annotate_observed_offspring.output.attributes,
         distances = rules.target_distances.output.distances
     output:
         attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"

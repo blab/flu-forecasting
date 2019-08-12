@@ -151,3 +151,7 @@ def _get_tip_clades_by_wildcards(wildcards):
         BUILD_PATH.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tips_to_clades.tsv",
         timepoint=timepoints
     )
+
+def _get_final_tree_for_wildcards(wildcards):
+    end_date = _get_end_date_by_wildcards(wildcards)
+    return BUILD_PATH.format(**wildcards) + "timepoints/%s/tree.nwk" % end_date
