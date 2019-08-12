@@ -7,6 +7,7 @@
             "viruses_per_month": 10
         },
         "simulated_sample_1": {
+            "description": "Require a minimum fitness for randomly select amino acids in non-stationary positive selection",
             "seed": 1,
             "lineage": "simulated",
             "segment": "ha",
@@ -87,7 +88,29 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
-                    "fitness",
+                    "normalized_fitness",
+                    "ep_x",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star"
+                ]
+            },
+            "simulated_sample_1": {
+                "description": "Analysis of simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_1/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_1/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_1/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "normalized_fitness",
                     "ep_x",
                     "ne_star",
                     "lbi",
@@ -127,7 +150,7 @@
                 "end_date": "2015-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
