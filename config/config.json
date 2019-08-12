@@ -285,7 +285,7 @@
         "primary_segment": "ha",
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",
-        "l1_lambda": 0.01,
+        "l1_lambda": 0.015,
         "pseudocount": 0.0
     }
 }
