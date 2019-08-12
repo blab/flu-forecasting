@@ -3,7 +3,7 @@
         "time" : "00:05:00",
         "cores" : 1,
         "memory": "256",
-        "disk": "1000",
+        "disk": "10",
         "name": "{rule}.{wildcards}",
         "stdout": "log/cluster/{rule}.{wildcards}.%j.out",
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
