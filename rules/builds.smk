@@ -6,6 +6,28 @@ BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
 BUILD_SEGMENT_LOG_STEM = "{type}_{sample}_{timepoint}"
 
 
+rule get_titer_sequences_by_timepoint:
+    input:
+        titers = _get_titers_by_wildcards,
+        metadata = _get_complete_metadata_by_wildcards,
+        sequences = _get_sequences_by_wildcards
+    output:
+        sequences = BUILD_TIMEPOINT_PATH + "titer_sequences.fasta"
+    params:
+        years_back = config["years_for_titer_alignments"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/select_titer_strain_sequences.py \
+            --titers {input.titers} \
+            --metadata {input.metadata} \
+            --sequences {input.sequences} \
+            --timepoint {wildcards.timepoint} \
+            --years-back {params.years_back} \
+            --output {output.sequences}
+        """
+
+
 rule get_strains_by_timepoint:
     input:
         metadata = _get_metadata_by_wildcards
