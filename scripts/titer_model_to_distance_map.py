@@ -33,17 +33,18 @@ if __name__ == '__main__':
         derived = mutation[-1]
         position = mutation[1:-1]
 
-        if gene not in distance_map["map"]:
-            distance_map["map"][gene] = {}
+        if ancestral != "X" and derived != "X":
+            if gene not in distance_map["map"]:
+                distance_map["map"][gene] = {}
 
-        if position not in distance_map["map"][gene]:
-            distance_map["map"][gene][position] = []
+            if position not in distance_map["map"][gene]:
+                distance_map["map"][gene][position] = []
 
-        distance_map["map"][gene][position].append({
-            "from": ancestral,
-            "to": derived,
-            "weight": weight
-        })
+            distance_map["map"][gene][position].append({
+                "from": ancestral,
+                "to": derived,
+                "weight": weight
+            })
 
     # Save the distance map.
     with open(args.output, "w") as oh:
