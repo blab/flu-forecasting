@@ -184,6 +184,8 @@
                     "ep_x",
                     "cTiter",
                     "cTiterSub",
+                    "cTiterSub_star",
+                    "cTiterSub_x",
                     "ne_star",
                     "dms_star",
                     "lbi",

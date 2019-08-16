@@ -28,6 +28,43 @@ rule get_titer_sequences_by_timepoint:
         """
 
 
+rule align_titer_sequences:
+    input:
+        sequences = rules.get_titer_sequences_by_timepoint.output.sequences,
+        reference = _get_reference
+    output:
+        alignment = BUILD_TIMEPOINT_PATH + "aligned_titer_sequences.fasta"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/align_titer_sequences" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    threads: 4
+    shell:
+        """
+        augur align \
+            --sequences {input.sequences} \
+            --reference-sequence {input.reference} \
+            --output {output.alignment} \
+            --remove-reference \
+            --fill-gaps \
+            --nthreads {threads}
+        """
+
+
+rule translate_titer_sequences:
+    input:
+        alignment = rules.align_titer_sequences.output.alignment,
+        reference = _get_reference
+    output:
+        sequences = BUILD_TIMEPOINT_PATH + "titer-sequence-aa-seq_{gene}.fasta"
+    shell:
+        """
+        python3 scripts/translate.py \
+            --sequences {input.alignment} \
+            --reference-sequence {input.reference} \
+            --genes {wildcards.gene} \
+            --output {output.sequences}
+        """
+
+
 rule get_strains_by_timepoint:
     input:
         metadata = _get_metadata_by_wildcards
@@ -537,9 +574,7 @@ rule filter_translations_by_date:
 rule titers_sub:
     input:
         titers = _get_titers_by_wildcards,
-        aa_muts = rules.translate.output,
-        alignments = filtered_translations,
-        tree = rules.refine.output.tree
+        alignments = titer_sequence_translations
     params:
         genes = gene_names
     output:
@@ -600,8 +635,8 @@ rule titer_distances:
     params:
         # TODO: move these params to builds in config file
         genes = gene_names,
-        comparisons = "root ancestor pairwise",
-        attribute_names = "cTiterSub cTiterSub_star cTiterSub_pairwise",
+        comparisons = "root ancestor",
+        attribute_names = "cTiterSub cTiterSub_star",
         earliest_date = _get_distance_earliest_date_by_wildcards,
         latest_date = _get_distance_latest_date_by_wildcards
     output:
@@ -615,7 +650,7 @@ rule titer_distances:
             --gene-names {params.genes} \
             --compare-to {params.comparisons} \
             --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} {input.distance_maps} {input.distance_maps} \
+            --map {input.distance_maps} {input.distance_maps} \
             --date-annotations {input.date_annotations} \
             --earliest-date {params.earliest_date} \
             --latest-date {params.latest_date} \
@@ -623,10 +658,41 @@ rule titer_distances:
         """
 
 
+rule pairwise_titer_distances:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        alignments = translations(segment="ha", path=BUILD_TIMEPOINT_PATH),
+        distance_maps = rules.convert_titer_model_to_distance_map.output.distance_map,
+        date_annotations = rules.refine.output.node_data
+    params:
+        genes = gene_names(segment="ha"),
+        attribute_names = "cTiterSub_pairwise",
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_TIMEPOINT_PATH + "pairwise_titer_distances.json",
+    benchmark: "benchmarks/pairwise_titer_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/pairwise_titer_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --attribute-name {params.attribute_names} \
+            --map {input.distance_maps} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
+
+
 rule titer_cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
-        distances = rules.titer_distances.output.distances,
+        distances = rules.pairwise_titer_distances.output.distances,
         date_annotations = rules.refine.output.node_data
     params:
         distance_attributes = "cTiterSub_pairwise",
@@ -1024,28 +1090,57 @@ rule fit_models_by_clades:
         """
 
 
-rule plot_tree:
-    input:
-        auspice_tree = rules.export.output.auspice_tree
-    output:
-        tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.pdf"
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    params:
-        start = _get_start_date_by_wildcards,
-        end = _get_end_date_by_wildcards
-    shell:
-        """
-        python3 scripts/plot_tree.py \
-            {input} \
-            {output} \
-            --start-date {params.start} \
-            --end-date {params.end} &> {log}
-        """
-
-# rule aggregate_tree_plots_simulated:
-#     input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
+# rule export_with_fitness:
+#     input:
+#         tree = rules.refine.output.tree,
+#         metadata = _get_metadata_by_wildcards,
+#         auspice_config = "config/auspice_config.json",
+#         node_data = _get_node_data_for_export,
+#         fitness = BUILD_TIMEPOINT_PATH + "fitness.json",
+#         colors = "config/colors.tsv"
 #     output:
-#         trees="results/figures/trees_simulated.pdf"
-#     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+#         auspice_tree = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.json",
+#         auspice_metadata = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_meta.json"
+#     params:
+#         panels = "tree entropy frequencies"
+#     conda: "../envs/anaconda.python3.yaml"
+#     shell:
+#         """
+#         augur export \
+#             --tree {input.tree} \
+#             --metadata {input.metadata} \
+#             --node-data {input.node_data} \
+#             --colors {input.colors} \
+#             --auspice-config {input.auspice_config} \
+#             --output-tree {output.auspice_tree} \
+#             --output-meta {output.auspice_metadata} \
+#             --panels {params.panels} \
+#             --minify-json
+#         """
+
+
+# rule plot_tree:
+#     input:
+#         auspice_tree = rules.export.output.auspice_tree
+#     output:
+#         tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.pdf"
+#     conda: "../envs/anaconda.python3.yaml"
+#     benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+#     log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
+#     params:
+#         start = _get_start_date_by_wildcards,
+#         end = _get_end_date_by_wildcards
+#     shell:
+#         """
+#         python3 scripts/plot_tree.py \
+#             {input} \
+#             {output} \
+#             --start-date {params.start} \
+#             --end-date {params.end} &> {log}
+#         """
+
+# # rule aggregate_tree_plots_simulated:
+# #     input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
+# #     output:
+# #         trees="results/figures/trees_simulated.pdf"
+# #     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
