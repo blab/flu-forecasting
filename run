@@ -84,8 +84,8 @@ if [[ "${USE_CLUSTER}" -eq "1" ]]
 then
     # Run multiple build jobs at a time on the cluster.
     echo "Running on the cluster"
-    #snakemake -w 60 --use-conda --cluster-config cluster.json --drmaa " --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" --jobname "{rulename}.{jobid}.sh" ${JOBS} $*
-    snakemake -w 60 --use-conda --cluster-config config/cluster-gizmo.json --cluster "sbatch --nodes=1 --tasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" ${JOBS} $*
+    snakemake --restart-times 3 -w 60 --use-conda --cluster-config config/cluster-gizmo.json --drmaa " -p restart --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" --jobname "{rulename}.{jobid}.sh" ${JOBS} $*
+    #snakemake --restart-times 3 -w 60 --use-conda --cluster-config config/cluster-gizmo.json --cluster "sbatch -p restart --restart --nodes=1 --tasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" ${JOBS} $*
 else
     echo "Running locally"
     snakemake -w 60 --use-conda ${JOBS} $*
