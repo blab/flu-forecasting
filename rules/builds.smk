@@ -553,6 +553,30 @@ rule lbi:
         """
 
 
+rule unnormalized_lbi:
+    input:
+        tree = rules.refine.output.tree,
+        branch_lengths = rules.refine.output.node_data
+    params:
+        tau = config["lbi"]["tau"],
+        window = config["lbi"]["window"],
+        names = "unnormalized_lbi"
+    output:
+        lbi = BUILD_TIMEPOINT_PATH + "unnormalized_lbi.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur lbi \
+            --tree {input.tree} \
+            --branch-lengths {input.branch_lengths} \
+            --output {output} \
+            --attribute-names {params.names} \
+            --tau {params.tau} \
+            --window {params.window} \
+            --no-normalization
+        """
+
+
 rule filter_translations_by_date:
     input:
         alignments = rules.reconstruct_translations.output.aa_alignment,
@@ -789,7 +813,8 @@ def _get_node_data_for_export(wildcards):
         rules.delta_frequency.output.delta_frequency,
         rules.distances.output.distances,
         rules.cross_immunities.output.cross_immunities,
-        rules.lbi.output.lbi
+        rules.lbi.output.lbi,
+        rules.unnormalized_lbi.output.lbi
     ]
 
     # Define node data that only make sense for natural populations

@@ -189,6 +189,7 @@
                     "ne_star",
                     "dms_star",
                     "lbi",
+                    "unnormalized_lbi",
                     "delta_frequency",
                     "ep-cTiter",
                     "ne_star-dms_star",

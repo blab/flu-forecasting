@@ -47,6 +47,12 @@
       "menuItem": "local branching index",
       "type": "continuous"
     },
+    "unnormalized_lbi": {
+      "legendTitle": "unnormalized local branching index",
+      "key": "unnormalized_lbi",
+      "menuItem": "unnormalized local branching index",
+      "type": "continuous"
+    },
     "ep": {
       "menuItem": "epitope mutations",
       "legendTitle": "Epitope mutations",
