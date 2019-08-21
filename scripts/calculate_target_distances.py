@@ -13,7 +13,7 @@ if __name__ == '__main__':
     )
 
     parser.add_argument("--tip-attributes", required=True, help="a tab-delimited file describing tip attributes at one or more timepoints")
-    parser.add_argument("--delta-months", required=True, type=int, help="number of months between timepoints to be compared")
+    parser.add_argument("--delta-months", required=True, nargs="+", type=int, help="number of months between timepoints to be compared")
     parser.add_argument("--output", help="tab-delimited file of pairwise distances between tips in timepoints separate by the given delta time", required=True)
     parser.add_argument("--sequence-attribute-name", default="aa_sequence", help="attribute name of sequences to compare")
     args = parser.parse_args()
@@ -26,11 +26,21 @@ if __name__ == '__main__':
     distances = []
 
     for timepoint, timepoint_df in tips.groupby("timepoint"):
-        future_timepoint_df = tips[tips["timepoint"] == (timepoint + pd.DateOffset(months=args.delta_months))]
-        current_tips = timepoint_df.loc[:, ["strain", args.sequence_attribute_name]].values.tolist()
-        future_tips = future_timepoint_df.loc[:, ["strain", args.sequence_attribute_name]].values.tolist()
-        comparison_tips = current_tips + future_tips
+        current_tips = [
+            tuple(values)
+            for values in timepoint_df.loc[:, ["strain", args.sequence_attribute_name]].values.tolist()
+        ]
+        comparison_tips = current_tips
 
+        for delta_month in args.delta_months:
+            future_timepoint_df = tips[tips["timepoint"] == (timepoint + pd.DateOffset(months=delta_month))]
+            future_tips = [
+                tuple(values)
+                for values in future_timepoint_df.loc[:, ["strain", args.sequence_attribute_name]].values.tolist()
+            ]
+            comparison_tips = comparison_tips + future_tips
+
+        comparison_tips = list(set(comparison_tips))
         for current_tip, current_tip_sequence in current_tips:
             current_tip_sequence_array = np.frombuffer(current_tip_sequence.encode(), dtype="S1")
 
