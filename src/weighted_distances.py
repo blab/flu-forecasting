@@ -20,7 +20,7 @@ def get_distances_by_sample_names(distances):
         dictionary of distances by pairs of sample names
     """
     distances_by_sample_names = {}
-    for distance, sample_b, sample_a in distances.values:
+    for distance, sample_b, sample_a in distances.loc[:, ["distance", "other_sample", "sample"]].values:
         if sample_a not in distances_by_sample_names:
             distances_by_sample_names[sample_a] = {}
 
