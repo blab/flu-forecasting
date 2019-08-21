@@ -520,11 +520,15 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
             # Calculate observed distance between current tips and the future
             # using projected frequencies and weighted distances to the future.
-            projected_timepoint_df = timepoint_df[["timepoint", "strain", "frequency", "weighted_distance_to_present", "weighted_distance_to_future"]].copy()
+            columns_to_extract = ["timepoint", "strain", "frequency"]
+            optional_columns = ["weighted_distance_to_present", "weighted_distance_to_future"]
+            for column in optional_columns:
+                if column in timepoint_df.columns:
+                    columns_to_extract.append(column)
+
+            projected_timepoint_df = timepoint_df[columns_to_extract].copy()
             projected_timepoint_df["fitness"] = fitnesses
             projected_timepoint_df["projected_frequency"] = projected_frequencies
-
-            #projected_timepoint_df["y_diff"] = projected_timepoint_df["y"] * projected_timepoint_df["weighted_distance_to_future"]
 
             if model_is_fit:
                 # Calculate estimate distance between current tips and future tips

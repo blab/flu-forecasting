@@ -28,11 +28,6 @@ if __name__ == "__main__":
         parse_dates=["timepoint"]
     )
 
-    # Scale each tip's weighted distance to future populations by one minus
-    # the tip's current frequency. This ensures that lower frequency tips do
-    # not considered closer to the future.
-    tips["y"] = tips["weighted_distance_to_future"]
-
     # Load distances.
     distances = pd.read_csv(args.distances, sep="\t")
     distances_by_sample_names = get_distances_by_sample_names(distances)
