@@ -24,6 +24,17 @@ def float_to_datestring(time):
 
     return date_string
 
+def _get_sample_by_wildcards(wildcards):
+    """Look for an explicit dataset sample name for the build sample and default to
+    the build sample name when no explicit name is provided.
+    """
+    try:
+        sample = config["builds"][wildcards.type][wildcards.sample].get("dataset_sample", wildcards.sample)
+    except AttributeError:
+        sample = wildcards.sample
+
+    return sample
+
 def _get_sequences_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["sequences"]
 
@@ -64,46 +75,60 @@ def _get_max_date_for_augur_frequencies_by_wildcards(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.timepoint))
 
 def _get_viruses_per_month(wildcards):
-    return config["datasets"][wildcards.sample]["viruses_per_month"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["viruses_per_month"]
 
 def _get_simulation_seed(wildcards):
-    return config["datasets"][wildcards.sample]["seed"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["seed"]
 
 def _get_fauna_fields(wildcards):
-    return config["datasets"][wildcards.sample]["fauna_fields"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["fauna_fields"]
 
 def _get_fasta_fields(wildcards):
-    return config["datasets"][wildcards.sample]["fasta_fields"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["fasta_fields"]
 
 def _get_lineage(wildcards):
-    return config["datasets"][wildcards.sample]["lineage"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["lineage"]
 
 def _get_segment(wildcards):
-    return config["datasets"][wildcards.sample]["segment"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["segment"]
 
 def _get_titer_databases(wildcards):
-    return config["datasets"][wildcards.sample]["titer_databases"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["titer_databases"]
 
 def _get_titer_assay(wildcards):
-    return config["datasets"][wildcards.sample]["titer_assay"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["titer_assay"]
 
 def _get_titer_passage(wildcards):
-    return config["datasets"][wildcards.sample]["titer_passage"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["titer_passage"]
 
 def _get_min_sequence_length(wildcards):
-    return config["datasets"][wildcards.sample]["min_sequence_length"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["min_sequence_length"]
 
 def _get_outliers(wildcards):
-    return config["datasets"][wildcards.sample]["outliers"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["outliers"]
 
 def _get_required_strains(wildcards):
-    return config["datasets"][wildcards.sample]["required_strains"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["required_strains"]
 
 def _get_start_date_for_dataset(wildcards):
-    return config["datasets"][wildcards.sample]["start_date"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["start_date"]
 
 def _get_end_date_for_dataset(wildcards):
-    return config["datasets"][wildcards.sample]["end_date"]
+    sample = _get_sample_by_wildcards(wildcards)
+    return config["datasets"][sample]["end_date"]
 
 def _get_reference(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["reference"]

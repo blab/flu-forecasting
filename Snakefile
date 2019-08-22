@@ -175,7 +175,8 @@ def _get_clock_rate_by_wildcards(wildcards):
         ('yam', 'ha'): 0.0019, ('yam', 'na'):0.0013
     }
 
-    dataset = config["datasets"][wildcards.sample]
+    sample = _get_sample_by_wildcards(wildcards)
+    dataset = config["datasets"][sample]
     lineage = dataset["lineage"]
     segment = dataset["segment"]
 
