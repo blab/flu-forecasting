@@ -912,6 +912,7 @@ rule fit_models_by_distances:
             --distances {input.distances} \
             --errors-by-timepoint {output.errors} \
             --coefficients-by-timepoint {output.coefficients} \
+            --include-scores \
             --output {output.model} &> {log}
         """
 

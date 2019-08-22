@@ -678,7 +678,7 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
     return results
 
 
-def summarize_cross_validation_scores(scores):
+def summarize_cross_validation_scores(scores, include_scores=False):
     """Summarize model errors including in-sample errors by AIC, out-of-sample
     errors by cross-validation, and beta parameters across timepoints.
 
@@ -688,6 +688,10 @@ def summarize_cross_validation_scores(scores):
         a list of cross-validation results including training errors,
         cross-validation errors, and beta coefficients
 
+    include_scores : boolean
+        specifies whether cross-validation scores should be included in the
+        output per training window
+
     Returns
     -------
     dict :
@@ -695,9 +699,11 @@ def summarize_cross_validation_scores(scores):
         training, cross-validation, and beta coefficients
     """
     summary = {
-        "scores": scores,
         "predictors": scores[0]["predictors"]
     }
+
+    if include_scores:
+        summary["scores"] = scores
 
     validation_errors = [score["validation_error"] for score in scores]
     summary["cv_error_mean"] = np.mean(validation_errors)
@@ -788,6 +794,7 @@ if __name__ == "__main__":
     parser.add_argument("--cost-function", default="sse", choices=["sse", "rmse", "mae", "information_gain", "diffsum"], help="name of the function that returns the error between observed and estimated values")
     parser.add_argument("--pseudocount", type=float, help="pseudocount numerator to adjust all frequencies by, enabling some information theoretic metrics like information gain")
     parser.add_argument("--include-attributes", action="store_true", help="include attribute data used to train/validate models in the cross-validation output")
+    parser.add_argument("--include-scores", action="store_true", help="include score data resulting from cross-validation output")
     parser.add_argument("--errors-by-timepoint", help="optional data frame of cross-validation errors by validation timepoint")
     parser.add_argument("--coefficients-by-timepoint", help="optional data frame of coefficients by validation timepoint")
 
@@ -908,7 +915,7 @@ if __name__ == "__main__":
 
     # Summarize model errors including in-sample errors by AIC, out-of-sample
     # errors by cross-validation, and beta parameters across timepoints.
-    model_results = summarize_cross_validation_scores(scores)
+    model_results = summarize_cross_validation_scores(scores, args.include_scores)
 
     # Annotate parameters used to produce models.
     model_results["cost_function"] = args.cost_function
