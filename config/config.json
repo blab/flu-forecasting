@@ -187,9 +187,18 @@
                     "dms_star",
                     "lbi",
                     "delta_frequency",
+                    "ep-cTiter",
+                    "ne_star-dms_star",
+                    "lbi-delta_frequency",
                     "ep_x-ne_star",
-                    "lbi-ep_x-ne_star"
-                ]
+                    "lbi-ne_star",
+                    "cTiter-ne_star",
+                    "delta_frequency-ne_star",
+                    "lbi-ep_x-ne_star",
+                    "lbi-cTiter-ne_star",
+                    "lbi-ep-cTiter-ne_star"
+                ],
+                "best_predictor": "lbi"
             },
             "natural_sample_0_with_20_vpm": {
                 "description": "Dense sampling of viruses over 21 years of H3N2 evolution",
