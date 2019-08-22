@@ -67,16 +67,21 @@ rule translate_titer_sequences:
 
 rule get_strains_by_timepoint:
     input:
-        metadata = _get_metadata_by_wildcards
+        metadata = _get_metadata_by_wildcards,
+        reference_strains = _get_required_strains
     output:
         strains = BUILD_TIMEPOINT_PATH + "strains.txt"
+    params:
+        years_back = config["years_back_to_build_trees"]
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/partition_strains_by_timepoint.py \
             {input.metadata} \
             {wildcards.timepoint} \
-            {output}
+            {output} \
+            --years-back {params.years_back} \
+            --reference-strains {input.reference_strains}
         """
 
 
@@ -598,7 +603,7 @@ rule filter_translations_by_date:
 rule titers_sub:
     input:
         titers = _get_titers_by_wildcards,
-        alignments = titer_sequence_translations
+        alignments = translations
     params:
         genes = gene_names
     output:

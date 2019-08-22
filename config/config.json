@@ -240,6 +240,7 @@
     "months_for_distance_season": 12,
     "max_years_for_distances": 5,
     "years_back_for_target_distance": 3,
+    "years_back_to_build_trees": 6,
     "target_distance_attribute": "hamming",
     "titers": {
         "passages": ["cell"],
