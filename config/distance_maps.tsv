@@ -6,6 +6,8 @@ h3n2	ha	root	dms	dms_mutation_effect
 h3n2	ha	ancestor	ep_star	luksza
 h3n2	ha	ancestor	ne_star	luksza_nonepitope
 h3n2	ha	ancestor	dms_star	dms_mutation_effect
+h3n2	ha	ancestor	dms_entropy	dms_entropy
+h3n2	ha	ancestor	dms_nonepitope	dms_nonepitope
 h3n2	ha	pairwise	ep_pairwise	luksza
 h3n2	na	root	ep	bhatt
 h3n2	na	root	ne	bhatt_nonepitope
