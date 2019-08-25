@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     # Convert date string to a datetime instance.
     timepoint = pd.to_datetime(args.timepoint)
-    numeric_timepoint = numeric_date(timepoint)
+    numeric_timepoint = np.around(numeric_date(timepoint), 2)
 
     # Load metadata with strain names and dates.
     metadata, columns = read_metadata(args.metadata)
@@ -43,13 +43,13 @@ if __name__ == '__main__':
     # earliest date to accept for strains is.
     if args.years_back is not None:
         earliest_timepoint = timepoint - pd.DateOffset(years=args.years_back)
-        numeric_earliest_timepoint = numeric_date(earliest_timepoint)
+        numeric_earliest_timepoint = np.around(numeric_date(earliest_timepoint), 2)
 
         # If reference strains are provided, calculate the earliest date to
         # accept those strains.
         if len(reference_strains) > 0:
             earliest_reference_timepoint = earliest_timepoint - pd.DateOffset(years=args.additional_years_back_for_references)
-            numeric_earliest_reference_timepoint = numeric_date(earliest_reference_timepoint)
+            numeric_earliest_reference_timepoint = np.around(numeric_date(earliest_reference_timepoint), 2)
 
     # Find strains sampled prior to the current timepoint. Strains may have
     # multiple numerical dates, so we filter on the latest (maximum) observed
