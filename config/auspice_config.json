@@ -103,23 +103,17 @@
       "type": "continuous",
       "key": "ep_x"
     },
-    "ep_luksza_x": {
-      "menuItem": "epitope cross-immunity",
-      "legendTitle": "Epitope cross-immunity",
-      "type": "continuous",
-      "key": "ep_luksza_x"
-    },
-    "ep_x_slow": {
-      "menuItem": "epitope cross-immunity (slow)",
-      "legendTitle": "Epitope cross-immunity (slow)",
-      "type": "continuous",
-      "key": "ep_x_slow"
-    },
     "cTiter": {
       "menuItem": "titer tree",
       "legendTitle": "Titer tree",
       "type": "continuous",
       "key": "cTiter"
+    },
+    "cTiter_x": {
+      "menuItem": "titer tree cross-immunity",
+      "legendTitle": "Titer tree cross-immunity",
+      "type": "continuous",
+      "key": "cTiter_x"
     },
     "cTiterSub": {
       "menuItem": "titer sub (root)",

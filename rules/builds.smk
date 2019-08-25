@@ -718,6 +718,33 @@ rule pairwise_titer_distances:
         """
 
 
+rule pairwise_titer_tree_distances:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        model = rules.titers_tree.output.titers_model,
+        date_annotations = rules.refine.output.node_data
+    params:
+        attribute_names = "cTiter_pairwise",
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_TIMEPOINT_PATH + "pairwise_titer_tree_distances.json",
+    benchmark: "benchmarks/pairwise_titer_tree_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/pairwise_titer_tree_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_titer_tree_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --model {input.model} \
+            --attribute-name {params.attribute_names} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
+
+
 rule titer_cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
@@ -730,6 +757,33 @@ rule titer_cross_immunities:
         years_to_wane = config["max_years_for_distances"]
     output:
         cross_immunities = BUILD_TIMEPOINT_PATH + "titer_substitution_cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --date-annotations {input.date_annotations} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
+            --years-to-wane {params.years_to_wane} \
+            --output {output}
+        """
+
+
+rule titer_tree_cross_immunities:
+    input:
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        distances = rules.pairwise_titer_tree_distances.output.distances,
+        date_annotations = rules.refine.output.node_data
+    params:
+        distance_attributes = "cTiter_pairwise",
+        immunity_attributes = "cTiter_x",
+        decay_factors = "14.0",
+        years_to_wane = config["max_years_for_distances"]
+    output:
+        cross_immunities = BUILD_TIMEPOINT_PATH + "titer_tree_cross_immunity.json",
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -829,7 +883,8 @@ def _get_node_data_for_export(wildcards):
             rules.traits.output.node_data,
             rules.titers_tree.output.titers_model,
             rules.titer_distances.output.distances,
-            rules.titer_cross_immunities.output.cross_immunities
+            rules.titer_cross_immunities.output.cross_immunities,
+            rules.titer_tree_cross_immunities.output.cross_immunities
         ])
     elif wildcards.type == "simulated":
         inputs.extend([
