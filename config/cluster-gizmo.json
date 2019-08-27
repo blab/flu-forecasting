@@ -1,5 +1,6 @@
 {
     "__default__": {
+        "partition": "restart",
         "time" : "00:05:00",
         "cores" : 1,
         "memory": "256",
@@ -7,11 +8,6 @@
         "name": "{rule}.{wildcards}",
         "stdout": "log/cluster/{rule}.{wildcards}.%j.out",
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
-    },
-    "align_fauna_sequences_to_ncbi_database": {
-        "time": "4:00:00",
-        "memory": "16384",
-        "cores": 4
     },
     "align": {
         "time": "0:15:00",
@@ -29,20 +25,7 @@
         "cores": 4
     },
     "refine": {
-        "time": "2:00:00",
-        "memory": "16384"
-    },
-    "align_simulated": {
-        "time": "0:30:00",
-        "memory": "16384",
-        "cores": 4
-    },
-    "tree_simulated": {
-        "time": "2:00:00",
-        "memory": "16384",
-        "cores": 4
-    },
-    "refine_simulated": {
+        "partition": "campus",
         "time": "2:00:00",
         "memory": "16384"
     },
@@ -53,14 +36,15 @@
     "reconstruct_translations": {
         "memory": "4096"
     },
-    "reconstruct_translations_simulated": {
-        "memory": "4096"
-    },
     "cross_immunities": {
         "memory": "8192"
     },
     "distances": {
         "memory": "8192",
+        "time" : "00:30:00"
+    },
+    "pairwise_titer_tree_distances": {
+        "memory": "4096",
         "time" : "00:30:00"
     },
     "convert_frequencies_to_table": {
@@ -77,9 +61,6 @@
         "time" : "00:30:00"
     },
     "plot_tree": {
-        "memory": "8192"
-    },
-    "plot_tree_simulated": {
         "memory": "8192"
     }
 }
