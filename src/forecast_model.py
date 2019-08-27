@@ -18,6 +18,7 @@ if __name__ == "__main__":
     parser.add_argument("--delta-months", required=True, type=int, nargs="+", help="number of months to project clade frequencies into the future")
     parser.add_argument("--output-node-data", required=True, help="node data JSON of forecasts for the given tips")
     parser.add_argument("--output-frequencies", help="frequencies JSON extended with forecasts for the given tips")
+    parser.add_argument("--output-table", help="table of forecasts for the given tips")
 
     args = parser.parse_args()
 
@@ -95,6 +96,7 @@ if __name__ == "__main__":
     pivots = frequencies.pop("pivots")
     projection_pivot = pivots[-1]
 
+    forecasts = []
     for delta_month in args.delta_months:
         delta_time = delta_month / 12.0
         delta_offset = pd.DateOffset(months=delta_month)
@@ -111,6 +113,7 @@ if __name__ == "__main__":
 
         # collect fitness and projection
         forecasts_df = model.predict(tips)
+        forecasts_df["future_timepoint"] = forecasts_df["timepoint"] + delta_offset
 
         # collect dicts from dataframe
         strain_to_projected_frequency = {}
@@ -128,6 +131,10 @@ if __name__ == "__main__":
         # extend pivots
         pivots.append(projection_pivot + delta_time)
 
+        # Collect forecast data frames, if requested.
+        if args.output_table:
+            forecasts.append(forecasts_df)
+
     # reconnect pivots and label projection pivot
     frequencies['pivots'] = pivots
     frequencies['projection_pivot'] = projection_pivot
@@ -135,3 +142,8 @@ if __name__ == "__main__":
     # output to file
     with open(args.output_frequencies, "w") as jsonfile:
         json.dump(frequencies, jsonfile, indent=1)
+
+    # Save forecasts table, if requested.
+    if args.output_table:
+        all_forecasts = pd.concat(forecasts, ignore_index=True)
+        all_forecasts.to_csv(args.output_table, sep="\t", index=False, header=True, na_rep="N/A")
