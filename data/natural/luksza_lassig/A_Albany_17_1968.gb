@@ -1,0 +1,93 @@
+LOCUS       CY021109                1724 bp    cRNA    linear   VRL 23-MAR-2007
+DEFINITION  Influenza A virus (A/Albany/17/1968(H3N2)) segment 4, complete
+            sequence.
+ACCESSION   CY021109
+VERSION     CY021109.1
+KEYWORDS    .
+SOURCE      Influenza A virus (A/Albany/17/1968(H3N2))
+  ORGANISM  Influenza A virus (A/Albany/17/1968(H3N2))
+            Viruses; ssRNA viruses; ssRNA negative-strand viruses;
+            Orthomyxoviridae; Influenzavirus A.
+REFERENCE   1  (bases 1 to 1724)
+  AUTHORS   Spiro,D., Sengamalay,N., Boyne,A., Bera,J., Ghedin,E., Zaborsky,J.,
+            Subbu,V., Sparenborg,J., Gallagher,T., Overton,L., Althoff,R.,
+            Liu,X., Sitz,J., Katzel,D., Neupane,R., Shumway,M., Koo,H.,
+            Griesemer,S., St. George,K., Bennett,R., Taylor,J., Bao,Y.,
+            Bolotov,P., Dernovoy,D., Kiryutin,B., Lipman,D.J. and Tatusova,T.
+  TITLE     The NIAID Influenza Genome Sequencing Project
+  JOURNAL   Unpublished
+REFERENCE   2  (bases 1 to 1724)
+  CONSRTM   The NIAID Influenza Genome Sequencing Consortium
+  TITLE     Direct Submission
+  JOURNAL   Submitted (23-MAR-2007) on behalf of TIGR/Wadsworth-NYSDOH/NCBI,
+            National Center for Biotechnology Information, NIH, Bethesda, MD
+            20894, USA
+FEATURES             Location/Qualifiers
+     source          1..1724
+                     /organism="Influenza A virus (A/Albany/17/1968(H3N2))"
+                     /mol_type="viral cRNA"
+                     /strain="A/Albany/17/1968"
+                     /serotype="H3N2"
+                     /host="Homo sapiens"
+                     /db_xref="taxon:425527"
+                     /segment="4"
+                     /lab_host="Amniotic 1 pRhMK 2 passage(s)"
+                     /country="USA: Albany County, NY"
+                     /collection_date="1968"
+     gene            9..1709
+                     /gene="HA"
+     CDS             9..1709
+                     /function="receptor binding and fusion protein"
+                     /codon_start=1
+                     /product="hemagglutinin"
+                     /protein_id="ABO52357.1"
+                     /translation="MKTIIALSYIFCLALGQDLPGNDNSTATLCLGHHAVPNGTLVKT
+                     ITDDQIEVTNATELVQSSSTGKICNNPHRILDGIDCTLIDALLGDPHCDVFQNETWDL
+                     FVERSKAFSNCYPYDVPDYASLRSLVASSGTLEFITEGFTWTGVTQNGGSNACKRGPG
+                     SGFFSRLNWLTKSGSTYPVLNVTMPNNDNFDKLYIWGVHHPSTNQEQTSLYVQASGRV
+                     TVSTRRSQQTIIPNIGSRPWVRGLSSRISIYWTIVKPGDVLVINSNGNLIAPRGYFKM
+                     RTGKSSIMRSDAPIDTCIFECITPNGSIPNDKPFQNVNKITYGACPKYVKQNTLKLAT
+                     GMRNVPEKQTRGIFGAIAGFIENGWEGMIDGWYGFRHQNSEGTGQAADLKSTQAAIDQ
+                     INGKLNRVIEKTNEKFHQIEKEFSEVEGRIQDLEKYVEDTKIDLWSYNAELLVALENQ
+                     HTIDLTDSEMNKLFEKTRRQLRENAEDMGNGCFKIYHKCDNACIESIRNGTYDHDVYR
+                     DEALNNRFQIKGVELKSGYKDWILWISFAISCFLLCVVLLGFIMWACQRGNIRCNICI
+                     "
+     CDS             9..56
+                     /gene="SigPep"
+     CDS             57..1043
+                     /gene="HA1"
+                     /product="HA1"
+     CDS             1044..1706
+                     /gene="HA2"
+                     /product="HA2"
+ORIGIN
+        1 tattaatcat gaagaccatc attgctttga gctacatttt ctgtctggct ctcggccaag
+       61 accttccagg aaatgacaac agcacagcaa cgctgtgcct gggacatcat gcggtgccaa
+      121 acggaacact agtgaaaaca atcacagatg atcagattga agtgactaat gctactgagc
+      181 tagttcagag ctcctcaacg gggaaaatat gcaacaatcc tcatcgaatc cttgatggaa
+      241 tagactgcac actgatagat gctctattgg gggaccctca ttgtgatgtt tttcaaaatg
+      301 agacatggga ccttttcgtt gaacgcagca aagctttcag caactgttac ccttatgatg
+      361 tgccagatta tgcctccctt aggtcactag ttgcctcgtc aggcactctg gagtttatca
+      421 ctgagggttt cacttggact ggggtcactc agaatggggg aagcaatgct tgcaaaaggg
+      481 gacctggtag cggttttttc agtagactga actggttgac caaatcagga agcacatatc
+      541 cagtgctgaa cgtgactatg ccaaacaatg acaattttga caaactatac atttgggggg
+      601 ttcaccaccc gagcacgaac caagaacaaa ccagcctgta tgttcaagca tcagggagag
+      661 tcacagtctc taccaggaga agccagcaaa ccataatccc gaatatcggg tccagaccct
+      721 gggtaagggg tctgtctagt agaataagca tctattggac aatagttaag ccgggagacg
+      781 tactggtaat taatagtaat gggaacctaa tcgctcctcg gggttatttc aaaatgcgca
+      841 ctgggaaaag ctcaataatg aggtcagatg cacctattga tacctgtatt tttgaatgca
+      901 tcactccaaa tggaagcatt cccaatgaca agccctttca aaacgtaaac aagatcacat
+      961 atggagcatg ccccaagtat gttaagcaaa acaccctgaa gttggcaaca gggatgcgga
+     1021 atgtaccaga gaaacaaact agaggcatat tcggcgcaat agcaggtttc atagaaaatg
+     1081 gttgggaggg aatgatagac ggttggtacg gtttcaggca tcaaaattct gagggcacag
+     1141 gacaagcagc agatcttaaa agcactcaag cagccatcga ccaaatcaat gggaaattga
+     1201 acagggtaat cgagaagacg aacgagaaat tccatcaaat cgaaaaggaa ttctcagaag
+     1261 tagaagggag aattcaggac ctcgagaaat acgttgaaga cactaaaata gatctctggt
+     1321 cttacaatgc ggagcttctt gtcgctctgg agaatcaaca tacaattgac ctgactgact
+     1381 cggaaatgaa caagctgttt gaaaaaacaa ggaggcaact gagggaaaat gctgaagaca
+     1441 tgggcaatgg ttgcttcaaa atataccaca aatgtgataa cgcttgcata gagtcaatca
+     1501 gaaatgggac ttatgaccat gatgtataca gagacgaagc attaaacaac cggtttcaga
+     1561 tcaaaggtgt tgaactgaag tctggataca aagactggat cctgtggatt tcctttgcca
+     1621 tatcatgctt tttgctttgt gttgttttgc tggggttcat catgtgggcc tgccagagag
+     1681 gcaacattag gtgcaacatt tgcatttgag tgtattagta atta
+//

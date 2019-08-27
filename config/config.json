@@ -70,7 +70,8 @@
             "segment": "ha",
             "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
             "titer_assay": "hi",
-            "titer_passage": "cell"
+            "titer_passage": "cell",
+            "required_strains": "data/natural/luksza_lassig/strains.txt"
         }
     },
     "builds": {
@@ -126,12 +127,14 @@
                 "sequences": "data/natural/luksza_lassig/sequences_luksza.fasta",
                 "metadata": "data/natural/luksza_lassig/metadata_luksza.tsv",
                 "titers": "data/natural/luksza_lassig/titers.tsv",
-                "start_date": "1992-10-01",
+                "start_date": "1985-10-01",
                 "end_date": "2012-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
+                "years_back_to_build_trees": 50,
                 "active": false,
-                "reference": "config/reference_h3n2_ha.gb",
+                "reference": "data/natural/luksza_lassig/A_Albany_17_1968.gb",
+                "training_window": 8,
                 "predictors": [
                     "naive",
                     "ep_x",
