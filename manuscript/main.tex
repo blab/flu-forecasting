@@ -15,6 +15,10 @@ Recent developments in computational methods and influenza virology have made it
 For example, phenotypic measurements of antigenic drift are now accessible through phylogenetic models \cite{Neher:2016hy} and functional phenotypes for HA are available from deep mutational scanning experiments \cite{Lee2018}.
 We describe an approach to integrate previously disparate sequence-only models of influenza evolution with high-quality experimental measurements of antigenic drift and functional constraint.
 
+\section*{Results}
+
+\subsection*{A distance-based model of seasonal influenza evolution}
+
 \begin{figure*}[t]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/model.png}
@@ -23,21 +27,28 @@ We describe an approach to integrate previously disparate sequence-only models o
   \end{center}
 \end{figure*}
 
-\textit{Brief summary of model implementation here including reference to Fig.~\ref{fig:model}.}
-
-\section*{Results}
+Here, we present a model of seasonal influenza evolution inspired by the exponential growth model of \cite{Luksza:2014hj}.
+As with this original model, we seek to forecast the frequencies of viral populations one year in advance by applying an exponential growth factor to each virus sample scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model}).
+We estimate the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
+We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and non-epitope mutations as well as four novel metrics including hemagglutination inhibition (HI) cross-immunity, deep mutational scanning (DMS) mutational effects, local branching index (LBI), and change in clade frequency over time (delta frequency).
+We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
+After selecting optimal models from training and validation, we evaluate the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
+Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the exponential growth model.
+With this approach, we avoid the intrinsic variability of ancestral sequence reconstruction associated with previous clade-based models.
+However, we retain the benefits of fitting models to highly similar samples found within clades.
 
 \subsection*{Models accurately forecast evolution of simulated populations of {A/H3N2-like viruses}}
 
 The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions at epitopes that enable escape from adaptive immunity and purifying selection on domains required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under purifying and positive selection for 30 years (Methods).
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
+We fit models to these simulated populations using all sequence-only fitness metrics.
 
 We hypothesized that fitness metrics associated with viral success such as epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while the non-epitope mutations metric would be assigned a negative coefficient.
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a combined model of epitope cross-immunity and non-epitope mutations would perform as well as or better than the growth metrics.
-In addition to these four estimates of viral fitness, we tested models based on both the true fitness of each sample as measured by the simulator and a naive model under which there was no estimated change in population composition over the one year forecasting period.
-To control for genetic diversity within and between seasons, we evaluated all model forecasts by the average distance between the estimated and observed future population sequences (Methods).
+In addition to these four estimates of viral fitness, we tested models based on both the true fitness of each sample as measured by the simulator and a naive model under which the exponential growth factor is set to one and populations do not change composition over the one year forecasting period.
+The distances estimated under the naive model represent the average distance between the current and future timepoints.
 
 \begin{figure*}[t]
   \begin{center}
@@ -48,24 +59,24 @@ To control for genetic diversity within and between seasons, we evaluated all mo
 \end{figure*}
 
 As expected, the true fitness model was the most consistently accurate, estimating distances to the future less than or equal to zero at 21 of 23 (91\%) timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
-The naive model was the least accurate, with only seven estimates of zero or less (30\% of timepoints) and an average estimated distance of 0.08 +/- 0.13 (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
-Three of the four biologically-informed models performed as expected with the exception of epitope cross-immunity.
-LBI and delta frequency both received positive coefficients and outperformed the mechanistic metrics on average.
+The naive model was the least accurate with an average estimated distance of 0.08 +/- 0.13 (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
 The non-epitope mutations metric received a consistently negative coefficient and also outperformed the naive model with an average distance less than zero.
+LBI and delta frequency both received positive coefficients and outperformed the mechanistic metrics on average.
+LBI performed as well as the true fitness predictor, on average, but suffered from higher variability in distance estimates.
 Surprisingly, epitope cross-immunity performed no better than the naive model and received a negative average coefficient, despite the anticipated benefit of epitope mutations that could escape exposure-dependent fitness penalties.
 Similarly, the combined model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-From these results, we concluded that our models accurately estimate the evolution of simulated populations, but that the fitness of samples under our simulated conditions is dominated by purifying selection rather than by positive selection at epitope sites.
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of samples under our simulated conditions was dominated by purifying selection rather than by positive selection at epitope sites.
 
-To determine which evolutionary constraints LBI represented, we fit two additional composite models including LBI and non-epitope mutations and LBI with both mutation metrics.
-We reasoned that the coefficients learned by these composite models should reflect the relative contribution of each individual metric to the model accuracy.
-For example, if LBI measures antigenic advance, we would expect the values of the LBI and cross-immunity coefficients to be mutually exclusive such that increase in LBI coefficient is associated with decrease in the cross-immunity coefficient (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-Interestingly, we found that the coefficients of the mutation metrics were almost always zero while the LBI coefficients were nearly identical to the coefficients of the individual LBI model.
-These results indicate that the predictive contributions of both cross-immunity and non-epitope mutations can be accounted for by LBI alone.
-
-\textit{Repeat simulations with multiple epochs to show model coefficients can reflect these underlying changes to evolutionary constraints.}
+To determine which evolutionary constraints the LBI model represented, we fit an additional composite models including LBI and both mutation metrics.
+We expected the coefficients from these composite models to reveal which individual metrics were mutually exclusive or beneficial.
+For example, if LBI accounts for antigenic drift, the coefficients for LBI and epitope cross-immunity should exhibit negatively correlated changes through time.
+Interestingly, we found that this composite model converged to an LBI-only model with zero-valued coefficients for both mutation metrics in the last half of the simulated timepoints (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+These results indicate that LBI alone can account for the predictive contributions of both cross-immunity and non-epitope mutations.
 
 \subsection*{Phylogenetic metrics most accurately forecast natural populations of A/H3N2 viruses}
 
+Next, we trained and validated models with 21 years of natural A/H3N2 populations spanning from October 1994 to October 2015.
+We held out data subsequent to October 2015 for model testing.
 The average distance per year between natural populations was twice that of simulated populations at 0.20 +/- 0.16 (Supplemental Fig.~\ref{sup_fig:distance_of_natural_populations_between_timepoints}).
 Consistent with the simulated population results, almost all biologically-informed metrics performed better than the naive model for natural populations with the exception of the cross-immunity metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The two phylogenetic metrics, LBI and delta frequency, performed consistently better than all other metrics with average distances to the future of -0.06 +/- 0.20 and 0.00 +/- 0.12, respectively.
