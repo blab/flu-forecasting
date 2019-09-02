@@ -14,11 +14,11 @@
             "viruses_per_month": 10
         },
         "simulated_sample_2": {
-            "description": "Simulated populations with stronger exposure penalty of 0.2 instead of 0.03",
+            "description": "Higher density sampling of simulated populations with same settings as simulated_sample_1",
             "seed": 2,
             "lineage": "simulated",
             "segment": "ha",
-            "viruses_per_month": 10
+            "viruses_per_month": 30
         },
         "natural_sample_0_with_10_vpm": {
             "lineage": "h3n2",
