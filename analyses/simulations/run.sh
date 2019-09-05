@@ -1,6 +1,6 @@
 #!/bin/bash
 
-java -jar ~/projects/santa-sim/dist/santa.jar influenza_h3n2_ha.xml
+java -jar ~/projects/santa-sim/dist/santa.jar influenza_h3n2_ha_epochs.xml
 
 seqtk sample simulated_HA_sequences.fasta 0.05 > simulated_HA_sequences_5pct.fasta
 #seqtk sample simulated_HA_sequences.fasta 0.2 > simulated_HA_sequences_20pct.fasta
