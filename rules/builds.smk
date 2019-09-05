@@ -891,7 +891,12 @@ rule annotate_naive_tip_attribute:
         # Annotate a predictor for a naive model with no growth.
         df = pd.read_csv(input.attributes, sep="\t")
         df["naive"] = 0.0
-        df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
+
+        # Annotate frequency by the preferred method if there isn't already a
+        # frequency column defined.
+        if "frequency" not in df.columns:
+            df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
+
         df = df[df["frequency"] > 0.0].copy()
         df.to_csv(output.attributes, sep="\t", index=False)
 
