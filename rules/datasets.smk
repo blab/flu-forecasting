@@ -212,12 +212,12 @@ rule parse:
 rule filter:
     input:
         metadata = rules.parse.output.metadata,
-        sequences = rules.parse.output.sequences,
-        exclude = _get_outliers
+        sequences = rules.parse.output.sequences
     output:
         sequences = protected(DATA_NATURAL_ROOT_PATH + "filtered_sequences.fasta")
     params:
-        min_length = _get_min_sequence_length
+        min_length = _get_min_sequence_length,
+        exclude = _get_outliers
     conda: "../envs/anaconda.python3.yaml"
     benchmark: "benchmarks/filter_natural_{sample}.txt"
     shell:
@@ -226,7 +226,7 @@ rule filter:
             --sequences {input.sequences} \
             --metadata {input.metadata} \
             --min-length {params.min_length} \
-            --exclude {input.exclude} \
+            --exclude {params.exclude} \
             --exclude-where country=? region=? passage=egg \
             --output {output}
         """

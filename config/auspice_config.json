@@ -47,6 +47,12 @@
       "menuItem": "local branching index",
       "type": "continuous"
     },
+    "unnormalized_lbi": {
+      "legendTitle": "unnormalized local branching index",
+      "key": "unnormalized_lbi",
+      "menuItem": "unnormalized local branching index",
+      "type": "continuous"
+    },
     "ep": {
       "menuItem": "epitope mutations",
       "legendTitle": "Epitope mutations",
@@ -97,23 +103,17 @@
       "type": "continuous",
       "key": "ep_x"
     },
-    "ep_luksza_x": {
-      "menuItem": "epitope cross-immunity",
-      "legendTitle": "Epitope cross-immunity",
-      "type": "continuous",
-      "key": "ep_luksza_x"
-    },
-    "ep_x_slow": {
-      "menuItem": "epitope cross-immunity (slow)",
-      "legendTitle": "Epitope cross-immunity (slow)",
-      "type": "continuous",
-      "key": "ep_x_slow"
-    },
     "cTiter": {
       "menuItem": "titer tree",
       "legendTitle": "Titer tree",
       "type": "continuous",
       "key": "cTiter"
+    },
+    "cTiter_x": {
+      "menuItem": "titer tree cross-immunity",
+      "legendTitle": "Titer tree cross-immunity",
+      "type": "continuous",
+      "key": "cTiter_x"
     },
     "cTiterSub": {
       "menuItem": "titer sub (root)",
@@ -151,11 +151,11 @@
       "type": "continuous",
       "key": "weighted_distance_to_future"
     },
-    "weighted_distance_to_future_by_lbi-ep-ne": {
-      "menuItem": "estimated distance to future by lbi-ep-ne",
-      "legendTitle": "estimated distance to future by lbi-ep-ne",
+    "weighted_distance_to_future_by_lbi-ep_x-ne_star": {
+      "menuItem": "estimated distance to future by lbi-ep_x-ne_star",
+      "legendTitle": "estimated distance to future by lbi-ep_x-ne_star",
       "type": "continuous",
-      "key": "weighted_distance_to_future_by_lbi-ep-ne"
+      "key": "weighted_distance_to_future_by_lbi-ep_x-ne_star"
     }
   },
   "geo": [

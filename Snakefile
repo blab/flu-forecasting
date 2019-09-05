@@ -175,7 +175,8 @@ def _get_clock_rate_by_wildcards(wildcards):
         ('yam', 'ha'): 0.0019, ('yam', 'na'):0.0013
     }
 
-    dataset = config["datasets"][wildcards.sample]
+    sample = _get_sample_by_wildcards(wildcards)
+    dataset = config["datasets"][sample]
     lineage = dataset["lineage"]
     segment = dataset["segment"]
 
@@ -238,14 +239,6 @@ def translations(wildcards=None, segment=None, path=None):
         path = BUILD_TIMEPOINT_PATH
 
     return [path + "aa-seq_%s.fasta" % gene
-            for gene in genes]
-
-def filtered_translations(wildcards=None, segment=None, path=None):
-    genes = gene_names(wildcards, segment)
-    if path is None:
-        path = BUILD_TIMEPOINT_PATH
-
-    return [path + "filtered-aa-seq_%s.fasta" % gene
             for gene in genes]
 
 #

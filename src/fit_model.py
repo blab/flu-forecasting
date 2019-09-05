@@ -552,7 +552,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         return estimated_targets
 
 
-def cross_validate(model, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership",
+def cross_validate(model_class, model_kwargs, data, targets, train_validate_timepoints, coefficients=None, group_by="clade_membership",
                    include_attributes=False):
     """Calculate cross-validation scores for the given data and targets across the
     given train/validate timepoints.
@@ -598,6 +598,8 @@ def cross_validate(model, data, targets, train_validate_timepoints, coefficients
     results = []
 
     for timepoints in train_validate_timepoints:
+        model = model_class(**model_kwargs)
+
         # Get training and validation timepoints.
         training_timepoints = pd.to_datetime(timepoints["train"])
         validation_timepoint = pd.to_datetime(timepoints["validate"])
@@ -888,13 +890,12 @@ if __name__ == "__main__":
     # evaluate the model with the validation data, storing the training results,
     # beta parameters, and validation results.
     delta_time = args.delta_months / 12.0
-    model = model_class(
-        predictors=args.predictors,
-        delta_time=delta_time,
-        l1_lambda=args.l1_lambda,
-        cost_function=cost_function,
-        **model_kwargs
-    )
+    model_kwargs.update({
+        "predictors": args.predictors,
+        "delta_time": delta_time,
+        "l1_lambda": args.l1_lambda,
+        "cost_function": cost_function
+    })
 
     # If this is a naive model, set the coefficients to zero so cross-validation
     # can run under naive model conditions.
@@ -904,7 +905,8 @@ if __name__ == "__main__":
         coefficients = None
 
     scores = cross_validate(
-        model,
+        model_class,
+        model_kwargs,
         tips,
         targets,
         train_validate_timepoints,
