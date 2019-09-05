@@ -20,6 +20,13 @@
             "segment": "ha",
             "viruses_per_month": 30
         },
+        "simulated_sample_3": {
+            "description": "Highest density sampling of simulated populations with same settings as simulated_sample_1",
+            "seed": 3,
+            "lineage": "simulated",
+            "segment": "ha",
+            "viruses_per_month": 90
+        },
         "natural_sample_0_with_10_vpm": {
             "lineage": "h3n2",
             "segment": "ha",
@@ -65,6 +72,36 @@
             "start_date": "1994-10-01",
             "end_date": "2015-10-01"
         },
+        "natural_sample_0_with_30_vpm": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "viruses_per_month": 30,
+            "min_sequence_length": 900,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
+            "start_date": "1994-10-01",
+            "end_date": "2015-10-01"
+        },
+        "natural_sample_0_with_90_vpm": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "viruses_per_month": 90,
+            "min_sequence_length": 900,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
+            "start_date": "1992-10-01",
+            "end_date": "2015-10-01"
+        },
         "luksza_lassig": {
             "lineage": "h3n2",
             "segment": "ha",
@@ -85,6 +122,7 @@
                 "end_date": "2030-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
+                "years_back_to_build_trees": 30,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
@@ -107,7 +145,8 @@
                 "end_date": "2030-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "active": true,
+                "years_back_to_build_trees": 30,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -119,6 +158,54 @@
                     "ep_x-ne_star",
                     "lbi-ep_x-ne_star"
                 ]
+            },
+            "simulated_sample_2": {
+                "description": "Analysis of simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_2/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_2/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_2/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "normalized_fitness",
+                    "ep_x",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star",
+                    "delta_frequency-ep_x-ne_star"
+                ]
+            },
+            "simulated_sample_3": {
+                "description": "Analysis of simulated A/H3N2-like populations (current best)",
+                "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_3/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2030-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "normalized_fitness",
+                    "ep_x",
+                    "ne_star",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ep_x-ne_star",
+                    "delta_frequency-ep_x-ne_star"
+                ]
             }
         },
         "natural": {
@@ -127,7 +214,7 @@
                 "sequences": "data/natural/luksza_lassig/sequences_luksza.fasta",
                 "metadata": "data/natural/luksza_lassig/metadata_luksza.tsv",
                 "titers": "data/natural/luksza_lassig/titers.tsv",
-                "start_date": "1985-10-01",
+                "start_date": "1991-10-01",
                 "end_date": "2012-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
@@ -153,6 +240,7 @@
                 "end_date": "2015-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
+                "years_back_to_build_trees": 30,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
@@ -179,6 +267,7 @@
                 "end_date": "2015-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
+                "years_back_to_build_trees": 30,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
@@ -207,6 +296,32 @@
                 ],
                 "best_predictor": "lbi"
             },
+            "natural_sample_1_with_10_vpm_sliding": {
+                "dataset_sample": "natural_sample_1_with_10_vpm",
+                "description": "A build with the same data as the natural sample 1 but with trees built in sliding windows",
+                "sequences": "data/natural/natural_sample_1_with_10_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_10_vpm/strains_metadata.tsv",
+                "complete_metadata": "data/natural/natural_sample_1_with_10_vpm/filtered_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_10_vpm/titers.tsv",
+                "start_date": "1994-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep_x",
+                    "cTiter",
+                    "cTiterSub",
+                    "cTiterSub_x",
+                    "ne_star",
+                    "dms_star",
+                    "lbi",
+                    "delta_frequency"
+                ]
+            },
             "natural_sample_0_with_20_vpm": {
                 "description": "Dense sampling of viruses over 21 years of H3N2 evolution",
                 "sequences": "data/natural/natural_sample_0_with_20_vpm/filtered_sequences.fasta",
@@ -216,6 +331,7 @@
                 "end_date": "2015-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
+                "years_back_to_build_trees": 30,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
@@ -232,6 +348,125 @@
                     "ep_x-ne_star",
                     "lbi-ep_x-ne_star"
                 ]
+            },
+            "natural_sample_0_with_20_vpm_sliding": {
+                "description": "Dense sampling of viruses over 21 years of H3N2 evolution",
+                "dataset_sample": "natural_sample_0_with_20_vpm",
+                "sequences": "data/natural/natural_sample_0_with_20_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_0_with_20_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_0_with_20_vpm/titers.tsv",
+                "start_date": "1994-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_x",
+                    "cTiter",
+                    "cTiter_x",
+                    "cTiterSub",
+                    "cTiterSub_x",
+                    "ne_star",
+                    "dms_star",
+                    "dms_nonepitope",
+                    "dms_entropy",
+                    "lbi",
+                    "delta_frequency"
+                ]
+            },
+            "natural_sample_0_with_30_vpm_sliding": {
+                "description": "Denser sampling of viruses over 21 years of H3N2 evolution",
+                "dataset_sample": "natural_sample_0_with_30_vpm",
+                "sequences": "data/natural/natural_sample_0_with_30_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_0_with_30_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_0_with_30_vpm/titers.tsv",
+                "start_date": "1994-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_wolf",
+                    "ep_x",
+                    "rb",
+                    "cTiter",
+                    "cTiter_x",
+                    "cTiterSub",
+                    "cTiterSub_x",
+                    "ne_star",
+                    "dms_star",
+                    "dms_nonepitope",
+                    "dms_entropy",
+                    "lbi",
+                    "delta_frequency",
+                    "ep-cTiter",
+                    "ep_x-cTiter_x",
+                    "ne_star-dms_star",
+                    "lbi-delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ne_star",
+                    "cTiter-ne_star",
+                    "cTiter_x-ne_star",
+                    "delta_frequency-ne_star",
+                    "lbi-ep_x-ne_star",
+                    "lbi-cTiter-ne_star",
+                    "lbi-cTiter_x-ne_star",
+                    "delta_frequency-cTiter-ne_star",
+                    "delta_frequency-cTiter_x-ne_star"
+                ]
+            },
+            "natural_sample_0_with_90_vpm_sliding": {
+                "description": "Very dense sampling of viruses over 23 years of H3N2 evolution (current best)",
+                "dataset_sample": "natural_sample_0_with_90_vpm",
+                "sequences": "data/natural/natural_sample_0_with_90_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_0_with_90_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_0_with_90_vpm/titers.tsv",
+                "start_date": "1992-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 1,
+                "years_back_to_build_trees": 6,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_wolf",
+                    "ep_x",
+                    "rb",
+                    "cTiter",
+                    "cTiter_x",
+                    "cTiterSub",
+                    "cTiterSub_x",
+                    "ne_star",
+                    "dms_star",
+                    "dms_nonepitope",
+                    "dms_entropy",
+                    "lbi",
+                    "delta_frequency",
+                    "ep-cTiter",
+                    "ep_x-cTiter_x",
+                    "ne_star-dms_star",
+                    "lbi-delta_frequency",
+                    "ep_x-ne_star",
+                    "lbi-ne_star",
+                    "cTiter-ne_star",
+                    "cTiter_x-ne_star",
+                    "delta_frequency-ne_star",
+                    "lbi-ep_x-ne_star",
+                    "lbi-cTiter-ne_star",
+                    "lbi-cTiter_x-ne_star",
+                    "delta_frequency-cTiter-ne_star",
+                    "delta_frequency-cTiter_x-ne_star"
+                ]
             }
         }
     },
@@ -243,7 +478,6 @@
     "months_for_distance_season": 12,
     "max_years_for_distances": 5,
     "years_back_for_target_distance": 3,
-    "years_back_to_build_trees": 6,
     "target_distance_attribute": "hamming",
     "titers": {
         "passages": ["cell"],
@@ -326,6 +560,6 @@
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",
         "l1_lambda": 0.015,
-        "pseudocount": 0.0
+        "pseudocount": 0.001
     }
 }
