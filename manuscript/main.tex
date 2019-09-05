@@ -193,20 +193,26 @@ We implemented this logic in the augur frequencies command.
 \subsubsection*{Fitness model}
 
 As in \cite{Luksza:2014hj}, we assumed that influenza A/H3N2 populations can be described by an exponential growth model.
-Under this model, we estimated the future frequency of the global population, $\hat{X}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
+Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 $$
-\hat{X}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
+\mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
 $$
 
 We defined the fitness of each sample at time $t$ as the additive combination of one or more fitness metrics, $f_{i,m}$, scaled by fitness coefficients, $\beta_{m}$.
+For example, the following equation estimates fitness per sample by epitope cross-immunity ($\mathrm{ep}$), non-epitope mutations ($\mathrm{ne}$), and local branching index ($\mathrm{lbi}$).
+
+$$
+f_{i}(t) = \beta_{\mathrm{ep}}f_{i, \mathrm{ep}}(t) + \beta_{\mathrm{ne}}f_{i, \mathrm{ne}}(t) + \beta_{\mathrm{lbi}}f_{i, \mathrm{lbi}}(t)
+$$
 
 \subsubsection*{Model target}
 
 For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the mean weighted Hamming distance between the estimated and observed future populations at time $u = t + \Delta{t}$ as defined by,
 
 $$
-\Delta(X(u), \hat{X}(u)) = \frac{\sum_{i}\sum_{j}x_{i}(t)\exp(f_{i}(t)\Delta{t})x_{j}(u)d_{i,j} - \sum_{j}\sum_{k}x_{j}(u)x_{k}(u)d_{j,k}}{\sum_{i}\sum_{j}x_{i}(t)x_{j}(u)d_{i,j}}.
+\Delta\mathbf{d} = \frac{\mathbf{d}(\hat{u}, u) - \mathbf{d}(u, u)}{\mathbf{d}(t, u)}
+                                           = \frac{\sum_{i}\sum_{j}x_{i}(t)\exp(f_{i}(t)\Delta{t})x_{j}(u)d_{i,j} - \sum_{j}\sum_{k}x_{j}(u)x_{k}(u)d_{j,k}}{\sum_{i}\sum_{j}x_{i}(t)x_{j}(u)d_{i,j}}.
 $$
 
 The first term in the numerator measures the mean distance between estimated and observed future populations, the second term measures the average distance of the future population to itself, and the denominator measures the average distance between the current and future populations.
