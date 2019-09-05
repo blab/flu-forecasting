@@ -114,6 +114,7 @@ ENV/
 *.json
 *.gz
 .Rhistory
+results/
 
 # latex
 *.aux
