@@ -1,5 +1,6 @@
 lineage	segment	compare_to	attribute	distance_map
 h3n2	ha	root	ep	luksza
+h3n2	ha	root	ep_wolf	wolf
 h3n2	ha	root	ne	luksza_nonepitope
 h3n2	ha	root	rb	koel
 h3n2	ha	root	dms	dms_mutation_effect
