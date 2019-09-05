@@ -6,65 +6,6 @@ BUILD_TIMEPOINT_PATH = BUILD_PATH + "timepoints/{timepoint}/"
 BUILD_SEGMENT_LOG_STEM = "{type}_{sample}_{timepoint}"
 
 
-rule get_titer_sequences_by_timepoint:
-    input:
-        titers = _get_titers_by_wildcards,
-        metadata = _get_complete_metadata_by_wildcards,
-        sequences = _get_sequences_by_wildcards
-    output:
-        sequences = BUILD_TIMEPOINT_PATH + "titer_sequences.fasta"
-    params:
-        years_back = config["years_for_titer_alignments"]
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        python3 scripts/select_titer_strain_sequences.py \
-            --titers {input.titers} \
-            --metadata {input.metadata} \
-            --sequences {input.sequences} \
-            --timepoint {wildcards.timepoint} \
-            --years-back {params.years_back} \
-            --output {output.sequences}
-        """
-
-
-rule align_titer_sequences:
-    input:
-        sequences = rules.get_titer_sequences_by_timepoint.output.sequences,
-        reference = _get_reference
-    output:
-        alignment = BUILD_TIMEPOINT_PATH + "aligned_titer_sequences.fasta"
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/align_titer_sequences" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    threads: 4
-    shell:
-        """
-        augur align \
-            --sequences {input.sequences} \
-            --reference-sequence {input.reference} \
-            --output {output.alignment} \
-            --remove-reference \
-            --fill-gaps \
-            --nthreads {threads}
-        """
-
-
-rule translate_titer_sequences:
-    input:
-        alignment = rules.align_titer_sequences.output.alignment,
-        reference = _get_reference
-    output:
-        sequences = BUILD_TIMEPOINT_PATH + "titer-sequence-aa-seq_{gene}.fasta"
-    shell:
-        """
-        python3 scripts/translate.py \
-            --sequences {input.alignment} \
-            --reference-sequence {input.reference} \
-            --genes {wildcards.gene} \
-            --output {output.sequences}
-        """
-
-
 rule get_strains_by_timepoint:
     input:
         metadata = _get_metadata_by_wildcards
@@ -582,28 +523,11 @@ rule unnormalized_lbi:
         """
 
 
-rule filter_translations_by_date:
-    input:
-        alignments = rules.reconstruct_translations.output.aa_alignment,
-        branch_lengths = rules.refine.output.node_data
-    output:
-        alignments = BUILD_TIMEPOINT_PATH + "filtered-aa-seq_{gene}.fasta"
-    params:
-        min_date = _get_min_date_for_translation_filter
-    shell:
-        """
-        python3 scripts/filter_translations.py \
-            --alignment {input.alignments} \
-            --branch-lengths {input.branch_lengths} \
-            --min-date {params.min_date} \
-            --output {output}
-        """
-
-
 rule titers_sub:
     input:
         titers = _get_titers_by_wildcards,
-        alignments = translations
+        alignments = translations,
+        tree = rules.refine.output.tree
     params:
         genes = gene_names
     output:
@@ -616,6 +540,7 @@ rule titers_sub:
         augur titers sub \
             --titers {input.titers} \
             --alignment {input.alignments} \
+            --tree {input.tree} \
             --gene-names {params.genes} \
             --allow-empty-model \
             --output {output.titers_model} &> {log}
@@ -651,38 +576,6 @@ rule convert_titer_model_to_distance_map:
         """
         python3 scripts/titer_model_to_distance_map.py \
             --model {input.model} \
-            --output {output}
-        """
-
-
-rule titer_distances:
-    input:
-        tree = rules.refine.output.tree,
-        alignments = translations,
-        distance_maps = rules.convert_titer_model_to_distance_map.output.distance_map,
-        date_annotations = rules.refine.output.node_data
-    params:
-        # TODO: move these params to builds in config file
-        genes = gene_names,
-        comparisons = "root ancestor",
-        attribute_names = "cTiterSub cTiterSub_star",
-        earliest_date = _get_distance_earliest_date_by_wildcards,
-        latest_date = _get_distance_latest_date_by_wildcards
-    output:
-        distances = BUILD_TIMEPOINT_PATH + "titer_substitution_distances.json"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur distance \
-            --tree {input.tree} \
-            --alignment {input.alignments} \
-            --gene-names {params.genes} \
-            --compare-to {params.comparisons} \
-            --attribute-name {params.attribute_names} \
-            --map {input.distance_maps} {input.distance_maps} \
-            --date-annotations {input.date_annotations} \
-            --earliest-date {params.earliest_date} \
-            --latest-date {params.latest_date} \
             --output {output}
         """
 
@@ -881,7 +774,7 @@ def _get_node_data_for_export(wildcards):
         inputs.extend([
             rules.traits.output.node_data,
             rules.titers_tree.output.titers_model,
-            rules.titer_distances.output.distances,
+            rules.titers_sub.output.titers_model,
             rules.titer_cross_immunities.output.cross_immunities,
             rules.titer_tree_cross_immunities.output.cross_immunities
         ])
