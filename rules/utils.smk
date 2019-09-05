@@ -122,6 +122,14 @@ def _get_required_strains(wildcards):
     sample = _get_sample_by_wildcards(wildcards)
     return config["datasets"][sample]["required_strains"]
 
+def _get_required_strains_argument(wildcards):
+    if wildcards.type == "natural":
+        required_strains = _get_required_strains(wildcards)
+        return "--reference-strains %s" % required_strains
+    else:
+        # No required strains argument needed for simulated strains.
+        return ""
+
 def _get_start_date_for_dataset(wildcards):
     sample = _get_sample_by_wildcards(wildcards)
     return config["datasets"][sample]["start_date"]

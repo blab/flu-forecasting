@@ -67,12 +67,12 @@ rule translate_titer_sequences:
 
 rule get_strains_by_timepoint:
     input:
-        metadata = _get_metadata_by_wildcards,
-        reference_strains = _get_required_strains
+        metadata = _get_metadata_by_wildcards
     output:
         strains = BUILD_TIMEPOINT_PATH + "strains.txt"
     params:
-        years_back = config["years_back_to_build_trees"]
+        years_back = _get_years_back_to_build_trees,
+        reference_strains = _get_required_strains_argument
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -81,7 +81,7 @@ rule get_strains_by_timepoint:
             {wildcards.timepoint} \
             {output} \
             --years-back {params.years_back} \
-            --reference-strains {input.reference_strains}
+            {params.reference_strains}
         """
 
 
@@ -310,7 +310,7 @@ rule translate:
     input:
         tree = rules.refine.output.tree,
         node_data = rules.ancestral.output.node_data,
-        reference = "config/reference_h3n2_ha.gb"
+        reference = _get_reference
     output:
         node_data = BUILD_TIMEPOINT_PATH + "aa_muts.json"
     conda: "../envs/anaconda.python3.yaml"
