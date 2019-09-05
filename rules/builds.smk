@@ -947,7 +947,7 @@ rule fit_models_by_distances:
     params:
         predictors = _get_predictor_list,
         delta_months = config["fitness_model"]["delta_months"],
-        training_window = config["fitness_model"]["training_window"],
+        training_window = _get_fitness_model_training_window,
         cost_function = config["fitness_model"]["distance_cost_function"],
         l1_lambda = config["fitness_model"]["l1_lambda"]
     conda: "../envs/anaconda.python3.yaml"

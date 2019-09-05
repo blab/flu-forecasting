@@ -178,3 +178,14 @@ def _get_tip_clades_by_wildcards(wildcards):
 def _get_final_tree_for_wildcards(wildcards):
     end_date = _get_end_date_by_wildcards(wildcards)
     return BUILD_PATH.format(**wildcards) + "timepoints/%s/tree.nwk" % end_date
+
+def _get_years_back_to_build_trees(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["years_back_to_build_trees"]
+
+def _get_fitness_model_training_window(wildcards):
+    # Prefer a build-specific training window for fitnesses models and default
+    # to the global setting if a build-specific value isn't provided.
+    return config["builds"][wildcards.type][wildcards.sample].get(
+        "training_window",
+        config["fitness_model"]["training_window"]
+    )
