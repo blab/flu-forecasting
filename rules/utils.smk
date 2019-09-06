@@ -189,3 +189,9 @@ def _get_fitness_model_training_window(wildcards):
         "training_window",
         config["fitness_model"]["training_window"]
     )
+
+def _get_best_model(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["best_predictor"]
+
+def _get_delta_months_to_forecast(wildcards):
+    return " ".join([str(month) for month in config["fitness_model"]["delta_months"]])

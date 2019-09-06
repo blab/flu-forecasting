@@ -145,6 +145,12 @@
       "type": "continuous",
       "key": "delta_frequency"
     },
+    "projected_frequency": {
+      "menuItem": "projected frequency",
+      "legendTitle": "projected frequency",
+      "type": "continuous",
+      "key": "projected_frequency"
+    },
     "weighted_distance_to_future": {
       "menuItem": "distance to future",
       "legendTitle": "distance to future",

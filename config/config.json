@@ -466,7 +466,8 @@
                     "lbi-cTiter_x-ne_star",
                     "delta_frequency-cTiter-ne_star",
                     "delta_frequency-cTiter_x-ne_star"
-                ]
+                ],
+                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/delta_frequency-ne_star.json"
             }
         }
     },
@@ -555,7 +556,7 @@
         "min_freq": 0.01,
         "max_freq": 0.99,
         "training_window": 6,
-        "delta_months": 12,
+        "delta_months": [12],
         "primary_segment": "ha",
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",

@@ -723,7 +723,7 @@ rule tip_frequencies:
         metadata = _get_metadata_by_wildcards,
         weights = "data/region_weights.json"
     output:
-        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tip-frequencies.json"
+        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_original-tip-frequencies.json"
     params:
         narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
         wide_bandwidth=config["frequencies"]["wide_bandwidth"],
@@ -788,34 +788,6 @@ def _get_node_data_for_export(wildcards):
     return inputs
 
 
-rule export:
-    input:
-        tree = rules.refine.output.tree,
-        metadata = _get_metadata_by_wildcards,
-        auspice_config = "config/auspice_config.json",
-        node_data = _get_node_data_for_export,
-        colors = "config/colors.tsv"
-    output:
-        auspice_tree = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.json",
-        auspice_metadata = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_meta.json"
-    params:
-        panels = "tree entropy frequencies"
-    conda: "../envs/anaconda.python3.yaml"
-    shell:
-        """
-        augur export \
-            --tree {input.tree} \
-            --metadata {input.metadata} \
-            --node-data {input.node_data} \
-            --colors {input.colors} \
-            --auspice-config {input.auspice_config} \
-            --output-tree {output.auspice_tree} \
-            --output-meta {output.auspice_metadata} \
-            --panels {params.panels} \
-            --minify-json
-        """
-
-
 rule convert_node_data_to_table:
     input:
         tree = rules.refine.output.tree,
@@ -849,6 +821,8 @@ rule merge_node_data_and_frequencies:
         diffusion_frequencies = rules.convert_diffusion_frequencies_to_table.output.table
     output:
         table = BUILD_TIMEPOINT_PATH + "tip_attributes.tsv"
+    params:
+        preferred_frequency_method = config["frequencies"]["preferred_method"]
     run:
         node_data = pd.read_table(input.node_data)
         kde_frequencies = pd.read_table(input.kde_frequencies)
@@ -863,6 +837,12 @@ rule merge_node_data_and_frequencies:
             on=["strain", "timepoint", "is_terminal"]
         )
 
+        # Annotate frequency by the preferred method if there isn't already a
+        # frequency column defined.
+        if "frequency" not in df.columns:
+            df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
+
+        df = df[df["frequency"] > 0.0].copy()
         df.to_csv(output.table, sep="\t", index=False, header=True)
 
 
@@ -885,19 +865,10 @@ rule annotate_naive_tip_attribute:
         attributes = rules.collect_tip_attributes.output.attributes
     output:
         attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
-    params:
-        preferred_frequency_method = config["frequencies"]["preferred_method"]
     run:
         # Annotate a predictor for a naive model with no growth.
         df = pd.read_csv(input.attributes, sep="\t")
         df["naive"] = 0.0
-
-        # Annotate frequency by the preferred method if there isn't already a
-        # frequency column defined.
-        if "frequency" not in df.columns:
-            df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
-
-        df = df[df["frequency"] > 0.0].copy()
         df.to_csv(output.attributes, sep="\t", index=False)
 
 
@@ -1110,3 +1081,73 @@ rule fit_models_by_clades:
 # #     output:
 # #         trees="results/figures/trees_simulated.pdf"
 # #     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+
+rule target_distances_by_timepoint:
+    input:
+        attributes = rules.merge_node_data_and_frequencies.output.table
+    output:
+        distances = BUILD_TIMEPOINT_PATH + "target_distances.tsv",
+    params:
+        delta_months = _get_delta_months_to_forecast
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/calculate_target_distances.py \
+            --tip-attributes {input.attributes} \
+            --delta-months {params.delta_months} \
+            --output {output}
+        """
+
+
+rule forecast_tips:
+    input:
+        attributes = rules.merge_node_data_and_frequencies.output.table,
+        distances = rules.target_distances_by_timepoint.output.distances,
+        frequencies = rules.tip_frequencies.output.frequencies,
+        model = _get_best_model
+    output:
+        node_data = BUILD_TIMEPOINT_PATH + "forecasts.json",
+        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tip-frequencies.json"
+    params:
+        delta_months = _get_delta_months_to_forecast
+    shell:
+        """
+        python3 src/forecast_model.py \
+            --tip-attributes {input.attributes} \
+            --distances {input.distances} \
+            --frequencies {input.frequencies} \
+            --model {input.model} \
+            --delta-months {params.delta_months} \
+            --output-node-data {output.node_data} \
+            --output-frequencies {output.frequencies}
+        """
+
+
+rule export:
+    input:
+        tree = rules.refine.output.tree,
+        metadata = _get_metadata_by_wildcards,
+        auspice_config = "config/auspice_config.json",
+        node_data = _get_node_data_for_export,
+        forecasts = rules.forecast_tips.output.node_data,
+        colors = "config/colors.tsv"
+    output:
+        auspice_tree = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.json",
+        auspice_metadata = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_meta.json"
+    params:
+        panels = "tree entropy frequencies"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        augur export \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --node-data {input.node_data} {input.forecasts} \
+            --colors {input.colors} \
+            --auspice-config {input.auspice_config} \
+            --output-tree {output.auspice_tree} \
+            --output-meta {output.auspice_metadata} \
+            --panels {params.panels} \
+            --minify-json
+        """
