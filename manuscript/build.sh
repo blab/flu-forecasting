@@ -1,4 +1,4 @@
-TITLE=manuscript
+TITLE=flu_forecasting
 
 rm -f *.log
 rm -f *.aux
@@ -9,8 +9,7 @@ rm -f *.blg
 rm -f .DS_Store
 rm -f ${TITLE}.pdf
 
-pdflatex ${TITLE}.tex
+pdflatex -draftmode ${TITLE}
 bibtex ${TITLE}
-pdflatex ${TITLE}.tex
-pdflatex ${TITLE}.tex
-pdflatex ${TITLE}.tex
+pdflatex -draftmode ${TITLE}
+pdflatex ${TITLE}
