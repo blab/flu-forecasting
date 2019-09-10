@@ -527,8 +527,8 @@
         "max_years_for_diffusion": 2
     },
     "lbi": {
-        "tau": 0.25,
-        "window": 0.75
+        "tau": 0.3,
+        "window": 0.5
     },
     "excluded_node_data_fields": [
         "aa_muts",
