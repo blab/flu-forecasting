@@ -1127,6 +1127,7 @@ rule forecast_tips:
         frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tip-frequencies.json"
     params:
         delta_months = _get_delta_months_to_forecast
+    conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 src/forecast_model.py \
