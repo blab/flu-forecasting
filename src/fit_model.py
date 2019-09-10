@@ -88,7 +88,7 @@ class ExponentialGrowthModel(object):
         # whereas numpy requires the use of specific NaN-aware functions (nanstd).
         return X.loc[:, ["timepoint"] + predictors].groupby("timepoint").std().mean().values
 
-    def standardize_predictors(self, predictors, mean_stds):
+    def standardize_predictors(self, predictors, mean_stds, initial_frequencies):
         """Standardize the values for the given predictors by centering on the mean of
         each predictor and scaling by the mean standard deviation provided.
 
@@ -101,33 +101,27 @@ class ExponentialGrowthModel(object):
             mean standard deviations of predictors across all training
             timepoints
 
+        initial_frequencies : ndarray
+            initial frequencies of samples corresponding to each row of the
+            given predictors
+
         Returns
         -------
         ndarray :
             standardized predictor values
 
         """
-        # Determine mean value of each predictor, ignoring missing data.
-        predictor_means = np.nanmean(predictors, axis=0)
+        means = np.average(predictors, weights=initial_frequencies, axis=0)
+        variances = np.average((predictors - means) ** 2, weights=initial_frequencies, axis=0)
+        stds = np.sqrt(variances)
 
-        # Center all predictors to the mean and replace missing data with zeros
-        # to place them at the mean.
-        centered_predictors = np.nan_to_num(predictors - predictor_means)
-
-        # Select predictors with non-zero standard deviations where scaling is
-        # possible.
-        nonzero_stds = np.where(mean_stds)[0]
+        nonzero_stds = np.where(stds)[0]
 
         if len(nonzero_stds) == 0:
-            print(
-                "Warning: all mean standard deviations are zero, so predictors will not be scaled",
-                file=sys.stderr
-            )
-            return centered_predictors
+            return predictors
 
-        # Scale the centered predictors to unit scale.
-        standardized_predictors = centered_predictors
-        standardized_predictors[:, nonzero_stds] = standardized_predictors[:, nonzero_stds] / mean_stds[nonzero_stds]
+        standardized_predictors = predictors
+        standardized_predictors[:, nonzero_stds] = (predictors[:, nonzero_stds] - means[:, nonzero_stds]) / stds[nonzero_stds]
 
         return standardized_predictors
 
@@ -331,15 +325,15 @@ class ExponentialGrowthModel(object):
 
         estimated_frequencies = []
         for timepoint, timepoint_df in X.groupby("timepoint"):
+            # Select frequencies from timepoint.
+            initial_frequencies = timepoint_df["frequency"].values
+
             # Select predictors from the timepoint.
             predictors = timepoint_df.loc[:, self.predictors].values
 
             # Standardize predictors by timepoint centering by means at
             # timepoint and mean standard deviation provided.
-            standardized_predictors = self.standardize_predictors(predictors, mean_stds)
-
-            # Select frequencies from timepoint.
-            initial_frequencies = timepoint_df["frequency"].values
+            standardized_predictors = self.standardize_predictors(predictors, mean_stds, initial_frequencies)
 
             # Calculate fitnesses.
             fitnesses = self.get_fitnesses(coefficients, standardized_predictors)
@@ -497,16 +491,16 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
         estimated_targets = []
         for timepoint, timepoint_df in X.groupby("timepoint"):
+            # Select frequencies from timepoint.
+            initial_frequencies = timepoint_df["frequency"].values
+
             # Select predictors from the timepoint.
             predictors = timepoint_df.loc[:, self.predictors].values
 
             # Standardize predictors by timepoint centering by means at
             # timepoint and mean standard deviation provided.
             mean_stds = timepoint_df.loc[:, self.predictors].std().values
-            standardized_predictors = self.standardize_predictors(predictors, mean_stds)
-
-            # Select frequencies from timepoint.
-            initial_frequencies = timepoint_df["frequency"].values
+            standardized_predictors = self.standardize_predictors(predictors, mean_stds, initial_frequencies)
 
             # Calculate fitnesses.
             fitnesses = self.get_fitnesses(coefficients, standardized_predictors)
