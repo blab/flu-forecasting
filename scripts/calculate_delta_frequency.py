@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
         # Assign clade delta frequencies to all corresponding tips and internal nodes.
         delta_frequency = {}
-        for node in tree.find_clades():
+        for node in tree.find_clades(terminal=True):
             delta_frequency[node.name] = {
                 "delta_frequency": delta_frequency_by_clade.get(clades_by_node[node.name], 0.0)
             }
@@ -78,7 +78,7 @@ if __name__ == "__main__":
         delta_time = frequencies["pivots"][-1] - frequencies["pivots"][-(args.delta_pivots + 1)]
 
         delta_frequency = {}
-        for node in tree.find_clades():
+        for node in tree.find_clades(terminal=True):
             delta_frequency[node.name] = {
                 "delta_frequency": (frequencies[node.name]["global"][-1] - frequencies[node.name]["global"][-(args.delta_pivots + 1)]) / delta_time
             }
