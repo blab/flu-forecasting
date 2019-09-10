@@ -121,7 +121,7 @@ class ExponentialGrowthModel(object):
             return predictors
 
         standardized_predictors = predictors
-        standardized_predictors[:, nonzero_stds] = (predictors[:, nonzero_stds] - means[:, nonzero_stds]) / stds[nonzero_stds]
+        standardized_predictors[:, nonzero_stds] = (predictors[:, nonzero_stds] - means[nonzero_stds]) / stds[nonzero_stds]
 
         return standardized_predictors
 
