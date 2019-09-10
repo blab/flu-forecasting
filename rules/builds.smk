@@ -942,6 +942,22 @@ rule fit_models_by_distances:
         """
 
 
+rule extract_minimal_models_by_distances:
+    input:
+        model = rules.fit_models_by_distances.output.model
+    output:
+        model = BUILD_PATH + "minimal_models_by_distances/{predictors}.json",
+    run:
+        with open(input.model, "r") as fh:
+            model = json.load(fh)
+
+        if "scores" in model:
+            del model["scores"]
+
+        with open(output.model, "w") as oh:
+            json.dump(model, oh, indent=1)
+
+
 rule annotate_distance_models:
     input:
         errors = rules.fit_models_by_distances.output.errors,
