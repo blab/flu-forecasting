@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("--date-annotations", help="JSON of branch lengths and date annotations from augur refine for samples in the given tree; required for comparisons to earliest or latest date", required=True)
     parser.add_argument("--years-back-to-compare", type=int, help="number of years prior to the current season to search for samples to calculate pairwise comparisons with", required=True)
     parser.add_argument("--max-past-samples", type=int, default=200, help="maximum number of past samples to randomly select for comparison to current samples")
-    parser.add_argument("--min-frequency", type=float, default=1e-5, help="minimum frequency to consider a sample alive")
+    parser.add_argument("--min-frequency", type=float, default=0.0, help="minimum frequency to consider a sample alive")
     parser.add_argument("--output", help="JSON file with calculated distances stored by node name and attribute name", required=True)
 
     args = parser.parse_args()
