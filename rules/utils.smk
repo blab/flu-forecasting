@@ -57,7 +57,15 @@ def _get_end_date_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["end_date"]
 
 def _get_min_date_for_augur_frequencies_by_wildcards(wildcards):
-    return timestamp_to_float(pd.to_datetime(_get_start_date_by_wildcards(wildcards)))
+    # Calculate min date for augur frequencies based on the current timepoint
+    # minus the maximum number of years back for building trees.
+    years_back = _get_years_back_to_build_trees(wildcards)
+    offset = pd.DateOffset(years=years_back)
+    start_date = pd.to_datetime(_get_start_date_by_wildcards(wildcards))
+    timepoint_date = pd.to_datetime(wildcards.timepoint)
+    min_date = max(start_date, timepoint_date - offset)
+
+    return timestamp_to_float(min_date)
 
 def _get_min_date_for_diffusion_frequencies_by_wildcards(wildcards):
     # Calculate min date for diffusion frequencies based on the current
