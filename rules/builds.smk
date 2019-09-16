@@ -878,13 +878,15 @@ rule target_distances:
     output:
         distances = BUILD_PATH + "target_distances.tsv",
     params:
-        delta_months = config["fitness_model"]["delta_months"]
+        delta_months = config["fitness_model"]["delta_months"],
+        sequence_attribute_name = "aa_sequence"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
         python3 scripts/calculate_target_distances.py \
             --tip-attributes {input.attributes} \
             --delta-months {params.delta_months} \
+            --sequence-attribute-name {params.sequence_attribute_name} \
             --output {output}
         """
 
