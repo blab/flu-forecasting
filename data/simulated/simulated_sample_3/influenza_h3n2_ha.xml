@@ -93,7 +93,7 @@
       <exposureDependentFitness>
         <feature>HA1</feature>
         <sites>50,53,54,121,122,124,126,131,133,135,137,142,143,144,145,146,155,156,157,158,159,160,163,164,172,173,174,186,188,189,190,192,193,196,197,201,207,213,217,226,227,242,244,248,275,276,278,299,307</sites>
-        <penalty>1.0</penalty>
+        <penalty>0.01</penalty>
       </exposureDependentFitness>
 
       <purifyingFitness>
@@ -126,7 +126,7 @@
     </replicator>
 
     <epoch>
-      <generationCount>4000</generationCount>
+      <generationCount>8000</generationCount>
     </epoch>
 
     <samplingSchedule>

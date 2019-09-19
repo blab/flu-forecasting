@@ -51,7 +51,7 @@ rule standardize_simulated_sequence_dates:
         metadata = DATA_SIMULATED_ROOT_PATH + "corrected_metadata.tsv"
     run:
         df = pd.read_csv(input.metadata, sep="\t")
-        df["num_date"] = 2000.0 + (df["generation"] / 100.0)
+        df["num_date"] = 2000.0 + (df["generation"] / 200.0)
         df["date"] = df["num_date"].apply(float_to_datestring)
         df["year"]  = pd.to_datetime(df["date"]).dt.year
         df["month"]  = pd.to_datetime(df["date"]).dt.month
