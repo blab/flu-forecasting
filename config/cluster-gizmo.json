@@ -26,7 +26,7 @@
     },
     "refine": {
         "partition": "campus",
-        "time": "2:00:00",
+        "time": "4:00:00",
         "memory": "16384"
     },
     "ancestral": {
