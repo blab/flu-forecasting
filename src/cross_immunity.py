@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument("--distance-attributes", nargs="+", required=True, help="names of attributes to use from the given distances JSON")
     parser.add_argument("--immunity-attributes", nargs="+", required=True, help="names of attributes to use for the calculated cross-immunities")
     parser.add_argument("--decay-factors", nargs="+", required=True, type=float, help="list of decay factors (d_0) for each given immunity attribute")
-    parser.add_argument("--years-to-wane", required=True, type=int, help="number of years after which immunity wanes completely")
+    parser.add_argument("--years-to-wane", type=int, help="number of years after which immunity wanes completely")
     parser.add_argument("--output", required=True, help="cross-immunities calculated from the given distances and frequencies")
     args = parser.parse_args()
 
@@ -67,7 +67,10 @@ if __name__ == '__main__':
             cross_immunity = 0.0
             for past_sample, distance in sample_distances[distance_attribute].items():
                 # Calculate effect of waning immunity.
-                waning_effect = max(1 - ((date_by_node_name[sample] - date_by_node_name[past_sample]) / args.years_to_wane), 0)
+                if args.years_to_wane is not None:
+                    waning_effect = max(1 - ((date_by_node_name[sample] - date_by_node_name[past_sample]) / args.years_to_wane), 0)
+                else:
+                    waning_effect = 1.0
 
                 # Calculate cost of cross-immunity with waning.
                 cross_immunity += waning_effect * max_frequency_per_sample[past_sample] * cross_immunity_cost(
