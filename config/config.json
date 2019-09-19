@@ -145,19 +145,21 @@
                 "end_date": "2030-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
-                "years_back_to_build_trees": 30,
-                "active": false,
+                "years_back_to_build_trees": 6,
+                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
                     "normalized_fitness",
+                    "ep",
                     "ep_x",
                     "ne_star",
                     "lbi",
                     "delta_frequency",
                     "ep_x-ne_star",
                     "lbi-ep_x-ne_star"
-                ]
+                ],
+                "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
             },
             "simulated_sample_2": {
                 "description": "Analysis of simulated A/H3N2-like populations",
@@ -193,7 +195,7 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
                 "years_back_to_build_trees": 6,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -205,7 +207,8 @@
                     "ep_x-ne_star",
                     "lbi-ep_x-ne_star",
                     "delta_frequency-ep_x-ne_star"
-                ]
+                ],
+                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             }
         },
         "natural": {
@@ -434,7 +437,7 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
                 "years_back_to_build_trees": 6,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -467,7 +470,7 @@
                     "delta_frequency-cTiter-ne_star",
                     "delta_frequency-cTiter_x-ne_star"
                 ],
-                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/delta_frequency-ne_star.json"
+                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/lbi-ne_star.json"
             }
         }
     },
@@ -514,7 +517,7 @@
         "lbi-ep_x-ne_star"
     ],
     "frequencies": {
-        "narrow_bandwidth": 0.0833,
+        "narrow_bandwidth": 0.1667,
         "wide_bandwidth": 0.25,
         "proportion_wide": 0.0,
         "pivot_frequency": 6,
@@ -540,8 +543,7 @@
         "ep_kratsch_pairwise",
         "muts",
         "num_date_confidence",
-        "region_confidence",
-        "sequence"
+        "region_confidence"
     ],
     "cross_immunity": {
         "h3n2": {
@@ -560,7 +562,7 @@
         "primary_segment": "ha",
         "clade_cost_function": "information_gain",
         "distance_cost_function": "diffsum",
-        "l1_lambda": 0.015,
+        "l1_lambda": 0.0,
         "pseudocount": 0.001
     }
 }
