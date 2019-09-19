@@ -1,6 +1,7 @@
 """Fit a model for the given data using the requested predictors and evaluate the model by time series cross-validation.
 """
 import argparse
+import cv2
 import json
 import numpy as np
 import pandas as pd
@@ -278,7 +279,7 @@ class ExponentialGrowthModel(object):
         self.mean_stds_ = self.calculate_mean_stds(X, self.predictors)
 
         # Find coefficients that minimize the model's cost function.
-        initial_coefficients = np.zeros(len(self.predictors))
+        initial_coefficients = np.random.random(len(self.predictors))
         results = minimize(
             self._fit,
             initial_coefficients,
@@ -411,6 +412,73 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         # Estimate target values.
         y_hat = self.predict(X, coefficients)
 
+        # Calculate EMD for each timepoint in the estimated values and sum that
+        # distance across all timepoints.
+        error = 0.0
+        count = 0
+        for timepoint, timepoint_df in y_hat.groupby("timepoint"):
+            samples_a = timepoint_df["strain"]
+            sample_a_initial_frequencies = timepoint_df["frequency"].values.astype(np.float32)
+            sample_a_frequencies = timepoint_df["projected_frequency"].values.astype(np.float32)
+
+            future_timepoint_df = y[y["timepoint"] == timepoint]
+            assert future_timepoint_df.shape[0] > 0
+
+            samples_b = future_timepoint_df["strain"]
+            sample_b_frequencies = future_timepoint_df["frequency"].values.astype(np.float32)
+
+            distance_matrix = get_distance_matrix_by_sample_names(
+                samples_a,
+                samples_b,
+                self.distances
+            ).astype(np.float32)
+
+            # Estimate the distance between the model's estimated future and the
+            # observed future populations.
+            model_emd, _, self.model_flow = cv2.EMD(
+                sample_a_frequencies,
+                sample_b_frequencies,
+                cv2.DIST_USER,
+                cost=distance_matrix
+            )
+
+            error += model_emd
+            count += 1
+
+        error = error / float(count)
+
+        if use_l1_penalty:
+            l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
+        else:
+            l1_penalty = 0.0
+
+        return error + l1_penalty
+
+    def _fit_distance(self, coefficients, X, y, use_l1_penalty=True):
+        """Calculate the error between observed and estimated values for the given
+        parameters and data.
+
+        Parameters
+        ----------
+        coefficients : ndarray
+            coefficients for each of the model's predictors
+
+        X : pandas.DataFrame
+            standardized tip attributes by timepoint
+
+        y : pandas.DataFrame
+            final weighted distances at delta time in the future from each
+            timepoint in the given tip attributes table
+
+        Returns
+        -------
+        float :
+            error between estimated values using the given coefficients and
+            input data and the observed values
+        """
+        # Estimate target values.
+        y_hat = self.predict(X, coefficients)
+
         # Calculate weighted distance to the future for each timepoint in the
         # estimated values and sum that distance across all timepoints.
         error = 0.0
@@ -433,7 +501,6 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
             d_u_hat_u = (sample_a_frequencies * sample_a_weighted_distance_to_future).sum()
             d_u_u = (sample_b_frequencies * sample_b_weighted_distance_to_present).sum()
 
-            #error += d_u_hat_u
             null_error += d_t_u
 
             error += (d_u_hat_u - d_u_u) / d_t_u
@@ -441,12 +508,6 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
 
         null_error = null_error / float(count)
         error = error / float(count)
-
-        #print("null = %s" % null_error)
-        #print("model / null = %s" % (error / null_error))
-
-        #error = ((error - null_error) / null_error) * 100
-        #print("model = %s" % error)
 
         if use_l1_penalty:
             l1_penalty = self.l1_lambda * np.abs(coefficients).sum()
@@ -590,6 +651,7 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
 
     """
     results = []
+    differences_of_model_and_naive_errors = []
 
     for timepoints in train_validate_timepoints:
         model = model_class(**model_kwargs)
@@ -619,6 +681,7 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
         null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
+        differences_of_model_and_naive_errors.append(validation_error - null_validation_error)
         print(
             "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s" % (
                 training_timepoints[-1].strftime("%Y-%m"),
@@ -671,6 +734,8 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
         results.append(result)
 
     # Return results for all validation timepoints.
+    print("Mean difference between model and naive: %.4f" % (sum(differences_of_model_and_naive_errors) / len(differences_of_model_and_naive_errors)), flush=True)
+    print("Proportion of timepoints when model < naive: %.2f" % ((np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors))))
     return results
 
 
@@ -772,7 +837,6 @@ def get_coefficients_by_timepoint(scores):
                 "validation_timepoint": pd.to_datetime(score["validation_timepoint"])
             })
 
-    print(coefficients_by_time)
     return pd.DataFrame(coefficients_by_time)
 
 
