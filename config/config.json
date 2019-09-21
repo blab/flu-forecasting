@@ -159,6 +159,36 @@
                 ],
                 "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
             },
+            "simulated_sample_1_full_tree": {
+                "dataset_sample": "simulated_sample_1",
+                "description": "Full tree for analysis of sparse simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_1/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_1/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_1/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2040-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 30,
+                "years_back_to_build_trees": 30,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
+            },
+            "simulated_sample_1_test_tree": {
+                "dataset_sample": "simulated_sample_1",
+                "description": "Test data for analysis of sparse simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_1/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_1/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_1/strains.txt",
+                "start_date": "2034-10-01",
+                "end_date": "2050-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 6,
+                "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
+            },
             "simulated_sample_2": {
                 "description": "Analysis of simulated A/H3N2-like populations",
                 "sequences": "data/simulated/simulated_sample_2/filtered_sequences.fasta",
