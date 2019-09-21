@@ -16,6 +16,8 @@ from weighted_distances import get_distances_by_sample_names, get_distance_matri
 MAX_PROJECTED_FREQUENCY = 1e3
 FREQUENCY_TOLERANCE = 1e-3
 
+np.random.seed(314159)
+
 
 def sum_of_differences(observed, estimated, y_diff, **kwargs):
     """
@@ -279,7 +281,11 @@ class ExponentialGrowthModel(object):
         self.mean_stds_ = self.calculate_mean_stds(X, self.predictors)
 
         # Find coefficients that minimize the model's cost function.
-        initial_coefficients = np.random.random(len(self.predictors))
+        if hasattr(self, "coef_"):
+            initial_coefficients = self.coef_
+        else:
+            initial_coefficients = np.random.random(len(self.predictors))
+
         results = minimize(
             self._fit,
             initial_coefficients,
@@ -652,9 +658,13 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
     """
     results = []
     differences_of_model_and_naive_errors = []
+    previous_coefficients = None
 
     for timepoints in train_validate_timepoints:
         model = model_class(**model_kwargs)
+
+        if previous_coefficients is not None:
+            model.coef_ = previous_coefficients
 
         # Get training and validation timepoints.
         training_timepoints = pd.to_datetime(timepoints["train"])
@@ -667,6 +677,7 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
         # Fit a model to the training data.
         if coefficients is None:
             training_error = model.fit(training_X, training_y)
+            previous_coefficients = model.coef_
             null_training_error = model._fit(np.zeros_like(model.coef_), training_X, training_y)
         else:
             model.coef_ = coefficients
