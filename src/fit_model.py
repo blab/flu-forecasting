@@ -694,14 +694,15 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
         null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
         differences_of_model_and_naive_errors.append(validation_error - null_validation_error)
         print(
-            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s" % (
+            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%.2f" % (
                 training_timepoints[-1].strftime("%Y-%m"),
                 validation_timepoint.strftime("%Y-%m"),
                 training_error,
                 null_training_error,
                 validation_error,
                 null_validation_error,
-                model.coef_
+                model.coef_,
+                (np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors))
             ),
             flush=True
         )
