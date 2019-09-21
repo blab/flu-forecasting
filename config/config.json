@@ -151,13 +151,11 @@
                 "predictors": [
                     "naive",
                     "normalized_fitness",
-                    "ep",
                     "ep_x",
                     "ne_star",
                     "lbi",
                     "delta_frequency",
-                    "ep_x-ne_star",
-                    "lbi-ep_x-ne_star"
+                    "lbi-ne_star"
                 ],
                 "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
             },
