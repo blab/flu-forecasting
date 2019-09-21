@@ -878,7 +878,7 @@ rule target_distances:
     output:
         distances = BUILD_PATH + "target_distances.tsv",
     params:
-        delta_months = config["fitness_model"]["delta_months"],
+        delta_months = config["fitness_model"]["delta_months_to_fit"],
         sequence_attribute_name = "aa_sequence"
     conda: "../envs/anaconda.python3.yaml"
     shell:
@@ -898,7 +898,7 @@ rule annotate_weighted_distances_for_tip_attributes:
     output:
         attributes = BUILD_PATH + "tip_attributes_with_weighted_distances.tsv"
     params:
-        delta_months = config["fitness_model"]["delta_months"]
+        delta_months = config["fitness_model"]["delta_months_to_fit"]
     shell:
         """
         python3 src/weighted_distances.py \
@@ -919,7 +919,7 @@ rule fit_models_by_distances:
         coefficients = BUILD_PATH + "models_by_distances_coefficients/{predictors}.tsv"
     params:
         predictors = _get_predictor_list,
-        delta_months = config["fitness_model"]["delta_months"],
+        delta_months = config["fitness_model"]["delta_months_to_fit"],
         training_window = _get_fitness_model_training_window,
         cost_function = config["fitness_model"]["distance_cost_function"],
         l1_lambda = config["fitness_model"]["l1_lambda"]
@@ -1000,7 +1000,7 @@ rule select_clades:
     output:
         clades = BUILD_PATH + "final_clade_frequencies.tsv"
     params:
-        delta_months = config["fitness_model"]["delta_months"]
+        delta_months = config["fitness_model"]["delta_months_to_fit"]
     conda: "../envs/anaconda.python3.yaml"
     log: "logs/select_clades_" + BUILD_LOG_STEM + ".txt"
     shell:
@@ -1021,7 +1021,7 @@ rule fit_models_by_clades:
         model = BUILD_PATH + "models_by_clades/{predictors}.json"
     params:
         predictors = _get_predictor_list,
-        delta_months = config["fitness_model"]["delta_months"],
+        delta_months = config["fitness_model"]["delta_months_to_fit"],
         training_window = config["fitness_model"]["training_window"],
         cost_function = config["fitness_model"]["clade_cost_function"],
         l1_lambda = config["fitness_model"]["l1_lambda"],
