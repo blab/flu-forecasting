@@ -126,7 +126,7 @@
     </replicator>
 
     <epoch>
-      <generationCount>8000</generationCount>
+      <generationCount>10000</generationCount>
     </epoch>
 
     <samplingSchedule>
