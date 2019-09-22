@@ -880,6 +880,7 @@ rule target_distances:
     params:
         delta_months = config["fitness_model"]["delta_months_to_fit"],
         sequence_attribute_name = "aa_sequence"
+    benchmark: "benchmarks/target_distances_" + BUILD_LOG_STEM + ".txt"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
