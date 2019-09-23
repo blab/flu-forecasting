@@ -74,6 +74,14 @@ The distances estimated under the naive model represent the average distance bet
   \end{center}
 \end{figure*}
 
+\begin{table*}[h]
+  \begin{center}
+    \input{tables/simulated_model_selection.tex}
+    \caption{Simulated population model accuracy relative to the naive model}
+    \label{table_simulated_model_selection}
+  \end{center}
+\end{table*}
+
 As expected, the true fitness model was the most consistently accurate, estimating distances to the future less than or equal to zero at 21 of 23 (91\%) timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
 The naive model was the least accurate with an average estimated distance of 0.07 +/- 0.10 (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
 The non-epitope mutations metric received a consistently negative coefficient and also outperformed the naive model with an average distance less than zero.
