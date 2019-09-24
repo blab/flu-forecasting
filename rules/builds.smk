@@ -1171,3 +1171,24 @@ rule export:
             --panels {params.panels} \
             --minify-json
         """
+
+
+rule forecast_all_tips:
+    input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        distances = rules.target_distances.output.distances,
+        model = _get_best_model
+    output:
+        table = BUILD_PATH + "forecasts.tsv",
+    params:
+        delta_months = config["fitness_model"]["delta_months_to_fit"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/forecast_model.py \
+            --tip-attributes {input.attributes} \
+            --distances {input.distances} \
+            --model {input.model} \
+            --delta-months {params.delta_months} \
+            --output-table {output.table}
+        """
