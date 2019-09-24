@@ -146,7 +146,7 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -223,7 +223,7 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
+                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -232,9 +232,7 @@
                     "ne_star",
                     "lbi",
                     "delta_frequency",
-                    "ep_x-ne_star",
-                    "lbi-ep_x-ne_star",
-                    "delta_frequency-ep_x-ne_star"
+                    "lbi-ne_star"
                 ],
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             }
