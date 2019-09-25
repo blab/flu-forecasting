@@ -61,7 +61,7 @@ Correspondingly, we expected that a combined model of epitope cross-immunity and
 In addition to these four estimates of viral fitness, we tested models based on both the true fitness of each sample as measured by the simulator and a naive model under which the exponential growth factor is set to one and populations do not change composition over the one year forecasting period.
 The distances estimated under the naive model represent the average distance between the current and future timepoints.
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{Model a) coefficients and b) accuracy for simulated populations of A/H3N2-like viruses.}
@@ -69,7 +69,7 @@ The distances estimated under the naive model represent the average distance bet
   \end{center}
 \end{figure*}
 
-\begin{table*}[h]
+\begin{table*}[ht]
   \begin{center}
     \input{tables/simulated_model_selection.tex}
     \caption{Simulated population model accuracy relative to the naive model}
@@ -110,6 +110,14 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
 \end{figure*}
+
+\begin{table*}[ht]
+  \begin{center}
+    \input{tables/natural_model_selection.tex}
+    \caption{Natural population model accuracy relative to the naive model}
+    \label{table_natural_model_selection}
+  \end{center}
+\end{table*}
 
 The average distance per year between natural populations was 0.21 +/- 0.16, indicating that the diversity of natural populations was three times that of simulated populations (Supplemental Fig.~\ref{sup_fig:distance_of_natural_populations_between_timepoints}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS phenotypes metrics (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
