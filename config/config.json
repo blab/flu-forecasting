@@ -463,7 +463,7 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
+                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -481,22 +481,11 @@
                     "dms_entropy",
                     "lbi",
                     "delta_frequency",
-                    "ep-cTiter",
-                    "ep_x-cTiter_x",
-                    "ne_star-dms_star",
-                    "lbi-delta_frequency",
-                    "ep_x-ne_star",
-                    "lbi-ne_star",
-                    "cTiter-ne_star",
+                    "ne_star-lbi",
                     "cTiter_x-ne_star",
-                    "delta_frequency-ne_star",
-                    "lbi-ep_x-ne_star",
-                    "lbi-cTiter-ne_star",
-                    "lbi-cTiter_x-ne_star",
-                    "delta_frequency-cTiter-ne_star",
-                    "delta_frequency-cTiter_x-ne_star"
+                    "cTiter_x-ne_star-lbi"
                 ],
-                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/lbi-ne_star.json"
+                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
             }
         }
     },
