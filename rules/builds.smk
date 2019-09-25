@@ -1075,31 +1075,25 @@ rule fit_models_by_clades:
 #         """
 
 
-# rule plot_tree:
-#     input:
-#         auspice_tree = rules.export.output.auspice_tree
-#     output:
-#         tree = "results/figures/trees/flu_" + BUILD_SEGMENT_LOG_STEM + "_tree.pdf"
-#     conda: "../envs/anaconda.python3.yaml"
-#     benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-#     log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
-#     params:
-#         start = _get_start_date_by_wildcards,
-#         end = _get_end_date_by_wildcards
-#     shell:
-#         """
-#         python3 scripts/plot_tree.py \
-#             {input} \
-#             {output} \
-#             --start-date {params.start} \
-#             --end-date {params.end} &> {log}
-#         """
+rule plot_tree:
+    input:
+        tree = rules.refine.output.tree
+    output:
+        tree = BUILD_TIMEPOINT_PATH + "tree.pdf"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/plot_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        python3 scripts/plot_tree.py {input} {output} &> {log}
+        """
 
-# # rule aggregate_tree_plots_simulated:
-# #     input: expand(rules.plot_tree_simulated.output.tree, percentage=PERCENTAGE, start=START_DATE_SIMULATIONS, end=END_DATE_SIMULATIONS, timepoint=TIMEPOINTS_SIMULATIONS)
-# #     output:
-# #         trees="results/figures/trees_simulated.pdf"
-# #     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule aggregate_tree_plots:
+    input: _get_tree_plots_by_wildcards
+    output:
+        trees="results/figures/trees_" + BUILD_LOG_STEM + ".pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
 
 rule target_distances_by_timepoint:

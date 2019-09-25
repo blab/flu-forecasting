@@ -157,6 +157,19 @@ def _get_min_date_for_translation_filter(wildcards):
     min_date = timepoint - pd.DateOffset(years=config["years_for_titer_alignments"])
     return min_date.strftime("%Y-%m-%d")
 
+def _get_tree_plots_by_wildcards(wildcards):
+    build = config["builds"][wildcards.type][wildcards.sample]
+    timepoints = _get_timepoints_for_build_interval(
+        build["start_date"],
+        build["end_date"],
+        build["pivot_interval"],
+        build["min_years_per_build"]
+    )
+    return expand(
+        BUILD_PATH.replace("{", "{{").replace("}", "}}") + "timepoints/{timepoint}/tree.pdf",
+        timepoint=timepoints
+    )
+
 def _get_tip_attributes_by_wildcards(wildcards):
     build = config["builds"][wildcards.type][wildcards.sample]
     timepoints = _get_timepoints_for_build_interval(

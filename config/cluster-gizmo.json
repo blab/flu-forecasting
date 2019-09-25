@@ -61,8 +61,5 @@
         "partition": "campus",
         "memory": "8192",
         "time" : "04:00:00"
-    },
-    "plot_tree": {
-        "memory": "8192"
     }
 }

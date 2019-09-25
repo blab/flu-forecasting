@@ -1,5 +1,6 @@
 import argparse
-from augur.utils import json_to_tree
+from augur.utils import json_to_tree, read_tree
+import Bio.Phylo
 import json
 import matplotlib as mpl
 mpl.use("Agg")
@@ -164,7 +165,7 @@ def plot_tree(tree, figure_name, color_by_trait, initial_branch_width, tip_size,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("tree", help="auspice tree JSON")
+    parser.add_argument("tree", help="auspice tree JSON or Newick tree")
     parser.add_argument("output", help="plotted tree figure")
     parser.add_argument("--colorby", help="trait in tree to color by", default="num_date")
     parser.add_argument("--branch_width", help="initial branch width", type=int, default=10)
@@ -174,20 +175,27 @@ if __name__ == "__main__":
     parser.add_argument("--include-color-bar", action="store_true", help="display a color bar for the color by option at the bottom of the plot")
     args = parser.parse_args()
 
-    with open(args.tree, "r") as json_fh:
-        json_tree = json.load(json_fh)
+    if args.tree.endswith(".json"):
+        with open(args.tree, "r") as json_fh:
+            json_tree = json.load(json_fh)
 
-    # Convert JSON tree layout to a Biopython Clade instance.
-    tree = json_to_tree(json_tree)
+        # Convert JSON tree layout to a Biopython Clade instance.
+        tree = json_to_tree(json_tree)
 
-    # Plot the tree.
-    plot_tree(
-        tree,
-        args.output,
-        args.colorby,
-        args.branch_width,
-        args.tip_size,
-        args.start_date,
-        args.end_date,
-        args.include_color_bar
-    )
+        # Plot the tree.
+        plot_tree(
+            tree,
+            args.output,
+            args.colorby,
+            args.branch_width,
+            args.tip_size,
+            args.start_date,
+            args.end_date,
+            args.include_color_bar
+        )
+    else:
+        tree = read_tree(args.tree)
+        tree.ladderize()
+        fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+        Bio.Phylo.draw(tree, axes=ax, label_func=lambda node: "", show_confidence=False)
+        plt.savefig(args.output)
