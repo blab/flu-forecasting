@@ -25,14 +25,17 @@ However, we also find that phylogenetic fitness metrics based on recent growth o
 
 \subsection*{A distance-based model of seasonal influenza evolution}
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.png}
   \caption{
-    Schematic representation of the fitness model wherein the fitness of samples at timepoint $t$ is used to minimize the distance between projected samples from that timepoint and the observed population at timepoint $u$ one year in the future.
-    A) A phylogeny at timepoint $u=$April 2004 shows the observed population at that timepoint.
-    The vertical dashed line delineates the previous timepoint of $t=$April 2003 where the size and color of each sample indicates the projected frequency of those samples one year in the future based on the composite model of delta frequency, HI cross-immunity, and non-epitope mutations.
-    Bright yellow samples indicate those with the highest projected frequency and closest to the observed future population one year in the future.
+    Schematic representation of the fitness model for simulated A/H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
+    Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors.
+    A) Samples at timepoint $t$ are shown in their phylogenetic context and sized by their frequency at that timepoint.
+    The estimated future population at timepoint $u$ is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
+    B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the orange samples to the detriment of the purple samples.
+    C) Samples at timepoint $u$ are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
+    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate (e.g., the emergence of the yellow cluster from within the successful orange cluster).
   }
   \label{fig:model}
   \end{center}
@@ -64,7 +67,13 @@ The distances estimated under the naive model represent the average distance bet
 \begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
-  \caption{Model a) coefficients and b) accuracy for simulated populations of A/H3N2-like viruses.}
+  \caption{
+    Model a) coefficients and b) accuracy for simulated populations of A/H3N2-like viruses.
+    Coefficients are shown for each individual fitness metric per validation timepoint (N=33) with the mean $\pm$ standard deviation in the top-left corner of each panel.
+    Distances to the future in amino acids are shown per validation timepoint for each individual model (black) in the context of the observed distance between timepoints from the naive model (grey).
+    Models outperform the naive model when the model's distance to the future is less than the naive model.
+    The mean $\pm$ standard deviation of amino acids per timepoint are shown in the top-left of each panel for both the model and the naive model.
+  }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
   \end{center}
 \end{figure*}
@@ -77,7 +86,7 @@ The distances estimated under the naive model represent the average distance bet
   \end{center}
 \end{table*}
 
-The average distance between yearly populations, as measured by the naive model, was 8.97 +/- 1.35 amino acids (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
+The average distance between yearly populations, as measured by the naive model, was 8.97 $\pm$ 1.35 amino acids (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
 As expected, the true fitness model outperformed all other models reducing the distance between populations by 2.17 amino acids on average and surpassing the naive model in 32 of 33 (97\%) timepoints (Table~\ref{table_simulated_model_selection} and Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
 With the exception of epitope cross-immunity, all biologically-informed models also outperformed the naive model.
 LBI was the best of these models, reducing the distance between populations by 1.41 amino acids on average.
@@ -102,16 +111,22 @@ These results confirm that our approach of minimizing the distance between yearl
 \subsection*{Model coefficients and performance reflect historical patterns of A/H3N2 evolution}
 
 Next, we trained and validated models for individual fitness predictors using 23 years of natural A/H3N2 populations spanning from October 1992 to October 2015.
-We held out samples collected between October 2015 and October 2019 for model testing.
+We held out samples collected between October 2015 and April 2019 for model testing.
 In addition to the sequence-only models we tested on simulated populations, we also fit models for our new fitness metrics based on experimental phenotypes including HI cross-immunity and DMS mutational effects.
 We hypothesized that both HI and DMS metrics would be assigned positive coefficients, as they estimate increased antigenic drift and beneficial mutations, respectively.
 As antigenic drift is generally considered to be the primary evolutionary pressure on natural A/H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI cross-immunity would be individually more predictive than non-epitope mutations or DMS mutational effects.
 Previous research \cite{Neher:2016hy} and our simulation results also led us to expect that LBI and delta frequency would outperform other individual mechanistic metrics.
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
-  \caption{Model a) coefficients and b) accuracy for natural populations of A/H3N2 viruses.}
+  \caption{
+    Model a) coefficients and b) accuracy for natural populations of A/H3N2 viruses.
+    As in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, coefficients are shown for each individual fitness metric per validation timepoint (N=19) with the mean $\pm$ standard deviation in the top-left corner of each panel.
+    Distances to the future in amino acids are shown per validation timepoint for each individual model (black) in the context of the observed distance between timepoints from the naive model (grey).
+    Models outperform the naive model when the model's distance to the future is less than the naive model.
+    The mean $\pm$ standard deviation of amino acids per timepoint are shown in the top-left of each panel for both the model and the naive model.
+  }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
 \end{figure*}
@@ -124,7 +139,7 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \end{center}
 \end{table*}
 
-The average distance per year between natural populations was 6.50 +/- 1.42 amino acids or 72\% of the distance between yearly simulated populations (Supplemental Fig.~\ref{sup_fig:distance_of_natural_populations_between_timepoints}).
+The average distance per year between natural populations was 6.50 $\pm$ 1.42 amino acids or 72\% of the distance between yearly simulated populations (Supplemental Fig.~\ref{sup_fig:distance_of_natural_populations_between_timepoints}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 Surprisingly, the best antigenic fitness metric of HI cross-immunity performed only slightly better the best functional constraint metric of non-epitope mutations.
 Indeed, epitope cross-immunity only outperformed the naive model at one of 19 timepoints (5\%), while HI cross-immunity outperformed the naive model at 15 (79\%) timepoints (Table~\ref{table_natural_model_selection}).
@@ -134,7 +149,7 @@ In contrast, HI cross-immunity maintained a positive coefficient across most tim
 The HI cross-immunity may benefit from being able to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
 
 Non-epitope mutations also outperformed the DMS mutational effects, reducing the distance to the future by 0.40 amino acids on average compared to 0.19 amino acids, respectively.
-In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -1.45 +/- 0.24.
+In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -1.45 $\pm$ 0.24.
 Notably, DMS mutational effects only performed noticeably better than the naive model at the timepoint immediately preceding when the background strain of the DMS experiments, A/Perth/16/2009, was sampled.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
 Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Fig.~\ref{sup_fig:unadjusted_DMS_model_accuracy_and_coefficients_for_natural_populations}).
@@ -152,10 +167,13 @@ To test whether composite models could outperform individual fitness metrics for
 Specifically, we fit models based on HI cross-immunity and non-epitope mutations, LBI and non-epitope mutations, and all three of these metrics together.
 We anticipated that if these metrics all represented distinct, mutually beneficial components of viral fitness, these composite models should perform better than individual models with consistent coefficients for each metric.
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
-  \caption{Composite model a) accuracy and b) coefficients for natural populations of A/H3N2 viruses.}
+  \caption{
+    Composite model a) accuracy and b) coefficients for natural populations of A/H3N2 viruses.
+    As in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}, coefficients are shown per timepoint for each individual fitness metric by the corresponding color of the metric.
+  }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
 \end{figure*}
@@ -172,7 +190,8 @@ These results reinforce the historical importance of HI assays in measuring vira
 \subsection*{Models enable selection of vaccine candidate strains}
 
 As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade growth rates and the ranking of estimated best strains compared to the observed closest strains to future populations.
-We find that the composite model of LBI and non-epitope mutations accurately captures clade decline and modestly reflects observed clade growth (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}A).
+We find that the composite model of LBI and non-epitope mutations capture clade decline with 94\% accuracy and modestly reflects observed clade growth with 66\% accuracy (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}A).
+
 
 \begin{figure*}[ht]
   \begin{center}
@@ -190,17 +209,31 @@ We find that the composite model of LBI and non-epitope mutations accurately cap
 
 See Fig.~\ref{fig:nextstrain_forecasts}.
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/nextstrain-forecasts-for-september-2020.png}
-  \caption{Forecasts on nextstrain.org from our best model for September 2020.}
+  \caption{
+    Snapshot of live forecasts on nextstrain.org from our best model for September 2020.
+    The observed frequency trajectories for currently circulating clades are shown up to September 2019.
+    Our model favors the A1b/131K subclade, A1b/197R, to grow over the next year and estimates that the A1b/135K subclade, A1b/137F, will remain stable.
+  }
   \label{fig:nextstrain_forecasts}
   \end{center}
 \end{figure*}
 
 \section*{Discussion}
 
-Discussion.
+\begin{itemize}
+\item{Our model accurate forecasts evolution of simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
+\item{The combination of sequence-only metrics outperforms all experimentally-informed metrics}
+\item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
+\item{Epitope mutations are an inadequate predictor of viral success compared to other antigenic or phylogenetic metrics}
+\item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
+\item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
+\item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
+\item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
+\item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
+\end{itemize}
 
 \section*{Methods}
 
@@ -212,15 +245,30 @@ Each simulated population was seeded with the full length HA from A/Beijing/32/1
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
 We additionally defined exposure-dependent selection for 49 putative epitope sites in HA1 \cite{Luksza:2014hj} to impose an effect of cross-immunity that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
 We modified the SANTA-SIM source code to enable the inclusion of true fitness values for each sample in the FASTA header of the sampled sequences from each generation.
-This modified implementation is available at https://github.com/huddlej/santa-sim/tree/emit-fitness.
+This modified implementation is available at \url{https://github.com/huddlej/santa-sim/tree/emit-fitness}.
+For our full analysis of model performance, we sampled 90 viruses per month to match the sampling density of natural populations.
+For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid exploration of hyperparameter space.
+
+\subsection*{Hyperparameter tuning with simulated populations}
+
+To avoid overfitting our models to the relatively limited data from natural populations, we used simulated A/H3N2-like populations to tune hyperparameters including the KDE bandwidth for frequency estimates and the L1 penalty for model coefficients.
+We simulated populations, as described above, and fit models for each parameter value using the true fitness of samples from the simulator.
+
+We identified the optimal KDE bandwidth for frequencies as the value that minimized the difference between the mean distances to the future from the true fitness model and the naive model.
+We set the L1 lambda penalty to zero, to reduce variables in the analysis and avoid interactions between the coefficients and the KDE bandwidths.
+Higher bandwidths completely wash out dynamics of populations by making all samples appear to exist for long time periods.
+This flattening of frequency trajectories means that as bandwidths increase, the naive model gets more accurate and less informative.
+Given this behavior, we found the bandwidth that produced the minimum difference between distances to the future for the true fitness and naive models instead of the bandwidth that produced the minimum mean model distance.
+Based on this analysis, we identified an optimal bandwidth of $\frac{2}{12}$ or the equivalent of 2-months for floating point dates.
+Next, we identified an L1 penalty of 0.1 for model coefficients that minimized the mean distance to the future for the true fitness model.
 
 \subsection*{Strain selection for natural populations}
 
-For model training and validation, we selected XX HA sequences of length >=1,700 nucleotides that were sampled between October 1994 and October 2015.
-To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 10 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
-We excluded all samples with ambiguous year, month, and day annotations and prioritized samples with more available HI titer measurements.
-
-For model testing, we extended the set of training and validation sequences to include HA sequences that were sampled between October 2015 and April 2019.
+For model training and validation, we selected 13,568 HA sequences $\geq$900 nucleotides that were sampled between October 1, 1992 and October 1, 2015.
+To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 90 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
+We excluded all egg-passaged samples and all samples with ambiguous year, month, and day annotations.
+We prioritized samples with more available HI titer measurements.
+For model testing, we selected an additional XX HA sequences that were sampled between October 1, 2015 and April 1, 2019.
 We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
 
 \subsection*{Phylogenetic interference}
@@ -233,15 +281,17 @@ To reconstruct time-resolved phylogenies, we applied TreeTime v0.5.6 \cite{Sagul
 \subsection*{Frequency estimation}
 
 To account for uncertainty in collection date and sampling error, we applied a kernel density estimation (KDE) approach to calculate global sample frequencies.
-Specifically, we constructed a Gaussian kernel for each sample with the mean at the reported collection date and a variance of one month, roughly corresponding to the average lag time between sample collection and submission to the GISAID database.
-We estimated the frequency of each sample at each timepoint by calculating the cumulative density function of each KDE between the current and previous timepoint and normalizing the resulting values to sum to one.
-We implemented this logic in the augur frequencies command.
+Specifically, we constructed a Gaussian kernel for each sample with the mean at the reported collection date and a variance (or KDE bandwidth) of two months.
+The bandwidth was identified by cross-validation, as described above.
+This bandwidth also roughly corresponds to the median lag time between sample collection and submission to the GISAID database.
+We estimated the frequency of each sample at each timepoint by calculating the probabilitiy density function of each KDE at that timepoint and normalizing the resulting values to sum to one.
+We implemented this frequency estimation logic in the augur frequencies command.
 
 \subsection*{Model fitting and evaluation}
 
 \subsubsection*{Fitness model}
 
-As in \cite{Luksza:2014hj}, we assumed that influenza A/H3N2 populations can be described by an exponential growth model.
+We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by an exponential growth model, as previously described \cite{Luksza:2014hj}.
 Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 $$
@@ -257,22 +307,25 @@ $$
 
 \subsubsection*{Model target}
 
-For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the mean weighted Hamming distance between the estimated and observed future populations at time $u = t + \Delta{t}$ as defined by,
+For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the weighted Hamming distance between amino acid sequences from the observed future population at time $u = t + \Delta{t}$ and the estimated future population created by projecting frequencies of samples at time $t$ by their estimated fitnesses.
+We measured distance between populations using Earth Mover's Distance (EMD), a metric commonly applied in machine learning to compare collections of pixels or words \cite{Rubner1998,Kusner2015}.
+Solving for EMD identifies the minimum about of ``earth'' that must be moved from a source population to a sink population to make those populations as similar as possible.
+This solution requires both a ``ground distance'' between pairs fo samples from both populations and weights assigned to each sample that determine how much that sample contributes to the overall distance.
 
-$$
-\Delta\mathbf{d} = \frac{\mathbf{d}(\hat{u}, u) - \mathbf{d}(u, u)}{\mathbf{d}(t, u)}
-                                           = \frac{\sum_{i}\sum_{j}x_{i}(t)\exp(f_{i}(t)\Delta{t})x_{j}(u)d_{i,j} - \sum_{j}\sum_{k}x_{j}(u)x_{k}(u)d_{j,k}}{\sum_{i}\sum_{j}x_{i}(t)x_{j}(u)d_{i,j}}.
-$$
-
-The first term in the numerator measures the mean distance between estimated and observed future populations, the second term measures the average distance of the future population to itself, and the denominator measures the average distance between the current and future populations.
-When a model accurately estimates the average distance of the future population to itself, the metric evaluates to zero.
-When the estimated sequence diversity is closer to the center of the future population's observed diversity, the metric evaluates to a negative proportion.
+For each timepoint $t$ and corresponding timepoint $u = t + 1$, we defined the ground distance as the Hamming distance between HA amino acid sequences for all pairs of samples between timepoints.
+For samples with less than full length nucleotide sequences, we inferred missing nucleotides through TreeTime's ancestral sequence reconstruction analysis.
+We defined weights for samples at timepoint $t$ based on their projected future frequencies.
+We defined weights for samples at timepoint $u$ based on their observed frequencies.
+We then identified the fitness coefficients that provided projected future frequencies that minimized the EMD between the estimated and observed future populations.
+With this metric, an optimal estimate of the future would produce a distance of zero.
+However, the inevitable accumulation of substitutions between the two populations prevents this outcome.
+We calculated EMD with the Python bindings for the OpenCV 3.4.1 implementation \cite{opencv_library}.
 We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
 
 \subsubsection*{Time-series cross-validation}
 
 To obtain unbiased estimates for the out-of-sample errors of our models, we adopted the standard cross-validation strategy of training, validation, and testing.
-We divided our available data into an initial training and validation set spanning October 1994 to October 2015 and an additional testing set spanning October 2015 to April 2019.
+We divided our available data into an initial training and validation set spanning October 1992 to October 2015 and an additional testing set spanning October 2015 to April 2019.
 We partitioned our training and validation data into six month seasons corresponding to winter in the Northern Hemisphere (October--April) and the Southern Hemisphere (April--October) and trained models to estimate frequencies of populations one year into the future from each season in six-year sliding windows.
 To calculate validation error for each training window, we applied the resulting model coefficients to estimate the future frequencies for the year after the last timepoint in the training window.
 These validation errors informed our tuning of hyperparameters including a L1 regularization of the fitness coefficients, the LBI neighborhood parameter $\tau$, and the length of the training window itself.
