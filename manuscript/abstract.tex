@@ -1,10 +1,25 @@
-Key points:
+\section*{Key findings}
 
 \begin{itemize}
-\item{Phenotypic measurements of antigenic advance outperform genetic estimates from epitope mutations in long-term forecasts}
-\item{Phylogenetic fitness metrics outperform and appear to be mutually exclusive of mechanistic metrics}
-\item{Fitness metrics based on epitope mutations are not robust to long-term changes in genetic background of successful populations}
-\item{Fitness metrics based on DMS measurements overfit to the genetic background of the experimental strain}
-\item{Distance-based model target performs as well or better than clade-based targets and enables future forecasting efforts where phylogenies are not feasible}
-\item{We provide (the first?) open source, extensible forecasting framework for influenza}
+\item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
+\item{Experimental measurements of antigenic drift based on HI assays are more robust and predictive of viral success than epitope mutations}
+\item{The combination of LBI and non-epitope mutation metrics outperforms all experimentally-informed metrics}
+\item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
+\item{DMS measurements appear to be too background-specific to be predictive for global viral success}
+\item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
+\item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
+\item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
+\item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
+\item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
+\end{itemize}
+
+\section*{Open questions}
+
+\begin{itemize}
+\item{How should forecast uncertainty be calculated?}
+\item{Should we calculate pairwise distances using a more evolutionarily-informed metric than just Hamming distance?}
+\item{Why do all of the substitution-based fitness metrics perform so poorly (especially the epitope mutations) when epitope mutations have been previously associated with viral fitness?}
+\item{How does our model performance compare with the original clade-based models?}
+\item{Should we report both validation and test results? Should we report them together or separate?}
+\item{Should we report difference from naive as a primary statistic? As naive - model or as model - naive?}
 \end{itemize}

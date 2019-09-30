@@ -64,7 +64,7 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
 In addition to these four estimates of viral fitness, we tested models based on both the true fitness of each sample as measured by the simulator and a naive model under which the exponential growth factor is set to one and populations do not change composition over the one year forecasting period.
 The distances estimated under the naive model represent the average distance between the current and future timepoints.
 
-\begin{figure*}[ht]
+\begin{figure*}[ht!]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{
@@ -223,11 +223,14 @@ See Fig.~\ref{fig:nextstrain_forecasts}.
 
 \section*{Discussion}
 
+Key findings:
+
 \begin{itemize}
-\item{Our model accurate forecasts evolution of simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
+\item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
+\item{Experimental measurements of antigenic drift based on HI assays are more predictive of viral success than epitope mutations}
 \item{The combination of sequence-only metrics outperforms all experimentally-informed metrics}
 \item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
-\item{Epitope mutations are an inadequate predictor of viral success compared to other antigenic or phylogenetic metrics}
+\item{DMS measurements appear to be too background-specific to be predictive for global viral success}
 \item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
 \item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
 \item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
@@ -268,7 +271,8 @@ For model training and validation, we selected 13,568 HA sequences $\geq$900 nuc
 To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 90 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
 We excluded all egg-passaged samples and all samples with ambiguous year, month, and day annotations.
 We prioritized samples with more available HI titer measurements.
-For model testing, we selected an additional XX HA sequences that were sampled between October 1, 2015 and April 1, 2019.
+For model testing, we selected an additional 20,609 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and April 1, 2019.
+This increased number of sequences corresponds with the trend of increased sample sequencing and deposition in the last decade.
 We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
 
 \subsection*{Phylogenetic interference}
