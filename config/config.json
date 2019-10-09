@@ -179,6 +179,7 @@
             },
             "simulated_sample_3_test_tree": {
                 "dataset_sample": "simulated_sample_3",
+                "validation_build": "simulated_sample_3",
                 "description": "Test data for analysis of dense simulated A/H3N2-like populations",
                 "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
                 "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
@@ -188,6 +189,21 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
+            },
+            "simulated_sample_3_full_test_tree": {
+                "dataset_sample": "simulated_sample_3",
+                "description": "Full tree for test data for analysis of dense simulated A/H3N2-like populations",
+                "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_3/strains.txt",
+                "start_date": "2040-10-01",
+                "end_date": "2050-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 10,
+                "years_back_to_build_trees": 10,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
