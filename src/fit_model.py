@@ -963,7 +963,7 @@ if __name__ == "__main__":
     parser.add_argument("--tip-attributes", required=True, help="tab-delimited file describing tip attributes at all timepoints with standardized predictors")
     parser.add_argument("--output", required=True, help="JSON representing the model fit with training and cross-validation results, beta coefficients for predictors, and summary statistics")
     parser.add_argument("--predictors", nargs="+", help="tip attribute columns to use as predictors of final clade frequencies; optional if a fixed model is provided")
-    parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
+    parser.add_argument("--delta-months", type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--target", required=True, choices=["clades", "distances"], help="target for models to fit")
     parser.add_argument("--final-clade-frequencies", help="tab-delimited file of clades per timepoint and their corresponding tips and tip frequencies at the given delta time in the future")
     parser.add_argument("--distances", help="tab-delimited file of distances between pairs of samples")
@@ -1041,7 +1041,6 @@ if __name__ == "__main__":
         # make them appropriate as targets for the model.
         targets = tips.loc[:, ["strain", "timepoint", "frequency", "weighted_distance_to_present", "weighted_distance_to_future", "y"]].copy()
         targets["future_timepoint"] = targets["timepoint"]
-        targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=args.delta_months)
 
         model_class = DistanceExponentialGrowthModel
         distances = pd.read_csv(args.distances, sep="\t")
@@ -1084,6 +1083,7 @@ if __name__ == "__main__":
 
         # Calculate test errors/scores for the given coefficients and data at
         # the identified test timepoints.
+        targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=delta_months)
         scores = test(
             model_class,
             model_kwargs,
@@ -1133,6 +1133,7 @@ if __name__ == "__main__":
         else:
             coefficients = None
 
+        targets["timepoint"] = targets["timepoint"] - pd.DateOffset(months=delta_months)
         scores = cross_validate(
             model_class,
             model_kwargs,
