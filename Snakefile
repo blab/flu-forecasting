@@ -48,6 +48,9 @@ TIMEPOINTS = []
 PREDICTOR_TYPES = []
 PREDICTOR_SAMPLES = []
 PREDICTORS = []
+TEST_PREDICTOR_TYPES = []
+TEST_PREDICTOR_SAMPLES = []
+TEST_PREDICTORS = []
 for build_type, builds_by_type in config["builds"].items():
     for sample, build in builds_by_type.items():
         # Limit Snakemake rules to active builds.
@@ -64,10 +67,19 @@ for build_type, builds_by_type in config["builds"].items():
                 TIMEPOINT_SAMPLES.append(sample)
                 TIMEPOINTS.append(timepoint)
 
-            for predictor in build["predictors"]:
-                PREDICTOR_TYPES.append(build_type)
-                PREDICTOR_SAMPLES.append(sample)
-                PREDICTORS.append(predictor)
+            # Builds with validation samples are used for testing and do not
+            # need to have models fit.
+            if "validation_build" in build:
+                validation_build = config["builds"][build_type][build["validation_build"]]
+                for predictor in validation_build["predictors"]:
+                    TEST_PREDICTOR_TYPES.append(build_type)
+                    TEST_PREDICTOR_SAMPLES.append(sample)
+                    TEST_PREDICTORS.append(predictor)
+            else:
+                for predictor in build["predictors"]:
+                    PREDICTOR_TYPES.append(build_type)
+                    PREDICTOR_SAMPLES.append(sample)
+                    PREDICTORS.append(predictor)
 
 #
 # Configure amino acid distance masks.
@@ -250,13 +262,13 @@ def _get_clade_model_files(wildcards):
     return expand("results/builds/{type}/{sample}/models_by_clades/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
 
 def _get_distance_model_files(wildcards):
-    return expand("results/builds/{type}/{sample}/models_by_distances/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
+    return expand("results/builds/{type}/{sample}/models_by_distances/{predictors}.json", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS) + expand("results/builds/{type}/{sample}/test_models_by_distances/{predictors}.json", zip, type=TEST_PREDICTOR_TYPES, sample=TEST_PREDICTOR_SAMPLES, predictors=TEST_PREDICTORS)
 
 def _get_distance_model_errors(wildcards):
-    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_errors/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
+    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_errors/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS) + expand("results/builds/{type}/{sample}/annotated_test_models_by_distances_errors/{predictors}.tsv", zip, type=TEST_PREDICTOR_TYPES, sample=TEST_PREDICTOR_SAMPLES, predictors=TEST_PREDICTORS)
 
 def _get_distance_model_coefficients(wildcards):
-    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_coefficients/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS)
+    return expand("results/builds/{type}/{sample}/annotated_models_by_distances_coefficients/{predictors}.tsv", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES, predictors=PREDICTORS) + expand("results/builds/{type}/{sample}/annotated_test_models_by_distances_coefficients/{predictors}.tsv", zip, type=TEST_PREDICTOR_TYPES, sample=TEST_PREDICTOR_SAMPLES, predictors=TEST_PREDICTORS)
 
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))

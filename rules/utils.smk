@@ -216,3 +216,12 @@ def _get_best_model(wildcards):
 
 def _get_delta_months_to_forecast(wildcards):
     return " ".join([str(month) for month in config["fitness_model"]["delta_months"]])
+
+def _get_model_to_test_by_wildcards(wildcards):
+    build = config["builds"][wildcards.type][wildcards.sample]
+    model_path = rules.extract_minimal_models_by_distances.output.model.format(
+        type=wildcards.type,
+        sample=build["validation_build"],
+        predictors=wildcards.predictors
+    )
+    return model_path

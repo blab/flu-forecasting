@@ -972,11 +972,13 @@ rule annotate_distance_models:
         errors = pd.read_csv(input.errors, sep="\t")
         errors["type"] = wildcards.type
         errors["sample"] = wildcards.sample
+        errors["error_type"] = "validation"
         errors.to_csv(output.errors, sep="\t", header=True, index=False)
 
         coefficients = pd.read_csv(input.coefficients, sep="\t")
         coefficients["type"] = wildcards.type
         coefficients["sample"] = wildcards.sample
+        coefficients["error_type"] = "validation"
         coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
 
 
@@ -1186,3 +1188,53 @@ rule forecast_all_tips:
             --delta-months {params.delta_months} \
             --output-table {output.table}
         """
+
+
+rule test_distance_models:
+    input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        distances = rules.target_distances.output.distances,
+        model = _get_model_to_test_by_wildcards
+    output:
+        model = BUILD_PATH + "test_models_by_distances/{predictors}.json",
+        errors = BUILD_PATH + "test_models_by_distances_errors/{predictors}.tsv",
+        coefficients = BUILD_PATH + "test_models_by_distances_coefficients/{predictors}.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/test_fitness_model_distances_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    log: "logs/test_fitness_model_distances_" + BUILD_LOG_STEM + "_{predictors}.txt"
+    shell:
+        """
+        python3 src/fit_model.py \
+            --tip-attributes {input.attributes} \
+            --target distances \
+            --distances {input.distances} \
+            --fixed-model {input.model} \
+            --errors-by-timepoint {output.errors} \
+            --coefficients-by-timepoint {output.coefficients} \
+            --include-scores \
+            --output {output.model} &> {log}
+        """
+
+
+rule annotate_test_distance_models:
+    input:
+        errors = rules.test_distance_models.output.errors,
+        coefficients = rules.test_distance_models.output.coefficients
+    output:
+        errors = BUILD_PATH + "annotated_test_models_by_distances_errors/{predictors}.tsv",
+        coefficients = BUILD_PATH + "annotated_test_models_by_distances_coefficients/{predictors}.tsv"
+    run:
+        # Annotate samples based on the validation build sample name.
+        build = config["builds"][wildcards.type][wildcards.sample]
+        sample = build["validation_build"]
+        errors = pd.read_csv(input.errors, sep="\t")
+        errors["type"] = wildcards.type
+        errors["sample"] = sample
+        errors["error_type"] = "test"
+        errors.to_csv(output.errors, sep="\t", header=True, index=False)
+
+        coefficients = pd.read_csv(input.coefficients, sep="\t")
+        coefficients["type"] = wildcards.type
+        coefficients["sample"] = sample
+        coefficients["error_type"] = "test"
+        coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
