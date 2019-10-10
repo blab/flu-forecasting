@@ -1,15 +1,13 @@
-\begin{tabular}{lrrr}
+\begin{tabular}{lll}
 \toprule
-{} & model\_minus\_naive & \multicolumn{2}{l}{model\_better\_than\_naive} \\
-{} &              mean &                     sum & mean \\
-model                       &                   &                         &      \\
+                                          Model & \makecell{Distance closer \\ to future (AAs)} & \makecell{Model $>$ naive \\ (N=33)} \\
 \midrule
-true fitness                &             -2.17 &                      32 & 0.97 \\
-LBI + non-epitope mutations &             -1.76 &                      32 & 0.97 \\
-LBI                         &             -1.41 &                      29 & 0.88 \\
-delta frequency             &             -0.85 &                      26 & 0.79 \\
-non-epitope mutations       &             -0.71 &                      29 & 0.88 \\
-naive                       &              0.00 &                       0 & 0.00 \\
-epitope cross-immunity      &              0.03 &                      14 & 0.42 \\
+                                   true fitness &                                 2.16 +/- 1.19 &                            32 (97\%) \\
+                    LBI + non-epitope mutations &                                 1.74 +/- 1.02 &                            32 (97\%) \\
+                                            LBI &                                 1.41 +/- 1.30 &                            29 (88\%) \\
+                                delta frequency &                                 0.85 +/- 0.92 &                            26 (79\%) \\
+                          non-epitope mutations &                                 0.71 +/- 0.58 &                            29 (88\%) \\
+ epitope cross-immunity + non-epitope mutations &                                 0.70 +/- 0.60 &                            28 (85\%) \\
+                         epitope cross-immunity &                                 0.00 +/- 0.03 &                            18 (55\%) \\
 \bottomrule
 \end{tabular}
