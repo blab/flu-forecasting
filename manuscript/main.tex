@@ -337,7 +337,24 @@ Finally, we fixed the coefficients for each model at the mean values across all 
 
 \subsection*{Fitness metrics}
 
+We defined the following fitness metrics per strain and timepoint.
+
 \subsubsection*{Antigenic drift}
+
+We estimated antigenic drift for each strain using either genetic or HI data.
+To estimate antigenic drift with genetic data, we implemented the cross-immunity metrics originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj}.
+Briefly, for each pair of strains in adjacent seasons, we counted the number of amino acid differences between the strains' HA sequences at 49 epitope sites.
+We limited these pairwise comparisons to all strains sampled within the last five years from each timepoint.
+For each individual strain at each timepoint, we estimated that strain's ability to escape cross-immunity by summing the exponentially-scaled epitope distances between previously circulating strains and the given strain as follows.
+
+$$
+f_{i,\mathrm{ep}}(t) = \sum_{j: t_{j} < t_{i}}{x_{j}\exp{(-D_{\mathrm{ep}}(a_{i}, a_{j}) / D_{0})}}
+$$
+
+To estimate antigenic drift with HI data, we first applied the titer tree model to the phylogeny at a given timepoint and the corresponding HI data for its strains, as previously described by Neher et al. 2016 \cite{Neher:2016hy}.
+This method effectively estimated the antigenic drift associated with each branch in the phylogeny.
+Next, we calculated the pairwise antigenic distance between strains as the sum of antigenic drift weights per branch on the phylogenetic path between each pair of strains.
+Finally, we calculated each strain's ability to escape cross-immunity by applying the same equation as above for epitope mutations where $D_{\mathrm{ep}}(a_{i}, a_{j})$ was replaced by the pairwise antigenic distance from the tree.
 
 \subsubsection*{Functional constraint}
 
