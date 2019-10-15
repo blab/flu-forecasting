@@ -298,16 +298,18 @@ We implemented this frequency estimation logic in the augur frequencies command.
 We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by an exponential growth model, as previously described \cite{Luksza:2014hj}.
 Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
-$$
-\mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
-$$
+\begin{equation}
+    \mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
+    \label{equation_exponential_growth_model}
+\end{equation}
 
 We defined the fitness of each sample at time $t$ as the additive combination of one or more fitness metrics, $f_{i,m}$, scaled by fitness coefficients, $\beta_{m}$.
-For example, the following equation estimates fitness per sample by epitope cross-immunity ($\mathrm{ep}$), non-epitope mutations ($\mathrm{ne}$), and local branching index ($\mathrm{lbi}$).
+For example, Equation~\ref{equation_fitness_estimation} estimates fitness per sample by non-epitope mutations ($\mathrm{ne}$) and local branching index ($\mathrm{lbi}$).
 
-$$
-f_{i}(t) = \beta_{\mathrm{ep}}f_{i, \mathrm{ep}}(t) + \beta_{\mathrm{ne}}f_{i, \mathrm{ne}}(t) + \beta_{\mathrm{lbi}}f_{i, \mathrm{lbi}}(t)
-$$
+\begin{equation}
+    f_{i}(t) = \beta_{\mathrm{ne}}f_{i, \mathrm{ne}}(t) + \beta_{\mathrm{lbi}}f_{i, \mathrm{lbi}}(t)
+    \label{equation_fitness_estimation}
+\end{equation}
 
 \subsubsection*{Model target}
 
@@ -342,20 +344,34 @@ We defined the following fitness metrics per strain and timepoint.
 \subsubsection*{Antigenic drift}
 
 We estimated antigenic drift for each strain using either genetic or HI data.
-To estimate antigenic drift with genetic data, we implemented the cross-immunity metrics originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj}.
+To estimate antigenic drift with genetic data, we implemented the cross-immunity metric originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 Briefly, for each pair of strains in adjacent seasons, we counted the number of amino acid differences between the strains' HA sequences at 49 epitope sites.
 We limited these pairwise comparisons to all strains sampled within the last five years from each timepoint.
-For each individual strain at each timepoint, we estimated that strain's ability to escape cross-immunity by summing the exponentially-scaled epitope distances between previously circulating strains and the given strain as follows.
+For each individual strain $i$ at each timepoint $t$, we estimated that strain's ability to escape cross-immunity by summing the exponentially-scaled epitope distances between previously circulating strains and the given strain as follows.
 
-$$
-f_{i,\mathrm{ep}}(t) = \sum_{j: t_{j} < t_{i}}{x_{j}\exp{(-D_{\mathrm{ep}}(a_{i}, a_{j}) / D_{0})}}
-$$
+\begin{equation}
+    f_{i,\mathrm{ep}}(t) = \sum_{j: t_{j} < t_{i}}{x_{j}\exp{(-D_{\mathrm{ep}}(a_{i}, a_{j}) / D_{0})}}
+    \label{equation_epitope_cross_immunity}
+\end{equation}
 
 To estimate antigenic drift with HI data, we first applied the titer tree model to the phylogeny at a given timepoint and the corresponding HI data for its strains, as previously described by Neher et al. 2016 \cite{Neher:2016hy}.
-This method effectively estimated the antigenic drift associated with each branch in the phylogeny.
+This method effectively estimates the antigenic drift per branch in units of $log_{2}$ titer change.
 Next, we calculated the pairwise antigenic distance between strains as the sum of antigenic drift weights per branch on the phylogenetic path between each pair of strains.
-Finally, we calculated each strain's ability to escape cross-immunity by applying the same equation as above for epitope mutations where $D_{\mathrm{ep}}(a_{i}, a_{j})$ was replaced by the pairwise antigenic distance from the tree.
+Finally, we calculated each strain's ability to escape cross-immunity using Equation~\ref{equation_epitope_cross_immunity} with the pairwise distances between epitope sequences replaced with pairwise antigenic distance from HI data.
+As with the original epitope cross-immunity described above, this HI cross-immunity metric produces higher values for strains that are more antigenically distinct from previously circulating strains.
 
 \subsubsection*{Functional constraint}
+
+We estimated functional constraint for each strain using either genetic or deep mutational scanning (DMS) data.
+To estimate functional constraint with genetic data, we implemented the non-epitope mutation metric originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj}.
+This metric counts the number of amino acid differences at 517 non-epitope sites in HA sequences between each strain $i$ at timepoint $t$ and that strain's most recent inferred ancestral sequence in the previous season ($t - 1$).
+
+We estimated functional constraint using mutational preferences from DMS data as previously defined \cite{Lee2018}.
+Briefly, mutational effects were defined as the log ratio of DMS preferences, $\pi$, at site $r$ for the derived amino acid, $a_{i}$, and the ancestral amino acid, $a_{j}$.
+
+\begin{equation}
+    f_{i,\mathrm{DMS}}(t) = \sum_{r \in r,a_{i} != r,a{j}}\log_{2}\frac{\pi_{r,a_{i}}}{\pi_{r,a_{j}}}
+    \label{equation_mutational_preference}
+\end{equation}
 
 \subsubsection*{Clade growth}
