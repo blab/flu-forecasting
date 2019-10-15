@@ -410,10 +410,20 @@ This metric counts the number of amino acid differences at 517 non-epitope sites
 
 We estimated functional constraint using mutational preferences from DMS data as previously defined \cite{Lee2018}.
 Briefly, mutational effects were defined as the log ratio of DMS preferences, $\pi$, at site $r$ for the derived amino acid, $a_{i}$, and the ancestral amino acid, $a_{j}$.
+As with the non-epitope mutation metric above, we considered only substitutions in HA between each strain $i$ and that strain's most recent inferred ancestral sequence in the previous season.
+We calculated the total effect of these substitutions as the sum of the mutational preferences for each substitution, as in Equation~\ref{equation_mutational_preference}.
 
 \begin{equation}
-    f_{i,\mathrm{DMS}}(t) = \sum_{r \in r,a_{i} != r,a{j}}\log_{2}\frac{\pi_{r,a_{i}}}{\pi_{r,a_{j}}}
+    f_{i,\mathrm{DMS}}(t) = \sum_{r \in r,a_{i} != r,a_{j}}\log_{2}\frac{\pi_{r,a_{i}}}{\pi_{r,a_{j}}}
     \label{equation_mutational_preference}
 \end{equation}
 
 \subsubsection*{Clade growth}
+
+We estimated clade growth for each strain using local branching index (LBI) and the change in frequency over time (delta frequency).
+To calculate LBI for each strain at each timepoint, we applied the LBI heuristic algorithm as originally described \cite{Neher:2014eu} to the phylogenetic tree constructed at each timepoint.
+We set the neighborhood parameter, $\tau$, to 0.3 and only considered viruses sampled in the last 6 months of each phylogeny as contributing to recent clade growth.
+
+We estimated the change in frequency over time by calculating clade frequencies under a Brownian motion diffusion process as previously described \cite{Lee2018}.
+These frequency calculations allowed us to assign a partial clade frequency to each strain within nested clades.
+We calculated the delta frequency as the change in frequency for each strain between the most recent timepoint in a given phylogeny and six months prior to that timepoint divided by 0.5 years.
