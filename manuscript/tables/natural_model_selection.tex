@@ -1,26 +1,15 @@
-\begin{tabular}{lrrr}
+\begin{tabular}{lll}
 \toprule
-{} & model\_minus\_naive & \multicolumn{2}{l}{model\_better\_than\_naive} \\
-{} &              mean &                     sum & mean \\
-model                                           &                   &                         &      \\
+                                           Model & \makecell{Distance closer \\ to future (AAs)} & \makecell{Model $>$ naive \\ (N=23)} \\
 \midrule
-HI cross-immunity + non-epitope mutations + LBI &             -1.21 &                      15 & 0.79 \\
-non-epitope mutations + LBI                     &             -1.14 &                      15 & 0.79 \\
-LBI                                             &             -0.78 &                      12 & 0.63 \\
-HI cross-immunity + non-epitope mutations       &             -0.67 &                      14 & 0.74 \\
-HI cross-immunity                               &             -0.41 &                      15 & 0.79 \\
-non-epitope mutations                           &             -0.40 &                      14 & 0.74 \\
-HI tree                                         &             -0.34 &                      12 & 0.63 \\
-delta frequency                                 &             -0.21 &                      12 & 0.63 \\
-DMS mutational effects                          &             -0.19 &                      11 & 0.58 \\
-Koel epitope mutations                          &             -0.15 &                      12 & 0.63 \\
-DMS entropy                                     &             -0.03 &                      13 & 0.68 \\
-naive                                           &              0.00 &                       0 & 0.00 \\
-DMS non-epitope                                 &              0.00 &                      11 & 0.58 \\
-HI sub cross-immunity                           &              0.06 &                       9 & 0.47 \\
-linear HI mut phenotypes                        &              0.25 &                       9 & 0.47 \\
-Wolf epitope mutations                          &              0.32 &                       6 & 0.32 \\
-epitope mutations                               &              0.64 &                       3 & 0.16 \\
-epitope cross-immunity                          &              0.81 &                       1 & 0.05 \\
+                     non-epitope mutations + LBI &                                 0.96 +/- 1.42 &                            18 (78\%) \\
+                                             LBI &                                 0.72 +/- 1.51 &                            17 (74\%) \\
+       HI cross-immunity + non-epitope mutations &                                 0.63 +/- 0.79 &                            18 (78\%) \\
+ HI cross-immunity + non-epitope mutations + LBI &                                 0.52 +/- 0.83 &                            19 (83\%) \\
+                               HI cross-immunity &                                 0.36 +/- 0.65 &                            17 (74\%) \\
+                                 delta frequency &                                 0.27 +/- 0.67 &                            16 (70\%) \\
+                           non-epitope mutations &                                 0.26 +/- 0.56 &                            17 (74\%) \\
+                          DMS mutational effects &                                -0.35 +/- 1.65 &                            11 (48\%) \\
+                          epitope cross-immunity &                                -0.66 +/- 1.13 &                             6 (26\%) \\
 \bottomrule
 \end{tabular}
