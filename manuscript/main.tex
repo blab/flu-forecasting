@@ -127,13 +127,15 @@ Our model satisfactorily recapitulated clade dynamics with a growth rate correla
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
 The estimated best strain was in the top 4th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 82\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
 
-Finally, we tested the true fitness metric model on out-of-sample data.
-Specifically, we fixed the coefficient of the true fitness model to the average value across the training/validation period and applied the resulting model to the next 10 years of previously unobserved simulated data.
+Finally, we tested all of our models on out-of-sample data.
+Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 10 years of previously unobserved simulated data.
 A standard expectation from machine learning is that models will perform worse on test data than on validation data.
 As expected, four of our five individual fitness metrics performed slightly worse on test data with non-epitope mutations as the exception (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
 The true fitness metric remained the best individual model with an average distance closer to the future of 1.58 $\pm$ 1.01 amino acids.
 However, the composite model of non-epitope mutations and LBI outperformed the true fitness model on test data with an average distance closer to the future of 1.81 $\pm$ 1.19 amino acids.
-Next, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
+Indeed, both composite models that we tested performed better on out-of-sample data than they did on validation data (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+
+As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 We observed a growth rate correlation of $R = 0.37$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 52\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
 The estimated best strain was in the top 5th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 70\% of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
 These results confirm that our approach of minimizing the distance between yearly populations can simulataneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
@@ -191,7 +193,7 @@ Non-epitope mutations also outperformed the DMS mutational effects, reducing the
 In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
-Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Fig.~\ref{sup_fig:unadjusted_DMS_model_accuracy_and_coefficients_for_natural_populations}).
+Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection} and Supplemental Fig.~\ref{sup_fig:unadjusted_DMS_model_accuracy_and_coefficients_for_natural_populations}).
 Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive model based on measured mutational effects.
 
 LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and non-epitope mutations for the most timepoints outperforming the naive model of 17 (74\%) (Table~\ref{table_natural_model_selection}).
