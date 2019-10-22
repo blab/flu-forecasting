@@ -5,7 +5,7 @@ Seasonal influenza virus infects 5--15\% of the global population every year cau
 Vaccination remains the most effective public health response available.
 However, frequent viral mutation results in viruses that escape previously acquired human immunity.
 The World Health Organization (WHO) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, accurate vaccine strain selection requires a prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
-Current vaccine predictions favor viruses that are distinct from prior vaccine viruses in the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
+Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
 The hemagglutination inhibition (HI) assay \cite{hirst1943studies} is used to measure the degree of cross-reactivity between pairs of circulating viruses.
 HI assays are fundamental for vaccine strain selection, but they are laborious and low-throughput compared to genome sequencing \cite{Wood:2012ii}.
 As a result, researchers have developed computational methods to predict influenza fitness from sequence data alone \cite{Luksza:2014hj,Steinbruck:2014kq,Neher:2014eu}.
@@ -35,19 +35,21 @@ However, we also find that phylogenetic fitness metrics based on recent growth o
     The estimated future population at timepoint $u$ is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
     B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the orange samples to the detriment of the purple samples.
     C) Samples at timepoint $u$ are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
-    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate (e.g., the emergence of the yellow cluster from within the successful orange cluster).
+    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the yellow cluster from within the successful orange cluster.
+    \tbc{I'd label left and right columns as `Forecast' and `Retrospective' of something to this effect.}
   }
   \label{fig:model}
   \end{center}
 \end{figure*}
 
-Here, we present a model of seasonal influenza evolution inspired by the exponential growth model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
+Here, we present a model of seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 As with this original model, we seek to forecast the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model}).
 We estimate the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
 We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and non-epitope mutations as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
 After selecting optimal models from training and validation, we evaluate the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
 Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the exponential growth model (Fig.~\ref{fig:model}).
+\tbc{I'd generally use the term `fitness model' instead of `exponential growth' model. Exponential growth makes me think of actual exponential growth rather than Malthusian growth.}
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
@@ -68,7 +70,7 @@ The distances estimated under the naive model represent the observed distance be
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{
-    Model a) coefficients and b) distances closer to the future measured in amino acids (AAs) for each model relative to a naive model for simulated populations of A/H3N2-like viruses.
+    Model a) coefficients and b) distances closer to the future measured in amino acids (AAs) for each model relative to a naive model for simulated populations.
     Coefficients are shown for each individual fitness metric per validation timepoint (N=33) in solid circles with the mean $\pm$ standard deviation in the top-left corner of each panel.
     Distances closer to the future in amino acids are shown per validation or test timepoint for each individual model relative to the observed distance between timepoints.
     Models outperform the naive model when the distances closer to the future are greater than zero.
@@ -84,10 +86,11 @@ The distances estimated under the naive model represent the observed distance be
   \begin{center}
     \input{tables/simulated_model_selection.tex}
     \caption{
-      Model performance with A/H3N2-like populations relative to the naive model.
+      Model performance with simulated populations relative to the naive model.
       Models use one or more fitness metrics to minimize the distance between the population of HA amino acid sequences at timepoint, $t$, and those at a timepoint one year in the future, $t + 1$.
       The naive model assumes the populations at time $t$ and $t + 1$ are identical, effectively measuring the observed distance between the two timepoints.
       Better models produce estimates that are closer to the future population than the naive model.
+      \tbc{Confused as to why `epitope cross-immunity' isn't working in the simulated example.}
     }
     \label{table_simulated_model_selection}
   \end{center}
@@ -113,7 +116,7 @@ These results support our hypothesis that multiple complementary metrics can pro
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-simulated-populations.png}
   \caption{
-  Test of best model for simulated populations of A/H3N2-like viruses using 10 years previously unobserved test data and fixed model coefficients.
+  Test of best model for simulated populations using 10 years previously unobserved test data and fixed model coefficients.
   a) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   b) The rank of the estimated best strain based on its distance to the future in the best model shows how often the model makes a good choice when forced to select a single representative strain for the future population.
   }
@@ -252,6 +255,7 @@ Finally, we tested the performance of this same best model on out-of-sample data
 
 After identifying the best model to forecast natural populations, we integrated our forecasting model into our existing open source pathogen surveillance framework, Nextstrain \cite{Hadfield2018}, and used our model to forecast A/H3N2 populations in September 2020.
 Our combined non-epitope mutations and LBI model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
+\tbc{Include figure showing predicted match of strains to future population. Possibly compare Hamming match to FRA match.}
 
 \begin{figure*}[ht]
   \begin{center}
