@@ -60,6 +60,8 @@ To test the ability of our models to accurately detect these evolutionary patter
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
 We fit models to these simulated populations using all sequence-only fitness metrics.
 
+\rnc{A paragraph explaining the metrics would help.}
+
 We hypothesized that fitness metrics associated with viral success such as epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while metrics associated with fitness penalties, like non-epitope mutations, would receive negative coefficients.
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a composite model of epitope cross-immunity and non-epitope mutations would perform as well as or better than the growth metrics, as this model would include both primary fitness constraints acting on our simulated populations.
@@ -97,6 +99,7 @@ The distances estimated under the naive model represent the observed distance be
 \end{table*}
 
 The average distance between yearly populations, as measured by the naive model, was 8.97 $\pm$ 1.35 amino acids (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
+\rnc{would be good to compare the year-on-year distance to diversity. that would give some sense whether a 2aa reduction is big or small.}
 As expected, the true fitness model outperformed all other models reducing the distance between populations by 2.16 $\pm$ 1.19 amino acids on average and surpassing the naive model in 32 of 33 (97\%) timepoints (Table~\ref{table_simulated_model_selection}).
 With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
 LBI was the best of these models, reducing the distance between populations by 1.41 $\pm$ 1.30 amino acids on average.
