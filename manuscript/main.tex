@@ -350,7 +350,7 @@ We assumed that the evolution seasonal influenza A/H3N2 populations can be repre
 Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 \begin{equation}
-    \mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t))
+    \mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t)\Delta{t})
     \label{equation_exponential_growth_model}
 \end{equation}
 
