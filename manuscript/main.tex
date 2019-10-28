@@ -48,8 +48,7 @@ We estimate the frequency of virus samples every six months using a smoothed KDE
 We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and non-epitope mutations as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
 After selecting optimal models from training and validation, we evaluate the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
-Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the exponential growth model (Fig.~\ref{fig:model}).
-\tbc{I'd generally use the term `fitness model' instead of `exponential growth' model. Exponential growth makes me think of actual exponential growth rather than Malthusian growth.}
+Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
@@ -107,7 +106,7 @@ Indeed, both growth-based models received positive coefficients and outperformed
 The non-epitope mutations metric received a consistently negative coefficient with an average improvement of 0.71 $\pm$ 0.58 amino acids.
 Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
 While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric.
-From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of samples under our simulated conditions was dominated by purifying selection rather than by positive selection at epitope sites.
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection rather than by positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: non-epitope mutations and LBI.
@@ -346,7 +345,7 @@ We implemented this frequency estimation logic in the augur frequencies command.
 
 \subsubsection*{Fitness model}
 
-We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by an exponential growth model, as previously described \cite{Luksza:2014hj}.
+We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by a Malthusian growth fitness model, as previously described \cite{Luksza:2014hj}.
 Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 \begin{equation}
