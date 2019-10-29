@@ -36,18 +36,23 @@ However, we also find that phylogenetic fitness metrics based on recent growth o
     B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the orange samples to the detriment of the purple samples.
     C) Samples at timepoint $u$ are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
     D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the yellow cluster from within the successful orange cluster.
-    \tbc{I'd label left and right columns as `Forecast' and `Retrospective' of something to this effect.}
   }
   \label{fig:model}
   \end{center}
 \end{figure*}
 
 Here, we present a model of seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
-As with this original model, we seek to forecast the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model}).
+As with this original model, we seek to forecast the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
 We estimate the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
+
 We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and non-epitope mutations as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
+All of these metrics except for HI cross-immunity and DMS mutational effects rely only on HA sequences.
+The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating samples based on either genetic distance at epitope sites or HI distance.
+The functional constraint metrics consider effects of mutations accumulated since the previous season either for deleterious (non-epitope) mutations or all mutations based on their DMS preferences.
+The growth metrics estimate how successful populations of samples have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
+
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
-After selecting optimal models from training and validation, we evaluate the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
+After selecting optimal models from training and validation, we evaluated the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
 Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
@@ -58,14 +63,12 @@ The long-term evolution of influenza A/H3N2 hemagglutinin has been previously de
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Figure~\ref{sup_fig:cross_validation_for_simulated_populations}).
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
 We fit models to these simulated populations using all sequence-only fitness metrics.
-
-\rnc{A paragraph explaining the metrics would help.}
+As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
+We evaluated the performance of each model relative to the observed distance between timepoints.
 
 We hypothesized that fitness metrics associated with viral success such as epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while metrics associated with fitness penalties, like non-epitope mutations, would receive negative coefficients.
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a composite model of epitope cross-immunity and non-epitope mutations would perform as well as or better than the growth metrics, as this model would include both primary fitness constraints acting on our simulated populations.
-In addition to these four estimates of viral fitness, we tested models based on both the true fitness of each sample as measured by the simulator and a naive model under which the exponential growth factor is set to one and populations do not change composition over the one year forecasting period.
-The distances estimated under the naive model represent the observed distance between the current and future timepoints.
 
 \begin{figure*}[ht!]
   \begin{center}
@@ -257,7 +260,7 @@ Finally, we tested the performance of this same best model on out-of-sample data
 
 After identifying the best model to forecast natural populations, we integrated our forecasting model into our existing open source pathogen surveillance framework, Nextstrain \cite{Hadfield2018}, and used our model to forecast A/H3N2 populations in September 2020.
 Our combined non-epitope mutations and LBI model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
-\tbc{Include figure showing predicted match of strains to future population. Possibly compare Hamming match to FRA match.}
+To aid with identification of potential vaccine candidates, we annotated samples in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure*}[ht]
   \begin{center}
@@ -268,6 +271,17 @@ Our combined non-epitope mutations and LBI model favored the growth of the curre
     Our model favors the A1b/131K subclade, A1b/197R, to grow over the next year and estimates that the A1b/135K subclade, A1b/137F, will remain stable.
   }
   \label{fig:nextstrain_forecasts}
+  \end{center}
+\end{figure*}
+
+\begin{figure*}[ht]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
+  \caption{
+    Snapshot of the last two years of seasonal influenza A/H3N2 evolution on nextstrain.org showing the estimated distance per sample to the future population.
+    Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating samples weighted by the other sample's projected frequencies under the best fitness model.
+  }
+  \label{fig:nextstrain_distance_to_future}
   \end{center}
 \end{figure*}
 
