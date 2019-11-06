@@ -64,11 +64,53 @@ To test the ability of our models to accurately detect these evolutionary patter
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
-We evaluated the performance of each model relative to the observed distance between timepoints.
+We evaluated the performance of each model by a) the absolute distance between its projected future populations and the observed future populations, b) the approximation of the observed future population's diversity, and c) how often each model outperformed a naive model that estimated no change in populations between years.
+
+\begin{figure*}[ht!]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.png}
+  \caption{
+    Model a) coefficients and b) distances between the model's projected population and the observed future population as measured in amino acids (AAs) for simulated populations.
+    Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
+    For model testing, coefficients were fixed to their mean values from training/validation (open circles) and applied to out-of-sample test data.
+    Distances between estimated and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
+    The mean $\pm$ standard deviation of distances per validation timepoint are shown in the top-left of each panel.
+    Corresponding values per test timepoint are in the top-right of each panel.
+    For reference, the naive model's distance to the future is also shown per validation and test timepoint in grey.
+  }
+  \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
+  \end{center}
+\end{figure*}
 
 We hypothesized that fitness metrics associated with viral success such as epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while metrics associated with fitness penalties, like non-epitope mutations, would receive negative coefficients.
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a composite model of epitope cross-immunity and non-epitope mutations would perform as well as or better than the growth metrics, as this model would include both primary fitness constraints acting on our simulated populations.
+
+\begin{table*}[ht]
+  \begin{center}
+    \input{tables/simulated_model_selection.tex}
+    \caption{
+      Model coefficients and validation performance for simulated populations ordered from best to worst by distance to the future.
+      Coefficients are the mean $\pm$ standard deviation for each metric in a given model across 33 training windows.
+      Distance to the future measures the distance in amino acids between estimated and observed future populations.
+      Approximation of the future diversity measures the difference between the average Hamming distance between the estimated and observed future populations and the future population's average Hamming distance to itself (i.e., the diversity of the future populations).
+      Models with values that are closer to or less than zero produce better approximations of the future.
+      The number of times (and percentage of total times) each model outperformed the naive model measures the benefit of each model over a model than estimates no change between current and future populations.
+    }
+    \label{table_simulated_model_selection}
+  \end{center}
+\end{table*}
+
+As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 of 33 (97\%) timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
+Importantly, the true fitness model accurately approximated the diversity of future populations coming within -0.29 $\pm$ 2.01 AAs of observed future diversity.
+In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future and an average of 2.26 $\pm$ 1.75 AAs from the future's observed diversity.
+With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
+LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs.
+Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
+The non-epitope mutations metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
+Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric.
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection rather than by positive selection at epitope sites.
 
 \begin{figure*}[ht!]
   \begin{center}
@@ -85,31 +127,6 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
   \end{center}
 \end{figure*}
-
-\begin{table*}[ht]
-  \begin{center}
-    \input{tables/simulated_model_selection.tex}
-    \caption{
-      Model performance with simulated populations relative to the naive model.
-      Models use one or more fitness metrics to minimize the distance between the population of HA amino acid sequences at timepoint, $t$, and those at a timepoint one year in the future, $t + 1$.
-      The naive model assumes the populations at time $t$ and $t + 1$ are identical, effectively measuring the observed distance between the two timepoints.
-      Better models produce estimates that are closer to the future population than the naive model.
-      \tbc{Confused as to why `epitope cross-immunity' isn't working in the simulated example.}
-    }
-    \label{table_simulated_model_selection}
-  \end{center}
-\end{table*}
-
-The average distance between yearly populations, as measured by the naive model, was 8.97 $\pm$ 1.35 amino acids (Supplemental Fig.~\ref{sup_fig:distance_of_simulated_populations_between_timepoints}).
-\rnc{would be good to compare the year-on-year distance to diversity. that would give some sense whether a 2aa reduction is big or small.}
-As expected, the true fitness model outperformed all other models reducing the distance between populations by 2.16 $\pm$ 1.19 amino acids on average and surpassing the naive model in 32 of 33 (97\%) timepoints (Table~\ref{table_simulated_model_selection}).
-With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
-LBI was the best of these models, reducing the distance between populations by 1.41 $\pm$ 1.30 amino acids on average.
-Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
-The non-epitope mutations metric received a consistently negative coefficient with an average improvement of 0.71 $\pm$ 0.58 amino acids.
-Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric.
-From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection rather than by positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: non-epitope mutations and LBI.
@@ -183,7 +200,7 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \end{center}
 \end{table*}
 
-The average distance per year between natural populations was 6.40 $\pm$ 1.36 amino acids or 71\% of the distance between yearly simulated populations (Supplemental Fig.~\ref{sup_fig:distance_of_natural_populations_between_timepoints}).
+The average distance per year between natural populations was 6.40 $\pm$ 1.36 amino acids or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of these models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may be caused by both the reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
