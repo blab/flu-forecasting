@@ -109,20 +109,15 @@ LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
 The non-epitope mutations metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
 Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric.
+While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
 From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection rather than by positive selection at epitope sites.
 
 \begin{figure*}[ht!]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{
-    Model a) coefficients and b) distances closer to the future measured in amino acids (AAs) for each model relative to a naive model for simulated populations.
-    Coefficients are shown for each individual fitness metric per validation timepoint (N=33) in solid circles with the mean $\pm$ standard deviation in the top-left corner of each panel.
-    Distances closer to the future in amino acids are shown per validation or test timepoint for each individual model relative to the observed distance between timepoints.
-    Models outperform the naive model when the distances closer to the future are greater than zero.
-    The mean $\pm$ standard deviation of amino acids per validation timepoint are shown in the top-left of each panel.
-    The same values are shown per test timepoint in the top-right of each panel.
-    Solid circles indicate validation timepoints and open circles indicate test timepoints when coefficients are fixed to their mean values from training/validation and applied to out-of-sample test data.
+    Model a) coefficients and b) distances to the future for individual biologically-informed fitness metrics and the best composite model fit to simulated populations.
+    Coefficients and distances are shown per validation and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
   \end{center}
@@ -179,9 +174,8 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
   \caption{
-    Model a) coefficients and b) distances closer to the future measured in amino acids (AAs) for each model relative to a naive model for natural populations of A/H3N2 viruses.
-    As in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, coefficients are shown for each individual fitness metric per validation timepoint (N=23) in solid circles with the mean $\pm$ standard deviation in the top-left corner of each panel.
-    The mean $\pm$ standard deviation of amino acids per validation and test timepoint are shown in the top-left and top-right of each panel, respectively.
+    Model a) coefficients and b) distances to the future for individual biologically-informed fitness metrics fit to natural populations.
+    Coefficients and distances are shown per validation timepoint (N=23) and test timepoint (N=XX) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
@@ -191,10 +185,8 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \begin{center}
     \input{tables/natural_model_selection.tex}
     \caption{
-      Model performance with natural A/H3N2 populations relative to the naive model.
-      Models use one or more fitness metrics to minimize the distance between the population of HA amino acid sequences at timepoint, $t$, and those at a timepoint one year in the future, $t + 1$.
-      The naive model assumes the populations at time $t$ and $t + 1$ are identical, effectively measuring the observed distance between the two timepoints.
-      Better models produce estimates that are closer to the future population than the naive model.
+      Model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Results are based on training and validation across 23 training windows.
     }
     \label{table_natural_model_selection}
   \end{center}
@@ -235,8 +227,8 @@ We anticipated that if these metrics all represented distinct, mutually benefici
   \begin{center}
   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
   \caption{
-    Composite model a) accuracy and b) coefficients for natural populations of A/H3N2 viruses.
-    As in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}, coefficients are shown per timepoint for each individual fitness metric by the corresponding color of the metric.
+    Model a) coefficients and b) distances to the future for composite fitness metrics fit to natural populations.
+    Coefficients and distances are shown per validation timepoint (N=23) and test timepoint (N=XX) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}

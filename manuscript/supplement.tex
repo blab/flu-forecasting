@@ -69,10 +69,9 @@
   \begin{center}
     \input{tables/complete_natural_model_selection.tex}
     \caption{
-      Model performance with natural A/H3N2 populations relative to the naive model for all models tested.
-      Models use one or more fitness metrics to minimize the distance between the population of HA amino acid sequences at timepoint, $t$, and those at a timepoint one year in the future, $t + 1$.
-      The naive model assumes the populations at time $t$ and $t + 1$ are identical, effectively measuring the observed distance between the two timepoints.
-      Better models produce estimates that are closer to the future population than the naive model.
+      All model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Results are based on training and validation across 23 training windows.
+      Model results for additional variants of fitness metrics including those based on epitope mutations and DMS preferences are included for reference.
     }
     \label{sup_table:complete_natural_model_selection}
   \end{center}
