@@ -62,20 +62,24 @@ However, we retain the benefits of fitting models to highly similar samples foun
 The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Figure~\ref{sup_fig:cross_validation_for_simulated_populations}).
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
+
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
-We evaluated the performance of each model by a) the absolute distance between its projected future populations and the observed future populations, b) the approximation of the observed future population's diversity, and c) how often each model outperformed a naive model that estimated no change in populations between years.
+We evaluated the performance of each model by the absolute distance between projected and observed future populations and how often it outperformed a naive model that estimated no change in populations between years.
+As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
+For this reason, we additionally measured how well each model approximated the diversity of the future population.
+We measured this approximation at each timepoint as the average Hamming distance between projected and observed populations minus the average Hamming distance of the observed population to itself.
 
 \begin{figure*}[ht!]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.png}
   \caption{
-    Model a) coefficients and b) distances between the model's projected population and the observed future population as measured in amino acids (AAs) for simulated populations.
+    Model a) coefficients and b) distances between projected and observed future populations as measured in amino acids (AAs) for simulated populations.
     Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
     For model testing, coefficients were fixed to their mean values from training/validation (open circles) and applied to out-of-sample test data.
-    Distances between estimated and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
+    Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
     The mean $\pm$ standard deviation of distances per validation timepoint are shown in the top-left of each panel.
-    Corresponding values per test timepoint are in the top-right of each panel.
+    Corresponding values per test timepoint are in the top-right.
     For reference, the naive model's distance to the future is also shown per validation and test timepoint in grey.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
@@ -104,13 +108,10 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 of 33 (97\%) timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
 Importantly, the true fitness model accurately approximated the diversity of future populations coming within -0.29 $\pm$ 2.01 AAs of observed future diversity.
 In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future and an average of 2.26 $\pm$ 1.75 AAs from the future's observed diversity.
-With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
+With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
 The non-epitope mutations metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
-Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
-From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection rather than by positive selection at epitope sites.
 
 \begin{figure*}[ht!]
   \begin{center}
@@ -123,9 +124,17 @@ From these results, we concluded that our method can accurately estimate the evo
   \end{center}
 \end{figure*}
 
+Surprisingly, the composite model of epitope cross-immunity and non-epitope mutations did not perform better than the individual non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
+The cross-immunity fitness metric assumes that antigenic drift is driven by nonlinear effects of previous host exposure \cite{Luksza:2014hj} that are not explicitly present in our simulations.
+To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
+Although this linear fitness metric produced a slightly stronger coefficient, it did not perform better than the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
+However, when we fit a composite model of the epitope ancestor and non-epitope mutations metrics, this model outperformed the individual non-epitope mutations model and produced a stronger coefficient for epitope mutations of 0.35 $\pm$ 0.07 (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly by a linear effect of positive selection at epitope sites.
+
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: non-epitope mutations and LBI.
-This composite model outperformed all individual metrics, reducing the distance between populations by 1.74 $\pm$ 1.02 amino acids and outperforming the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
+This composite model outperformed all individual metrics with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperforming the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
 The coefficients for LBI and non-epitope mutations remained relatively consistent across all validation timepoints, indicating that these fitness metrics were stable approximations of the simulator's underlying evolutionary processes.
 These results support our hypothesis that multiple complementary metrics can produce more accurate models.
 
@@ -133,7 +142,7 @@ These results support our hypothesis that multiple complementary metrics can pro
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-simulated-populations.png}
   \caption{
-  Test of best model for simulated populations using 10 years previously unobserved test data and fixed model coefficients.
+  Test of best model for simulated populations (true fitness) using 10 years previously unobserved test data and fixed model coefficients.
   a) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   b) The rank of the estimated best strain based on its distance to the future in the best model shows how often the model makes a good choice when forced to select a single representative strain for the future population.
   }
@@ -150,10 +159,11 @@ The estimated best strain was in the top 4th percentile of observed closest stra
 Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 10 years of previously unobserved simulated data.
 A standard expectation from machine learning is that models will perform worse on test data than on validation data.
-As expected, four of our five individual fitness metrics performed slightly worse on test data with non-epitope mutations as the exception (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
-The true fitness metric remained the best individual model with an average distance closer to the future of 1.58 $\pm$ 1.01 amino acids.
-However, the composite model of non-epitope mutations and LBI outperformed the true fitness model on test data with an average distance closer to the future of 1.81 $\pm$ 1.19 amino acids.
-Indeed, both composite models that we tested performed better on out-of-sample data than they did on validation data (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+The composite model of non-epitope mutations and LBI outperformed the true fitness metric with average distance to the future of 7.09 $\pm$ 1.15 compared to 7.32 $\pm$ 1.80, respectively (Supplemental Table~\ref{table_simulated_model_test}).
+This composite model also estimated a much less diverse future population on average than the observed future populations by 1.28 $\pm$ 1.96 AAs.
+In contrast, the true fitness model estimated future populations that were closer to the observed diversity.
+Both the composite and true fitness models outperformed the naive model at 95\% and 90\% of test timepoints, respectively.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 We observed a growth rate correlation of $R = 0.37$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 52\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
@@ -162,6 +172,17 @@ These results confirm that our approach of minimizing the distance between yearl
 These results also highlight a well-established yet critical point that true forecasts on out-of-sample data are less accurate than those based on training and validation data.
 
 \subsection*{Models reflect historical patterns of A/H3N2 evolution}
+
+\begin{table*}[ht]
+  \begin{center}
+    \input{tables/natural_model_selection.tex}
+    \caption{
+      Model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Results are based on training and validation across 23 training windows.
+    }
+    \label{table_natural_model_selection}
+  \end{center}
+\end{table*}
 
 Next, we trained and validated models for individual fitness predictors using 25 years of natural A/H3N2 populations spanning from October 1, 1990 to October 1, 2015.
 We held out samples collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Figure~\ref{sup_fig:cross_validation_for_natural_populations}).
@@ -181,32 +202,22 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \end{center}
 \end{figure*}
 
-\begin{table*}[ht]
-  \begin{center}
-    \input{tables/natural_model_selection.tex}
-    \caption{
-      Model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
-      Results are based on training and validation across 23 training windows.
-    }
-    \label{table_natural_model_selection}
-  \end{center}
-\end{table*}
-
-The average distance per year between natural populations was 6.40 $\pm$ 1.36 amino acids or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
+The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of these models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may be caused by both the reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
 
 Surprisingly, the best antigenic fitness metric of HI cross-immunity performed only slightly better the best functional constraint metric of non-epitope mutations.
-Indeed, epitope cross-immunity only outperformed the naive model at six of 19 timepoints (26\%), while HI cross-immunity outperformed the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
-Epitope cross-immunity was also the only metric whose coefficient started at a positive value and transitioned to a negative value through the validation period.
+Indeed, epitope cross-immunity only outperformed the naive model at six of 23 timepoints (26\%), while HI cross-immunity outperformed the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
+Epitope cross-immunity was also the only metric whose coefficient started at a positive value (1.45 $\pm$ 0.10 on average prior to October 2009) and transitioned to a near-zero value through the validation period (-0.13 $\pm$ 0.32 on average for October 2009 and after).
 This change in coefficient suggests that positive selection may have weakened at these epitope sites over time.
 In contrast, HI cross-immunity maintained a positive coefficient across most timepoints.
 The HI cross-immunity may benefit from being able to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
 Importantly, the 49 epitope sites were originally identified from a historical survey of sites with successful mutations up through 2005 \cite{Shih:2007bd}.
 The success of previous epitope models based on these sites could be due to overfitting to these historical data.
+For example, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict from October 2004 to October 2005, at which point it begins to overfit to the training data.
 
-Non-epitope mutations also outperformed the DMS mutational effects, reducing the distance to the future by 0.26 $\pm$ 0.56 amino acids on average compared to -0.35 $\pm$ 1.65 amino acids, respectively.
+Non-epitope mutations outperformed the DMS mutational effects, with an average distance to the future of 6.14 $\pm$ 1.37 AAs compared to 6.75 $\pm$ 1.95 AAs, respectively.
 In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
@@ -235,8 +246,8 @@ We anticipated that if these metrics all represented distinct, mutually benefici
 \end{figure*}
 
 Both two-metric composite models performed better than their corresponding individual models (Table~\ref{table_natural_model_selection} and Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}).
-Although the three-metric composite model performed slightly worse than the individual LBI model, as measured by distance closer to the future, this composite model outperformed the naive model the most of any model with 19 (83\%) times out of 23.
-The composite of LBI and non-epitope mutations performed the best by distance closer to the future at 0.96 $\pm$ 1.42 amino acids.
+Although the three-metric composite model performed slightly worse than the individual LBI model, this composite model outperformed the naive model the most of any model with 19 (83\%) times out of 23.
+The composite of LBI and non-epitope mutations performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs and an approximation of future diversity near zero (-0.02 $\pm$ 1.50 AAs).
 
 The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
 In contrast, the three-metric model strongly preferred the HI cross-immunity and non-epitope metrics over LBI for the majority of the validation period, producing an average LBI coefficient of 0.05 $\pm$ 0.50.

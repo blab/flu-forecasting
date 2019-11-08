@@ -51,6 +51,18 @@
   \end{center}
 \end{figure*}
 
+\begin{table*}[ht]
+  \begin{center}
+    \input{tables/simulated_model_test.tex}
+    \caption{
+      Model coefficients and test performance for simulated populations ordered from best to worst by distance to the future.
+      Coefficients shown here are the mean values across all training and validation windows which were used to test models on out-of-sample data.
+      Distance to the future, approximation of future diversity, and number of times model outperforms the naive model are as in Table~\ref{table_simulated_model_selection} for all test timepoints (N=20).
+    }
+    \label{table_simulated_model_test}
+  \end{center}
+\end{table*}
+
 \begin{figure*}[h]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/cross-validation-for-natural-populations.png}
