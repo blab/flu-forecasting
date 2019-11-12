@@ -34,6 +34,6 @@ augur reconstruct-sequences --tree tree.nwk --gene HA2 --mutations aa_muts.json 
 
 augur distance --tree tree.nwk --alignment aa-seq_SigPep.fasta aa-seq_HA1.fasta aa-seq_HA2.fasta --gene-names SigPep HA1 HA2 --attribute-name ep ne --compare-to root root --map ../../config/distance_maps/h3n2/ha/wolf.json ../../config/distance_maps/h3n2/ha/wolf_nonepitope.json --output distances.json
 
-augur export --tree tree.nwk --metadata metadata.tsv --auspice-config ../../config/auspice_config.json --colors ../../config/colors.tsv --output-tree test_tree.json --output-meta test_meta.json --node-data branch_lengths.json nt_muts.json aa_muts.json lbi.json distances.json --output-sequence test_seq.json
+augur export v1 --tree tree.nwk --metadata metadata.tsv --auspice-config ../../config/auspice_config.json --colors ../../config/colors.tsv --output-tree test_tree.json --output-meta test_meta.json --node-data branch_lengths.json nt_muts.json aa_muts.json lbi.json distances.json --output-sequence test_seq.json
 
 augur frequencies --method kde --metadata metadata.tsv --tree tree.nwk --output test_tip-frequencies.json

@@ -104,12 +104,12 @@
           <probableSet>5</probableSet>
         </rank>
         <fitness>
-          <lowFitness>0.8</lowFitness>
+          <lowFitness>0.97</lowFitness>
           <minimumFitness>0.7</minimumFitness>
         </fitness>
         <fluctuate>
           <rate>0.00001</rate>
-          <fitnessLimit>0.8</fitnessLimit>
+          <fitnessLimit>0.97</fitnessLimit>
         </fluctuate>
       </purifyingFitness>
     </fitnessFunction>
