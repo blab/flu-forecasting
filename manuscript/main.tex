@@ -61,7 +61,7 @@ However, we retain the benefits of fitting models to highly similar samples foun
 
 The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Figure~\ref{sup_fig:cross_validation_for_simulated_populations}).
-These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}).
+These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
 
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
@@ -221,7 +221,7 @@ Non-epitope mutations outperformed the DMS mutational effects, with an average d
 In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
-Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection} and Supplemental Fig.~\ref{sup_fig:unadjusted_DMS_model_accuracy_and_coefficients_for_natural_populations}).
+Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
 Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive model based on measured mutational effects.
 
 LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and non-epitope mutations for the most timepoints outperforming the naive model of 17 (74\%) (Table~\ref{table_natural_model_selection}).
