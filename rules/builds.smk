@@ -963,23 +963,28 @@ rule extract_minimal_models_by_distances:
 
 rule annotate_distance_models:
     input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        model = rules.fit_models_by_distances.output.model,
         errors = rules.fit_models_by_distances.output.errors,
         coefficients = rules.fit_models_by_distances.output.coefficients
     output:
         errors = BUILD_PATH + "annotated_models_by_distances_errors/{predictors}.tsv",
         coefficients = BUILD_PATH + "annotated_models_by_distances_coefficients/{predictors}.tsv"
-    run:
-        errors = pd.read_csv(input.errors, sep="\t")
-        errors["type"] = wildcards.type
-        errors["sample"] = wildcards.sample
-        errors["error_type"] = "validation"
-        errors.to_csv(output.errors, sep="\t", header=True, index=False)
-
-        coefficients = pd.read_csv(input.coefficients, sep="\t")
-        coefficients["type"] = wildcards.type
-        coefficients["sample"] = wildcards.sample
-        coefficients["error_type"] = "validation"
-        coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
+    params:
+        delta_months = config["fitness_model"]["delta_months_to_fit"]
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/annotate_model_tables.py \
+            --tip-attributes {input.attributes} \
+            --model {input.model} \
+            --errors-by-timepoint {input.errors} \
+            --coefficients-by-timepoint {input.coefficients} \
+            --annotated-errors-by-timepoint {output.errors} \
+            --annotated-coefficients-by-timepoint {output.coefficients} \
+            --delta-months {params.delta_months} \
+            --annotations type="{wildcards.type}" sample="{wildcards.sample}" error_type="validation"
+        """
 
 
 rule collect_annotated_tip_clade_tables:
@@ -1218,23 +1223,26 @@ rule test_distance_models:
 
 rule annotate_test_distance_models:
     input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        model = rules.test_distance_models.output.model,
         errors = rules.test_distance_models.output.errors,
         coefficients = rules.test_distance_models.output.coefficients
     output:
         errors = BUILD_PATH + "annotated_test_models_by_distances_errors/{predictors}.tsv",
         coefficients = BUILD_PATH + "annotated_test_models_by_distances_coefficients/{predictors}.tsv"
-    run:
-        # Annotate samples based on the validation build sample name.
-        build = config["builds"][wildcards.type][wildcards.sample]
-        sample = build["validation_build"]
-        errors = pd.read_csv(input.errors, sep="\t")
-        errors["type"] = wildcards.type
-        errors["sample"] = sample
-        errors["error_type"] = "test"
-        errors.to_csv(output.errors, sep="\t", header=True, index=False)
-
-        coefficients = pd.read_csv(input.coefficients, sep="\t")
-        coefficients["type"] = wildcards.type
-        coefficients["sample"] = sample
-        coefficients["error_type"] = "test"
-        coefficients.to_csv(output.coefficients, sep="\t", header=True, index=False)
+    params:
+        delta_months = config["fitness_model"]["delta_months_to_fit"],
+        sample = _get_validation_sample_by_wildcards
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/annotate_model_tables.py \
+            --tip-attributes {input.attributes} \
+            --model {input.model} \
+            --errors-by-timepoint {input.errors} \
+            --coefficients-by-timepoint {input.coefficients} \
+            --annotated-errors-by-timepoint {output.errors} \
+            --annotated-coefficients-by-timepoint {output.coefficients} \
+            --delta-months {params.delta_months} \
+            --annotations type="{wildcards.type}" sample="{params.sample}" error_type="test"
+        """

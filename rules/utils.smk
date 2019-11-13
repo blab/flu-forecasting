@@ -225,3 +225,6 @@ def _get_model_to_test_by_wildcards(wildcards):
         predictors=wildcards.predictors
     )
     return model_path
+
+def _get_validation_sample_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample].get("dataset_sample", wildcards.sample)
