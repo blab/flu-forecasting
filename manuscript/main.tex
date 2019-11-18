@@ -216,16 +216,16 @@ Epitope cross-immunity was also the only metric whose coefficient started at a p
 This strong coefficient for the first half of training windows indicated that, unlike the results for simulated populations, the nonlinear cross-immunity metric was historically an effective measure of antigenic drift.
 The historical importance of the epitope sites used for this metric was further supported by the relative enrichment of mutations at these sites for the most successful ``trunk'' lineages of natural populations compared to side branch lineages (Supplemental Table~\ref{sup_table:mutations_by_trunk_status}).
 
-These results led us to hypothesize that positive selection at these specific epitope sites has weakened over time.
+These results led us to hypothesize that the contribution of these specific epitope sites to antigenic drift has weakened over time.
 Importantly, these 49 epitope sites were originally identified by a historical survey from 1968 through 2005 of sites with successful mutations \cite{Shih:2007bd}.
 If the beneficial effects of mutations at these sites were due to historical contingency rather than a constant contribution to antigenic drift, we would expect models based on these sites to perform well until 2005 and then overfit relative to future data.
 Indeed, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict to October 2005, at which point it begins to overfit to the training data.
 To further test our hypothesis, we identified a new set of beneficial sites across our entire validation period of October 1990 through October 2015.
-Following the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population.
+Inspired by the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population.
 Only 12 (48\%) of these sites also appeared in {\L}uksza and L\"assig's \cite{Luksza:2014hj} original set of 49 sites.
-We fit a cross-immunity model to these sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefitted from knowledge of the future in its forecasts.
-In contrast to the epitope cross-immunity model, our oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Figure~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
-These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant benefit of mutations at these sites.
+We fit a cross-immunity model to these 25 sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefitted from knowledge of the future in its forecasts.
+In contrast to the epitope cross-immunity model, the oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Figure~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
+These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant contribution of these sites to antigenic drift.
 We suspect that our HI cross-immunity model benefits from its ability to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
 
 Of the two metrics for functional constraint, non-epitope mutations outperformed DMS mutational effects, with an average distance to the future of 6.14 $\pm$ 1.37 AAs compared to 6.75 $\pm$ 1.95 AAs, respectively.
