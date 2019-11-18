@@ -283,9 +283,12 @@ class ExponentialGrowthModel(object):
 
         # Find coefficients that minimize the model's cost function.
         if hasattr(self, "coef_"):
-            initial_coefficients = self.coef_
+            # Use the previous coefficients +/- a small random offset (+/- 0.05)
+            # to prevent getting stuck in local minima.
+            initial_coefficients = self.coef_ + (0.1 * np.random.random(len(self.predictors)) - 0.05)
         else:
-            initial_coefficients = np.random.random(len(self.predictors))
+            # If no previous coefficients exist, sample random values between -0.5 and 0.5.
+            initial_coefficients = np.random.random(len(self.predictors)) - 0.5
 
         results = minimize(
             self._fit,
