@@ -1,6 +1,7 @@
 """Forecast given tip data into future using the given previously trained model.
 """
 import argparse
+import csv
 import json
 import numpy as np
 import pandas as pd
@@ -43,8 +44,9 @@ if __name__ == "__main__":
     )
 
     # Load distances.
-    distances = pd.read_csv(args.distances, sep="\t")
-    distances_by_sample_names = get_distances_by_sample_names(distances)
+    with open(args.distances, "r") as fh:
+        reader = csv.DictReader(fh, delimiter="\t")
+        distances_by_sample_names = get_distances_by_sample_names(reader)
 
     # Load model details
     with open(args.model, "r") as fh:

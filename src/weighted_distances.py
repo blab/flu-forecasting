@@ -1,6 +1,8 @@
 """Calculate weighted distances between samples in a given timepoint and both other samples in that timepoint and samples from a timepoint at a given delta time in the future.
 """
 import argparse
+from collections import defaultdict
+import csv
 import numpy as np
 import pandas as pd
 import sys
@@ -11,24 +13,20 @@ def get_distances_by_sample_names(distances):
 
     Parameters
     ----------
-    distances : pandas.DataFrame
-        data frame with the columns distance, sample, and other_sample
+    distances : iterator
+        an iterator of dictionaries with keys of distance, sample, and other_sample
 
     Returns
     -------
     dict :
         dictionary of distances by pairs of sample names
     """
-    distances_by_sample_names = {}
-    for distance, sample_b, sample_a in distances.loc[:, ["distance", "other_sample", "sample"]].values:
-        if sample_a not in distances_by_sample_names:
-            distances_by_sample_names[sample_a] = {}
-
-        if sample_b not in distances_by_sample_names:
-            distances_by_sample_names[sample_b] = {}
-
+    distances_by_sample_names = defaultdict(dict)
+    for record in distances:
+        sample_a = record["sample"]
+        sample_b = record["other_sample"]
+        distance = int(record["distance"])
         distances_by_sample_names[sample_a][sample_b] = distance
-        distances_by_sample_names[sample_b][sample_a] = distance
 
     return distances_by_sample_names
 
@@ -83,10 +81,11 @@ if __name__ == '__main__':
     tips = pd.read_csv(args.tip_attributes, sep="\t", parse_dates=["timepoint"])
 
     # Load distances.
-    distances = pd.read_csv(args.distances, sep="\t")
+    with open(args.distances, "r") as fh:
+        reader = csv.DictReader(fh, delimiter="\t")
 
-    # Map distances by sample names.
-    distances_by_sample_names = get_distances_by_sample_names(distances)
+        # Map distances by sample names.
+        distances_by_sample_names = get_distances_by_sample_names(reader)
 
     # Find valid timepoints for calculating distances to the future.
     timepoints = tips["timepoint"].drop_duplicates()

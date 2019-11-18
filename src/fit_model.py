@@ -1,6 +1,7 @@
 """Fit a model for the given data using the requested predictors and evaluate the model by time series cross-validation.
 """
 import argparse
+import csv
 import cv2
 import json
 import numpy as np
@@ -1043,8 +1044,14 @@ if __name__ == "__main__":
         targets["future_timepoint"] = targets["timepoint"]
 
         model_class = DistanceExponentialGrowthModel
-        distances = pd.read_csv(args.distances, sep="\t")
-        distances_by_sample_names = get_distances_by_sample_names(distances)
+
+        with open(args.distances, "r") as fh:
+            print("Read distances", flush=True)
+            reader = csv.DictReader(fh, delimiter="\t")
+            print("Get distances by sample names", flush=True)
+            distances_by_sample_names = get_distances_by_sample_names(reader)
+            print("Data loaded", flush=True)
+
         model_kwargs = {"distances": distances_by_sample_names}
         group_by_attribute = "strain"
 
