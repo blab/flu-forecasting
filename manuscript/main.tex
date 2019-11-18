@@ -155,7 +155,7 @@ We sought to validate the best performing model (true fitness) using two metrics
 First, we measured the ability of the true fitness model to accurately estimate dynamics of large clades (initial frequency $>15\%$) by correlating estimated and observed clade growth rates.
 Our model satisfactorily recapitulated clade dynamics with a growth rate correlation of $R = 0.72$~$(p < 0.001)$ and overall accuracies for clade growth and decline predictions of 87\% and 58\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
-The estimated best strain was in the top 4th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 82\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
+The estimated best strain was in the top 2nd percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 97\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
 
 Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 10 years of previously unobserved simulated data.
@@ -168,7 +168,7 @@ Both the composite and true fitness models outperformed the naive model at 95\% 
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 We observed a growth rate correlation of $R = 0.37$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 52\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
-The estimated best strain was in the top 5th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 70\% of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
+The estimated best strain was in the top 2nd percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 90\% of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
 These results confirm that our approach of minimizing the distance between yearly populations can simulataneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
 These results also highlight a well-established yet critical point that true forecasts on out-of-sample data are less accurate than those based on training and validation data.
 
