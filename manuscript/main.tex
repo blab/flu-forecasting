@@ -151,7 +151,7 @@ These results support our hypothesis that multiple complementary metrics can pro
   \end{center}
 \end{figure*}
 
-We sought to validate the best performing model (true fitness) using two metrics that are relevant for practical influenza forecasting and vaccine design efforts.
+We validated the best performing model (true fitness) using two metrics that are relevant for practical influenza forecasting and vaccine design efforts.
 First, we measured the ability of the true fitness model to accurately estimate dynamics of large clades (initial frequency $>15\%$) by correlating estimated and observed clade growth rates.
 Our model satisfactorily recapitulated clade dynamics with a growth rate correlation of $R = 0.72$~$(p < 0.001)$ and overall accuracies for clade growth and decline predictions of 87\% and 58\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
@@ -285,7 +285,7 @@ The estimated best strain from this model was in the top 13th percentile of obse
   \end{center}
 \end{figure*}
 
-Finally, we tested the performance of this same best model on out-of-sample data collected from October 1, 2015 through April 1, 2019.
+Finally, we tested the performance of this same best model on out-of-sample data collected from October 1, 2015 through October 1, 2019.
 
 \subsection*{Forecasts predict the rise of A1b/131K and A1b/135K sub-clades in September 2020}
 
@@ -366,7 +366,7 @@ For model training and validation, we selected 13,601 HA sequences $\geq$900 nuc
 To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 90 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
 We excluded all egg-passaged samples and all samples with ambiguous year, month, and day annotations.
 We prioritized samples with more available HI titer measurements.
-For model testing, we selected an additional 20,719 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and October 1, 2019.
+For model testing, we selected an additional 20,803 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and October 1, 2019.
 This increased number of sequences corresponds with the trend of increased sample sequencing and deposition in the last decade.
 We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
 
@@ -426,7 +426,7 @@ We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{
 \subsubsection*{Time-series cross-validation}
 
 To obtain unbiased estimates for the out-of-sample errors of our models, we adopted the standard cross-validation strategy of training, validation, and testing.
-We divided our available data into an initial training and validation set spanning October 1990 to October 2015 and an additional testing set spanning October 2015 to April 2019.
+We divided our available data into an initial training and validation set spanning October 1990 to October 2015 and an additional testing set spanning October 2015 to October 2019.
 We partitioned our training and validation data into six month seasons corresponding to winter in the Northern Hemisphere (October--April) and the Southern Hemisphere (April--October) and trained models to estimate frequencies of populations one year into the future from each season in six-year sliding windows.
 To calculate validation error for each training window, we applied the resulting model coefficients to estimate the future frequencies for the year after the last timepoint in the training window.
 These validation errors informed our tuning of hyperparameters including a L1 regularization of the fitness coefficients, the LBI neighborhood parameter $\tau$, and the length of the training window itself.
