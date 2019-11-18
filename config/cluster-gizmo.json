@@ -10,7 +10,8 @@
         "stderr": "log/cluster/{rule}.{wildcards}.%j.err"
     },
     "align": {
-        "time": "0:15:00",
+        "partition": "campus",
+        "time": "0:30:00",
         "memory": "16384",
         "cores": 4
     },
