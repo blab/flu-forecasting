@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 import sys
+import time
 
 from forecast.fitness_model import get_train_validate_timepoints
 from forecast.metrics import add_pseudocounts_to_frequencies, negative_information_gain
@@ -680,10 +681,13 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
 
         # Fit a model to the training data.
         if coefficients is None:
+            start_time = time.time()
             training_error = model.fit(training_X, training_y)
+            end_time = time.time()
             previous_coefficients = model.coef_
             null_training_error = model._fit(np.zeros_like(model.coef_), training_X, training_y)
         else:
+            start_time = end_time = time.time()
             model.coef_ = coefficients
             model.mean_stds_ = model.calculate_mean_stds(training_X, model.predictors)
             training_error = model.score(training_X, training_y)
@@ -698,7 +702,7 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
         null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
         differences_of_model_and_naive_errors.append(validation_error - null_validation_error)
         print(
-            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%.2f" % (
+            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%.2f\t%.2f" % (
                 training_timepoints[-1].strftime("%Y-%m"),
                 validation_timepoint.strftime("%Y-%m"),
                 training_error,
@@ -706,7 +710,8 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
                 validation_error,
                 null_validation_error,
                 model.coef_,
-                (np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors))
+                (np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors)),
+                end_time - start_time
             ),
             flush=True
         )
