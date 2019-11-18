@@ -128,8 +128,8 @@ Surprisingly, the composite model of epitope cross-immunity and non-epitope muta
 While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
 The cross-immunity fitness metric assumes that antigenic drift is driven by nonlinear effects of previous host exposure \cite{Luksza:2014hj} that are not explicitly present in our simulations.
 To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
-Although this linear fitness metric produced a slightly stronger coefficient, it did not perform better than the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
-However, when we fit a composite model of the epitope ancestor and non-epitope mutations metrics, this model outperformed the individual non-epitope mutations model and produced a stronger coefficient for epitope mutations of 0.35 $\pm$ 0.07 (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+This linear fitness metric did not outperform the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
+However, when we fit a composite model of the epitope ancestor and non-epitope mutations metrics, this model outperformed both the individual non-epitope mutations model and the composite cross-immunity and non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
 From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly by a linear effect of positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
@@ -205,24 +205,34 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
 The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of these models over the naive model was consistently lower than the same models in simulated populations.
-This reduced performance may be caused by both the reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
+This reduced performance may have been caused by both the reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
 
-Surprisingly, the best antigenic fitness metric of HI cross-immunity performed only slightly better the best functional constraint metric of non-epitope mutations.
-Indeed, epitope cross-immunity only outperformed the naive model at six of 23 timepoints (26\%), while HI cross-immunity outperformed the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
-Epitope cross-immunity was also the only metric whose coefficient started at a positive value (1.45 $\pm$ 0.10 on average prior to October 2009) and transitioned to a near-zero value through the validation period (-0.13 $\pm$ 0.32 on average for October 2009 and after).
-This change in coefficient suggests that positive selection may have weakened at these epitope sites over time.
-In contrast, HI cross-immunity maintained a positive coefficient across most timepoints.
-The HI cross-immunity may benefit from being able to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
-Importantly, the 49 epitope sites were originally identified from a historical survey of sites with successful mutations up through 2005 \cite{Shih:2007bd}.
-The success of previous epitope models based on these sites could be due to overfitting to these historical data.
-For example, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict from October 2004 to October 2005, at which point it begins to overfit to the training data.
+Of the two metrics for antigenic drift, HI cross-immunity consistently outperformed epitope cross-immunity (Table~\ref{table_natural_model_selection}).
+HI cross-immunity estimated an average distance to the future of 6.04 $\pm$ 1.57 AAs and outperformed the naive model at 17 of 23 timepoints (74\%).
+After the first three training windows where HI measurements were relatively sparse, the HI cross-immunity coefficient was stable across all remaining timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
+In contrast, epitope cross-immunity estimated a distance of 7.06 $\pm$ 1.37 AAs and only outperformed the naive model at six timepoints (26\%).
+Epitope cross-immunity was also the only metric whose coefficient started at a positive value (1.45 $\pm$ 0.10 on average prior to October 2009) and transitioned to a negative value through the validation period (-0.13 $\pm$ 0.32 on average for October 2009 and after).
+This strong coefficient for the first half of training windows indicated that, unlike the results for simulated populations, the nonlinear cross-immunity metric was historically an effective measure of antigenic drift.
+The historical importance of the epitope sites used for this metric was further supported by the relative enrichment of mutations at these sites for the most successful ``trunk'' lineages of natural populations compared to side branch lineages (Supplemental Table~\ref{sup_table:mutations_by_trunk_status}).
 
-Non-epitope mutations outperformed the DMS mutational effects, with an average distance to the future of 6.14 $\pm$ 1.37 AAs compared to 6.75 $\pm$ 1.95 AAs, respectively.
+These results led us to hypothesize that positive selection at these specific epitope sites has weakened over time.
+Importantly, these 49 epitope sites were originally identified by a historical survey from 1968 through 2005 of sites with successful mutations \cite{Shih:2007bd}.
+If the beneficial effects of mutations at these sites were due to historical contingency rather than a constant contribution to antigenic drift, we would expect models based on these sites to perform well until 2005 and then overfit relative to future data.
+Indeed, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict to October 2005, at which point it begins to overfit to the training data.
+To further test our hypothesis, we identified a new set of beneficial sites across our entire validation period of October 1990 through October 2015.
+Following the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population.
+Only 12 (48\%) of these sites also appeared in {\L}uksza and L\"assig's \cite{Luksza:2014hj} original set of 49 sites.
+We fit a cross-immunity model to these sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefitted from knowledge of the future in its forecasts.
+In contrast to the epitope cross-immunity model, our oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Figure~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
+These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant benefit of mutations at these sites.
+We suspect that our HI cross-immunity model benefits from its ability to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
+
+Of the two metrics for functional constraint, non-epitope mutations outperformed DMS mutational effects, with an average distance to the future of 6.14 $\pm$ 1.37 AAs compared to 6.75 $\pm$ 1.95 AAs, respectively.
 In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the non-epitope mutations metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
 Alternate implementations of less background-dependent DMS metrics never performed better than the non-epitope mutations metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
-Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive model based on measured mutational effects.
+Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive model based on measured mutational effects of a single strain.
 
 LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and non-epitope mutations for the most timepoints outperforming the naive model of 17 (74\%) (Table~\ref{table_natural_model_selection}).
 Delta frequency performed worse than LBI and HI cross-immunity and only performed slightly better than non-epitope mutations.
@@ -438,6 +448,14 @@ For each individual strain $i$ at each timepoint $t$, we estimated that strain's
     f_{i,\mathrm{ep}}(t) = \sum_{j: t_{j} < t_{i}}{x_{j}\exp{(-D_{\mathrm{ep}}(a_{i}, a_{j}) / D_{0})}}
     \label{equation_epitope_cross_immunity}
 \end{equation}
+
+To test the historical contingency of the epitope sites defined above, we additionally identified a new set of sites with beneficial mutations across the training/validation period of October 1990 through October 2015.
+Following the general approach of Shih et al. \cite{Shih:2007bd}, we manually identified 25 sites in HA1 where mutations rapidly swept through the global population.
+We required mutations to emerge from below 5\% global frequency and reach >90\% frequency.
+Although we did not require sweeps to complete within a fixed amount of time, we observed that they required no longer than 1-3 years to complete.
+To minimize false positives, we eliminated any sites where one or more mutations rose above 20\% frequency and subsequently died out.
+If two or more sites had redundant sweep dynamics (mutations emerging and fixing at the same times), we retained the site with the most mutational sweeps.
+Based on this requirements, we defined our final collection of ``oracle'' sites in HA1 coordinates as 3, 45, 48, 50, 75, 140, 145, 156, 158, 159, 173, 186, 189, 193, 198, 202, 212, 222, 223, 225, 226, 227, 278, 311, and 312.
 
 To estimate antigenic drift with HI data, we first applied the titer tree model to the phylogeny at a given timepoint and the corresponding HI data for its strains, as previously described by Neher et al. 2016 \cite{Neher:2016hy}.
 This method effectively estimates the antigenic drift per branch in units of $log_{2}$ titer change.
