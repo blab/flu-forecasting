@@ -47,11 +47,14 @@ A/Delaware/33/2017
 A/Delhi/612421/2006
 A/Dibrugarh/622569/2006
 A/DistrictOfColumbia/2/2017
+A/Fukuoka/DS-524/2014
 A/Gangwon/11/1999
 A/Guam/AF2771/2011
 A/Guangdong-Duanzhou/1227/2017
+A/Guangdong-Maonan/1173/2017
 A/Guangxi-Gangbei/190/2019
 A/Guatemala/116/2018
+A/Gunma/69-2/2012
 A/Hawaii/3/2008
 A/Hawaii/3/2012
 A/Hebei/35/2002
@@ -64,6 +67,7 @@ A/HoChiMinh/4596/2010
 A/HoChiMinh/6077/2010
 A/HoChiMinh/6127/2010
 A/HoChiMinh/6268/2010
+A/HoChiMinh/6318/2010
 A/HoChiMinh/6328/2010
 A/HoChiMinh/6388/2010
 A/HoChiMinh/6608/2010
@@ -291,6 +295,7 @@ A/Jiangsu-Chongchuan/12179/2014
 A/Jiangsu-Chongchuan/12714/2015
 A/Jiangsu-Chongchuan/12908/2015
 A/Jiangsu-Chongchuan/1830/2014
+A/Jiangsu-Hailing/11953/2015
 A/Jiangsu-Tianning/1707/2013
 A/Kaliningrad/77/2019
 A/Kansas/13/2009
@@ -300,6 +305,8 @@ A/Kenya/168/2011
 A/Kenya/170/2011
 A/Kenya/AF5623/2007
 A/Kilifi/145/2012
+A/Kilifi/15/2011
+A/Kilifi/48/2015
 A/Kunming/1-Va10/2005
 A/Kyongbuk/304/2002
 A/Liaoning-Tiedong/1153/2011
@@ -343,6 +350,7 @@ A/Maryland/77/2017
 A/Maryland/79/2017
 A/Maryland/87/2017
 A/Mendoza/176711/2012
+A/Michigan/14/2012
 A/Michigan/16/2012
 A/Michigan/19/2012
 A/Michigan/20/2012
@@ -352,6 +360,7 @@ A/Michigan/82/2016
 A/Michigan/83/2016
 A/Michigan/84/2016
 A/Michigan/87/2016
+A/Michigan/88/2016
 A/Michigan/89/2016
 A/Michigan/90/2016
 A/Michigan/91/2016
@@ -548,6 +557,7 @@ A/Shiraz/3/2015
 A/Shiraz/32/2016
 A/Shiraz/33/2016
 A/Shiraz/34/2016
+A/Shiraz/35/2016
 A/Shiraz/36/2016
 A/Shiraz/37/2016
 A/Shiraz/4/2016
@@ -572,6 +582,8 @@ A/Tehran/556/2007
 A/Tehran/748/2012
 A/Thailand/CU-CB166/2014
 A/Tokyo/1/1975
+A/Tokyo/DS-359v/2014
+A/Tver/CRIE/10/2018
 A/Utah/10/2012
 A/WesternAustralia/79/2005
 A/WestVirginia/10/2012
@@ -611,3 +623,5 @@ A/Zhejiang-Nanxun/12/2018
 A/Zhejiang-Wuxin/1300/2016
 A/Zhejiang-Wuxin/130/2015
 A/Zhejiang-Wuxin/1916/2018
+A/Zhejiang-Yiwu/11004/2018
+A/Zhejiang-Yongkang/1137/2018
