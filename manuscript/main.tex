@@ -97,8 +97,6 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
       Model coefficients and validation performance for simulated populations ordered from best to worst by distance to the future.
       Coefficients are the mean $\pm$ standard deviation for each metric in a given model across 33 training windows.
       Distance to the future measures the distance in amino acids between estimated and observed future populations.
-      Approximation of the future diversity measures the difference between the average Hamming distance between the estimated and observed future populations and the future population's average Hamming distance to itself (i.e., the diversity of the future populations).
-      Models with values that are closer to or less than zero produce better approximations of the future.
       The number of times (and percentage of total times) each model outperformed the naive model measures the benefit of each model over a model than estimates no change between current and future populations.
     }
     \label{table_simulated_model_selection}
@@ -258,7 +256,7 @@ We anticipated that if these metrics all represented distinct, mutually benefici
 
 Both two-metric composite models performed better than their corresponding individual models (Table~\ref{table_natural_model_selection} and Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}).
 Although the three-metric composite model performed slightly worse than the individual LBI model, this composite model outperformed the naive model the most of any model with 19 (83\%) times out of 23.
-The composite of LBI and non-epitope mutations performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs and an approximation of future diversity near zero (-0.02 $\pm$ 1.50 AAs).
+The composite of LBI and non-epitope mutations performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs.
 
 The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
 In contrast, the three-metric model strongly preferred the HI cross-immunity and non-epitope metrics over LBI for the majority of the validation period, producing an average LBI coefficient of 0.05 $\pm$ 0.50.
