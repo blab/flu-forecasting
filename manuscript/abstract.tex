@@ -3,7 +3,9 @@
 \begin{itemize}
 \item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
 \item{Experimental measurements of antigenic drift based on HI assays are more robust and predictive of viral success than epitope mutations}
-\item{The combination of LBI and non-epitope mutation metrics outperforms all experimentally-informed metrics}
+\item{Models based on a predefined set of epitope sites risk overfitting to historical data}
+\item{The combination of non-epitope mutation and LBI metrics outperforms all experimentally-informed metrics on validation data (Oct 1990--Oct 2015) but fails to account for reassortment events in test data (Oct 2015--Oct 2019)}
+\item{The combination of HI assays and non-epitope mutations performs best on test data and is among the best models for validation data}
 \item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
 \item{DMS measurements appear to be too background-specific to be predictive for global viral success}
 \item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
