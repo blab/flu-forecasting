@@ -47,8 +47,10 @@ We estimate the frequency of virus samples every six months using a smoothed KDE
 
 We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and non-epitope mutations as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI cross-immunity and DMS mutational effects rely only on HA sequences.
-The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating samples based on either genetic distance at epitope sites or HI distance.
-The functional constraint metrics consider effects of mutations accumulated since the previous season either for deleterious (non-epitope) mutations or all mutations based on their DMS preferences.
+The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating samples based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
+Increased antigenic drift relative to previously circulating samples is expected to correspond to increased viral fitness.
+Non-epitope mutations are the simplest of the functional constraint metrics, measuring the number of putatively deleterious mutations that have accumulated in each sample since their ancestor in the previous season.
+DMS mutational effects provide a more comprehensive biophysical model of functional constraint by measuring the beneficial or deleterious effect of each possible single amino acid mutation in HA from the background of a previous vaccine strain, A/Perth/16/2009.
 The growth metrics estimate how successful populations of samples have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
@@ -128,7 +130,7 @@ The cross-immunity fitness metric assumes that antigenic drift is driven by nonl
 To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
 This linear fitness metric did not outperform the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
 However, when we fit a composite model of the epitope ancestor and non-epitope mutations metrics, this model outperformed both the individual non-epitope mutations model and the composite cross-immunity and non-epitope mutations model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly by a linear effect of positive selection at epitope sites.
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly affected by a linear effect of positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: non-epitope mutations and LBI.
@@ -203,8 +205,8 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
 
 The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
 Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
-The average improvement of these models over the naive model was consistently lower than the same models in simulated populations.
-This reduced performance may have been caused by both the reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
+The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
+This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
 
 Of the two metrics for antigenic drift, HI cross-immunity consistently outperformed epitope cross-immunity (Table~\ref{table_natural_model_selection}).
 HI cross-immunity estimated an average distance to the future of 6.04 $\pm$ 1.57 AAs and outperformed the naive model at 17 of 23 timepoints (74\%).
@@ -215,13 +217,12 @@ This strong coefficient for the first half of training windows indicated that, u
 The historical importance of the epitope sites used for this metric was further supported by the relative enrichment of mutations at these sites for the most successful ``trunk'' lineages of natural populations compared to side branch lineages (Supplemental Table~\ref{sup_table:mutations_by_trunk_status}).
 
 These results led us to hypothesize that the contribution of these specific epitope sites to antigenic drift has weakened over time.
-Importantly, these 49 epitope sites were originally identified by a historical survey from 1968 through 2005 of sites with successful mutations \cite{Shih:2007bd}.
+Importantly, these 49 epitope sites were originally selected by {\L}uksza and L\"assig \cite{Luksza:2014hj} from a previous historical survey of sites with beneficial mutations between 1968--2005 \cite{Shih:2007bd}.
 If the beneficial effects of mutations at these sites were due to historical contingency rather than a constant contribution to antigenic drift, we would expect models based on these sites to perform well until 2005 and then overfit relative to future data.
-Indeed, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict to October 2005, at which point it begins to overfit to the training data.
+Indeed, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict to October 2005.
 To further test our hypothesis, we identified a new set of beneficial sites across our entire validation period of October 1990 through October 2015.
-Inspired by the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population.
-Only 12 (48\%) of these sites also appeared in {\L}uksza and L\"assig's \cite{Luksza:2014hj} original set of 49 sites.
-We fit a cross-immunity model to these 25 sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefitted from knowledge of the future in its forecasts.
+Inspired by the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population, including 12 that were also present in the original set of 49 sites.
+We fit a cross-immunity model to these 25 sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefited from knowledge of the future in its forecasts.
 In contrast to the epitope cross-immunity model, the oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Figure~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
 These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant contribution of these sites to antigenic drift.
 We suspect that our HI cross-immunity model benefits from its ability to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
@@ -269,7 +270,7 @@ These results reinforce the historical importance of HI assays in measuring vira
 
 As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade growth rates and the ranking of estimated best strains compared to the observed closest strains to future populations.
 The composite model of non-epitope mutations and LBI effectively captured clade growth and decline with 87\% and 89\% accuracy, respectively (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}A).
-The estimated best strain from this model was in the top 13th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 70\% of timepoints (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}B).
+The estimated best strain from this model was in the top 11th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 78\% of timepoints (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}B).
 
 \begin{figure*}[ht]
   \begin{center}
@@ -389,10 +390,10 @@ We implemented this frequency estimation logic in the augur frequencies command.
 \subsubsection*{Fitness model}
 
 We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by a Malthusian growth fitness model, as previously described \cite{Luksza:2014hj}.
-Under this model, we estimated the future frequency of the global population, $\mathbf{\hat{x}}$, at some time in the future, $t + \Delta{t}$, based on the current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, of each sample $i$ as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
+Under this model, we estimated the future frequency, $\hat{x}_{i}(t + \Delta{t})$, of each sample $i$ from the sample's current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 \begin{equation}
-    \mathbf{\hat{x}}(t + \Delta{t}) = \frac{1}{Z(t)}\sum_{i}x_{i}(t)\exp(f_{i}(t)\Delta{t})
+    \hat{x}_{i}(t + \Delta{t}) = \frac{1}{Z(t)}x_{i}(t)\exp(f_{i}(t)\Delta{t})
     \label{equation_exponential_growth_model}
 \end{equation}
 
@@ -450,7 +451,7 @@ For each individual strain $i$ at each timepoint $t$, we estimated that strain's
 
 To test the historical contingency of the epitope sites defined above, we additionally identified a new set of sites with beneficial mutations across the training/validation period of October 1990 through October 2015.
 Following the general approach of Shih et al. \cite{Shih:2007bd}, we manually identified 25 sites in HA1 where mutations rapidly swept through the global population.
-We required mutations to emerge from below 5\% global frequency and reach >90\% frequency.
+We required mutations to emerge from below 5\% global frequency and reach $>$90\% frequency.
 Although we did not require sweeps to complete within a fixed amount of time, we observed that they required no longer than 1-3 years to complete.
 To minimize false positives, we eliminated any sites where one or more mutations rose above 20\% frequency and subsequently died out.
 If two or more sites had redundant sweep dynamics (mutations emerging and fixing at the same times), we retained the site with the most mutational sweeps.
