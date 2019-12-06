@@ -74,6 +74,21 @@
             "start_date": "1990-10-01",
             "end_date": "2015-10-01"
         },
+        "natural_sample_1_with_90_vpm_test_tree": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "viruses_per_month": 90,
+            "min_sequence_length": 900,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
+            "start_date": "1990-10-01",
+            "end_date": "2019-10-01"
+        },
         "luksza_lassig": {
             "lineage": "h3n2",
             "segment": "ha",
@@ -153,10 +168,12 @@
                 "predictors": [
                     "naive",
                     "normalized_fitness",
+                    "ep_star",
                     "ep_x",
                     "ne_star",
                     "lbi",
                     "delta_frequency",
+                    "ep_star-ne_star",
                     "ep_x-ne_star",
                     "lbi-ne_star"
                 ],
@@ -184,12 +201,12 @@
                 "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
                 "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
                 "strains": "data/simulated/simulated_sample_3/strains.txt",
-                "start_date": "2034-10-01",
+                "start_date": "2034-04-01",
                 "end_date": "2050-10-01",
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
+                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             },
@@ -199,11 +216,11 @@
                 "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
                 "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
                 "strains": "data/simulated/simulated_sample_3/strains.txt",
-                "start_date": "2040-10-01",
+                "start_date": "2039-10-01",
                 "end_date": "2050-10-01",
                 "pivot_interval": 6,
-                "min_years_per_build": 10,
-                "years_back_to_build_trees": 10,
+                "min_years_per_build": 11,
+                "years_back_to_build_trees": 11,
                 "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
@@ -259,7 +276,7 @@
                 ]
             },
             "natural_sample_0_with_90_vpm_sliding": {
-                "description": "Very dense sampling of viruses over 23 years of H3N2 evolution (current best)",
+                "description": "Very dense sampling of viruses over 23 years of H3N2 evolution",
                 "dataset_sample": "natural_sample_0_with_90_vpm",
                 "sequences": "data/natural/natural_sample_0_with_90_vpm/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_0_with_90_vpm/strains_metadata.tsv",
@@ -269,9 +286,9 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
+                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
-                "predictors": [
+                "all_predictors": [
                     "naive",
                     "ep",
                     "ep_wolf",
@@ -291,6 +308,15 @@
                     "ne_star-lbi",
                     "cTiter_x-ne_star",
                     "cTiter_x-ne_star-lbi"
+                ],
+                "predictors": [
+                    "naive",
+                    "ep_x",
+                    "cTiter_x",
+                    "ne_star",
+                    "dms_star",
+                    "lbi",
+                    "delta_frequency"
                 ],
                 "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
             },
@@ -309,7 +335,7 @@
                 "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
             },
             "natural_sample_0_with_90_vpm_sliding_full_tree": {
-                "description": "Full tree for validation of dense sampling of viruses over 23 years of H3N2 evolution (current best)",
+                "description": "Full tree for validation of dense sampling of viruses over 23 years of H3N2 evolution",
                 "dataset_sample": "natural_sample_0_with_90_vpm",
                 "sequences": "data/natural/natural_sample_0_with_90_vpm/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_0_with_90_vpm/strains_metadata.tsv",
@@ -325,7 +351,7 @@
                 "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
             },
             "natural_sample_1_with_90_vpm_sliding": {
-                "description": "Very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
+                "description": "Very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate (current best)",
                 "dataset_sample": "natural_sample_1_with_90_vpm",
                 "sequences": "data/natural/natural_sample_1_with_90_vpm/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_1_with_90_vpm/strains_metadata.tsv",
@@ -341,7 +367,9 @@
                     "naive",
                     "ep",
                     "ep_wolf",
+                    "ep_star",
                     "ep_x",
+                    "oracle_x",
                     "rb",
                     "cTiter",
                     "cTiter_x",
@@ -353,12 +381,62 @@
                     "dms_entropy",
                     "lbi",
                     "delta_frequency",
+                    "ep_star-ne_star",
                     "ep_x-ne_star",
                     "ne_star-lbi",
                     "cTiter_x-ne_star",
                     "cTiter_x-ne_star-lbi"
                 ],
-                "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
+            },
+            "natural_sample_1_with_90_vpm_sliding_full_tree": {
+                "description": "Full tree for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
+                "dataset_sample": "natural_sample_1_with_90_vpm",
+                "sequences": "data/natural/natural_sample_1_with_90_vpm/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_90_vpm/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_90_vpm/titers.tsv",
+                "start_date": "1990-10-01",
+                "end_date": "2015-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 25,
+                "years_back_to_build_trees": 30,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": ["ne_star-lbi"],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
+            },
+            "natural_sample_1_with_90_vpm_sliding_test_tree": {
+                "description": "Test data for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
+                "dataset_sample": "natural_sample_1_with_90_vpm_test_tree",
+                "validation_build": "natural_sample_1_with_90_vpm_sliding",
+                "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/titers.tsv",
+                "start_date": "2009-04-01",
+                "end_date": "2019-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 6,
+                "years_back_to_build_trees": 6,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": ["ne_star-lbi"],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
+            },
+            "natural_sample_1_with_90_vpm_sliding_full_test_tree": {
+                "description": "Full tree for test data for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
+                "dataset_sample": "natural_sample_1_with_90_vpm_test_tree",
+                "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/titers.tsv",
+                "start_date": "2009-10-01",
+                "end_date": "2019-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 10,
+                "years_back_to_build_trees": 10,
+                "active": false,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": ["ne_star-lbi"],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/cTiter_x-ne_star.json"
             }
         }
     },
@@ -436,9 +514,9 @@
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise",
-                "immunity_attributes": "ep_x",
-                "decay_factors": "14.0"
+                "distance_attributes": "ep_pairwise oracle_pairwise",
+                "immunity_attributes": "ep_x oracle_x",
+                "decay_factors": "14.0 14.0"
             }
         }
     },
