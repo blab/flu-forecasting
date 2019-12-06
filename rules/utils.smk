@@ -227,4 +227,4 @@ def _get_model_to_test_by_wildcards(wildcards):
     return model_path
 
 def _get_validation_sample_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample].get("dataset_sample", wildcards.sample)
+    return config["builds"][wildcards.type][wildcards.sample].get("validation_build", wildcards.sample)
