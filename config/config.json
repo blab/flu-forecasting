@@ -208,6 +208,7 @@
                 "years_back_to_build_trees": 6,
                 "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
+                "predictors": ["normalized_fitness"],
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             },
             "simulated_sample_3_full_test_tree": {

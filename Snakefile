@@ -67,19 +67,19 @@ for build_type, builds_by_type in config["builds"].items():
                 TIMEPOINT_SAMPLES.append(sample)
                 TIMEPOINTS.append(timepoint)
 
-            # Builds with validation samples are used for testing and do not
-            # need to have models fit.
+            # Builds with validation samples are used for testing.
             if "validation_build" in build:
                 validation_build = config["builds"][build_type][build["validation_build"]]
                 for predictor in validation_build["predictors"]:
                     TEST_PREDICTOR_TYPES.append(build_type)
                     TEST_PREDICTOR_SAMPLES.append(sample)
                     TEST_PREDICTORS.append(predictor)
-            else:
-                for predictor in build["predictors"]:
-                    PREDICTOR_TYPES.append(build_type)
-                    PREDICTOR_SAMPLES.append(sample)
-                    PREDICTORS.append(predictor)
+
+            # All builds get model parameters fit.
+            for predictor in build["predictors"]:
+                PREDICTOR_TYPES.append(build_type)
+                PREDICTOR_SAMPLES.append(sample)
+                PREDICTORS.append(predictor)
 
 #
 # Configure amino acid distance masks.
