@@ -78,12 +78,12 @@ We measured this approximation at each timepoint as the average Hamming distance
   \caption{
     Model a) coefficients and b) distances between projected and observed future populations as measured in amino acids (AAs) for simulated populations.
     Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
-    For model testing, coefficients were fixed to their mean values from training/validation (open circles) and applied to out-of-sample test data.
+    For model testing, coefficients were fixed to their mean values from training/validation (open circles, N=18) and applied to out-of-sample test data.
     Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
     The mean $\pm$ standard deviation of distances per validation timepoint are shown in the top-left of each panel.
     Corresponding values per test timepoint are in the top-right.
     For reference, the naive model's distance to the future is also shown per validation and test timepoint in grey.
-    The naive model's distance to the future was 8.97 $\pm$ 1.35 AAs for validation timepoints and 8.90 $\pm$ 1.69 AAs for test timepoints.
+    The naive model's distance to the future was 8.97 $\pm$ 1.35 AAs for validation timepoints and 9.07 $\pm$ 1.71 AAs for test timepoints.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
   \end{center}
@@ -144,10 +144,10 @@ These results support our hypothesis that multiple complementary metrics can pro
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-simulated-populations.png}
   \caption{
-  Test of best model for simulated populations (true fitness) using 10 years previously unobserved test data and fixed model coefficients.
+  Test of best model for simulated populations (true fitness) using 9 years previously unobserved test data and fixed model coefficients.
   a) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-  b) The percentile rank in observed distance to the future of the model's estimated best strain for 20 test timepoints.
-  The estimated best strain is in the top 20th percentile of observed closest strains for 90\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+  b) The percentile rank in observed distance to the future of the model's estimated best strain for 18 test timepoints.
+  The estimated best strain is in the top 20th percentile of observed closest strains for 89\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   }
   \label{fig:test_of_best_model_for_simulated_populations}
   \end{center}
@@ -160,17 +160,15 @@ Next, we counted how often the estimated closest strain to the future population
 The estimated best strain was in the top 2nd percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 97\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
 
 Finally, we tested all of our models on out-of-sample data.
-Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 10 years of previously unobserved simulated data.
+Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
 A standard expectation from machine learning is that models will perform worse on test data than on validation data.
 Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-The composite model of non-epitope mutations and LBI outperformed the true fitness metric with average distance to the future of 7.09 $\pm$ 1.15 compared to 7.32 $\pm$ 1.80, respectively (Supplemental Table~\ref{table_simulated_model_test}).
-This composite model also estimated a much less diverse future population on average than the observed future populations by 1.28 $\pm$ 1.96 AAs.
-In contrast, the true fitness model estimated future populations that were closer to the observed diversity.
-Both the composite and true fitness models outperformed the naive model at 95\% and 90\% of test timepoints, respectively.
+The composite model of non-epitope mutations and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively (Supplemental Table~\ref{table_simulated_model_test}).
+Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
-We observed a growth rate correlation of $R = 0.37$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 52\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
-The estimated best strain was in the top 2nd percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 90\% of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
+We observed a growth rate correlation of $R = 0.38$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
+The estimated best strain was in the top 2nd percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 of 18 (89\%) of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
 These results confirm that our approach of minimizing the distance between yearly populations can simulataneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
 These results also highlight a well-established yet critical point that true forecasts on out-of-sample data are less accurate than those based on training and validation data.
 
@@ -339,8 +337,8 @@ Key findings:
 
 \subsection*{Simulation of influenza A/H3N2-like populations}
 
-We simulated the long-term evolution of A/H3N2-like viruses with SANTA-SIM \cite{Jariani2019} for 50 years where 200 generations was equivalent to 1 year.
-We discarded the first 10 years as a burn-in period, selected the next 30 years for model fitting and validation, and held out the last 10 years as out-of-sample data for model testing.
+We simulated the long-term evolution of A/H3N2-like viruses with SANTA-SIM \cite{Jariani2019} for 10,000 generations or 50 years where 200 generations was equivalent to 1 year.
+We discarded the first 10 years as a burn-in period, selected the next 30 years for model fitting and validation, and held out the last 9 years as out-of-sample data for model testing.
 Each simulated population was seeded with the full length HA from A/Beijing/32/1992 (NCBI accession: U26830.1) such that all simulated sequences contained signal peptide, HA1, and HA2 domains.
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
 We additionally defined exposure-dependent selection for 49 putative epitope sites in HA1 \cite{Luksza:2014hj} to impose an effect of cross-immunity that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
