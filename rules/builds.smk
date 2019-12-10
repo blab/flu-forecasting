@@ -910,10 +910,84 @@ rule annotate_weighted_distances_for_tip_attributes:
         """
 
 
+# Enable fitting parameters for test timepoints by providing data from earlier
+# validation timepoints to model fitting.
+rule merge_validation_and_test_tip_attributes:
+    input:
+        validation_attributes = _get_validation_attributes_by_wildcards,
+        test_attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes
+    output:
+        attributes = BUILD_PATH + "tip_attributes_with_weighted_distances_merged_validation_and_test.tsv"
+    run:
+        # Load earlier validation records.
+        validation_df = pd.read_csv(input.validation_attributes, sep="\t", parse_dates=["timepoint"])
+
+        # Load later test records.
+        test_df = pd.read_csv(input.test_attributes, sep="\t", parse_dates=["timepoint"])
+
+        # Find the first test record timepoint.
+        first_test_timepoint = test_df["timepoint"].min()
+
+        # Keep only validation records occurring before first test timepoint.
+        validation_df = validation_df[validation_df["timepoint"] < first_test_timepoint].copy()
+
+        # Merge all remaining records.
+        df = pd.concat((validation_df, test_df))
+
+        # Save merged records.
+        df.to_csv(output.attributes, sep="\t", index=False)
+
+
+rule merge_validation_and_test_target_distances:
+    input:
+        validation_distances = _get_validation_target_distances_by_wildcards,
+        test_distances = rules.target_distances.output.distances
+    output:
+        distances = BUILD_PATH + "target_distances_merged_validation_and_test.tsv"
+    run:
+        delimiter = "\t"
+        with open(output.distances, "w") as oh:
+            with open(input.validation_distances, "r") as fh:
+                reader = csv.DictReader(fh, delimiter=delimiter)
+                field_names = reader.fieldnames
+
+                writer = csv.DictWriter(oh, field_names, delimiter=delimiter)
+                writer.writeheader()
+                for row in reader:
+                    writer.writerow(row)
+
+            with open(input.test_distances, "r") as fh:
+                reader = csv.DictReader(fh, delimiter=delimiter)
+                for row in reader:
+                    writer.writerow(row)
+
+
+def _get_attributes_for_model_fitting_by_wildcards(wildcards):
+    # If the current build references a validation build, then this is a test
+    # build. Otherwise, we assume it is a validation build.
+    if "validation_build" in config["builds"][wildcards.type][wildcards.sample]:
+        attributes_path = rules.merge_validation_and_test_tip_attributes.output.attributes
+    else:
+        attributes_path = rules.annotate_weighted_distances_for_tip_attributes.output.attributes
+
+    return attributes_path
+
+
+def _get_target_distances_for_model_fitting_by_wildcards(wildcards):
+    # If the current build references a validation build, then this is a test
+    # build. Otherwise, we assume it is a validation build.
+    if "validation_build" in config["builds"][wildcards.type][wildcards.sample]:
+        path = rules.merge_validation_and_test_target_distances.output.distances
+    else:
+        path = rules.target_distances.output.distances
+
+    return path
+
+
 rule fit_models_by_distances:
     input:
-        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
-        distances = rules.target_distances.output.distances
+        attributes = _get_attributes_for_model_fitting_by_wildcards,
+        distances = _get_target_distances_for_model_fitting_by_wildcards
     output:
         model = BUILD_PATH + "models_by_distances/{predictors}.json",
         errors = BUILD_PATH + "models_by_distances_errors/{predictors}.tsv",
@@ -971,7 +1045,8 @@ rule annotate_distance_models:
         errors = BUILD_PATH + "annotated_models_by_distances_errors/{predictors}.tsv",
         coefficients = BUILD_PATH + "annotated_models_by_distances_coefficients/{predictors}.tsv"
     params:
-        delta_months = config["fitness_model"]["delta_months_to_fit"]
+        delta_months = config["fitness_model"]["delta_months_to_fit"],
+        error_type = _get_error_type_by_wildcards
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -983,7 +1058,7 @@ rule annotate_distance_models:
             --annotated-errors-by-timepoint {output.errors} \
             --annotated-coefficients-by-timepoint {output.coefficients} \
             --delta-months {params.delta_months} \
-            --annotations type="{wildcards.type}" sample="{wildcards.sample}" error_type="validation"
+            --annotations type="{wildcards.type}" sample="{wildcards.sample}" error_type="{params.error_type}"
         """
 
 

@@ -1,5 +1,6 @@
 from augur.frequency_estimators import get_pivots, timestamp_to_float
 import Bio.SeqIO
+import csv
 import json
 import numpy as np
 import pandas as pd
