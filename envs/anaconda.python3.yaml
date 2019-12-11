@@ -9,7 +9,7 @@ dependencies:
 - fasttree
 - iqtree
 - mafft
-- pandas
+- pandas=0.25.*
 - psutil
 - python=3.6*
 - raxml
