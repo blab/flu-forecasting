@@ -71,6 +71,8 @@ We evaluated the performance of each model by the absolute distance between proj
 As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
 For this reason, we additionally measured how well each model approximated the diversity of the future population.
 We measured this approximation at each timepoint as the average Hamming distance between projected and observed populations minus the average Hamming distance of the observed population to itself.
+%% Insert summary statistics of future diversity without describing average Hamming distance
+%% and remove approximation of future diversity text.
 
 \begin{figure*}[ht!]
   \begin{center}
@@ -323,7 +325,8 @@ Key findings:
 \begin{itemize}
 \item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
 \item{Experimental measurements of antigenic drift based on HI assays are more predictive of viral success than epitope mutations}
-\item{The combination of sequence-only metrics outperforms all experimentally-informed metrics}
+\item{Models based on a predefined set of epitope sites risk overfitting to historical data}
+\item{The combination of sequence-only metrics outperforms all experimentally-informed metrics across validation data but fails to account for reassortment events in test data}
 \item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
 \item{DMS measurements appear to be too background-specific to be predictive for global viral success}
 \item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
