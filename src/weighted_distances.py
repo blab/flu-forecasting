@@ -55,13 +55,17 @@ def get_distance_matrix_by_sample_names(samples_a, samples_b, distances):
     >>> get_distance_matrix_by_sample_names(samples_a, samples_b, distances)
     array([[1., 2.],
            [3., 4.]])
-    >>>
-
+    >>> get_distance_matrix_by_sample_names(samples_b, samples_a, distances)
+    array([[1., 3.],
+           [2., 4.]])
     """
     matrix = np.zeros((len(samples_a), len(samples_b)))
     for i, sample_a in enumerate(samples_a):
         for j, sample_b in enumerate(samples_b):
-            matrix[i, j] = distances[sample_a][sample_b]
+            try:
+                matrix[i, j] = distances[sample_a][sample_b]
+            except KeyError:
+                matrix[i, j] = distances[sample_b][sample_a]
 
     return matrix
 
