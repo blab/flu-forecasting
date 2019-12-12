@@ -1,7 +1,6 @@
 name: nextstrain
 channels:
 - bioconda
-- conda-forge
 - defaults
 dependencies:
 - conda
@@ -10,11 +9,12 @@ dependencies:
 - iqtree
 - mafft
 - pandas=0.25.*
+- pip
 - psutil
 - python=3.6*
 - raxml
 - scikit-learn
-- snakemake=5.4.0
 - pip:
-  - git+https://github.com/nextstrain/augur@master
+  - snakemake
+  - nextstrain-augur==5.4.1
   - rethinkdb==2.2.0.post6
