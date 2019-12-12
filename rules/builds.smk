@@ -1321,3 +1321,32 @@ rule annotate_test_distance_models:
             --delta-months {params.delta_months} \
             --annotations type="{wildcards.type}" sample="{params.sample}" error_type="test"
         """
+
+
+def _get_tips_to_clades_for_full_tree_by_wildcards(wildcards):
+    full_tree_sample = _get_full_tree_sample_by_wildcards(wildcards)
+    path = rules.collect_annotated_tip_clade_tables.output.tip_clade_table.format(
+        type=wildcards.type,
+        sample=full_tree_sample
+    )
+    return path
+
+
+rule plot_validation_figure:
+    input:
+        attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
+        tips_to_clades = _get_tips_to_clades_for_full_tree_by_wildcards,
+        forecasts = rules.forecast_all_tips.output.table,
+        model_errors = _get_best_model_errors
+    output:
+        figure = BUILD_PATH + "figures/validation_figure.png"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/plot_validation_figure_by_population.py \
+            --tip-attributes {input.attributes} \
+            --tips-to-clades {input.tips_to_clades} \
+            --forecasts {input.forecasts} \
+            --model-errors {input.model_errors} \
+            --output {output}
+        """

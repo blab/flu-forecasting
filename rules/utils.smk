@@ -214,6 +214,12 @@ def _get_fitness_model_training_window(wildcards):
 def _get_best_model(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["best_predictor"]
 
+def _get_best_model_errors(wildcards):
+    # Convert the path for the best model's minimal JSON to the corresponding
+    # path for the model's validation errors.
+    path = Path(config["builds"][wildcards.type][wildcards.sample]["best_predictor"])
+    return str(path.parent.parent / Path("models_by_distances_errors") / Path(path.stem + ".tsv"))
+
 def _get_delta_months_to_forecast(wildcards):
     return " ".join([str(month) for month in config["fitness_model"]["delta_months"]])
 
@@ -228,6 +234,9 @@ def _get_model_to_test_by_wildcards(wildcards):
 
 def _get_validation_sample_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample].get("validation_build", wildcards.sample)
+
+def _get_full_tree_sample_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample].get("full_tree_build", wildcards.sample)
 
 def _get_validation_attributes_by_wildcards(wildcards):
     """Returns full path to final tip attributes for all timepoints of the

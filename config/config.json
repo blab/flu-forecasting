@@ -155,6 +155,7 @@
             },
             "simulated_sample_3": {
                 "description": "Analysis of simulated A/H3N2-like populations (current best)",
+                "full_tree_build": "simulated_sample_3_full_tree",
                 "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
                 "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
                 "strains": "data/simulated/simulated_sample_3/strains.txt",
@@ -197,6 +198,7 @@
             "simulated_sample_3_test_tree": {
                 "dataset_sample": "simulated_sample_3",
                 "validation_build": "simulated_sample_3",
+                "full_tree_build": "simulated_sample_3_full_test_tree",
                 "description": "Test data for analysis of dense simulated A/H3N2-like populations",
                 "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
                 "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",

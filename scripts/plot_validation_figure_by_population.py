@@ -23,8 +23,6 @@ PLOT_THEME_ATTRIBUTES = {
     "figure.dpi": 200,
     "axes.spines.top": False,
     "axes.spines.right": False,
-    "font.weight": 300,
-    "axes.labelweight": 300,
     "text.usetex": False
 }
 
