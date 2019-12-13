@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 import pprint
+from snakemake.logging import logger
 import sys
 
 from src.forecast.fitness_model import get_train_validate_timepoints

@@ -367,6 +367,7 @@
             "natural_sample_1_with_90_vpm_sliding": {
                 "description": "Very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate (current best)",
                 "dataset_sample": "natural_sample_1_with_90_vpm",
+                "full_tree_build": "natural_sample_1_with_90_vpm_sliding_full_tree",
                 "sequences": "data/natural/natural_sample_1_with_90_vpm/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_1_with_90_vpm/strains_metadata.tsv",
                 "titers": "data/natural/natural_sample_1_with_90_vpm/titers.tsv",
@@ -423,6 +424,7 @@
                 "description": "Test data for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
                 "dataset_sample": "natural_sample_1_with_90_vpm_test_tree",
                 "validation_build": "natural_sample_1_with_90_vpm_sliding",
+                "full_tree_build": "natural_sample_1_with_90_vpm_sliding_full_test_tree",
                 "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree/strains_metadata.tsv",
                 "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/titers.tsv",

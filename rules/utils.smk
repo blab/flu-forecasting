@@ -236,7 +236,10 @@ def _get_validation_sample_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample].get("validation_build", wildcards.sample)
 
 def _get_full_tree_sample_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample].get("full_tree_build", wildcards.sample)
+    if "full_tree_build" not in config["builds"][wildcards.type][wildcards.sample]:
+        logger.error("The sample '%s' needs a 'full_tree_build' entry in its build configuration." % wildcards.sample)
+
+    return config["builds"][wildcards.type][wildcards.sample]["full_tree_build"]
 
 def _get_validation_attributes_by_wildcards(wildcards):
     """Returns full path to final tip attributes for all timepoints of the
