@@ -97,12 +97,15 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
 
 \begin{table*}[ht]
   \begin{center}
-    \input{tables/simulated_model_selection.tex}
+    \scalebox{0.9}{
+      \input{tables/simulated_model_selection.tex}
+    }
     \caption{
-      Model coefficients and validation performance for simulated populations ordered from best to worst by distance to the future.
+      Model coefficients and performance on validation and test data for simulated populations ordered from best to worst by distance to the future in the validation analysis.
       Coefficients are the mean $\pm$ standard deviation for each metric in a given model across 33 training windows.
-      Distance to the future measures the distance in amino acids between estimated and observed future populations.
+      Distance to the future (mean $\pm$ standard deviation) measures the distance in amino acids between estimated and observed future populations.
       The number of times (and percentage of total times) each model outperformed the naive model measures the benefit of each model over a model than estimates no change between current and future populations.
+      Test results are based on 18 timepoints not observed during model training and validation.
     }
     \label{table_simulated_model_selection}
   \end{center}
@@ -165,7 +168,7 @@ Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
 A standard expectation from machine learning is that models will perform worse on test data than on validation data.
 Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-The composite model of non-epitope mutations and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively (Supplemental Table~\ref{table_simulated_model_test}).
+The composite model of non-epitope mutations and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively (Supplemental Table~\ref{table_simulated_model_selection}).
 Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
@@ -178,10 +181,13 @@ These results also highlight a well-established yet critical point that true for
 
 \begin{table*}[ht]
   \begin{center}
-    \input{tables/natural_model_selection.tex}
+    \scalebox{0.9}{
+      \input{tables/natural_model_selection.tex}
+    }
     \caption{
-      Model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
-      Results are based on training and validation across 23 training windows.
+      Model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Validation results are based on 23 timepoints.
+      Test results are based on 8 timepoints not observed during model training and validation.
     }
     \label{table_natural_model_selection}
   \end{center}

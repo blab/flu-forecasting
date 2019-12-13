@@ -81,18 +81,6 @@
   \end{center}
 \end{figure*}
 
-\begin{table*}[ht]
-  \begin{center}
-    \input{tables/simulated_model_test.tex}
-    \caption{
-      Model coefficients and test performance for simulated populations ordered from best to worst by distance to the future.
-      Coefficients shown here are the mean values across all training and validation windows which were used to test models on out-of-sample data.
-      Distance to the future, approximation of future diversity, and number of times model outperforms the naive model are as in Table~\ref{table_simulated_model_selection} for all test timepoints (N=18).
-    }
-    \label{table_simulated_model_test}
-  \end{center}
-\end{table*}
-
 \begin{figure*}[h]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/cross-validation-for-natural-populations.png}
@@ -111,8 +99,9 @@
   \begin{center}
     \input{tables/complete_natural_model_selection.tex}
     \caption{
-      All model coefficients and validation performance for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
-      Results are based on training and validation across 23 training windows.
+      All model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Validation results are based on 23 timepoints.
+      Test results are based on 8 timepoints not observed during model training and validation.
       Model results for additional variants of fitness metrics including those based on epitope mutations and DMS preferences are included for reference.
     }
     \label{sup_table:complete_natural_model_selection}
@@ -132,14 +121,3 @@
   \label{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
   \end{center}
 \end{figure*}
-
-\begin{table*}[ht]
-  \begin{center}
-    \input{tables/complete_natural_model_test.tex}
-    \caption{
-      All model coefficients and test performance for natural populations ordered from best to worst by distance to the future, as in Supplemental Table~\ref{table_simulated_model_test}.
-      Results are based on 8 test timepoints.
-    }
-    \label{sup_table:complete_natural_model_test}
-  \end{center}
-\end{table*}
