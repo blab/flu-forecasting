@@ -435,8 +435,31 @@
                 "years_back_to_build_trees": 6,
                 "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
-                "predictors": ["ne_star-lbi"],
-                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
+                "predictors": [
+                    "naive",
+                    "ep",
+                    "ep_wolf",
+                    "ep_star",
+                    "ep_x",
+                    "oracle_x",
+                    "rb",
+                    "cTiter",
+                    "cTiter_x",
+                    "cTiterSub",
+                    "cTiterSub_x",
+                    "ne_star",
+                    "dms_star",
+                    "dms_nonepitope",
+                    "dms_entropy",
+                    "lbi",
+                    "delta_frequency",
+                    "ep_star-ne_star",
+                    "ep_x-ne_star",
+                    "ne_star-lbi",
+                    "cTiter_x-ne_star",
+                    "cTiter_x-ne_star-lbi"
+                ],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/cTiter_x-ne_star.json"
             },
             "natural_sample_1_with_90_vpm_sliding_full_test_tree": {
                 "description": "Full tree for test data for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
