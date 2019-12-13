@@ -276,10 +276,9 @@ def _get_distance_model_coefficients(wildcards):
 def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
 
-#include: "rules/modular_augur_builds.smk"
-#include: "rules/frequency_bandwidths.smk"
-#include: "rules/fitness_model.smk"
-#include: "rules/quality_control_plots.smk"
+def _get_validation_figures(wildcards):
+    return expand("results/builds/{type}/{sample}/figures/validation_figure.png", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES)
+
 include: "rules/utils.smk"
 include: "rules/datasets.smk"
 include: "rules/builds.smk"
@@ -289,20 +288,9 @@ rule all:
         #_get_clade_model_files,
         _get_distance_model_files,
         _get_auspice_files,
+        _get_validation_figures,
         "results/figures/frequencies.pdf",
         "results/figures/trees.pdf"
-        # "results/model_accuracy.tab",
-        # "results/model_parameters.tab",
-        # "results/model_validation.tab",
-        # "results/model_validation_by_bandwidth.tab",
-        # "results/figures/trees.pdf",
-        # "results/models.tab",
-        # "results/figures/faceted_model_fold_change.pdf",
-        # "results/figures/combined_model_fold_change.pdf",
-        # "results/figures/frequency_correlation.pdf",
-        # "results/figures/model_parameters.pdf",
-        # "results/figures/sequence_distributions.pdf",
-        # "results/figures/frequencies.pdf",
 
 rule clade_models:
     input: _get_clade_model_files
@@ -330,6 +318,9 @@ rule distance_models_coefficients:
 
 rule auspice:
     input: _get_auspice_files
+
+rule validation_figures:
+    input: _get_validation_figures
 
 #rule trees:
 #    input: rules.aggregate_tree_plots.output.trees
