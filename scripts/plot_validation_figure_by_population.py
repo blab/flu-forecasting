@@ -12,6 +12,8 @@ import seaborn as sns
 import statsmodels.api as sm
 
 
+np.random.seed(314159)
+
 PLOT_THEME_ATTRIBUTES = {
     "axes.labelsize": 14,
     "font.size": 18,
@@ -110,9 +112,10 @@ if __name__ == "__main__":
         args.tip_attributes,
         sep="\t",
         parse_dates=["timepoint"],
-        usecols=["strain", "timepoint", "frequency"]
+        usecols=["strain", "timepoint", "frequency", "aa_sequence"]
     )
     tips = tips.query("timepoint >= '%s'" % first_validation_timepoint).copy()
+    distinct_tips_with_sequence = tips.groupby(["timepoint", "aa_sequence"]).first().reset_index()
 
     # Load mapping of tips to clades based on a single tree that included all of
     # the tips in the given tip attributes table.
@@ -258,6 +261,12 @@ if __name__ == "__main__":
     sorted_df = full_forecasts.dropna().sort_values(
         ["timepoint"]
     ).copy()
+
+    # Filter sorted records by strains with distinct amino acid sequences.
+    sorted_df = sorted_df.merge(
+        distinct_tips_with_sequence,
+        on=["timepoint", "strain"]
+    )
 
     # First, calculate the rank per strain by observed distance to the future.
     sorted_df["timepoint_rank"] = sorted_df.groupby("timepoint")["weighted_distance_to_future"].rank(pct=True)
