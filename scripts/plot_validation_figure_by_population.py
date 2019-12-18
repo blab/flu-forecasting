@@ -292,7 +292,7 @@ if __name__ == "__main__":
     # Summarize model fit by clade frequencies and strain ranks.
     #
 
-    fig = plt.figure(figsize=(8, 8), facecolor='w')
+    fig = plt.figure(figsize=(10, 10), facecolor='w')
     gs = gridspec.GridSpec(2, 2, width_ratios=[1, 1], height_ratios=[1, 1], wspace=0.1)
 
     ticks = np.array([0, 0.2, 0.4, 0.6, 0.8, 1.0])
