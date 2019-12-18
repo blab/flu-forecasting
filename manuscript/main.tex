@@ -295,6 +295,18 @@ The estimated best strain from this model was in the top 11th percentile of obse
 
 Finally, we tested the performance of this same best model on out-of-sample data collected from October 1, 2015 through October 1, 2019.
 
+\begin{figure*}[ht]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/vaccine-comparison.png}
+  \caption{
+    Observed distance to natural A/H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
+    Vaccine strains were assigned to their closest timepoint in the validation or test time periods and their distance to the future was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
+    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (titer cross-immunity and mutational load).
+  }
+  \label{fig:vaccine_comparison}
+  \end{center}
+\end{figure*}
+
 \subsection*{Forecasts predict the rise of A1b/131K and A1b/135K sub-clades in September 2020}
 
 After identifying the best model to forecast natural populations, we integrated our forecasting model into our existing open source pathogen surveillance framework, Nextstrain \cite{Hadfield2018}, and used our model to forecast A/H3N2 populations in September 2020.
