@@ -71,8 +71,7 @@ We evaluated the performance of each model by the absolute distance between proj
 As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
 For this reason, we additionally measured how well each model approximated the diversity of the future population.
 We measured this approximation at each timepoint as the average Hamming distance between projected and observed populations minus the average Hamming distance of the observed population to itself.
-%% Insert summary statistics of future diversity without describing average Hamming distance
-%% and remove approximation of future diversity text.
+\jhc{Insert summary statistics of future diversity without describing average Hamming distance and remove approximation of future diversity text.}
 
 \begin{figure*}[ht!]
   \begin{center}
@@ -351,6 +350,7 @@ Key findings:
 \item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
 \item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
 \item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
+\item{Region-aware LBI could immediate integrate geography into models to account for issues like the A2/re forecast errors}
 \item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
 \end{itemize}
 
