@@ -313,9 +313,9 @@ However, by October 2018, this clade had declined in frequency to approximately 
 These results highlight a major limitation of growth-based fitness metrics like LBI and a corresponding benefit of more mechanistic metrics that explicitly measure antigenic drift and functional constraint.
 
 After identifying the composite HI cross-immunity, mutational load, and LBI model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
-The composite model effectively captured clade dynamics with a Pearson's correlation of $R^2 = 0.52$~$(p < 0.001)$ between observed and estimated growth rates and growth and decline accuracies of 67\% and 63\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
+The composite model partially captured clade dynamics with a Pearson's correlation of $R^2 = 0.50$~$(p < 0.001)$ between observed and estimated growth rates and growth and decline accuracies of 57\% and 58\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
 The mean absolute forecasting error with this model was consistently less than 20\%, regardless of the initial clade frequency (Fig.~\ref{fig:test_of_best_model_for_natural_populations}C).
-The estimated best strain from this model was in the top second percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 20 (87\%) of 23 timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}B).
+The estimated best strain from this model was in the top second percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for seven (88\%) of eight timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}B).
 Similarly, the observed and estimated strain ranks strongly correlated (Spearman's $\rho^2 = 0.69$, $p < 0.001$) across all strains and test timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}D).
 
 \begin{figure*}[ht]
@@ -332,8 +332,8 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
 
 We further evaluated our best model's apparent success at estimating the closest strain to the next season's A/H3N2 population by comparing our model's selection to the WHO's vaccine strain selection.
 For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed and estimated closest strains.
-Our model selected a strain that was closer to the future than the selected vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (Fig.~\ref{fig:vaccine_comparison}).
-In the last three seasons, the model's selection and the vaccine strain converged to similar distances.
+Our models selected a strain that was closer to the future than the selected vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (Fig.~\ref{fig:vaccine_comparison}).
+In the two seasons where the vaccine strain was closer to the future than the model's selection, the difference between the two strains' distances to the future was less than one amino acid.
 
 \subsection*{Forecasts predict the rise of A1b/131K and A1b/135K sub-clades in September 2020}
 
