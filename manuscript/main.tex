@@ -62,8 +62,8 @@ However, we retain the benefits of fitting models to highly similar samples foun
 \subsection*{Models accurately forecast evolution of A/H3N2-like viruses}
 
 The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
-To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Figure~\ref{sup_fig:cross_validation_for_simulated_populations}).
-These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Figure \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
+To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Fig.~\ref{sup_fig:cross_validation_for_simulated_populations}).
+These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Fig. \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
 
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
@@ -144,14 +144,16 @@ This composite model outperformed all individual metrics with an average distanc
 The coefficients for mutational load and LBI remained relatively consistent across all validation timepoints, indicating that these fitness metrics were stable approximations of the simulator's underlying evolutionary processes.
 These results support our hypothesis that multiple complementary metrics can produce more accurate models.
 
-\begin{figure*}[ht]
+\begin{figure*}[p]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-simulated-populations.png}
   \caption{
   Test of best model for simulated populations (true fitness) using 9 years previously unobserved test data and fixed model coefficients.
-  a) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-  b) The percentile rank in observed distance to the future of the model's estimated best strain for 18 test timepoints.
-  The estimated best strain is in the top 20th percentile of observed closest strains for 89\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+  A) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
+  B) The rank of the estimated best strain based on its distance to the future in the best model for 18 timepoints shows how often the model makes a good choice when forced to select a single representative strain for the future population.
+  The estimated best strain was in the top 20th percentile of observed closest strains for 89\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+  C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (grey shading) based on 100 bootstraps.
+  D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   }
   \label{fig:test_of_best_model_for_simulated_populations}
   \end{center}
@@ -159,9 +161,11 @@ These results support our hypothesis that multiple complementary metrics can pro
 
 We validated the best performing model (true fitness) using two metrics that are relevant for practical influenza forecasting and vaccine design efforts.
 First, we measured the ability of the true fitness model to accurately estimate dynamics of large clades (initial frequency $>15\%$) by correlating estimated and observed clade growth rates.
-Our model satisfactorily recapitulated clade dynamics with a growth rate correlation of $R = 0.72$~$(p < 0.001)$ and overall accuracies for clade growth and decline predictions of 87\% and 58\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
+Our model recapitulated clade dynamics with a Pearson's correlation of $R^2 = 0.52$~$(p < 0.001)$ between observed and estimated growth rates and overall accuracies for clade growth and decline predictions of 87\% and 58\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
+As expected, our model produced more accurate forecasts for clades with higher initial frequencies (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}C).
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
-The estimated best strain was in the top 2nd percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 97\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
+The estimated best strain was in the top 1st percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
+Percentile ranks per strain based on their observed and estimated distances to the future correlated strongly across all strains and timepoints (Spearman's $\rho^2 = 0.87$, $p < 0.001$, Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}D).
 
 Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
@@ -171,8 +175,10 @@ The composite model of mutational load and LBI outperformed the true fitness met
 Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
-We observed a growth rate correlation of $R = 0.38$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
-The estimated best strain was in the top 2nd percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 of 18 (89\%) of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
+We observed a growth rate correlation of $R^2 = 0.14$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
+Correspondingly, we observed higher absolute forecast errors in the test data with higher errors for clades between 40\% and 60\% initial frequencies (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}C).
+The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 of 18 (89\%) of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
+Observed and estimated strain ranks remained strongly correlated (Spearman's $\rho^2 = 0.80$, $p < 0.001$, Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}D).
 These results confirm that our approach of minimizing the distance between yearly populations can simulataneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
 These results also highlight a well-established yet critical point that true forecasts on out-of-sample data are less accurate than those based on training and validation data.
 
@@ -193,7 +199,7 @@ These results also highlight a well-established yet critical point that true for
 \end{table*}
 
 Next, we trained and validated models for individual fitness predictors using 25 years of natural A/H3N2 populations spanning from October 1, 1990 to October 1, 2015.
-We held out samples collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Figure~\ref{sup_fig:cross_validation_for_natural_populations}).
+We held out samples collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Fig.~\ref{sup_fig:cross_validation_for_natural_populations}).
 In addition to the sequence-only models we tested on simulated populations, we also fit models for our new fitness metrics based on experimental phenotypes including HI cross-immunity and DMS mutational effects.
 We hypothesized that both HI and DMS metrics would be assigned positive coefficients, as they estimate increased antigenic drift and beneficial mutations, respectively.
 As antigenic drift is generally considered to be the primary evolutionary pressure on natural A/H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI cross-immunity would be individually more predictive than mutational load or DMS mutational effects.
@@ -231,7 +237,7 @@ Indeed, the epitope cross-immunity model is strongly predictive for the first tw
 To further test our hypothesis, we identified a new set of beneficial sites across our entire validation period of October 1990 through October 2015.
 Inspired by the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population, including 12 that were also present in the original set of 49 sites.
 We fit a cross-immunity model to these 25 sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefited from knowledge of the future in its forecasts.
-In contrast to the epitope cross-immunity model, the oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Figure~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
+In contrast to the epitope cross-immunity model, the oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
 These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant contribution of these sites to antigenic drift.
 We suspect that our HI cross-immunity model benefits from its ability to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
 
@@ -240,17 +246,11 @@ In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, w
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
 Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
-Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive model based on measured mutational effects of a single strain.
+Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive biophysical model based on measured mutational effects of a single strain.
 
-LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and mutational load for the most timepoints outperforming the naive model of 17 (74\%) (Table~\ref{table_natural_model_selection}).
+LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and mutational load by outperforming the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
 Delta frequency performed worse than LBI and HI cross-immunity and only performed slightly better than mutational load.
 While delta frequency should, in principle, measure the same aspect of viral fitness as LBI, these results clearly show that the current implementations of these metrics represent qualitatively different fitness components.
-
-\subsection*{Composite models outperform models with individual fitness metrics}
-
-To test whether composite models could outperform individual fitness metrics for natural populations, we fit models based on combinations of best individual metrics representing antigenic drift, functional constraint, and clade growth.
-Specifically, we fit models based on HI cross-immunity and mutational load, LBI and mutational load, and all three of these metrics together.
-We anticipated that if these metrics all represented distinct, mutually beneficial components of viral fitness, these composite models should perform better than individual models with consistent coefficients for each metric.
 
 \begin{figure*}[ht]
   \begin{center}
@@ -263,8 +263,12 @@ We anticipated that if these metrics all represented distinct, mutually benefici
   \end{center}
 \end{figure*}
 
+To test whether composite models could outperform individual fitness metrics for natural populations, we fit models based on combinations of best individual metrics representing antigenic drift, functional constraint, and clade growth.
+Specifically, we fit models based on HI cross-immunity and mutational load, mutational load and LBI, and all three of these metrics together.
+We anticipated that if these metrics all represented distinct, mutually beneficial components of viral fitness, these composite models should perform better than individual models with consistent coefficients for each metric.
+
 Both two-metric composite models performed better than their corresponding individual models (Table~\ref{table_natural_model_selection} and Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}).
-Although the three-metric composite model performed slightly worse than the individual LBI model, this composite model outperformed the naive model the most of any model with 19 (83\%) times out of 23.
+Although the three-metric composite model performed slightly worse than the individual LBI model based on average distance to the future, this composite model outperformed the naive model the most of any model with 19 (83\%) times out of 23.
 The composite of mutational load and LBI performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs.
 
 The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
@@ -274,25 +278,45 @@ These last two timepoints span the period when an HA1:160T substitution swept th
 This substitution introduced a new glycosylation motif and dramatically reduced the efficiency of HI assays \cite{Zost2017}.
 These results reinforce the historical importance of HI assays in measuring viral fitness, while also indicating that these assays may no longer be as predictive as sequence-only metrics.
 
-\subsection*{Models enable selection of vaccine candidate strains}
-
 As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade growth rates and the ranking of estimated best strains compared to the observed closest strains to future populations.
-The composite model of mutational load and LBI effectively captured clade growth and decline with 87\% and 89\% accuracy, respectively (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}A).
-The estimated best strain from this model was in the top 11th percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 78\% of timepoints (Fig.~\ref{fig:validation_of_best_model_for_natural_populations}B).
+The composite model of mutational load and LBI effectively captured clade dynamics with a growth correlation of $R^2 = 0.35$~$(p < 0.001)$ and growth and decline accuracies of 87\% and 89\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}A).
+Absolute forecasting error declined noticeably for clades with initial frequencies above 60\%, but generally this error remained below 20\% on average (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}C).
+The estimated best strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 20 (87\%) of 23 timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}B).
+This pattern held across all strains and timepoints with a strong correlation between observed and estimated strain ranks (Spearman's $\rho^2 = 0.66$, $p < 0.001$, Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}D).
 
-\begin{figure*}[ht]
+\begin{figure*}[p]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-natural-populations.png}
+  \includegraphics[width=\textwidth]{figures/test-of-best-model-for-natural-populations.png}
   \caption{
-  Validation of best model for natural populations of A/H3N2 viruses, the composite model of mutational load and LBI.
+  Test of best model for natural populations of A/H3N2 viruses, the composite model of HI cross-immunity and mutational load.
   A) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-  B) The rank of the estimated best strain based on its distance to the future in the best model shows how often the model makes a good choice when forced to select a single representative strain for the future population.
+  B) The rank of the estimated best strain based on its distance to the future for 8 timepoints.
+  The estimated best strain was in the top 20th percentile of observed closest strains for 88\% of timepoints.
+  C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (grey shading) based on 100 bootstraps.
+  D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   }
-  \label{fig:validation_of_best_model_for_natural_populations}
+  \label{fig:test_of_best_model_for_natural_populations}
   \end{center}
 \end{figure*}
 
-Finally, we tested the performance of this same best model on out-of-sample data collected from October 1, 2015 through October 1, 2019.
+Finally, we tested the performance of all models on out-of-sample data collected from October 1, 2015 through October 1, 2019.
+We anticipated that most models would perform worse on truly out-of-sample data than on validation data.
+As expected, all models estimated higher average distances to the future across these eight test timepoints (Table~\ref{table_natural_model_selection}).
+However, these increases were mostly consistent with an increased average distance between years of 6.82 $\pm$ 1.74 AAs as measured by the naive model.
+The composite of HI cross-immunity, mutational load, and LBI outperformed all other models on the test data with an average distance of 6.12 $\pm$ 1.42 AAs.
+Surprisingly, the best model for the validation data -- mutational load and LBI -- was one of the worst models for the test data with an average distance to the future of 7.70 $\pm$ 3.53 AAs.
+The individual LBI model was the worst model, while mutational load continued to perform well with test data.
+LBI performed especially poorly in the last two test timepoints of April and October 2018 (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
+These timepoints correspond to the dominance and sudden decline of a reassortant clade named A2/re \cite{Potter2019}.
+By April 2018, the A2/re clade had risen to a global frequency over 50\% from less than 15\% the previous year, despite an absence of antigenic drift.
+However, by October 2018, this clade had declined in frequency to approximately 30\% and, by October 2019, it had gone extinct.
+These results highlight a major limitation of growth-based fitness metrics like LBI and a corresponding benefit of more mechanistic metrics that explicitly measure antigenic drift and functional constraint.
+
+After identifying the composite HI cross-immunity, mutational load, and LBI model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
+The composite model effectively captured clade dynamics with a Pearson's correlation of $R^2 = 0.52$~$(p < 0.001)$ between observed and estimated growth rates and growth and decline accuracies of 67\% and 63\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
+The mean absolute forecasting error with this model was consistently less than 20\%, regardless of the initial clade frequency (Fig.~\ref{fig:test_of_best_model_for_natural_populations}C).
+The estimated best strain from this model was in the top second percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 20 (87\%) of 23 timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}B).
+Similarly, the observed and estimated strain ranks strongly correlated (Spearman's $\rho^2 = 0.69$, $p < 0.001$) across all strains and test timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}D).
 
 \begin{figure*}[ht]
   \begin{center}
@@ -300,7 +324,7 @@ Finally, we tested the performance of this same best model on out-of-sample data
   \caption{
     Observed distance to natural A/H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
     Vaccine strains were assigned to their closest timepoint in the validation or test time periods and their distance to the future was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
-    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (titer cross-immunity and mutational load).
+    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI cross-immunity and mutational load).
   }
   \label{fig:vaccine_comparison}
   \end{center}
