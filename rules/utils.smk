@@ -240,28 +240,3 @@ def _get_full_tree_sample_by_wildcards(wildcards):
         logger.error("The sample '%s' needs a 'full_tree_build' entry in its build configuration." % wildcards.sample)
 
     return config["builds"][wildcards.type][wildcards.sample]["full_tree_build"]
-
-def _get_validation_attributes_by_wildcards(wildcards):
-    """Returns full path to final tip attributes for all timepoints of the
-    validation build associated with the current sample.
-
-    This function enables the test build to merge its data with its
-    corresponding validation build for model fitting.
-    """
-    sample = _get_validation_sample_by_wildcards(wildcards)
-    return BUILD_PATH.format(type=wildcards.type, sample=sample) + "tip_attributes_with_weighted_distances.tsv"
-
-def _get_validation_target_distances_by_wildcards(wildcards):
-    """Returns full path to final target distances for all timepoints of the
-    validation build associated with the current sample.
-    """
-    sample = _get_validation_sample_by_wildcards(wildcards)
-    return BUILD_PATH.format(type=wildcards.type, sample=sample) + "target_distances.tsv"
-
-def _get_error_type_by_wildcards(wildcards):
-    if "validation_build" in config["builds"][wildcards.type][wildcards.sample]:
-        error_type = "test-validation"
-    else:
-        error_type = "validation"
-
-    return error_type

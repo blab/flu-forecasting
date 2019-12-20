@@ -476,6 +476,26 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": ["ne_star-lbi"],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/cTiter_x-ne_star-lbi.json"
+            },
+            "natural_sample_20191001": {
+                "description": "Most recent build with very dense sampling of viruses to evaluate change in model coefficients during timepoints in the test period",
+                "dataset_sample": "natural_sample_1_with_90_vpm_test_tree",
+                "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/titers.tsv",
+                "start_date": "2002-04-01",
+                "end_date": "2019-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 6,
+                "years_back_to_build_trees": 6,
+                "active": true,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "ne_star-lbi",
+                    "cTiter_x-ne_star",
+                    "cTiter_x-ne_star-lbi"
+                ]
             }
         }
     },
