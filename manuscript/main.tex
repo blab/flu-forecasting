@@ -530,6 +530,14 @@ We calculated the total effect of these substitutions as the sum of the mutation
     \label{equation_mutational_preference}
 \end{equation}
 
+To determine whether DMS preferences could be used to define fitness metrics that were less dependent on the historical context of the background strain, we implemented two additional DMS-based metrics: ``DMS entropy'' and ``DMS mutational load''.
+For both metrics, we calculated the distance between HA amino acid sequences of each strain and its ancestral sequence in the previous season, to enable comparison of these metrics with the DMS mutational effects and mutational load metrics.
+For the ``DMS entropy'' metric, we calculated the distance between sequences such that each mismatch was weighted by the inverse entropy of DMS preferences at the site of the mismatch.
+We expected this metric to produce a negative coefficient similar to the mutational load metric, as higher values will result from mutations at sites with lower entropy and, thus, lower tolerance for mutations.
+For the ``DMS mutational load'' metric, we defined a novel set of non-epitope sites corresponding to each position in HA with a standardized entropy less than zero.
+With this metric, we sought to identify more highly conserved sites without weighting any one site differently from others.
+We anticipated that this lack of site-specific weighting would make the DMS mutational load metric even less background-dependent than the DMS entropy and DMS mutational effect metrics.
+
 \subsubsection*{Clade growth}
 
 We estimated clade growth for each strain using local branching index (LBI) and the change in frequency over time (delta frequency).
