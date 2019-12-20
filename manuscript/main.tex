@@ -336,7 +336,9 @@ In the two seasons where the vaccine strain was closer to the future than the mo
 \subsection*{Forecasts predict the rise of A1b/131K and A1b/135K sub-clades in September 2020}
 
 To enable real-time forecasts, we integrated our forecasting framework into our existing open source pathogen surveillance application, Nextstrain \cite{Hadfield2018}, and used our best model to forecast A/H3N2 populations in September 2020.
-Our combined HI cross-immunity, mutational load, and LBI model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
+Prior to finalizing our model coefficients for use in Nextstrain, we tested whether our three best composite models could be improved by learning coefficients per timepoint from the test data.
+None of the three models performed better across the test data than the original best model, indicating that the coefficients for our selected best model would be most accurate for live forecasts (Supplemental Fig.~\ref{sup_fig:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}).
+With the original coefficients, our combined HI cross-immunity, mutational load, and LBI model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
 To aid with identification of potential vaccine candidates, we annotated samples in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure*}[ht]

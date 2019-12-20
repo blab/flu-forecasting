@@ -140,3 +140,17 @@
   \label{sup_fig:validation_of_best_model_for_natural_populations}
   \end{center}
 \end{figure*}
+
+\begin{figure*}[ht]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/models-natural-populations-composite-with-updated-coefficients-across-test-data.png}
+  \caption{
+    Model coefficients and distances to the future for best composite models fit to recent data from natural populations as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    A) Coefficients and B) distances are shown per test timepoint (N=8).
+    In contrast to the results for these models based on fixed coefficients from training/validation, these coefficients were learned for each six-year window prior to the corresponding test timepoint.
+    The corresponding distances reflect the model's performance with updated coefficients on what is effectively new validation data.
+    The naive model's distance to the future was 6.82 $\pm$ 1.74 AAs for these timepoints.
+  }
+  \label{sup_fig:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}
+  \end{center}
+\end{figure*}
