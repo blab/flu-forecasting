@@ -30,12 +30,12 @@ However, we also find that phylogenetic fitness metrics based on recent growth o
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.png}
   \caption{
     Schematic representation of the fitness model for simulated A/H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
-    Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors.
-    A) Samples at timepoint $t$ are shown in their phylogenetic context and sized by their frequency at that timepoint.
-    The estimated future population at timepoint $u$ is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
-    B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the orange samples to the detriment of the purple samples.
-    C) Samples at timepoint $u$ are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
-    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the yellow cluster from within the successful orange cluster.
+    Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors (Methods).
+    A) Samples at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
+    The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
+    B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the dark blue samples to the detriment of the pink samples.
+    C) Samples at timepoint $u$, $\mathbf{x}(u)$, are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
+    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the light blue cluster from within the successful dark blue cluster.
   }
   \label{fig:model}
   \end{center}
@@ -67,20 +67,18 @@ These selective constraints produced phylogenetic structures and accumulation of
 
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
-We evaluated the performance of each model by the absolute distance between projected and observed future populations and how often it outperformed a naive model that estimated no change in populations between years.
+We evaluated the performance of each model by the absolute distance between projected and observed future populations.
 As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
-For this reason, we additionally measured how well each model approximated the diversity of the future population.
-We measured this approximation at each timepoint as the average Hamming distance between projected and observed populations minus the average Hamming distance of the observed population to itself.
-\jhc{Insert summary statistics of future diversity without describing average Hamming distance and remove approximation of future diversity text.}
+For this reason, we additionally calculated how often each model outperformed a naive model that estimated no change in populations between years and, therefore, measured the observed distance between annual populations.
 
 \begin{figure*}[ht!]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.png}
   \caption{
-    Model a) coefficients and b) distances between projected and observed future populations as measured in amino acids (AAs) for simulated populations.
-    Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
-    For model testing, coefficients were fixed to their mean values from training/validation (open circles, N=18) and applied to out-of-sample test data.
-    Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
+    Model coefficients and distances between projected and observed future populations as measured in amino acids (AAs) for simulated populations.
+    A) Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
+    For model testing, coefficients were fixed to their mean values from training/validation and applied to out-of-sample test data (open circles, N=18).
+    B) Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
     The mean $\pm$ standard deviation of distances per validation timepoint are shown in the top-left of each panel.
     Corresponding values per test timepoint are in the top-right.
     For reference, the naive model's distance to the future is also shown per validation and test timepoint in grey.
@@ -90,7 +88,7 @@ We measured this approximation at each timepoint as the average Hamming distance
   \end{center}
 \end{figure*}
 
-We hypothesized that fitness metrics associated with viral success such as epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while metrics associated with fitness penalties, like mutational load, would receive negative coefficients.
+We hypothesized that fitness metrics associated with viral success such as true fitness, epitope cross-immunity, LBI, and delta frequency would be assigned positive coefficients, while metrics associated with fitness penalties, like mutational load, would receive negative coefficients.
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a composite model of epitope cross-immunity and mutational load would perform as well as or better than the growth metrics, as this model would include both primary fitness constraints acting on our simulated populations.
 
@@ -110,9 +108,8 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
   \end{center}
 \end{table*}
 
-As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 of 33 (97\%) timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
-Importantly, the true fitness model accurately approximated the diversity of future populations coming within -0.29 $\pm$ 2.01 AAs of observed future diversity.
-In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future and an average of 2.26 $\pm$ 1.75 AAs from the future's observed diversity.
+As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
+In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future.
 With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
@@ -122,8 +119,8 @@ The mutational load metric received a consistently negative coefficient with an 
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{
-    Model a) coefficients and b) distances to the future for individual biologically-informed fitness metrics and the best composite model fit to simulated populations.
-    Coefficients and distances are shown per validation and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model fit to simulated populations.
+    A) Coefficients and B) distances are shown per validation and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The naive model's distance to the future was 8.97 $\pm$ 1.35 AAs for validation timepoints and 8.90 $\pm$ 1.69 AAs for test timepoints.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
@@ -134,13 +131,13 @@ Surprisingly, the composite model of epitope cross-immunity and mutational load 
 While epitope cross-immunity was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
 The cross-immunity fitness metric assumes that antigenic drift is driven by nonlinear effects of previous host exposure \cite{Luksza:2014hj} that are not explicitly present in our simulations.
 To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
-This linear fitness metric did not outperform the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
+By itself, this linear fitness metric did not outperform the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
 However, when we fit a composite model of the epitope ancestor and mutational load metrics, this model outperformed both the individual mutational load model and the composite cross-immunity and mutational load model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
 From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly affected by a linear effect of positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: mutational load and LBI.
-This composite model outperformed all individual metrics with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperforming the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}).
+This composite model outperformed all individual metrics with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperformed the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 The coefficients for mutational load and LBI remained relatively consistent across all validation timepoints, indicating that these fitness metrics were stable approximations of the simulator's underlying evolutionary processes.
 These results support our hypothesis that multiple complementary metrics can produce more accurate models.
 
@@ -160,11 +157,12 @@ These results support our hypothesis that multiple complementary metrics can pro
 \end{figure*}
 
 We validated the best performing model (true fitness) using two metrics that are relevant for practical influenza forecasting and vaccine design efforts.
-First, we measured the ability of the true fitness model to accurately estimate dynamics of large clades (initial frequency $>15\%$) by correlating estimated and observed clade growth rates.
-Our model recapitulated clade dynamics with a Pearson's correlation of $R^2 = 0.52$~$(p < 0.001)$ between observed and estimated growth rates and overall accuracies for clade growth and decline predictions of 87\% and 58\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
-As expected, our model produced more accurate forecasts for clades with higher initial frequencies (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}C).
+First, we measured the ability of the true fitness model to accurately estimate dynamics of large clades (initial frequency $>15\%$) by comparing observed and estimated clade growth rates.
+The model's estimated growth rates correlated well with observed growth rates (Pearson's $R^2 = 0.52$, $p < 0.001$, Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}A).
+The model also accurately predicted the growth of 87\% of growing clades and the decline of 58\% of declining clades.
+Model forecasts were increasingly more accurate with increasing initial clade frequencies (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}C).
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
-The estimated best strain was in the top 1st percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
+The estimated best strain was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}B).
 Percentile ranks per strain based on their observed and estimated distances to the future correlated strongly across all strains and timepoints (Spearman's $\rho^2 = 0.87$, $p < 0.001$, Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}D).
 
 Finally, we tested all of our models on out-of-sample data.
@@ -175,12 +173,12 @@ The composite model of mutational load and LBI outperformed the true fitness met
 Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
-We observed a growth rate correlation of $R^2 = 0.14$~$(p < 0.001)$ and clade growth and decline prediction accuracies of 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
+While observed and estimated growth rates correlated more weakly for test data (Pearson's $R^2 = 0.14$, $p < 0.001$), the accuracies of clade growth and decline predictions remained similar at 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
 Correspondingly, we observed higher absolute forecast errors in the test data with higher errors for clades between 40\% and 60\% initial frequencies (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}C).
-The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 of 18 (89\%) of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
-Observed and estimated strain ranks remained strongly correlated (Spearman's $\rho^2 = 0.80$, $p < 0.001$, Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}D).
+The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 (89\%) of 18 of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
+Observed and estimated strain ranks remained strongly correlated across all strains and timepoints (Spearman's $\rho^2 = 0.80$, $p < 0.001$, Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}D).
 These results confirm that our approach of minimizing the distance between yearly populations can simulataneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
-These results also highlight a well-established yet critical point that true forecasts on out-of-sample data are less accurate than those based on training and validation data.
+These results also highlight a well-established yet critical point that forecasts on truly out-of-sample data are less accurate than those based on training and validation data.
 
 \subsection*{Models reflect historical patterns of A/H3N2 evolution}
 
@@ -192,7 +190,7 @@ These results also highlight a well-established yet critical point that true for
     \caption{
       Model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
       Validation results are based on 23 timepoints.
-      Test results are based on 8 timepoints not observed during model training and validation.
+      Test results are based on eight timepoints not observed during model training and validation.
     }
     \label{table_natural_model_selection}
   \end{center}
@@ -209,16 +207,16 @@ Previous research \cite{Neher:2016hy} and our simulation results also led us to 
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
   \caption{
-    Model a) coefficients and b) distances to the future for individual biologically-informed fitness metrics fit to natural populations.
-    Coefficients and distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Model coefficients and distances to the future for individual biologically-informed fitness metrics fit to natural populations.
+    A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The naive model's distance to the future was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
 \end{figure*}
 
-The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
-Biologically-informed metrics generally performed better than the naive model for natural populations with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
+The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the average distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
+Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
 
@@ -245,7 +243,7 @@ Of the two metrics for functional constraint, mutational load outperformed DMS m
 In contrast to the original {\L}uksza and L\"assig \cite{Luksza:2014hj} model, where the coefficient of the mutational load metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
-Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
+Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}, Methods).
 Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive biophysical model based on measured mutational effects of a single strain.
 
 LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied HI cross-immunity and mutational load by outperforming the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
@@ -256,8 +254,8 @@ While delta frequency should, in principle, measure the same aspect of viral fit
   \begin{center}
   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.png}
   \caption{
-    Model a) coefficients and b) distances to the future for composite fitness metrics fit to natural populations.
-    Coefficients and distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Model coefficients and distances to the future for composite fitness metrics fit to natural populations.
+    A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
@@ -547,3 +545,12 @@ We set the neighborhood parameter, $\tau$, to 0.3 and only considered viruses sa
 We estimated the change in frequency over time by calculating clade frequencies under a Brownian motion diffusion process as previously described \cite{Lee2018}.
 These frequency calculations allowed us to assign a partial clade frequency to each strain within nested clades.
 We calculated the delta frequency as the change in frequency for each strain between the most recent timepoint in a given phylogeny and six months prior to that timepoint divided by 0.5 years.
+
+\subsection*{Clustering of amino acid sequences for visualization}
+
+For the purpose of visualizing related amino acid sequences in Fig.~\ref{fig:model}, we applied dimensionality reduction to pairwise amino acid distances followed by hierarchical clustering.
+Specifically, we selected a representative tree from our simulated population of viruses at month 10 of year 30.
+From this tree, we selected all samples with a collection date in the previous two years.
+We calculated the pairwise Hamming distance between the full-length HA amino acid sequences for all selected samples and applied t-SNE dimensionality reduction \cite{vanDerMaaten2008} to the resulting distance matrix (n=2 components, perplexity=30.0, and learning rate=400).
+We assigned each sample to a cluster based on its two-dimensional t-SNE embedding using DBSCAN \cite{Ester1996} with a maximum neighborhood distance of 10 AAs and a minimum of 20 samples per cluster.
+Despite known limitations of applying hierarchical clustering to manifold projections that do not preserve sample density, this approach allowed us to effectively assign samples to qualitative genetic clusters for the purposes of visualization.

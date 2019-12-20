@@ -61,8 +61,8 @@
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.png}
   \caption{
-  Composite model a) coefficients and b) distances to the future for models fit to simulated populations.
-  Coefficients and distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+  Composite model coefficients and distances to the future for models fit to simulated populations.
+  A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
   \end{center}
@@ -99,7 +99,9 @@
 
 \begin{table*}[ht]
   \begin{center}
-    \input{tables/complete_natural_model_selection.tex}
+    \scalebox{0.9}{
+        \input{tables/complete_natural_model_selection.tex}
+    }
     \caption{
       All model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
       Validation results are based on 23 timepoints.
@@ -114,11 +116,11 @@
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.png}
   \caption{
-  Model a) coefficients and b) distances to the future for cross-immunity models fit to natural populations.
+  Model coefficients and distances to the future for cross-immunity models fit to natural populations.
+  A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   The epitope cross-immunity model relies on previously published epitope sites \cite{Luksza:2014hj}.
-  The ``oracle'' cross-immunity model relies on sites of beneficial mutations that were manually identified from the entire training and validation time period.
-  The improved performance of the ``oracle'' model indicates that the cross-immunity can be effective when sites of beneficial mutations are known prior to forecasting.
-  Coefficients and distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+  The ``oracle'' cross-immunity model relies on sites of beneficial mutations that were manually identified from the entire training and validation time period (Methods).
+  The improved performance of the ``oracle'' model indicates that the sequence-based cross-immunity metric can be effective when sites of beneficial mutations are known prior to forecasting.
   }
   \label{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
   \end{center}
