@@ -366,6 +366,14 @@ To aid with identification of potential vaccine candidates, we annotated samples
 
 \section*{Discussion}
 
+We have developed and rigorously tested a novel, open source framework for forecasting the long-term evolution of seasonal influenza A/H3N2 by estimating the sequence composition of future populations.
+The best models from this framework effectively capture clade dynamics and accurately identify optimal vaccine candidates without relying on phylogenetic clades as model targets.
+
+Our evaluation of models by time-series cross-validation and true out-of-sample tests reveal substantial potential for overfitting models to historical data.
+The clearest examples of this overfitting were found in the definition of antigenic drift by historically relevant epitope sites and the definition of functional constraint by DMS experiments against a single viral background.
+
+Indeed, the modest improvement of our best models over a naive model of no change between years highlights the inherent difficulty and potentially limited ability to make precise forecasts for such a complex, dynamical system.
+
 Key findings:
 
 \begin{itemize}
@@ -375,12 +383,15 @@ Key findings:
 \item{The combination of sequence-only metrics outperforms all experimentally-informed metrics across validation data but fails to account for reassortment events in test data}
 \item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
 \item{DMS measurements appear to be too background-specific to be predictive for global viral success}
+\item{\rnc{The overall gain from prediction is low (1aa), but this has to be seen in the light of the short prediction horizon (1y) and the larger coalescence time of about 3-8y. Hence we expect diversity to persist and any gain has to come from clade frequencies.}}
+\item{\rnc{The future tends to anchor deeper in the tree away from the tips. This may be the primary reason for the success of the LBI and non-epitope. Both of these metrics are lower at the tips than they are at viruses close to the base of the tree.}}
 \item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
 \item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
 \item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
 \item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
 \item{Region-aware LBI could immediate integrate geography into models to account for issues like the A2/re forecast errors}
 \item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
+\item{\jhc{Cite Bell et al. 2019 and ML-based forecasting work for flu}}
 \end{itemize}
 
 \section*{Methods}
