@@ -270,7 +270,7 @@ Although the three-metric composite model performed slightly worse than the indi
 The composite of mutational load and LBI performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs.
 
 The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
-In contrast, the three-metric model strongly preferred the HI cross-immunity and non-epitope metrics over LBI for the majority of the validation period, producing an average LBI coefficient of 0.05 $\pm$ 0.50.
+In contrast, the three-metric model strongly preferred the HI cross-immunity and mutational load metrics over LBI for the majority of the validation period, producing an average LBI coefficient of 0.05 $\pm$ 0.50.
 In the last two validation timepoints, this composite model converged to a nearly LBI-only model with the coefficients for the other two metrics converging to near-zero values.
 These last two timepoints span the period when an HA1:160T substitution swept through the global population.
 This substitution introduced a new glycosylation motif and dramatically reduced the efficiency of HI assays \cite{Zost2017}.
@@ -286,7 +286,7 @@ This pattern held across all strains and timepoints with a strong correlation be
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-natural-populations.png}
   \caption{
-  Test of best model for natural populations of A/H3N2 viruses, the composite model of HI cross-immunity, mutational load, and LBI.
+  Test of best model for natural populations of A/H3N2 viruses, the composite model of HI cross-immunity and mutational load.
   A) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   B) The rank of the estimated best strain based on its distance to the future for 8 timepoints.
   The estimated best strain was in the top 20th percentile of observed closest strains for 88\% of timepoints.
@@ -302,6 +302,8 @@ We anticipated that most models would perform worse on truly out-of-sample data 
 As expected, all models estimated higher average distances to the future across these eight test timepoints (Table~\ref{table_natural_model_selection}).
 However, these increases were mostly consistent with an increased average distance between years of 6.82 $\pm$ 1.74 AAs as measured by the naive model.
 The composite of HI cross-immunity, mutational load, and LBI outperformed all other models on the test data with an average distance of 6.12 $\pm$ 1.42 AAs.
+The simpler composite of HI cross-immunity and mutational load performed nearly as well, however, with more stable coefficients per metric over time.
+For these reasons, we selected this two-metric model for our practical forecasts.
 Surprisingly, the best model for the validation data -- mutational load and LBI -- was one of the worst models for the test data with an average distance to the future of 7.70 $\pm$ 3.53 AAs.
 The individual LBI model was the worst model, while mutational load continued to perform well with test data.
 LBI performed especially poorly in the last two test timepoints of April and October 2018 (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
@@ -310,8 +312,8 @@ By April 2018, the A2/re clade had risen to a global frequency over 50\% from le
 However, by October 2018, this clade had declined in frequency to approximately 30\% and, by October 2019, it had gone extinct.
 These results highlight a major limitation of growth-based fitness metrics like LBI and a corresponding benefit of more mechanistic metrics that explicitly measure antigenic drift and functional constraint.
 
-After identifying the composite HI cross-immunity, mutational load, and LBI model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
-The composite model partially captured clade dynamics with a Pearson's correlation of $R^2 = 0.50$~$(p < 0.001)$ between observed and estimated growth rates and growth and decline accuracies of 57\% and 58\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
+After identifying the composite HI cross-immunity and mutational load model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
+The composite model partially captured clade dynamics with a Pearson's correlation of $R^2 = 0.52$~$(p < 0.001)$ between observed and estimated growth rates and growth and decline accuracies of 67\% and 63\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
 The mean absolute forecasting error with this model was consistently less than 20\%, regardless of the initial clade frequency (Fig.~\ref{fig:test_of_best_model_for_natural_populations}C).
 The estimated best strain from this model was in the top second percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for seven (88\%) of eight timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}B).
 Similarly, the observed and estimated strain ranks strongly correlated (Spearman's $\rho^2 = 0.69$, $p < 0.001$) across all strains and test timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}D).
@@ -322,7 +324,7 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
   \caption{
     Observed distance to natural A/H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
     Vaccine strains were assigned to their closest timepoint in the validation or test time periods and their distance to the future was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
-    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI cross-immunity, mutational load, and LBI).
+    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI cross-immunity and mutational load).
   }
   \label{fig:vaccine_comparison}
   \end{center}
@@ -338,7 +340,7 @@ In the two seasons where the vaccine strain was closer to the future than the mo
 To enable real-time forecasts, we integrated our forecasting framework into our existing open source pathogen surveillance application, Nextstrain \cite{Hadfield2018}, and used our best model to forecast A/H3N2 populations in September 2020.
 Prior to finalizing our model coefficients for use in Nextstrain, we tested whether our three best composite models could be improved by learning coefficients per timepoint from the test data.
 None of the three models performed better across the test data than the original best model, indicating that the coefficients for our selected best model would be most accurate for live forecasts (Supplemental Fig.~\ref{sup_fig:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}).
-With the original coefficients, our combined HI cross-immunity, mutational load, and LBI model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
+With the original coefficients, our combined HI cross-immunity and mutational load model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
 To aid with identification of potential vaccine candidates, we annotated samples in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure*}[ht]
