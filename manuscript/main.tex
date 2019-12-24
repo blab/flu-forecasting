@@ -364,14 +364,54 @@ To aid with identification of potential vaccine candidates, we annotated samples
   \end{center}
 \end{figure*}
 
+\pagebreak
+
 \section*{Discussion}
 
 We have developed and rigorously tested a novel, open source framework for forecasting the long-term evolution of seasonal influenza A/H3N2 by estimating the sequence composition of future populations.
-The best models from this framework effectively capture clade dynamics and accurately identify optimal vaccine candidates without relying on phylogenetic clades as model targets.
+A key innovation of this framework is its ability to directly compare viral populations between seasons using the Earth Mover's Distance metric \cite{Rubner1998} and eliminate unavoidably stochastic clade definitions from phylogenies.
+The best models from this framework still effectively capture clade dynamics and accurately identify optimal vaccine candidates from simulated and natural A/H3N2 populations without relying on clades as model targets.
+We have further introduced novel fitness metrics based on experimental measurements of antigenic drift and functional constraint.
+We demonstrated how these metrics can be effectively integrated with previously published sequence-only metrics.
+We have added this framework as a component of seasonal influenza analyses on nextstrain.org where it provides real-time forecasts for influenza researchers, decision makers, and the public.
 
-Our evaluation of models by time-series cross-validation and true out-of-sample tests reveal substantial potential for overfitting models to historical data.
-The clearest examples of this overfitting were found in the definition of antigenic drift by historically relevant epitope sites and the definition of functional constraint by DMS experiments against a single viral background.
+\subsection*{Integration of genotypic and phenotypic metrics minimizes overfitting}
 
+Our evaluation of models by time-series cross-validation and true out-of-sample forecasts revealed substantial potential for model overfitting.
+We observed overfitting to both specific genetic backgrounds and general historical contexts.
+A clear example of the former was the poor performance of our DMS-based fitness metric compared to a simpler mutational load metric.
+Although the DMS experiments provided detailed estimates of which amino acids were preferred at which positions in HA, these measurements were specific to a single strain, A/Perth/16/2009 \cite{Lee2018}.
+When we applied these measurements to predict the success of global populations, they were less informative on average than the naive model.
+To benefit from the more comprehensive fitness costs measured by DMS data, future models will need to synthesize DMS measurements across multiple A/H3N2 strains from distinct historical contexts.
+We anticipate that these measurements could be used to define and continually update a modern set of sites contributing to mutational load in natural populations.
+This set of sites could replace the statically defined set of ``non-epitope'' sites we use to estimate mutational load here.
+
+We observed two different cases of overfitting to general historical contexts.
+In the first case, the model with the best performance across our validation data -- mutational load and LBI -- was also one of the worst models across our test data.
+Specifically, we found that this model failed to predict the sudden decline of a dominant reassortant clade, A2/re, in 2019.
+Despite this model's excellent performance historically, it was unable to account for rare yet important events such as reassortment.
+To avoid such overfitting in the future, models will need fitness metrics that can represent the evolutionary contributions of neuraminidase, specifically, or of reassortment, generally.
+
+In the second case, we observed overfitting of sites associated with antigenic drift to historical contexts.
+The fitness benefit of mutations that lead to antigenic drift in A/H3N2 is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}
+Although the antigenic importance of seven specific sites in HA has been experimentally validated \cite{Koel:2013jz}, these sites do not explain all antigenic drift observed in natural populations \cite{Neher:2016hy}.
+Other attempts to define these so-called ``epitope sites'' have relied on either aggregation of results from antigenic escape assays \cite{Wolf:2006da} or retrospective computational analyses of sites with beneficial mutations \cite{Shih:2007bd,Luksza:2014hj}.
+We found that all of these specific definitions suffer from overfitting to the historical context in which they were discovered (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
+These results suggest that the set of sites that contribute to antigenic drift at any given time may depend on both the fitness landscape of currently circulating strains and the immune landscape of the hosts these strains need to infect.
+Recent experimental mapping of antigenic escape mutations in A/H3N2 HA with human sera show that the specific sites that confer antigenic escape can vary dramatically between individuals based on their exposure history \cite{Lee2019}.
+In contrast to models based on predefined ``epitope sites'', our model based on experimental measurements of antigenic drift did not suffer from overfitting in the validation or test periods.
+We suspect that this model was able to minimize overfitting by continuously updating its antigenic model with recent experimental data and assigning antigenic weight to branches of a phylogeny rather than specific positions in HA.
+
+Finally, we observed that composite models of multiple orthogonal fitness metrics often outperformed models based on their individual components.
+These results are consistent with previous work that found improved performance by integrating components of antigenic drift, functional constraint, and clade growth \cite{Luksza:2014hj}.
+However, the convergence of our three-metric model to a LBI-only model during the validation period (Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}) reveals the limitations of our current additive approach to composite models.
+The recent success of weighted ensembles for short-term influenza forecasting \cite{Reich:2019bq} suggests that long-term forecasting may benefit from a similar approach.
+
+\subsection*{Practical recommendations for forecasting}
+
+The best model in the validation period got 0.96 AAs closer to the future than the naive model.
+The best model in the test period got 0.66 AAs closer to the future on average.
+At a historical substitution rate of 0.0043 substitutions per site per year, we anticipate an average accumulation of 2.4 AAs per season.
 Indeed, the modest improvement of our best models over a naive model of no change between years highlights the inherent difficulty and potentially limited ability to make precise forecasts for such a complex, dynamical system.
 
 Key findings:
