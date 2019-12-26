@@ -409,12 +409,17 @@ These results are consistent with previous work that found improved performance 
 However, the convergence of our three-metric model to a LBI-only model during the validation period (Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}) reveals the limitations of our current additive approach to composite models.
 The recent success of weighted ensembles for short-term influenza forecasting \cite{Reich:2019bq} suggests that long-term forecasting may benefit from a similar approach.
 
-\subsection*{Practical recommendations for forecasting}
+\subsection*{Forecasting framework aids practical forecasts}
 
-The best model in the validation period got 0.96 AAs closer to the future than the naive model.
-The best model in the test period got 0.66 AAs closer to the future on average.
-At a historical substitution rate of 0.0043 substitutions per site per year, we anticipate an average accumulation of 2.4 AAs per season.
-Indeed, the modest improvement of our best models over a naive model of no change between years highlights the inherent difficulty and potentially limited ability to make precise forecasts for such a complex, dynamical system.
+By forecasting the composition of future A/H3N2 populations with biologically-informed fitness metrics, our best models consistently outperformed a naive model (Table~\ref{table_natural_model_selection}).
+While this performance confirms previously demonstrated potential for long-term influenza forecasting \cite{Luksza:2014hj}, the average gain from these models over the naive model appears low at 0.96 AA per year for validation data and 0.66 AA per year for test data.
+These results are consistent with the observed dynamics of A/H3N2.
+First, the one-year forecast horizon is a fraction of the average coalescence time for A/H3N2 populations of about 3--8 years \cite{}.
+Hence, we expect the diversity of circulating strains to persist between seasons.
+Second, the average substitution rate for A/H3N2's HA is 0.0043 substititions per site per year or an average accumulation of 2.4 AAs per year.
+This accumulation of substitutions contributes to the distance between annual populations observed by the naive model.
+In this context, our model gains of 0.96 and 0.66 AAs per year correspond to an explanation of 40\% and 28\% of the expected additional distance between annual populations, respectively.
+This modest improvement over the naive model highlights the inherent difficulty and potentially limited ability to make precise forecasts for such a complex, dynamical system with the current framework.
 
 Key findings:
 
