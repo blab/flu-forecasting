@@ -323,7 +323,8 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
   \includegraphics[width=\textwidth]{figures/vaccine-comparison.png}
   \caption{
     Observed distance to natural A/H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
-    Vaccine strains were assigned to their closest timepoint in the validation or test time periods and their distance to the future was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
+    Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
+    The distance to the future of each vaccine strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
     The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI cross-immunity and mutational load).
   }
   \label{fig:vaccine_comparison}
@@ -419,29 +420,42 @@ Hence, we expect the diversity of circulating strains to persist between seasons
 Second, the average substitution rate for A/H3N2's HA is 0.0043 substititions per site per year or an average accumulation of 2.4 AAs per year.
 This accumulation of substitutions contributes to the distance between annual populations observed by the naive model.
 In this context, our model gains of 0.96 and 0.66 AAs per year correspond to an explanation of 40\% and 28\% of the expected additional distance between annual populations, respectively.
-This modest improvement over the naive model highlights the inherent difficulty and potentially limited ability to make precise forecasts for such a complex, dynamical system with the current framework.
 
-Key findings:
+There are still several clear opportunities to improve forecasts.
+Integration of more recent experimental data may improve estimates of antigenic drift.
+Influenza collaborating centers now routinely measure antigenic drift by focus reduction assays (FRAs), as an alternative to hemagglutination inhibition (HI) assays that is less affected by glycosylation motifs that alter binding efficacy \cite{Zost2017}.
+While there are not enough historical FRA measurements to validate and test a FRA cross-immunity metric, it may be possible to reuse coefficients from the HI cross-immunity models with modern FRA data.
+In addition to these FRA data based on ferret antisera, recent high-throughput antigenic escape assays with human sera promise to improve existing definitions of epitope sites \cite{Lee2019}.
+These assays reveal the specific residues that confer antigenic escape at specific sites.
+A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape A/H3N2 strains must navigate to be globally successful.
 
-\begin{itemize}
-\item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
-\item{Experimental measurements of antigenic drift based on HI assays are more predictive of viral success than epitope mutations}
-\item{Models based on a predefined set of epitope sites risk overfitting to historical data}
-\item{The combination of sequence-only metrics outperforms all experimentally-informed metrics across validation data but fails to account for reassortment events in test data}
-\item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
-\item{DMS measurements appear to be too background-specific to be predictive for global viral success}
-\item{\rnc{The overall gain from prediction is low (1aa), but this has to be seen in the light of the short prediction horizon (1y) and the larger coalescence time of about 3-8y. Hence we expect diversity to persist and any gain has to come from clade frequencies.}}
-\item{\rnc{The future tends to anchor deeper in the tree away from the tips. This may be the primary reason for the success of the LBI and non-epitope. Both of these metrics are lower at the tips than they are at viruses close to the base of the tree.}}
-\item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
-\item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
-\item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
-\item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
-\item{Region-aware LBI could immediate integrate geography into models to account for issues like the A2/re forecast errors}
-\item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
-\item{\jhc{Cite Bell et al. 2019 and ML-based forecasting work for flu}}
-\end{itemize}
+Finally, forecasting models need to account for the geographic distribution of viruses.
+Globally successful clades of influenza A/H3N2 most commonly emerge from Southern Asia, while viruses emerging from Africa, North America, and Europe are less likely to fix globally \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
+Explicitly accounting for these source/sink dynamics would allow models to weight forecasts based on both viral fitness and transmission.
+For example, a geographically-aware implementation of LBI would most likely have not incorrectly predicted the success of the predominantly North American and European reassortant clade A2/re in 2019.
 
-\section*{Methods}
+\subsection*{Conclusions}
+
+Antigenic drift and mutational load remain the best predictors of future success for seasonal influenza A/H3N2 populations.
+Our framework enables real-time practical forecasts of these populations by leveraging historical and modern experimental assays and gene sequences.
+By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development by the influenza research community.
+We additionally anticipate that the ability to forecast the sequence composition of populations with Earth Mover's Distance will enable future forecasting research with pathogens whose genomes cannot be analyzed by traditional phylogenetic methods including recombinant viruses, bacteria, and fungi.
+
+\subsection*{Model sharing and extensions}
+
+We have provided all source code, configuration files, and datasets at https://github.com/blab/flu-forecasting.
+
+\section*{Materials and methods}
+
+\subsection*{Data}
+
+\subsubsection*{Sequences}
+
+\jhc{Document HA sequences from GISAID (reference acknowledgements table).}
+
+\subsubsection*{Titers}
+
+\jhc{Document HI titers from influenza CCs.}
 
 \subsection*{Simulation of influenza A/H3N2-like populations}
 
@@ -531,6 +545,11 @@ However, the inevitable accumulation of substitutions between the two population
 We calculated EMD with the Python bindings for the OpenCV 3.4.1 implementation \cite{opencv_library}.
 We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
 
+\subsubsection*{Strain-specific distance to the future}
+
+The weighted Hamming distance to the future of each strain was calculated from the strain's HA amino acid sequence and the frequencies and sequences of the corresponding population one year in the future.
+\jhc{Add equation for weighted Hamming distance here.}
+
 \subsubsection*{Time-series cross-validation}
 
 To obtain unbiased estimates for the out-of-sample errors of our models, we adopted the standard cross-validation strategy of training, validation, and testing.
@@ -614,3 +633,20 @@ From this tree, we selected all samples with a collection date in the previous t
 We calculated the pairwise Hamming distance between the full-length HA amino acid sequences for all selected samples and applied t-SNE dimensionality reduction \cite{vanDerMaaten2008} to the resulting distance matrix (n=2 components, perplexity=30.0, and learning rate=400).
 We assigned each sample to a cluster based on its two-dimensional t-SNE embedding using DBSCAN \cite{Ester1996} with a maximum neighborhood distance of 10 AAs and a minimum of 20 samples per cluster.
 Despite known limitations of applying hierarchical clustering to manifold projections that do not preserve sample density, this approach allowed us to effectively assign samples to qualitative genetic clusters for the purposes of visualization.
+
+\subsection*{Data and software availability}
+
+All source code, configuration files, and datasets are available at https://github.com/blab/flu-forecasting.
+
+\section*{Acknowledgements}
+
+We thank Jesse Bloom, Erick Matsen, Harmit Malik, Sidney Bell, Alli Black, Lola Arakaki, and members of the Bedford lab for useful advice and discussions.
+JH is a Graduate Research Fellow and is supported by the National Institute Of Allergy And Infectious Diseases under NIH F31AI140714.
+TB is a Pew Biomedical Scholar and is supported by NIH R35 GM119774-01.
+\jhc{Add RN support here.}
+
+\section*{Author contributions}
+
+JH.
+RN.
+TB.
