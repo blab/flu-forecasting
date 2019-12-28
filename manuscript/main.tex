@@ -452,7 +452,6 @@ We have provided all source code, configuration files, and datasets at https://g
 
 \subsubsection*{Sequences}
 
-\jhc{Document HA sequences from GISAID (reference acknowledgements table).}
 
 \subsubsection*{Titers}
 
@@ -485,13 +484,14 @@ Next, we identified an L1 penalty of 0.1 for model coefficients that minimized t
 
 \subsection*{Strain selection for natural populations}
 
-For model training and validation, we selected 13,601 HA sequences $\geq$900 nucleotides that were sampled between October 1, 1990 and October 1, 2015.
+Prior to our analyses, we downloaded all HA sequences and metadata from GISAID \cite{Elbe2017}.
+For model training and validation, we selected 15,583 HA sequences $\geq$900 nucleotides that were sampled between October 1, 1990 and October 1, 2015.
 To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 90 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
 We excluded all egg-passaged samples and all samples with ambiguous year, month, and day annotations.
 We prioritized samples with more available HI titer measurements.
-For model testing, we selected an additional 20,803 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and October 1, 2019.
-This increased number of sequences corresponds with the trend of increased sample sequencing and deposition in the last decade.
+For model testing, we selected an additional 7,171 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and October 1, 2019.
 We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
+Supplemental File S1 describes contributing laboratories for all 22,754 validation and test strains.
 
 \subsection*{Phylogenetic inference}
 
