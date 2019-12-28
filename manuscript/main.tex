@@ -414,19 +414,20 @@ The recent success of weighted ensembles for short-term influenza forecasting \c
 
 By forecasting the composition of future A/H3N2 populations with biologically-informed fitness metrics, our best models consistently outperformed a naive model (Table~\ref{table_natural_model_selection}).
 While this performance confirms previously demonstrated potential for long-term influenza forecasting \cite{Luksza:2014hj}, the average gain from these models over the naive model appears low at 0.96 AA per year for validation data and 0.66 AA per year for test data.
-These results are consistent with the observed dynamics of A/H3N2.
-First, the one-year forecast horizon is a fraction of the average coalescence time for A/H3N2 populations of about 3--8 years \cite{}.
+However, these results are consistent with the observed dynamics of A/H3N2.
+First, the one-year forecast horizon is a fraction of the average coalescence time for A/H3N2 populations of about 3--8 years \cite{Rambaut:2008ew}.
 Hence, we expect the diversity of circulating strains to persist between seasons.
-Second, the average substitution rate for A/H3N2's HA is 0.0043 substititions per site per year or an average accumulation of 2.4 AAs per year.
+Second, the average substitution rate for A/H3N2's HA is 0.0043 substitutions per site per year or an average accumulation of 2.4 AAs per year \cite{}.
 This accumulation of substitutions contributes to the distance between annual populations observed by the naive model.
 In this context, our model gains of 0.96 and 0.66 AAs per year correspond to an explanation of 40\% and 28\% of the expected additional distance between annual populations, respectively.
 
 There are still several clear opportunities to improve forecasts.
 Integration of more recent experimental data may improve estimates of antigenic drift.
 Influenza collaborating centers now routinely measure antigenic drift by focus reduction assays (FRAs), as an alternative to hemagglutination inhibition (HI) assays that is less affected by glycosylation motifs that alter binding efficacy \cite{Zost2017}.
-While there are not enough historical FRA measurements to validate and test a FRA cross-immunity metric, it may be possible to reuse coefficients from the HI cross-immunity models with modern FRA data.
+While there are not enough historical FRA measurements to extensively validate and test a FRA cross-immunity metric, it may be possible to reuse coefficients from the HI cross-immunity models with modern FRA data.
+Further experiments will be required to fully understand how HI and FRA measurements of the same pairs of strains correlate with each other.
 In addition to these FRA data based on ferret antisera, recent high-throughput antigenic escape assays with human sera promise to improve existing definitions of epitope sites \cite{Lee2019}.
-These assays reveal the specific residues that confer antigenic escape at specific sites.
+These assays reveal the specific sites and residues that confer antigenic escape from polyclonal sera obtained from individual humans.
 A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape A/H3N2 strains must navigate to be globally successful.
 
 Finally, forecasting models need to account for the geographic distribution of viruses.
@@ -438,7 +439,7 @@ For example, a geographically-aware implementation of LBI would most likely have
 
 Antigenic drift and mutational load remain the best predictors of future success for seasonal influenza A/H3N2 populations.
 Our framework enables real-time practical forecasts of these populations by leveraging historical and modern experimental assays and gene sequences.
-By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development by the influenza research community.
+By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development of this tool by the influenza research community.
 We additionally anticipate that the ability to forecast the sequence composition of populations with Earth Mover's Distance will enable future forecasting research with pathogens whose genomes cannot be analyzed by traditional phylogenetic methods including recombinant viruses, bacteria, and fungi.
 
 \subsection*{Model sharing and extensions}
