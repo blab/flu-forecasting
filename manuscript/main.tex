@@ -448,15 +448,6 @@ We have provided all source code, configuration files, and datasets at https://g
 
 \section*{Materials and methods}
 
-\subsection*{Data}
-
-\subsubsection*{Sequences}
-
-
-\subsubsection*{Titers}
-
-\jhc{Document HI titers from influenza CCs.}
-
 \subsection*{Simulation of influenza A/H3N2-like populations}
 
 We simulated the long-term evolution of A/H3N2-like viruses with SANTA-SIM \cite{Jariani2019} for 10,000 generations or 50 years where 200 generations was equivalent to 1 year.
@@ -481,6 +472,11 @@ This flattening of frequency trajectories means that as bandwidths increase, the
 Given this behavior, we found the bandwidth that produced the minimum difference between distances to the future for the true fitness and naive models instead of the bandwidth that produced the minimum mean model distance.
 Based on this analysis, we identified an optimal bandwidth of $\frac{2}{12}$ or the equivalent of 2-months for floating point dates.
 Next, we identified an L1 penalty of 0.1 for model coefficients that minimized the mean distance to the future for the true fitness model.
+
+\subsection*{Antigenic data}
+
+Hemagglutination inhibition (HI) measurements were provided by collaborating centers from the WHO Global Influenza Surveillance and Response System.
+We converted these raw two-fold dilution measurements to $log_{2}$ titer drops normalized by the corresponding $log_{2}$ autologous measurements as previously described \cite{Neher:2016hy}.
 
 \subsection*{Strain selection for natural populations}
 
@@ -648,6 +644,6 @@ TB is a Pew Biomedical Scholar and is supported by NIH R35 GM119774-01.
 
 \section*{Author contributions}
 
-JH.
-RN.
-TB.
+JH planned experiments, implemented the final forecasting framework, analyzed results, and wrote the manuscript.
+RN planned experiments and reviewed the manuscript.
+TB planned experiments, implemented the initial forecasting framework, and reviewed the manuscript.
