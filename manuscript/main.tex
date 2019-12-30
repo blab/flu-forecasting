@@ -19,7 +19,7 @@ The influenza community has long recognized the importance of incorporating HI p
 Although several distinct efforts have made progress in using HI phenotypes to evaluate the evolution of seasonal influenza \cite{Steinbruck:2014kq,Neher:2016hy}, these methods stop short of developing a complete forecasting framework wherein the evolutionary contribution of HI phenotypes can be compared and contrasted with new and existing fitness metrics.
 Here, we provide the first such open source long-term forecasting framework for seasonal influenza.
 With this framework, we show that HI phenotypes enable more accurate long-term forecasts of A/H3N2 populations compared to previous metrics based on epitope mutations alone.
-However, we also find that phylogenetic fitness metrics based on recent growth of circulating clades consistently outperform any combination of genotypic or phenotypic metrics, suggesting that existing mechanistic models of seasonal influenza evolution are missing critical components.
+However, we also find that composite models based on phenotypic measures of antigenic drift and genotypic measures of functional constraint consistently outperform any fitness models based on individual genotypic or phenotypic metrics.
 
 \section*{Results}
 
@@ -41,11 +41,11 @@ However, we also find that phylogenetic fitness metrics based on recent growth o
   \end{center}
 \end{figure*}
 
-Here, we present a model of seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
-As with this original model, we seek to forecast the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
-We estimate the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
+We developed a framework to forecast seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
+As with this original model, we forecasted the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
+We estimated the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
 
-We estimate viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
+We estimated viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI cross-immunity and DMS mutational effects rely only on HA sequences.
 The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating samples based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
 Increased antigenic drift relative to previously circulating samples is expected to correspond to increased viral fitness.
