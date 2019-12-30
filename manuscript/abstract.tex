@@ -1,16 +1,15 @@
-\section*{Key findings}
-
-\begin{itemize}
-\item{Our model accurately forecasts clade frequency trajectories and identifies optimal potential vaccine strains for both simulated and natural populations by estimating the sequence composition of future populations and without relying on clade-based model targets}
-\item{Experimental measurements of antigenic drift based on HI assays are more robust and predictive of viral success than epitope mutations}
-\item{Models based on a predefined set of epitope sites risk overfitting to historical data}
-\item{The combination of non-epitope mutation and LBI metrics outperforms all experimentally-informed metrics on validation data (Oct 1990--Oct 2015) but fails to account for reassortment events in test data (Oct 2015--Oct 2019)}
-\item{The combination of HI assays and non-epitope mutations performs best on test data and is among the best models for validation data}
-\item{Deleterious mutations contribute more to seasonal influenza evolution than has been as widely appreciated}
-\item{DMS measurements appear to be too background-specific to be predictive for global viral success}
-\item{Our model live forecasts in nextstrain.org will aid in year-round surveillance of influenza evolutionary patterns and allow us to continuously evaluate model performance relative to recent observations}
-\item{Our model is the first of its kind to be released as an open source framework that can be inspected and extended by others}
-\item{Immediate next steps to improve influenza models under this framework include the integration of geographic information and antigenic escape assay data}
-\item{Further efforts to understand the declining efficacy of HI assays and to replace these with FRA or antigenic escape assays could improve models in the future}
-\item{Our distance-based model targets and easy definition of fitness metrics through tidy data frames paves the way for future forecasting efforts with pathogens that cannot be analyzed by standard phylogenetic methods (e.g., highly recombinant viruses and organisms with larger genomes like bacteria and fungi)}
-\end{itemize}
+Seasonal influenza virus A/H3N2 is a major cause of illness and death globally.
+While vaccination is the most effective way to prevent infection, rapid accumulation of mutations in the surface protein hemagglutinin (HA) allows viruses to escape previous adaptive immunity due to vaccination or natural infection.
+This antigenic drift requires vaccines to be updated regularly.
+Due to a nearly one-year lag between the selection of vaccine strains and deployment of the vaccine to the public, effective vaccine strain selection requires predictions about future influenza populations.
+Historically, experts predicted successful future viruses through manual inspection of hemagglutination inhibition (HI) assays, an experimental measure of antigenic drift.
+Modern strain selection is increasingly informed by modeling of influenza fitness using HA sequences to estimate antigenic drift, mutational load, and recent population growth.
+The models rely entirely on genotypic information without accounting for the gold standard phenotypic measures of antigenic drift provided by HI assays.
+We developed a novel open source forecasting framework based on these original fitness models that explicitly integrates genotypic and phenotypic measures of antigenic drift as well as modern experimental measurements of mutational load from deep mutational scanning (DMS) experiments.
+In contrast with previous work, our models minimize the distance between observed and estimated future populations using the Earth Mover's Distance metric instead of minimizing errors in frequencies of phylogenetic clades.
+We show that this integrated approach to forecasting can accurately estimate the sequence compositions of simulated and natural populations.
+These forecasts capture dynamics of influenza clades and enable the identification of optimal individual strains for vaccine composition.
+Using this framework and a modern machine learning approach to model testing, we found that phenotypic measures of antigenic drift were more consistently predictive of future influenza populations than sequence-only measures while the opposite was true for measures of mutational load.
+Importantly, the combination of antigenic drift and mutational load was the most predictive of future success.
+We provide real-time forecasts of seasonal influenza A/H3N2 populations based on our combined model of antigenic drift and mutational load as part of Nextstrain.
+As our open source framework allows definition of fitness metrics per sample using tidy data frames and does not require phylogenetic clades for forecasts, we hope it paves the way for future forecasting efforts with pathogens that cannot be readily analyzed by standard phylogenetic methods including recombinant viruses, bacteria, and fungi.
