@@ -167,4 +167,5 @@ if __name__ == "__main__":
     # Save forecasts table, if requested.
     if args.output_table:
         all_forecasts = pd.concat(forecasts, ignore_index=True)
+        all_forecasts["model"] = "-".join(predictors)
         all_forecasts.to_csv(args.output_table, sep="\t", index=False, header=True, na_rep="N/A")
