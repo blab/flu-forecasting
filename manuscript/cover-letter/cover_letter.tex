@@ -1,0 +1,74 @@
+\documentclass[stdletter,letterpaper,addrfromright,orderfromdateto,dateleft,11pt,noaddrto,sigleft]{newlfm}
+\topmarginskip{-0.0in}
+\bottommarginskip{-0.0in}
+\leftmarginsize{1.25in}
+\rightmarginsize{1.5in}
+\sigskipbefore{0.2in}
+\sigskipafter{0in}
+\noLines
+\nolines
+\noHeadline
+\noheadline
+\signature{John Huddleston}
+
+\namefrom{}
+\addrfrom{
+	\includegraphics[width=6.5cm]{figures/fhcrc_logo} \\
+  Vaccines and Infectious Disease Division \\
+  Fred Hutchinson Cancer Research Center \\
+  1100 Fairview Ave N \\
+  Seattle, WA 98109, USA}
+\emailfrom{jlhudd@uw.edu}
+
+\greetto{Dear Editor,}
+\closeline{\\Sincerely,}
+
+% comments
+\usepackage{color}
+\usepackage{ulem}
+\definecolor{purple}{rgb}{0.459,0.109,0.538}
+\def\tb#1#2{\sout{#1} \textcolor{purple}{#2}}
+\def\tbc#1{\textcolor{purple}{[#1]}}
+
+\begin{document}
+
+\begin{newlfm}
+  Please find attached our manuscript entitled ``Integrating genotypes and phenotypes improves long-term forecasts of seasonal influenza A/H3N2 evolution''.
+  We would be grateful if you considered it for publication in \textit{eLife}.
+  We believe that \textit{eLife} is an appropriate venue, as this work provides the most comprehensive analysis of fitness metrics for seasonal influenza to date and a generalized forecasting framework that will be a valuable tool for other biological researchers.
+
+  The selection of vaccine strains for seasonal influenza A/H3N2 remains a daunting challenge due to constant accumulation of mutations in the hemagglutinin (HA) surface protein.
+  Until recently, experts selected vaccine strains by manually synthesizing experimental measurements of antigenic drift provided by hemagglutination inhibition (HI) assays.
+  Two landmark papers in 2014 showed that H3N2 evolution may be predictable from HA sequences alone.
+  The first paper, ``A predictive fitness model for influenza'' by {\L}uksza and L\"assig in \textit{Nature}, established a mechanistic fitness model that predicted the frequencies of phylogenetic clades one year in advance.
+  This model defined three biological fitness metrics including antigenic drift measured by mutations at epitope sites, functional constraint measured by mutations at non-epitope sites, and recent clade growth measured by synonymous mutations.
+  The second paper, ``Predicting evolution from the shape of genealogical trees'' by Neher et al. in \textit{eLife}, developed a phylogenetic metric of recent clade fitness called the local branching index (LBI).
+  This metric accurately identified high fitness clades without providing a biological basis for that success.
+  Predictions from both of these models are now routinely considered in the World Health Organization's vaccine composition meetings.
+
+  Several substantial questions remained unanswered by these models.
+  Are genetic estimates of antigenic drift sufficient replacements for the gold standard phenotypic measures provided by HI assays?
+  What mechanistic components of influenza fitness does LBI measure?
+  Can simple genetic estimates of functional constraint be improved upon using modern deep mutational scanning (DMS) assays that measure the functional effects of every single amino acid mutation to a given strain's HA?
+  Here, we investigate for the first time the relationships between all of these genotypic and phenotypic estimates of influenza fitness using a collection of HA sequences and HI measurements of an unprecedented breadth and depth.
+  To this end, we developed a novel approach to forecasting influenza evolution by estimating the sequence composition of future populations and rigorously tested this framework with simulated and natural H3N2 populations.
+  We implemented new experimentally-informed fitness metrics including antigenic drift by HI assays and functional constraint by DMS assays.
+  We applied modern machine learning methods for model training, validation, and testing to thoroughly evaluate the predictive accuracy of these new metrics as well as {\L}uksza and L\"assig's epitope and non-epitope metrics and Neher et al.'s LBI.
+  Importantly, we verified that this framework can both capture dynamics of phylogenetic clades and identify optimal candidate strains for vaccine composition.
+
+  We find that phenotypic measures of antigenic drift consistently outperform genetic estimates based on epitope sites.
+  We further show that the predictive value of these epitope sites in {\L}uksza and L\"assig's mechanistic model was most likely due to inadvertantly borrowing information from the future during model fitting.
+  This surprising finding has important ramifications for future attempts to map influenza genotypes to fitness, the use of epitope sites in practical forecasts, and the continued value of HI assays.
+  Additionally, we find that DMS-based estimates of functional constraint produced models that overfit to the genetic background of the strain, A/Perth/16/2009, used in the experiments.
+  Instead, we find that {\L}uksza and L\"assig's original minimal model of mutational load at non-epitope sites is more robust.
+  Composite models that integrate mutational load with either HI phenotypes or LBI performed the best and indicate that LBI may be measuring similar fitness effects as HI assays.
+  We have integrated these models into nextstrain.org, enabling real-time forecasts for H3N2 for influenza researchers, decision makers, and the public.
+
+  Our findings challenge the widely held assumption about the power of epitope sites to predict the success of influenza populations.
+  Correspondingly, we validate the predictive value of HI assays to measure antigenic drift and provide a framework that synthesizes these measurements into forecasts for expert interpretation.
+  Beyond influenza, our framework enables similar forecasting efforts for other viral and bacterial pathogens by allowing researchers to define sample-specific fitness metrics in tidy data frames and fit models to those metrics without relying on phylogenetic inference.
+  We are confident this open source framework will provide a foundation on which future forecasting efforts can be built or inspired.
+  For these reasons, our software and findings are relevant not only to the specific audience of influenza researchers, but also to the more general audience of infectious disease researchers, evolutionary biologists, and bioinformaticians.
+\end{newlfm}
+
+\end{document}
