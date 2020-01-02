@@ -29,7 +29,7 @@ However, we also find that composite models based on phenotypic measures of anti
   \begin{center}
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.png}
   \caption{
-    Schematic representation of the fitness model for simulated A/H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
+    Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
     Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors (Methods).
     A) Samples at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
     The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
@@ -59,11 +59,11 @@ Importantly, our models find fitness coefficients that minimize the normalized a
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
-\subsection*{Models accurately forecast evolution of A/H3N2-like viruses}
+\subsection*{Models accurately forecast evolution of H3N2-like viruses}
 
-The long-term evolution of influenza A/H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
-To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of A/H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Fig.~\ref{sup_fig:cross_validation_for_simulated_populations}).
-These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural A/H3N2 HA (Supplemental Fig. \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
+The long-term evolution of influenza H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
+To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Fig.~\ref{sup_fig:cross_validation_for_simulated_populations}).
+These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural H3N2 HA (Supplemental Fig. \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
 
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each sample as measured by the simulator.
@@ -180,7 +180,7 @@ Observed and estimated strain ranks remained strongly correlated across all stra
 These results confirm that our approach of minimizing the distance between yearly populations can simultaneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
 These results also highlight a well-established yet critical point that forecasts on truly out-of-sample data are less accurate than those based on training and validation data.
 
-\subsection*{Models reflect historical patterns of A/H3N2 evolution}
+\subsection*{Models reflect historical patterns of H3N2 evolution}
 
 \begin{table*}[ht]
   \begin{center}
@@ -196,11 +196,11 @@ These results also highlight a well-established yet critical point that forecast
   \end{center}
 \end{table*}
 
-Next, we trained and validated models for individual fitness predictors using 25 years of natural A/H3N2 populations spanning from October 1, 1990 to October 1, 2015.
+Next, we trained and validated models for individual fitness predictors using 25 years of natural H3N2 populations spanning from October 1, 1990 to October 1, 2015.
 We held out samples collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Fig.~\ref{sup_fig:cross_validation_for_natural_populations}).
 In addition to the sequence-only models we tested on simulated populations, we also fit models for our new fitness metrics based on experimental phenotypes including HI cross-immunity and DMS mutational effects.
 We hypothesized that both HI and DMS metrics would be assigned positive coefficients, as they estimate increased antigenic drift and beneficial mutations, respectively.
-As antigenic drift is generally considered to be the primary evolutionary pressure on natural A/H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI cross-immunity would be individually more predictive than mutational load or DMS mutational effects.
+As antigenic drift is generally considered to be the primary evolutionary pressure on natural H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI cross-immunity would be individually more predictive than mutational load or DMS mutational effects.
 Previous research \cite{Neher:2016hy} and our simulation results also led us to expect that LBI and delta frequency would outperform other individual mechanistic metrics.
 
 \begin{figure*}[ht]
@@ -286,7 +286,7 @@ This pattern held across all strains and timepoints with a strong correlation be
   \begin{center}
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-natural-populations.png}
   \caption{
-  Test of best model for natural populations of A/H3N2 viruses, the composite model of HI cross-immunity and mutational load.
+  Test of best model for natural populations of H3N2 viruses, the composite model of HI cross-immunity and mutational load.
   A) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   B) The rank of the estimated best strain based on its distance to the future for 8 timepoints.
   The estimated best strain was in the top 20th percentile of observed closest strains for 88\% of timepoints.
@@ -322,7 +322,7 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
   \begin{center}
   \includegraphics[width=\textwidth]{figures/vaccine-comparison.png}
   \caption{
-    Observed distance to natural A/H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
+    Observed distance to natural H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
     Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
     The distance to the future of each vaccine strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
     The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI cross-immunity and mutational load).
@@ -331,14 +331,14 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
   \end{center}
 \end{figure*}
 
-We further evaluated our best model's apparent success at estimating the closest strain to the next season's A/H3N2 population by comparing our model's selection to the WHO's vaccine strain selection.
+We further evaluated our best model's apparent success at estimating the closest strain to the next season's H3N2 population by comparing our model's selection to the WHO's vaccine strain selection.
 For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed and estimated closest strains.
 Our models selected a strain that was closer to the future than the selected vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (Fig.~\ref{fig:vaccine_comparison}).
 In the two seasons where the vaccine strain was closer to the future than the model's selection, the difference between the two strains' distances to the future was less than one amino acid.
 
 \subsection*{Forecasts predict the rise of A1b/131K and A1b/135K sub-clades in September 2020}
 
-To enable real-time forecasts, we integrated our forecasting framework into our existing open source pathogen surveillance application, Nextstrain \cite{Hadfield2018}, and used our best model to forecast A/H3N2 populations in September 2020.
+To enable real-time forecasts, we integrated our forecasting framework into our existing open source pathogen surveillance application, Nextstrain \cite{Hadfield2018}, and used our best model to forecast H3N2 populations in September 2020.
 Prior to finalizing our model coefficients for use in Nextstrain, we tested whether our three best composite models could be improved by learning coefficients per timepoint from the test data.
 None of the three models performed better across the test data than the original best model, indicating that the coefficients for our selected best model would be most accurate for live forecasts (Supplemental Fig.~\ref{sup_fig:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}).
 With the original coefficients, our combined HI cross-immunity and mutational load model favored the growth of the currently circulating clade A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
@@ -360,7 +360,7 @@ To aid with identification of potential vaccine candidates, we annotated samples
   \begin{center}
   \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
   \caption{
-    Snapshot of the last two years of seasonal influenza A/H3N2 evolution on nextstrain.org showing the estimated distance per sample to the future population.
+    Snapshot of the last two years of seasonal influenza H3N2 evolution on nextstrain.org showing the estimated distance per sample to the future population.
     Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating samples weighted by the other sample's projected frequencies under the best fitness model.
   }
   \label{fig:nextstrain_distance_to_future}
@@ -371,9 +371,9 @@ To aid with identification of potential vaccine candidates, we annotated samples
 
 \section*{Discussion}
 
-We have developed and rigorously tested a novel, open source framework for forecasting the long-term evolution of seasonal influenza A/H3N2 by estimating the sequence composition of future populations.
+We have developed and rigorously tested a novel, open source framework for forecasting the long-term evolution of seasonal influenza H3N2 by estimating the sequence composition of future populations.
 A key innovation of this framework is its ability to directly compare viral populations between seasons using the Earth Mover's Distance metric \cite{Rubner1998} and eliminate unavoidably stochastic clade definitions from phylogenies.
-The best models from this framework still effectively capture clade dynamics and accurately identify optimal vaccine candidates from simulated and natural A/H3N2 populations without relying on clades as model targets.
+The best models from this framework still effectively capture clade dynamics and accurately identify optimal vaccine candidates from simulated and natural H3N2 populations without relying on clades as model targets.
 We have further introduced novel fitness metrics based on experimental measurements of antigenic drift and functional constraint.
 We demonstrated that the integration of these phenotypic metrics with previously published sequence-only metrics produces more accurate forecasts than sequence-only models.
 We have added this framework as a component of seasonal influenza analyses on nextstrain.org where it provides real-time forecasts for influenza researchers, decision makers, and the public.
@@ -385,7 +385,7 @@ We observed overfitting to both specific genetic backgrounds and general histori
 A clear example of the former was the poor performance of our DMS-based fitness metric compared to a simpler mutational load metric.
 Although the DMS experiments provided detailed estimates of which amino acids were preferred at which positions in HA, these measurements were specific to a single strain, A/Perth/16/2009 \cite{Lee2018}.
 When we applied these measurements to predict the success of global populations, they were less informative on average than the naive model.
-To benefit from the more comprehensive fitness costs measured by DMS data, future models will need to synthesize DMS measurements across multiple A/H3N2 strains from distinct genetic contexts.
+To benefit from the more comprehensive fitness costs measured by DMS data, future models will need to synthesize DMS measurements across multiple H3N2 strains from distinct genetic contexts.
 We anticipate that these measurements could be used to define and continually update a modern set of sites contributing to mutational load in natural populations.
 This set of sites could replace the statically defined set of ``non-epitope'' sites we use to estimate mutational load here.
 
@@ -396,12 +396,12 @@ Despite this model's excellent performance historically, it was unable to accoun
 To avoid such overfitting in the future, models will need fitness metrics that can balance the fitness benefits of evolution in other genes such as neuraminidase \cite{Chen:2018kp} with the costs of reassortment itself \cite{Villa:2017iw}.
 
 In the second case, we observed overfitting of sites associated with antigenic drift to historical contexts.
-The fitness benefit of mutations that lead to antigenic drift in A/H3N2 is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}
+The fitness benefit of mutations that lead to antigenic drift in H3N2 is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}
 Although the antigenic importance of seven specific sites in HA has been experimentally validated \cite{Koel:2013jz}, these sites do not explain all antigenic drift observed in natural populations \cite{Neher:2016hy}.
 Other attempts to define these so-called ``epitope sites'' have relied on either aggregation of results from antigenic escape assays \cite{Wolf:2006da} or retrospective computational analyses of sites with beneficial mutations \cite{Shih:2007bd,Luksza:2014hj}.
 We found that models based on all of these definitions except for the seven Koel epitope sites overfit to the historical context from which they were identified (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
 These results suggest that the set of sites that contribute to antigenic drift at any given time may depend on both the fitness landscape of currently circulating strains and the immune landscape of the hosts these strains need to infect.
-Recent experimental mapping of antigenic escape mutations in A/H3N2 HA with human sera show that the specific sites that confer antigenic escape can vary dramatically between individuals based on their exposure history \cite{Lee2019}.
+Recent experimental mapping of antigenic escape mutations in H3N2 HA with human sera show that the specific sites that confer antigenic escape can vary dramatically between individuals based on their exposure history \cite{Lee2019}.
 In contrast to models based on predefined ``epitope sites'', our model based on experimental measurements of antigenic drift did not suffer from overfitting in the validation or test periods.
 We suspect that this model was able to minimize overfitting by continuously updating its antigenic model with recent experimental data and assigning antigenic weight to branches of a phylogeny rather than specific positions in HA.
 
@@ -412,12 +412,12 @@ The recent success of weighted ensembles for short-term influenza forecasting \c
 
 \subsection*{Forecasting framework aids practical forecasts}
 
-By forecasting the composition of future A/H3N2 populations with biologically-informed fitness metrics, our best models consistently outperformed a naive model (Table~\ref{table_natural_model_selection}).
+By forecasting the composition of future H3N2 populations with biologically-informed fitness metrics, our best models consistently outperformed a naive model (Table~\ref{table_natural_model_selection}).
 While this performance confirms previously demonstrated potential for long-term influenza forecasting \cite{Luksza:2014hj}, the average gain from these models over the naive model appears low at 0.96 AAs per year for validation data and 0.66 AAs per year for test data.
-However, these results are consistent with the observed dynamics of A/H3N2.
-First, the one-year forecast horizon is a fraction of the average coalescence time for A/H3N2 populations of about 3--8 years \cite{Rambaut:2008ew}.
+However, these results are consistent with the observed dynamics of H3N2.
+First, the one-year forecast horizon is a fraction of the average coalescence time for H3N2 populations of about 3--8 years \cite{Rambaut:2008ew}.
 Hence, we expect the diversity of circulating strains to persist between seasons.
-Second, the average substitution rate for A/H3N2's HA is 0.0043 substitutions per site per year or an average accumulation of 2.4 AAs per year \cite{}.
+Second, the average substitution rate for H3N2's HA is 0.0043 substitutions per site per year or an average accumulation of 2.4 AAs per year \cite{}.
 This accumulation of substitutions contributes to the distance between annual populations observed by the naive model.
 In this context, our model gains of 0.96 and 0.66 AAs per year correspond to an explanation of 40\% and 28\% of the expected additional distance between annual populations, respectively.
 
@@ -428,16 +428,16 @@ While there are not enough historical FRA measurements to extensively validate a
 Further experiments will be required to fully understand how HI and FRA measurements of the same pairs of strains correlate with each other.
 In addition to these FRA data based on ferret antisera, recent high-throughput antigenic escape assays with human sera promise to improve existing definitions of epitope sites \cite{Lee2019}.
 These assays reveal the specific sites and residues that confer antigenic escape from polyclonal sera obtained from individual humans.
-A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape A/H3N2 strains must navigate to be globally successful.
+A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape H3N2 strains must navigate to be globally successful.
 
 Finally, forecasting models need to account for the geographic distribution of viruses.
-Globally successful clades of influenza A/H3N2 most commonly emerge from Southern Asia, while viruses emerging from Africa, North America, and Europe are less likely to fix globally \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
+Globally successful clades of influenza H3N2 most commonly emerge from Southern Asia, while viruses emerging from Africa, North America, and Europe are less likely to fix globally \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
 Explicitly accounting for these source/sink dynamics would allow models to weight forecasts based on both viral fitness and transmission.
 For example, a geographically-aware implementation of LBI would most likely have not incorrectly predicted the success of the predominantly North American and European reassortant clade A2/re in 2019.
 
 \subsection*{Conclusions}
 
-Antigenic drift and mutational load remain the best predictors of future success for seasonal influenza A/H3N2 populations.
+Antigenic drift and mutational load remain the best predictors of future success for seasonal influenza H3N2 populations.
 Our framework enables real-time practical forecasts of these populations by leveraging historical and modern experimental assays and gene sequences.
 By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development of this tool by the influenza research community.
 We additionally anticipate that the ability to forecast the sequence composition of populations with Earth Mover's Distance will enable future forecasting research with pathogens whose genomes cannot be analyzed by traditional phylogenetic methods including recombinant viruses, bacteria, and fungi.
@@ -448,9 +448,9 @@ We have provided all source code, configuration files, and datasets at https://g
 
 \section*{Materials and methods}
 
-\subsection*{Simulation of influenza A/H3N2-like populations}
+\subsection*{Simulation of influenza H3N2-like populations}
 
-We simulated the long-term evolution of A/H3N2-like viruses with SANTA-SIM \cite{Jariani2019} for 10,000 generations or 50 years where 200 generations was equivalent to 1 year.
+We simulated the long-term evolution of H3N2-like viruses with SANTA-SIM \cite{Jariani2019} for 10,000 generations or 50 years where 200 generations was equivalent to 1 year.
 We discarded the first 10 years as a burn-in period, selected the next 30 years for model fitting and validation, and held out the last 9 years as out-of-sample data for model testing.
 Each simulated population was seeded with the full length HA from A/Beijing/32/1992 (NCBI accession: U26830.1) such that all simulated sequences contained signal peptide, HA1, and HA2 domains.
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
@@ -462,7 +462,7 @@ For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid e
 
 \subsection*{Hyperparameter tuning with simulated populations}
 
-To avoid overfitting our models to the relatively limited data from natural populations, we used simulated A/H3N2-like populations to tune hyperparameters including the KDE bandwidth for frequency estimates and the L1 penalty for model coefficients.
+To avoid overfitting our models to the relatively limited data from natural populations, we used simulated H3N2-like populations to tune hyperparameters including the KDE bandwidth for frequency estimates and the L1 penalty for model coefficients.
 We simulated populations, as described above, and fit models for each parameter value using the true fitness of samples from the simulator.
 
 We identified the optimal KDE bandwidth for frequencies as the value that minimized the difference between the mean distances to the future from the true fitness model and the naive model.
@@ -509,7 +509,7 @@ We implemented this frequency estimation logic in the augur frequencies command.
 
 \subsubsection*{Fitness model}
 
-We assumed that the evolution seasonal influenza A/H3N2 populations can be represented by a Malthusian growth fitness model, as previously described \cite{Luksza:2014hj}.
+We assumed that the evolution seasonal influenza H3N2 populations can be represented by a Malthusian growth fitness model, as previously described \cite{Luksza:2014hj}.
 Under this model, we estimated the future frequency, $\hat{x}_{i}(t + \Delta{t})$, of each sample $i$ from the sample's current frequency, $x_{i}(t)$, and fitness, $f_{i}(t)$, as follows where the resulting future frequencies were normalized to one by $\frac{1}{Z(t)}$.
 
 \begin{equation}
@@ -660,3 +660,7 @@ TB is a Pew Biomedical Scholar and is supported by NIH grants NIGMS R35 GM119774
 JH planned experiments, implemented the final forecasting framework, analyzed results, and wrote the manuscript.
 RN planned experiments and reviewed the manuscript.
 TB planned experiments, implemented the initial forecasting framework, and reviewed the manuscript.
+
+\section*{Competing interests}
+
+The authors declare that no competing interests exist.
