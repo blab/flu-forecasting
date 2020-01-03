@@ -399,7 +399,7 @@ A key innovation of this framework is its ability to directly compare viral popu
 The best models from this framework still effectively capture clade dynamics and accurately identify optimal vaccine candidates from simulated and natural H3N2 populations without relying on clades as model targets.
 We have further introduced novel fitness metrics based on experimental measurements of antigenic drift and functional constraint.
 We demonstrated that the integration of these phenotypic metrics with previously published sequence-only metrics produces more accurate forecasts than sequence-only models.
-We have added this framework as a component of seasonal influenza analyses on nextstrain.org where it provides real-time forecasts for influenza researchers, decision makers, and the public.
+We have added this framework as a component of seasonal influenza analyses on \href{https://nextstrain.org/flu}{nextstrain.org} where it provides real-time forecasts for influenza researchers, decision makers, and the public.
 
 \subsection*{Integration of genotypic and phenotypic metrics minimizes overfitting}
 
@@ -412,13 +412,7 @@ To benefit from the more comprehensive fitness costs measured by DMS data, futur
 We anticipate that these measurements could be used to define and continually update a modern set of sites contributing to mutational load in natural populations.
 This set of sites could replace the statically defined set of ``non-epitope'' sites we use to estimate mutational load here.
 
-We observed two different cases of overfitting to general historical contexts.
-In the first case, the model with the best performance across our validation data -- mutational load and LBI -- was also one of the worst models across our test data.
-Specifically, we found that this model failed to predict the sudden decline of a dominant reassortant clade, A2/re, in 2019.
-Despite this model's excellent performance historically, it was unable to account for rare yet important events such as reassortment.
-To avoid such overfitting in the future, models will need fitness metrics that can balance the fitness benefits of evolution in other genes such as neuraminidase \cite{Chen:2018kp} with the costs of reassortment itself \cite{Villa:2017iw}.
-
-In the second case, we observed overfitting of sites associated with antigenic drift to historical contexts.
+We observed the latter type of overfitting in the context of sites associated with antigenic drift.
 The fitness benefit of mutations that lead to antigenic drift in H3N2 is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}
 Although the antigenic importance of seven specific sites in HA has been experimentally validated \cite{Koel:2013jz}, these sites do not explain all antigenic drift observed in natural populations \cite{Neher:2016hy}.
 Other attempts to define these so-called ``epitope sites'' have relied on either aggregation of results from antigenic escape assays \cite{Wolf:2006da} or retrospective computational analyses of sites with beneficial mutations \cite{Shih:2007bd,Luksza:2014hj}.
@@ -427,6 +421,10 @@ These results suggest that the set of sites that contribute to antigenic drift a
 Recent experimental mapping of antigenic escape mutations in H3N2 HA with human sera show that the specific sites that confer antigenic escape can vary dramatically between individuals based on their exposure history \cite{Lee2019}.
 In contrast to models based on predefined ``epitope sites'', our model based on experimental measurements of antigenic drift did not suffer from overfitting in the validation or test periods.
 We suspect that this model was able to minimize overfitting by continuously updating its antigenic model with recent experimental data and assigning antigenic weight to branches of a phylogeny rather than specific positions in HA.
+
+Even well performing models with few parameters will sometimes fail due to the probabilistic nature of evolution: The model with the best performance across our validation data -- mutational load and LBI -- was also one of the worst models across our test data.
+Specifically, we found that this model failed to predict the sudden decline of a dominant reassortant clade, A2/re, in 2019.
+Despite this model's excellent performance historically, it was unable to account for rare yet important events such as reassortment.
 
 Finally, we observed that composite models of multiple orthogonal fitness metrics often outperformed models based on their individual components.
 These results are consistent with previous work that found improved performance by integrating components of antigenic drift, functional constraint, and clade growth \cite{Luksza:2014hj}.
@@ -446,17 +444,21 @@ In this context, our model gains of 0.96 and 0.66 AAs per year correspond to an 
 
 Several clear opportunities to improve forecasts still remain.
 Integration of more recent experimental data may improve estimates of antigenic drift.
+Models should integrate information from multiple segments of the influenza genome and will need to balance the fitness benefits of evolution in genes such as neuraminidase \cite{Chen:2018kp} with the costs of reassortment \cite{Villa:2017iw}.
 The strong performance of a composite FRA cross-immunity and mutational load model with recent H3N2 populations indicates that FRAs will continue to be important for future forecasting efforts.
 In addition to these FRA data based on ferret antisera, recent high-throughput antigenic escape assays with human sera promise to improve existing definitions of epitope sites \cite{Lee2019}.
 These assays reveal the specific sites and residues that confer antigenic escape from polyclonal sera obtained from individual humans.
 A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape H3N2 strains must navigate to be globally successful.
-Finally, forecasting models need to account for the geographic distribution of viruses.
-Globally successful clades of influenza H3N2 most commonly emerge from Southern Asia, while viruses emerging from Africa, North America, and Europe are less likely to fix globally \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
-Explicitly accounting for these source/sink dynamics would allow models to weight forecasts based on both viral fitness and transmission.
+Finally, forecasting models need to account for the geographic distribution of viruses and the vastly different sampling intensities across the globe.
+Most influenza sequence data come from highly developed countries that account for a small fraction of the global population, while globally successful clades of influenza H3N2 often emerge in less well sampled regions \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
+Explicitly accounting for these sampling biases and the associated migration dynamics would allow models to weight forecasts based on both viral fitness and transmission.
 
 \subsection*{Conclusions}
 
-Antigenic drift and mutational load remain the best predictors of future success for seasonal influenza H3N2 populations.
+Prediction of future influenza virus populations are intrinsically limited by the small number of data points available to train and test models.
+Increasing the complexity therefore makes models prone to overfitting.
+Across the training and validation period, we found that antigenic drift and mutational load are the most robust predictors of future success for seasonal influenza H3N2 populations.
+
 Our framework enables real-time practical forecasts of these populations by leveraging historical and modern experimental assays and gene sequences.
 By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development of this tool by the influenza research community.
 We additionally anticipate that the ability to forecast the sequence composition of populations with Earth Mover's Distance will enable future forecasting research with pathogens whose genomes cannot be analyzed by traditional phylogenetic methods including recombinant viruses, bacteria, and fungi.
