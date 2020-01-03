@@ -4,7 +4,7 @@
 Seasonal influenza virus infects 5--15\% of the global population every year causing an estimated 250,000 to 500,000 deaths annually with the majority of infections caused by influenza A/H3N2 \cite{flufactsheet}.
 Vaccination remains the most effective public health response available.
 However, frequent viral mutation results in viruses that escape previously acquired human immunity.
-The World Health Organization (WHO) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, accurate vaccine strain selection requires a prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
+The World Health Organization (WHO) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine strain selection requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
 Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
 Until recently, the hemagglutination inhibition (HI) assay has been the primary experimental measure of antigenic cross-reactivity between pairs of circulating viruses \cite{hirst1943studies}.
 Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}.
@@ -19,7 +19,7 @@ We describe an approach to integrate previously disparate sequence-only models o
 
 The influenza community has long recognized the importance of incorporating HI phenotypes and other experimental measurements of viral phenotypes with existing forecasting methods into an extensible, open source framework that can be used by professional virologists in their vaccine design process \cite{Gandon:2016gz,Morris:2017ea,Lassig:2017hr}.
 Although several distinct efforts have made progress in using HI phenotypes to evaluate the evolution of seasonal influenza \cite{Steinbruck:2014kq,Neher:2016hy}, these methods stop short of developing a complete forecasting framework wherein the evolutionary contribution of HI phenotypes can be compared and contrasted with new and existing fitness metrics.
-Here, we provide the first such open source long-term forecasting framework for seasonal influenza.
+Here, we provide the first such open source framework for forcasting the genetic composision of future seasonal influenza populations.
 With this framework, we show that HI phenotypes enable more accurate long-term forecasts of H3N2 populations compared to previous metrics based on epitope mutations alone.
 However, we also find that composite models based on phenotypic measures of antigenic drift and genotypic measures of functional constraint consistently outperform any fitness models based on individual genotypic or phenotypic metrics.
 
@@ -31,6 +31,7 @@ However, we also find that composite models based on phenotypic measures of anti
   \begin{center}
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.png}
   \caption{
+  \rnc{missing panel labels!}
     Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
     Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors (Methods).
     A) Samples at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
@@ -45,7 +46,7 @@ However, we also find that composite models based on phenotypic measures of anti
 
 We developed a framework to forecast seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 As with this original model, we forecasted the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
-We estimated the frequency of virus samples every six months using a smoothed KDE kernel to represent the frequency of each sample.
+We estimated the frequency of virus samples every six months using kernel density estimation (KDE) to represent the frequency of each sample.
 
 We estimated viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI cross-immunity and DMS mutational effects rely only on HA sequences.
@@ -58,6 +59,7 @@ The growth metrics estimate how successful populations of samples have been in t
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
 After selecting optimal models from training and validation, we evaluated the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
 Importantly, our models find fitness coefficients that minimize the normalized average Hamming distance between the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
+\rnc{Hamming distance or EMD?}
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
@@ -110,6 +112,7 @@ Correspondingly, we expected that a composite model of epitope cross-immunity an
   \end{center}
 \end{table*}
 
+\rnc{wouldn't we expect the true fitness have coefficent 1.0? A plausible reviewer question would be ``how does the model do with coefficient 1.0?"}
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
 In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future.
 With the exception of epitope cross-immunity, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
@@ -148,10 +151,12 @@ These results support our hypothesis that multiple complementary metrics can pro
   \includegraphics[width=\textwidth]{figures/test-of-best-model-for-simulated-populations.png}
   \caption{
   Test of best model for simulated populations (true fitness) using 9 years previously unobserved test data and fixed model coefficients.
+  \rnc{Growth rates have units. Is this 1/year? Also what exactly is $\log_{10}$ growth rate? -2 == 0.01/year?}
   A) The correlation of estimated and observed clade growth rates shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   B) The rank of the estimated best strain based on its distance to the future in the best model for 18 timepoints shows how often the model makes a good choice when forced to select a single representative strain for the future population.
   The estimated best strain was in the top 20th percentile of observed closest strains for 89\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
+  \rnc{it would be interesting to look at this for neg and pos deviations separately.}
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   }
   \label{fig:test_of_best_model_for_simulated_populations}
@@ -173,14 +178,18 @@ A standard expectation from machine learning is that models will perform worse o
 Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
 The composite model of mutational load and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively (Supplemental Table~\ref{table_simulated_model_selection}).
 Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
+Note, that the numbers of test and validation data points are small and we therefore expect fluctuations.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 While observed and estimated growth rates correlated more weakly for test data (Pearson's $R^2 = 0.14$, $p < 0.001$), the accuracies of clade growth and decline predictions remained similar at 82\% and 53\%, respectively (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
+\rnc{this is not a supplemental figure, right?}
 Correspondingly, we observed higher absolute forecast errors in the test data with higher errors for clades between 40\% and 60\% initial frequencies (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}C).
 The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 (89\%) of 18 of timepoints (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
 Observed and estimated strain ranks remained strongly correlated across all strains and timepoints (Spearman's $\rho^2 = 0.80$, $p < 0.001$, Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}D).
+\rnc{the p-value us probably not meaningful due to phylogenetic relatiobships.}
 These results confirm that our approach of minimizing the distance between yearly populations can simultaneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
 These results also highlight a well-established yet critical point that forecasts on truly out-of-sample data are less accurate than those based on training and validation data.
+\rnc{Is the above statement accurate? this refers to the true fitness model which has a next to constant coefficient around 9. Risk of overfitting is minimal and the only measure that is substantially worse is Pearson's $r^2$ which is sensitive to outliers. Furthermore, the clades on which panel A is based are not independent.}
 
 \subsection*{Models reflect historical patterns of H3N2 evolution}
 
@@ -218,7 +227,9 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
   \end{center}
 \end{figure*}
 
-The naive model measured a distance of 6.40 $\pm$ 1.36 AAs between natural populations or 71\% of the average distance between yearly simulated populations (Table~\ref{table_natural_model_selection}).
+\rnc{Just a suggestion:}
+Across our training period, HA sequences of H3N2 influenza populations one year apart was 6.40 $\pm$ 1.36 AAs.
+This distance corresponds to the ``naive model'' in Table~\ref{table_natural_model_selection}.
 Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope cross-immunity and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
@@ -235,11 +246,12 @@ These results led us to hypothesize that the contribution of these specific epit
 Importantly, these 49 epitope sites were originally selected by {\L}uksza and L\"assig \cite{Luksza:2014hj} from a previous historical survey of sites with beneficial mutations between 1968--2005 \cite{Shih:2007bd}.
 If the beneficial effects of mutations at these sites were due to historical contingency rather than a constant contribution to antigenic drift, we would expect models based on these sites to perform well until 2005 and then overfit relative to future data.
 Indeed, the epitope cross-immunity model is strongly predictive for the first two validation timepoints until it has to predict to October 2005.
+\rnc{I thought this was predictive until 2008.}
 To further test our hypothesis, we identified a new set of beneficial sites across our entire validation period of October 1990 through October 2015.
-Inspired by the original approach of Shih et al. \cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population, including 12 that were also present in the original set of 49 sites.
+Inspired by the original approach of Shih et al.~\cite{Shih:2007bd}, we identified 25 sites in HA1 where mutations rapidly swept through the global population, including 12 that were also present in the original set of 49 sites.
 We fit a cross-immunity model to these 25 sites across the complete validation period and dubbed this the ``oracle cross-immunity'' model, as it benefited from knowledge of the future in its forecasts.
 In contrast to the epitope cross-immunity model, the oracle cross-immunity model produced a strong positive coefficient across all training windows (1.06 $\pm$ 0.23) and consistently outperformed the original model with an average distance to the future of 5.59 $\pm$ 1.30 AAs (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}).
-These results support our hypothesis that the success of previous epitope models based on a fixed set of 49 sites is due to historical contingency rather than a constant contribution of these sites to antigenic drift.
+These results support our hypothesis that fitness benefit of mutations at the original 49 sites was due to historical contingency and that the success of previous epitope models based on these sites partly due to ``borrowing from the future''.
 We suspect that our HI cross-immunity model benefits from its ability to constantly update its antigenic model at each timepoint with recent experimental phenotypes, while the epitope cross-immunity metric is forced to give a constant weight to the same 49 sites throughout time.
 
 Of the two metrics for functional constraint, mutational load outperformed DMS mutational effects, with an average distance to the future of 6.14 $\pm$ 1.37 AAs compared to 6.75 $\pm$ 1.95 AAs, respectively.
@@ -660,7 +672,7 @@ All source code, configuration files, and datasets are available at https://gith
 We thank Jesse Bloom, Erick Matsen, Bing Brunton, Harmit Malik, Sidney Bell, Alli Black, Lola Arakaki, and members of the Bedford lab for useful advice and discussions.
 JH is a Graduate Research Fellow and is supported by the NIH grant NIAID F31AI140714.
 TB is a Pew Biomedical Scholar and is supported by NIH grants NIGMS R35 GM119774-01, NIAID U19 AI117891-01 and NIAID R01 AI127893-01.
-\jhc{Add RN support here.}
+RAN is supported by NIAID R01 AI127893-01 and institutional core funding.
 
 \section*{Author contributions}
 
