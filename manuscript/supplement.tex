@@ -9,13 +9,13 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/cross-validation-for-simulated-populations.png}
+  \includegraphics[width=\textwidth]{figures/cross-validation-for-simulated-populations.pdf}
   \caption{
   Time-series cross-validation scheme for simulated populations.
   Models were trained in six-year sliding windows (grey lines) and validated on out-of-sample data from validation timepoints (filled circles).
   Validation results from 30 years of data were used to iteratively tune model hyperparameters.
   After fixing hyperparameters, model coefficients were fixed at the mean values across all training windows.
-  Fixed coefficients were applied to 10 years of new out-of-sample test data (open circles) to estimate true forecast errors.
+  Fixed coefficients were applied to 9 years of new out-of-sample test data (open circles) to estimate true forecast errors.
   }
   \label{sup_fig:cross_validation_for_simulated_populations}
   \end{center}
@@ -35,7 +35,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.png}
+  \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.pdf}
   \caption{
   Composite model coefficients and distances to the future for models fit to simulated populations.
   A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
@@ -46,7 +46,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-simulated-populations.png}
+  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-simulated-populations.pdf}
   \caption{
   Validation of best model for simulated populations of H3N2-like viruses.
   A) The correlation of estimated and observed clade growth ratios shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
@@ -61,7 +61,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/cross-validation-for-natural-populations.png}
+  \includegraphics[width=\textwidth]{figures/cross-validation-for-natural-populations.pdf}
   \caption{
   Time-series cross-validation scheme for natural populations.
   Models were trained in six-year sliding windows (grey lines) and validated on out-of-sample data from validation timepoints (filled circles).
@@ -75,7 +75,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.png}
+  \includegraphics[width=\textwidth]{figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.pdf}
   \caption{
   Model coefficients and distances to the future for cross-immunity models fit to natural populations.
   A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
@@ -89,7 +89,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-natural-populations.png}
+  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-natural-populations.pdf}
   \caption{
   Validation of best model for natural populations of H3N2 viruses, the composite model of mutational load and LBI.
   A) The correlation of estimated and observed clade growth ratios shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
@@ -104,7 +104,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/models-natural-populations-composite-with-updated-coefficients-across-test-data.png}
+  \includegraphics[width=\textwidth]{figures/models-natural-populations-composite-with-updated-coefficients-across-test-data.pdf}
   \caption{
     Model coefficients and distances to the future for best composite models and a FRA-based composite fit to recent data from natural populations as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     A) Coefficients and B) distances are shown per test timepoint (N=8).
