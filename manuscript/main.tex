@@ -31,13 +31,13 @@ However, we also find that composite models based on phenotypic measures of anti
   \begin{center}
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.pdf}
   \caption{
-    Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of samples at timepoint $t$ determines the estimated frequency of samples with similar sequences one year in the future at timepoint $u$.
-    Samples are colored by their amino acid sequence composition such that genetically similar samples have similar colors (Methods).
-    A) Samples at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
-    The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with samples scaled in size by their projected frequency based on the true fitness model.
-    B) The frequency trajectories of samples at timepoint $t$ to $u$ represent the predicted the growth of the dark blue samples to the detriment of the pink samples.
-    C) Samples at timepoint $u$, $\mathbf{x}(u)$, are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
-    D) The observed frequency trajectories of samples at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the light blue cluster from within the successful dark blue cluster.
+    Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of strains at timepoint $t$ determines the estimated frequency of strains with similar sequences one year in the future at timepoint $u$.
+    Strains are colored by their amino acid sequence composition such that genetically similar strains have similar colors (Methods).
+    A) Strains at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
+    The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with strains scaled in size by their projected frequency based on the true fitness model.
+    B) The frequency trajectories of strains at timepoint $t$ to $u$ represent the predicted the growth of the dark blue strains to the detriment of the pink strains.
+    C) Strains at timepoint $u$, $\mathbf{x}(u)$, are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
+    D) The observed frequency trajectories of strains at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the light blue cluster from within the successful dark blue cluster.
     Model coefficients minimize the earth mover's distance between amino acid sequences in the observed and estimated future populations across all training windows.
   }
   \label{fig:model}
@@ -46,21 +46,21 @@ However, we also find that composite models based on phenotypic measures of anti
 
 We developed a framework to forecast seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 As with this original model, we forecasted the frequencies of viral populations one year in advance by applying to each virus sample an exponential growth factor scaled by an estimate of the sample's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
-We estimated the frequency of virus samples every six months using kernel density estimation (KDE) to represent the frequency of each sample.
+We estimated the frequency of virus strains every six months using kernel density estimation (KDE) to represent the frequency of each sample.
 
 We estimated viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope cross-immunity and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) cross-immunity \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI cross-immunity and DMS mutational effects rely only on HA sequences.
-The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating samples based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
-Increased antigenic drift relative to previously circulating samples is expected to correspond to increased viral fitness.
+The cross-immunity metrics estimate how antigenically distinct each sample at time $t$ is from previously circulating strains based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
+Increased antigenic drift relative to previously circulating strains is expected to correspond to increased viral fitness.
 Mutational load is the simplest of the functional constraint metrics, measuring the number of putatively deleterious mutations that have accumulated in each sample since their ancestor in the previous season.
 DMS mutational effects provide a more comprehensive biophysical model of functional constraint by measuring the beneficial or deleterious effect of each possible single amino acid mutation in HA from the background of a previous vaccine strain, A/Perth/16/2009.
-The growth metrics estimate how successful populations of samples have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
+The growth metrics estimate how successful populations of strains have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
 We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and select the best of these models using time-series cross-validation.
 After selecting optimal models from training and validation, we evaluated the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
 Importantly, our models find fitness coefficients that minimize the earth mover's distance (EMD) between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
-However, we retain the benefits of fitting models to highly similar samples found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
+However, we retain the benefits of fitting models to highly similar strains found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
 \subsection*{Models accurately forecast evolution of H3N2-like viruses}
 
@@ -136,7 +136,7 @@ The cross-immunity fitness metric assumes that antigenic drift is driven by nonl
 To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
 By itself, this linear fitness metric did not outperform the cross-immunity metric (Table~\ref{table_simulated_model_selection}).
 However, when we fit a composite model of the epitope ancestor and mutational load metrics, this model outperformed both the individual mutational load model and the composite cross-immunity and mutational load model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated samples was dominated by purifying selection and only weakly affected by a linear effect of positive selection at epitope sites.
+From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated strains was dominated by purifying selection and only weakly affected by a linear effect of positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: mutational load and LBI.
@@ -200,7 +200,7 @@ These results confirm that our approach of minimizing the distance between yearl
 \end{table*}
 
 Next, we trained and validated models for individual fitness predictors using 25 years of natural H3N2 populations spanning from October 1, 1990 to October 1, 2015.
-We held out samples collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Fig.~\ref{sup_fig:cross_validation_for_natural_populations}).
+We held out strains collected between October 1, 2015 and October 1, 2019 for model testing (Supplemental Fig.~\ref{sup_fig:cross_validation_for_natural_populations}).
 In addition to the sequence-only models we tested on simulated populations, we also fit models for our new fitness metrics based on experimental phenotypes including HI cross-immunity and DMS mutational effects.
 We hypothesized that both HI and DMS metrics would be assigned positive coefficients, as they estimate increased antigenic drift and beneficial mutations, respectively.
 As antigenic drift is generally considered to be the primary evolutionary pressure on natural H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI cross-immunity would be individually more predictive than mutational load or DMS mutational effects.
@@ -355,7 +355,7 @@ These results indicate that this FRA-based composite could eventually replace th
 
 After confirming the coefficients for our best model of HI cross-immunity and mutational load, we inspected forecasts of H3N2 clades from January 2020 to 2021.
 Of the three major currently circulating clades, our model predicted the growth of A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
-To aid with identification of potential vaccine candidates for the next season, we annotated samples in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
+To aid with identification of potential vaccine candidates for the next season, we annotated strains in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure*}[ht]
   \begin{center}
@@ -374,7 +374,7 @@ To aid with identification of potential vaccine candidates for the next season, 
   \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
   \caption{
     Snapshot of the last two years of seasonal influenza H3N2 evolution on nextstrain.org showing the estimated distance per sample to the future population.
-    Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating samples weighted by the other sample's projected frequencies under the best fitness model.
+    Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating strains weighted by the other sample's projected frequencies under the best fitness model.
   }
   \label{fig:nextstrain_distance_to_future}
   \end{center}
@@ -473,11 +473,11 @@ For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid e
 \subsection*{Hyperparameter tuning with simulated populations}
 
 To avoid overfitting our models to the relatively limited data from natural populations, we used simulated H3N2-like populations to tune hyperparameters including the KDE bandwidth for frequency estimates and the L1 penalty for model coefficients.
-We simulated populations, as described above, and fit models for each parameter value using the true fitness of samples from the simulator.
+We simulated populations, as described above, and fit models for each parameter value using the true fitness of strains from the simulator.
 
 We identified the optimal KDE bandwidth for frequencies as the value that minimized the difference between the mean distances to the future from the true fitness model and the naive model.
 We set the L1 lambda penalty to zero, to reduce variables in the analysis and avoid interactions between the coefficients and the KDE bandwidths.
-Higher bandwidths completely wash out dynamics of populations by making all samples appear to exist for long time periods.
+Higher bandwidths completely wash out dynamics of populations by making all strains appear to exist for long time periods.
 This flattening of frequency trajectories means that as bandwidths increase, the naive model gets more accurate and less informative.
 Given this behavior, we found the bandwidth that produced the minimum difference between distances to the future for the true fitness and naive models instead of the bandwidth that produced the minimum mean model distance.
 Based on this analysis, we identified an optimal bandwidth of $\frac{2}{12}$ or the equivalent of 2-months for floating point dates.
@@ -493,8 +493,8 @@ We converted these raw two-fold dilution measurements to $log_{2}$ titer drops n
 Prior to our analyses, we downloaded all HA sequences and metadata from GISAID \cite{shu2017gisaid}.
 For model training and validation, we selected 15,583 HA sequences $\geq$900 nucleotides that were sampled between October 1, 1990 and October 1, 2015.
 To account for known variation in sequence availability by region, we subsampled the selected sequences to a representative set of 90 viruses per month with even sampling across 10 global regions including Africa, Europe, North America, China, South Asia, Japan and Korea, Oceania, South America, Southeast Asia, and West Asia.
-We excluded all egg-passaged samples and all samples with ambiguous year, month, and day annotations.
-We prioritized samples with more available HI titer measurements.
+We excluded all egg-passaged strains and all strains with ambiguous year, month, and day annotations.
+We prioritized strains with more available HI titer measurements.
 For model testing, we selected an additional 7,171 HA sequences corresponding to 90 viruses per month sampled between October 1, 2015 and October 1, 2019.
 We used these test sequences to evaluate the out-of-sample error of fixed model parameters learned during training and validation.
 Supplemental File S1 describes contributing laboratories for all 22,754 validation and test strains.
@@ -537,15 +537,15 @@ For example, Equation~\ref{equation_fitness_estimation} estimates fitness per sa
 
 \subsubsection*{Model target}
 
-For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the weighted Hamming distance between amino acid sequences from the observed future population at time $u = t + \Delta{t}$ and the estimated future population created by projecting frequencies of samples at time $t$ by their estimated fitnesses.
+For a model based on any given combination of fitness metrics, we found the fitness coefficients that minimized the weighted Hamming distance between amino acid sequences from the observed future population at time $u = t + \Delta{t}$ and the estimated future population created by projecting frequencies of strains at time $t$ by their estimated fitnesses.
 We measured distance between populations using earth mover's distance (EMD), a metric commonly applied in machine learning to compare collections of pixels or words \cite{Rubner1998,Kusner2015}.
 Solving for EMD identifies the minimum about of ``earth'' that must be moved from a source population to a sink population to make those populations as similar as possible.
-This solution requires both a ``ground distance'' between pairs of samples from both populations and weights assigned to each sample that determine how much that sample contributes to the overall distance.
+This solution requires both a ``ground distance'' between pairs of strains from both populations and weights assigned to each sample that determine how much that sample contributes to the overall distance.
 
-For each timepoint $t$ and corresponding timepoint $u = t + 1$, we defined the ground distance as the Hamming distance between HA amino acid sequences for all pairs of samples between timepoints.
-For samples with less than full length nucleotide sequences, we inferred missing nucleotides through TreeTime's ancestral sequence reconstruction analysis.
-We defined weights for samples at timepoint $t$ based on their projected future frequencies.
-We defined weights for samples at timepoint $u$ based on their observed frequencies.
+For each timepoint $t$ and corresponding timepoint $u = t + 1$, we defined the ground distance as the Hamming distance between HA amino acid sequences for all pairs of strains between timepoints.
+For strains with less than full length nucleotide sequences, we inferred missing nucleotides through TreeTime's ancestral sequence reconstruction analysis.
+We defined weights for strains at timepoint $t$ based on their projected future frequencies.
+We defined weights for strains at timepoint $u$ based on their observed frequencies.
 We then identified the fitness coefficients that provided projected future frequencies that minimized the EMD between the estimated and observed future populations.
 With this metric, an optimal estimate of the future would produce a distance of zero.
 However, the inevitable accumulation of substitutions between the two populations prevents this outcome.
@@ -649,10 +649,10 @@ We calculated the delta frequency as the change in frequency for each strain bet
 
 For the purpose of visualizing related amino acid sequences in Fig.~\ref{fig:model}, we applied dimensionality reduction to pairwise amino acid distances followed by hierarchical clustering.
 Specifically, we selected a representative tree from our simulated population of viruses at month 10 of year 30.
-From this tree, we selected all samples with a collection date in the previous two years.
-We calculated the pairwise Hamming distance between the full-length HA amino acid sequences for all selected samples and applied t-SNE dimensionality reduction \cite{vanDerMaaten2008} to the resulting distance matrix (n=2 components, perplexity=30.0, and learning rate=400).
-We assigned each sample to a cluster based on its two-dimensional t-SNE embedding using DBSCAN \cite{Ester1996} with a maximum neighborhood distance of 10 AAs and a minimum of 20 samples per cluster.
-Despite known limitations of applying hierarchical clustering to manifold projections that do not preserve sample density, this approach allowed us to effectively assign samples to qualitative genetic clusters for the purposes of visualization.
+From this tree, we selected all strains with a collection date in the previous two years.
+We calculated the pairwise Hamming distance between the full-length HA amino acid sequences for all selected strains and applied t-SNE dimensionality reduction \cite{vanDerMaaten2008} to the resulting distance matrix (n=2 components, perplexity=30.0, and learning rate=400).
+We assigned each sample to a cluster based on its two-dimensional t-SNE embedding using DBSCAN \cite{Ester1996} with a maximum neighborhood distance of 10 AAs and a minimum of 20 strains per cluster.
+Despite known limitations of applying hierarchical clustering to manifold projections that do not preserve sample density, this approach allowed us to effectively assign strains to qualitative genetic clusters for the purposes of visualization.
 
 \subsection*{Data and software availability}
 
