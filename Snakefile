@@ -48,9 +48,14 @@ path_to_fauna = config["path_to_fauna"]
 TIMEPOINT_TYPES = []
 TIMEPOINT_SAMPLES = []
 TIMEPOINTS = []
+
 PREDICTOR_TYPES = []
 PREDICTOR_SAMPLES = []
 PREDICTORS = []
+
+VALIDATION_PREDICTOR_TYPES = []
+VALIDATION_PREDICTOR_SAMPLES = []
+
 TEST_PREDICTOR_TYPES = []
 TEST_PREDICTOR_SAMPLES = []
 TEST_PREDICTORS = []
@@ -82,6 +87,11 @@ for build_type, builds_by_type in config["builds"].items():
                     PREDICTOR_TYPES.append(build_type)
                     PREDICTOR_SAMPLES.append(sample)
                     PREDICTORS.append(predictor)
+
+            # Note samples for which we need validation figures.
+            if "full_tree_build" in build:
+                VALIDATION_PREDICTOR_TYPES.append(build_type)
+                VALIDATION_PREDICTOR_SAMPLES.append(sample)
 
 #
 # Configure amino acid distance masks.
@@ -276,7 +286,7 @@ def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
 
 def _get_validation_figures(wildcards):
-    return expand("results/builds/{type}/{sample}/figures/validation_figure.png", zip, type=PREDICTOR_TYPES, sample=PREDICTOR_SAMPLES)
+    return expand("results/builds/{type}/{sample}/figures/validation_figure.pdf", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES)
 
 include: "rules/utils.smk"
 include: "rules/datasets.smk"

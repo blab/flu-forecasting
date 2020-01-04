@@ -332,8 +332,8 @@ if __name__ == "__main__":
         transform=clade_ax.transAxes
     )
 
-    clade_ax.set_xlabel("Observed $log_{10}$ growth rate")
-    clade_ax.set_ylabel("Estimated $log_{10}$ growth rate")
+    clade_ax.set_xlabel("Observed $log_{10}$ growth ratio")
+    clade_ax.set_ylabel("Estimated $log_{10}$ growth ratio")
 
     growth_rate_ticks = np.arange(-6, 4, 1)
     clade_ax.set_xticks(growth_rate_ticks)
@@ -439,6 +439,16 @@ if __name__ == "__main__":
     all_rank_ax.set_xlabel("Observed percentile rank")
     all_rank_ax.set_ylabel("Estimated percentile rank")
     all_rank_ax.set_aspect("equal")
+
+    # Annotate panel labels.
+    panel_labels_dict = {
+        "weight": "bold",
+        "size": 14
+    }
+    plt.figtext(0.0, 0.97, "A", **panel_labels_dict)
+    plt.figtext(0.5, 0.97, "B", **panel_labels_dict)
+    plt.figtext(0.0, 0.47, "C", **panel_labels_dict)
+    plt.figtext(0.5, 0.47, "D", **panel_labels_dict)
 
     gs.tight_layout(fig)
     plt.savefig(args.output)

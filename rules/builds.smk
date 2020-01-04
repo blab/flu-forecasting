@@ -1265,7 +1265,7 @@ rule plot_validation_figure:
         forecasts = rules.forecast_all_tips.output.table,
         model_errors = _get_best_model_errors
     output:
-        figure = BUILD_PATH + "figures/validation_figure.png"
+        figure = BUILD_PATH + "figures/validation_figure.pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
