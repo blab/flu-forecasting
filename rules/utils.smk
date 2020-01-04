@@ -50,6 +50,9 @@ def _get_strains_by_wildcards(wildcards):
 def _get_titers_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["titers"]
 
+def _get_fra_titers_by_wildcards(wildcards):
+    return config["builds"][wildcards.type][wildcards.sample]["fra_titers"]
+
 def _get_start_date_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["start_date"]
 

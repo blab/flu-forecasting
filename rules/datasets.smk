@@ -164,6 +164,29 @@ rule download_all_titers_by_assay:
         """
 
 
+rule download_all_fra_titers:
+    output:
+        titers = DATA_NATURAL_ROOT_PATH + "complete_fra_titers.json"
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/download_all_fra_titers_natural_{sample}.txt"
+    log: "logs/download_all_fra_titers_natural_{sample}.log"
+    params:
+        databases = _get_titer_databases,
+        lineage = _get_lineage,
+        assay = "fra"
+    shell:
+        """
+        python3 {path_to_fauna}/tdb/download.py \
+            --database {params.databases} \
+            --virus flu \
+            --subtype {params.lineage} \
+            --select assay_type:{params.assay} \
+            --path data/natural/{wildcards.sample} \
+            --fstem complete_fra \
+            --ftype json
+        """
+
+
 rule get_titers_by_passage:
     input:
         titers = rules.download_all_titers_by_assay.output.titers
@@ -173,6 +196,32 @@ rule get_titers_by_passage:
         passage = _get_titer_passage
     benchmark: "benchmarks/get_titers_natural_{sample}.txt"
     log: "logs/get_titers_natural_{sample}.log"
+    run:
+        df = pd.read_json(input.titers)
+        passaged = (df["serum_passage_category"] == params.passage)
+        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
+        tsv_fields = [
+            "virus_strain",
+            "serum_strain",
+            "serum_id",
+            "source",
+            "titer",
+            "assay_type"
+        ]
+
+        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
+        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+
+
+rule get_fra_titers_by_passage:
+    input:
+        titers = rules.download_all_fra_titers.output.titers
+    output:
+        titers = DATA_NATURAL_ROOT_PATH + "fra_titers.tsv"
+    params:
+        passage = _get_titer_passage
+    benchmark: "benchmarks/get_fra_titers_natural_{sample}.txt"
+    log: "logs/get_fra_titers_natural_{sample}.log"
     run:
         df = pd.read_json(input.titers)
         passaged = (df["serum_passage_category"] == params.passage)

@@ -18,7 +18,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tree", help="Newick tree", required=True)
     parser.add_argument("--frequencies", help="frequencies JSON", required=True)
-    parser.add_argument("--attribute-name", help="name to store distances associated with the given distance map; multiple attribute names are linked to corresponding positional comparison method and distance map arguments", required=True)
+    parser.add_argument("--model-attribute-name", help="name of attribute to use from titer model file", default="dTiter")
+    parser.add_argument("--attribute-name", help="name to store distances", required=True)
     parser.add_argument("--model", help="JSON providing the titer tree model", required=True)
     parser.add_argument("--date-annotations", help="JSON of branch lengths and date annotations from augur refine for samples in the given tree; required for comparisons to earliest or latest date", required=True)
     parser.add_argument("--years-back-to-compare", type=int, help="number of years prior to the current season to search for samples to calculate pairwise comparisons with", required=True)
@@ -84,7 +85,8 @@ if __name__ == "__main__":
                 distances_by_node[current_sample][args.attribute_name][past_sample] = get_titer_distance_between_nodes(
                     tree,
                     tips_by_sample[past_sample],
-                    tips_by_sample[current_sample]
+                    tips_by_sample[current_sample],
+                    args.model_attribute_name
                 )
 
             comparisons += 1

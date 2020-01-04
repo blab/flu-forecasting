@@ -566,6 +566,47 @@ rule titers_tree:
         """
 
 
+rule fra_titers_tree:
+    input:
+        titers = _get_fra_titers_by_wildcards,
+        tree = rules.refine.output.tree
+    output:
+        titers_model = BUILD_TIMEPOINT_PATH + "fra-titers-tree-model.json",
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        augur titers tree \
+            --titers {input.titers} \
+            --tree {input.tree} \
+            --allow-empty-model \
+            --output {output.titers_model} &> {log}
+        """
+
+
+# This is silly, but augur titers outputs a fixed pair of key names and trying
+# to merge two different titer models into an auspice JSON will cause a
+# collision.
+rule rename_fields_in_fra_titers_tree:
+    input:
+        titers_model = rules.fra_titers_tree.output.titers_model
+    output:
+        titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json",
+    run:
+        with open(input.titers_model, "r") as fh:
+            titers_json = json.load(fh)
+
+        for sample in titers_json["nodes"].keys():
+            titers_json["nodes"][sample]["fra_cTiter"] = titers_json["nodes"][sample]["cTiter"]
+            titers_json["nodes"][sample]["fra_dTiter"] = titers_json["nodes"][sample]["dTiter"]
+            del titers_json["nodes"][sample]["cTiter"]
+            del titers_json["nodes"][sample]["dTiter"]
+
+        with open(output.titers_model, "w") as oh:
+            json.dump(titers_json, oh, indent=1)
+
+
 rule convert_titer_model_to_distance_map:
     input:
         model = rules.titers_sub.output.titers_model
@@ -638,6 +679,35 @@ rule pairwise_titer_tree_distances:
         """
 
 
+rule pairwise_fra_titer_tree_distances:
+    input:
+        tree = rules.refine.output.tree,
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        model = rules.rename_fields_in_fra_titers_tree.output.titers_model,
+        date_annotations = rules.refine.output.node_data
+    params:
+        attribute_names = "fra_cTiter_pairwise",
+        model_attribute_name = "fra_dTiter",
+        years_back_to_compare = config["max_years_for_distances"]
+    output:
+        distances = BUILD_TIMEPOINT_PATH + "pairwise_fra_titer_tree_distances.json",
+    benchmark: "benchmarks/pairwise_fra_titer_tree_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/pairwise_fra_titer_tree_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/pairwise_titer_tree_distances.py \
+            --tree {input.tree} \
+            --frequencies {input.frequencies} \
+            --model {input.model} \
+            --model-attribute-name {params.model_attribute_name} \
+            --attribute-name {params.attribute_names} \
+            --date-annotations {input.date_annotations} \
+            --years-back-to-compare {params.years_back_to_compare} \
+            --output {output} &> {log}
+        """
+
+
 rule titer_cross_immunities:
     input:
         frequencies = rules.estimate_frequencies.output.frequencies,
@@ -677,6 +747,33 @@ rule titer_tree_cross_immunities:
         years_to_wane = config["max_years_for_distances"]
     output:
         cross_immunities = BUILD_TIMEPOINT_PATH + "titer_tree_cross_immunity.json",
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 src/cross_immunity.py \
+            --frequencies {input.frequencies} \
+            --distances {input.distances} \
+            --date-annotations {input.date_annotations} \
+            --distance-attributes {params.distance_attributes} \
+            --immunity-attributes {params.immunity_attributes} \
+            --decay-factors {params.decay_factors} \
+            --years-to-wane {params.years_to_wane} \
+            --output {output}
+        """
+
+
+rule fra_titer_tree_cross_immunities:
+    input:
+        frequencies = rules.estimate_frequencies.output.frequencies,
+        distances = rules.pairwise_fra_titer_tree_distances.output.distances,
+        date_annotations = rules.refine.output.node_data
+    params:
+        distance_attributes = "fra_cTiter_pairwise",
+        immunity_attributes = "fra_cTiter_x",
+        decay_factors = "14.0",
+        years_to_wane = config["max_years_for_distances"]
+    output:
+        cross_immunities = BUILD_TIMEPOINT_PATH + "fra_titer_tree_cross_immunity.json",
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -778,6 +875,12 @@ def _get_node_data_for_export(wildcards):
             rules.titer_cross_immunities.output.cross_immunities,
             rules.titer_tree_cross_immunities.output.cross_immunities
         ])
+
+        build = config["builds"][wildcards.type][wildcards.sample]
+        if "fra_titers" in build:
+           inputs.append(rules.rename_fields_in_fra_titers_tree.output.titers_model)
+           inputs.append(rules.fra_titer_tree_cross_immunities.output.cross_immunities)
+
     elif wildcards.type == "simulated":
         inputs.extend([
             rules.normalize_fitness.output.fitness

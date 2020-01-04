@@ -483,6 +483,7 @@
                 "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree/filtered_sequences.fasta",
                 "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree/strains_metadata.tsv",
                 "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/titers.tsv",
+                "fra_titers": "data/natural/natural_sample_1_with_90_vpm_test_tree/fra_titers.tsv",
                 "start_date": "2002-04-01",
                 "end_date": "2019-10-01",
                 "pivot_interval": 6,
@@ -492,10 +493,12 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
+                    "fra_cTiter_x-ne_star",
                     "ne_star-lbi",
                     "cTiter_x-ne_star",
                     "cTiter_x-ne_star-lbi"
-                ]
+                ],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/models_by_distances/cTiter_x-ne_star.json"
             }
         }
     },

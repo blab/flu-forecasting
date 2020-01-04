@@ -109,6 +109,12 @@
       "type": "continuous",
       "key": "cTiter"
     },
+    "fra_cTiter": {
+      "menuItem": "fra titer tree",
+      "legendTitle": "FRA Titer tree",
+      "type": "continuous",
+      "key": "fra_cTiter"
+    },
     "cTiter_x": {
       "menuItem": "titer tree cross-immunity",
       "legendTitle": "Titer tree cross-immunity",
