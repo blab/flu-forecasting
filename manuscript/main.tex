@@ -354,16 +354,16 @@ Interestingly, the FRA cross-immunity metric received a consistently positive co
 These results indicate that this FRA-based composite could eventually replace the HI-based composite with mutational load.
 
 After confirming the coefficients for our best model of HI cross-immunity and mutational load, we inspected forecasts of H3N2 clades from January 2020 to 2021.
-Of the three major currently circulating clades, our model predicted the growth of A1b/197R, the maintenance of A1b/137F, and the decline of 3c3.A (Fig.~\ref{fig:nextstrain_forecasts}).
+Of the three major currently circulating clades, our model predicted growth of the clades A1b/131K and 3c3.A and decline of all other clades (Fig.~\ref{fig:nextstrain_forecasts}).
 To aid with identification of potential vaccine candidates for the next season, we annotated strains in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure*}[ht]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/nextstrain-forecasts-for-september-2020.png}
+  \includegraphics[width=\textwidth]{figures/nextstrain-forecasts.png}
   \caption{
-    Snapshot of live forecasts on nextstrain.org from our best model for September 2020.
-    The observed frequency trajectories for currently circulating clades are shown up to September 2019.
-    Our model favors the A1b/131K subclade, A1b/197R, to grow over the next year and estimates that the A1b/135K subclade, A1b/137F, will remain stable.
+    Snapshot of live forecasts on nextstrain.org from our best model (HI cross-immunity and mutational load) for January 2021.
+    The observed frequency trajectories for currently circulating clades are shown up to January 2020.
+    Our model forecasts growth of the clades A1b/131K and 3c3.A and decline of all other major clades.
   }
   \label{fig:nextstrain_forecasts}
   \end{center}
@@ -374,7 +374,7 @@ To aid with identification of potential vaccine candidates for the next season, 
   \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
   \caption{
     Snapshot of the last two years of seasonal influenza H3N2 evolution on nextstrain.org showing the estimated distance per sample to the future population.
-    Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating strains weighted by the other sample's projected frequencies under the best fitness model.
+    Distance to the future is calculated for each sample as the Hamming distance of HA amino acid sequences to all other circulating strains weighted by the other sample's projected frequencies under the best fitness model (HI cross-immunity and mutational load).
   }
   \label{fig:nextstrain_distance_to_future}
   \end{center}
