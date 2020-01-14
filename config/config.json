@@ -380,16 +380,13 @@
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
-                    "ep",
-                    "ep_wolf",
                     "ep_star",
+                    "ep_x_koel",
+                    "ep_x_wolf",
                     "ep_x",
                     "oracle_x",
-                    "rb",
                     "cTiter",
                     "cTiter_x",
-                    "cTiterSub",
-                    "cTiterSub_x",
                     "ne_star",
                     "dms_star",
                     "dms_nonepitope",
@@ -577,9 +574,9 @@
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise oracle_pairwise",
-                "immunity_attributes": "ep_x oracle_x",
-                "decay_factors": "14.0 14.0"
+                "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise",
+                "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x",
+                "decay_factors": "14.0 14.0 14.0 14.0"
             }
         }
     },
