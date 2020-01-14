@@ -508,6 +508,7 @@
     "min_frequency_per_clade": 0.0,
     "delta_pivots": 1,
     "months_for_distance_season": 12,
+    "months_back_for_current_samples": 6,
     "max_years_for_distances": 5,
     "years_back_for_target_distance": 3,
     "target_distance_attribute": "hamming",

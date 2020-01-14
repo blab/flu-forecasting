@@ -46,9 +46,8 @@
         "time" : "00:30:00"
     },
     "pairwise_titer_tree_distances": {
-        "partition": "campus",
         "memory": "4096",
-        "time" : "02:00:00"
+        "time" : "00:10:00"
     },
     "convert_frequencies_to_table": {
         "time": "00:02:00"
@@ -60,7 +59,6 @@
         "time": "00:02:00"
     },
     "fit_models_by_distances": {
-        "partition": "campus",
         "memory": "8192",
         "time" : "04:00:00"
     }

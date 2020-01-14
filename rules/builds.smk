@@ -118,6 +118,47 @@ rule refine:
         """
 
 
+rule tip_frequencies:
+    message:
+        """
+        Estimating tip frequencies for {input.tree}
+          - narrow bandwidth: {params.narrow_bandwidth}
+          - wide bandwidth: {params.wide_bandwidth}
+          - proportion wide: {params.proportion_wide}
+        """
+    input:
+        tree = rules.refine.output.tree,
+        metadata = _get_metadata_by_wildcards
+    output:
+        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_original-tip-frequencies.json"
+    params:
+        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
+        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
+        proportion_wide=config["frequencies"]["proportion_wide"],
+        pivot_frequency=_get_pivot_interval,
+        min_date=_get_min_date_for_augur_frequencies_by_wildcards,
+        max_date=_get_max_date_for_augur_frequencies_by_wildcards
+    conda: "../envs/anaconda.python3.yaml"
+    benchmark: "benchmarks/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+    log: "logs/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
+    shell:
+        """
+        augur frequencies \
+            --method kde \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --narrow-bandwidth {params.narrow_bandwidth} \
+            --wide-bandwidth {params.wide_bandwidth} \
+            --proportion-wide {params.proportion_wide} \
+            --min-date {params.min_date} \
+            --max-date {params.max_date} \
+            --pivot-interval {params.pivot_frequency} \
+            --output {output}
+        """
+#            --weights {input.weights} \
+#            --weights-attribute region \
+
+
 rule estimate_frequencies:
     message:
         """
@@ -450,7 +491,7 @@ def _get_cross_immunity_decay_factors_for_simulations(wildcards):
 
 rule cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         distances = rules.pairwise_distances.output.distances,
         date_annotations = rules.refine.output.node_data
     params:
@@ -470,7 +511,6 @@ rule cross_immunities:
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
-            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
@@ -655,11 +695,12 @@ rule pairwise_titer_distances:
 rule pairwise_titer_tree_distances:
     input:
         tree = rules.refine.output.tree,
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         model = rules.titers_tree.output.titers_model,
         date_annotations = rules.refine.output.node_data
     params:
         attribute_names = "cTiter_pairwise",
+        months_back_for_current_samples = config["months_back_for_current_samples"],
         years_back_to_compare = config["max_years_for_distances"]
     output:
         distances = BUILD_TIMEPOINT_PATH + "pairwise_titer_tree_distances.json",
@@ -674,6 +715,7 @@ rule pairwise_titer_tree_distances:
             --model {input.model} \
             --attribute-name {params.attribute_names} \
             --date-annotations {input.date_annotations} \
+            --months-back-for-current-samples {params.months_back_for_current_samples} \
             --years-back-to-compare {params.years_back_to_compare} \
             --output {output} &> {log}
         """
@@ -710,7 +752,7 @@ rule pairwise_fra_titer_tree_distances:
 
 rule titer_cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         distances = rules.pairwise_titer_distances.output.distances,
         date_annotations = rules.refine.output.node_data
     params:
@@ -730,14 +772,13 @@ rule titer_cross_immunities:
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
-            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
 
 rule titer_tree_cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         distances = rules.pairwise_titer_tree_distances.output.distances,
         date_annotations = rules.refine.output.node_data
     params:
@@ -757,14 +798,13 @@ rule titer_tree_cross_immunities:
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
-            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
 
 rule fra_titer_tree_cross_immunities:
     input:
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         distances = rules.pairwise_fra_titer_tree_distances.output.distances,
         date_annotations = rules.refine.output.node_data
     params:
@@ -784,7 +824,6 @@ rule fra_titer_tree_cross_immunities:
             --distance-attributes {params.distance_attributes} \
             --immunity-attributes {params.immunity_attributes} \
             --decay-factors {params.decay_factors} \
-            --years-to-wane {params.years_to_wane} \
             --output {output}
         """
 
@@ -805,48 +844,6 @@ rule normalize_fitness:
             --frequency-method {params.preferred_frequency_method} \
             --output {output.fitness}
         """
-
-
-rule tip_frequencies:
-    message:
-        """
-        Estimating tip frequencies for {input.tree}
-          - narrow bandwidth: {params.narrow_bandwidth}
-          - wide bandwidth: {params.wide_bandwidth}
-          - proportion wide: {params.proportion_wide}
-        """
-    input:
-        tree = rules.refine.output.tree,
-        metadata = _get_metadata_by_wildcards,
-        weights = "data/region_weights.json"
-    output:
-        frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_original-tip-frequencies.json"
-    params:
-        narrow_bandwidth=config["frequencies"]["narrow_bandwidth"],
-        wide_bandwidth=config["frequencies"]["wide_bandwidth"],
-        proportion_wide=config["frequencies"]["proportion_wide"],
-        pivot_frequency=_get_pivot_interval,
-        min_date=_get_min_date_for_augur_frequencies_by_wildcards,
-        max_date=_get_max_date_for_augur_frequencies_by_wildcards
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/tip_frequencies_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    shell:
-        """
-        augur frequencies \
-            --method kde \
-            --tree {input.tree} \
-            --metadata {input.metadata} \
-            --narrow-bandwidth {params.narrow_bandwidth} \
-            --wide-bandwidth {params.wide_bandwidth} \
-            --proportion-wide {params.proportion_wide} \
-            --min-date {params.min_date} \
-            --max-date {params.max_date} \
-            --pivot-interval {params.pivot_frequency} \
-            --output {output}
-        """
-#            --weights {input.weights} \
-#            --weights-attribute region \
 
 
 def _get_node_data_for_export(wildcards):

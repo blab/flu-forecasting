@@ -28,9 +28,11 @@ if __name__ == '__main__':
 
     # Identify maximum frequency per sample.
     max_frequency_per_sample = {
-        sample: float(max(sample_frequencies))
-        for sample, sample_frequencies in frequencies["data"]["frequencies"].items()
+        sample: float(max(sample_frequencies["frequencies"]))
+        for sample, sample_frequencies in frequencies.items()
+        if sample not in ["pivots", "generated_by"] and not sample.startswith("count")
     }
+    current_timepoint = frequencies["pivots"][-1]
 
     # Load distances.
     with open(args.distances, "r") as fh:
@@ -51,6 +53,11 @@ if __name__ == '__main__':
    "rb": 3
   },
     """
+    if args.years_to_wane is not None:
+        print("Waning effect with max years of %i" % args.years_to_wane)
+    else:
+        print("No waning effect")
+
     # Calculate cross-immunity for distances defined by the given attributes.
     cross_immunities = {}
     for sample, sample_distances in distances.items():
@@ -68,15 +75,16 @@ if __name__ == '__main__':
             for past_sample, distance in sample_distances[distance_attribute].items():
                 # Calculate effect of waning immunity.
                 if args.years_to_wane is not None:
-                    waning_effect = max(1 - ((date_by_node_name[sample] - date_by_node_name[past_sample]) / args.years_to_wane), 0)
+                    waning_effect = max(1 - ((current_timepoint - date_by_node_name[past_sample]) / args.years_to_wane), 0)
                 else:
                     waning_effect = 1.0
 
                 # Calculate cost of cross-immunity with waning.
-                cross_immunity += waning_effect * max_frequency_per_sample[past_sample] * cross_immunity_cost(
-                    distance,
-                    decay_factor
-                )
+                if waning_effect > 0:
+                    cross_immunity += waning_effect * max_frequency_per_sample[past_sample] * cross_immunity_cost(
+                        distance,
+                        decay_factor
+                    )
 
             cross_immunities[sample][immunity_attribute] = -1 * cross_immunity
 
