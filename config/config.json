@@ -558,9 +558,16 @@
     "cross_immunity": {
         "h3n2": {
             "ha": {
-                "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise",
-                "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x",
-                "decay_factors": "14.0 14.0 14.0 14.0"
+                "simulated": {
+                    "distance_attributes": "ep_pairwise",
+                    "immunity_attributes": "ep_x",
+                    "decay_factors": "14.0"
+                },
+                "natural": {
+                    "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise",
+                    "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x",
+                    "decay_factors": "14.0 14.0 14.0 14.0"
+                }
             }
         }
     },

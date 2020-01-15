@@ -478,15 +478,15 @@ rule pairwise_distances:
 
 
 def _get_cross_immunity_distance_attributes_for_simulations(wildcards):
-    return config["cross_immunity"]["h3n2"]["ha"]["distance_attributes"]
+    return config["cross_immunity"]["h3n2"]["ha"][wildcards.type]["distance_attributes"]
 
 
 def _get_cross_immunity_attributes_for_simulations(wildcards):
-    return config["cross_immunity"]["h3n2"]["ha"]["immunity_attributes"]
+    return config["cross_immunity"]["h3n2"]["ha"][wildcards.type]["immunity_attributes"]
 
 
 def _get_cross_immunity_decay_factors_for_simulations(wildcards):
-    return config["cross_immunity"]["h3n2"]["ha"]["decay_factors"]
+    return config["cross_immunity"]["h3n2"]["ha"][wildcards.type]["decay_factors"]
 
 
 rule cross_immunities:
