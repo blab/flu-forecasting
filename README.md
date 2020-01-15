@@ -1,6 +1,33 @@
 # Integrative prediction of seasonal influenza evolution by genotype and phenotype
 
-## Quick start
+## Quickstart (simulated populations only)
+
+[Install miniconda](https://conda.io/miniconda.html) for your machine and then run the following commands.
+
+Clone the forecasting repository.
+
+```bash
+git clone --recursive https://github.com/blab/flu-forecasting.git
+cd flu-forecasting
+```
+
+Run the pipeline for simulated data.
+This will first simulate influenza-like populations and then fit models to those populations.
+All steps will be run locally with one CPU.
+
+```bash
+./quickstart
+```
+
+For the impatient, run locally with four CPUs.
+
+```bash
+./quickstart -j 4
+```
+
+## Run the complete analysis with simulated and natural populations
+
+This step requires access to the Bedford lab's "fauna" database to download data for natural populations.
 
 [Install miniconda](https://conda.io/miniconda.html) for your machine and then run the following commands.
 
@@ -9,7 +36,7 @@
 git clone https://github.com/nextstrain/fauna.git
 
 # Clone the forecasting repo
-git clone https://github.com/blab/flu-forecasting.git
+git clone --recursive https://github.com/blab/flu-forecasting.git
 cd flu-forecasting
 
 # Create conda environment for Snakemake.
@@ -18,12 +45,24 @@ conda env create -f envs/anaconda.python3.yaml
 # Set RETHINK database environment variables.
 export RETHINK=
 
-# Run pipeline on a minimal dataset to confirm everything works.
-# The first run will take some time while Snakemake creates the conda environments it needs.
-./quickstart
-
 # Or run the entire pipeline on the complete input data.
 ./run
+```
+
+The entire pipeline is implemented with [Snakemake](https://snakemake.readthedocs.io/en/stable/), so you can run `snakemake` directly as follows to run the pipeline on your cluster.
+The following example works for a SLURM-based cluster environment.
+Modify the `--cluster-config` and `--drmaa` arguments to match your cluster's environment.
+Change the `-j` argument to change the number of jobs to be executed simultaneously.
+
+```bash
+snakemake \
+    --restart-times 3 \
+    -w 60 \
+    --use-conda \
+    --cluster-config config/cluster-gizmo.json \
+    --drmaa " -p {cluster.partition} --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" \
+    --jobname "{rulename}.{jobid}.sh"
+    -j 20
 ```
 
 By default, this pipeline will download HA sequences and public titers for A/H3N2 with fauna, run augur prepare and process, run the fitness model for all defined combinations of predictors, and generate the output tables and figures described below.
