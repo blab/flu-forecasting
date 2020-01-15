@@ -1,4 +1,5 @@
 {
+    "active_builds": "simulated_sample_3 simulated_sample_3_test_tree natural_sample_1_with_90_vpm_sliding natural_sample_1_with_90_vpm_sliding_test_tree natural_sample_20191001",
     "datasets": {
         "simulated_sample_1": {
             "description": "Require a minimum fitness for randomly select amino acids in non-stationary positive selection",
@@ -110,7 +111,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -134,7 +134,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 30,
                 "years_back_to_build_trees": 30,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
             },
@@ -149,7 +148,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_1/minimal_models_by_distances/normalized_fitness.json"
             },
@@ -164,7 +162,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -191,7 +188,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 10,
                 "years_back_to_build_trees": 10,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             },
@@ -208,7 +204,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -235,7 +230,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 10,
                 "years_back_to_build_trees": 10,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
             }
@@ -251,7 +245,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
                 "years_back_to_build_trees": 50,
-                "active": false,
                 "reference": "data/natural/luksza_lassig/A_Albany_17_1968.gb",
                 "training_window": 8,
                 "predictors": [
@@ -275,7 +268,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 1,
                 "years_back_to_build_trees": 6,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -300,7 +292,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "all_predictors": [
                     "naive",
@@ -344,7 +335,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
             },
@@ -359,7 +349,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 23,
                 "years_back_to_build_trees": 30,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": ["ne_star-lbi"],
                 "best_predictor": "results/builds/natural/natural_sample_0_with_90_vpm_sliding/models_by_distances/ne_star-lbi.json"
@@ -376,7 +365,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -412,7 +400,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 25,
                 "years_back_to_build_trees": 30,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": ["ne_star-lbi"],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/ne_star-lbi.json"
@@ -430,7 +417,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",
@@ -469,7 +455,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 10,
                 "years_back_to_build_trees": 10,
-                "active": false,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": ["ne_star-lbi"],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/cTiter_x-ne_star.json"
@@ -486,7 +471,6 @@
                 "pivot_interval": 6,
                 "min_years_per_build": 6,
                 "years_back_to_build_trees": 6,
-                "active": true,
                 "reference": "config/reference_h3n2_ha.gb",
                 "predictors": [
                     "naive",

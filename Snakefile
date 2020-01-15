@@ -59,10 +59,13 @@ VALIDATION_PREDICTOR_SAMPLES = []
 TEST_PREDICTOR_TYPES = []
 TEST_PREDICTOR_SAMPLES = []
 TEST_PREDICTORS = []
+ACTIVE_BUILDS = config["active_builds"].split(" ")
+print("Active builds:", config["active_builds"])
+
 for build_type, builds_by_type in config["builds"].items():
     for sample, build in builds_by_type.items():
         # Limit Snakemake rules to active builds.
-        if build["active"]:
+        if sample in ACTIVE_BUILDS:
             timepoints_for_build = _get_timepoints_for_build_interval(
                 build["start_date"],
                 build["end_date"],
