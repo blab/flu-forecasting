@@ -724,13 +724,14 @@ rule pairwise_titer_tree_distances:
 rule pairwise_fra_titer_tree_distances:
     input:
         tree = rules.refine.output.tree,
-        frequencies = rules.estimate_frequencies.output.frequencies,
+        frequencies = rules.tip_frequencies.output.frequencies,
         model = rules.rename_fields_in_fra_titers_tree.output.titers_model,
         date_annotations = rules.refine.output.node_data
     params:
         attribute_names = "fra_cTiter_pairwise",
         model_attribute_name = "fra_dTiter",
-        years_back_to_compare = config["max_years_for_distances"]
+        months_back_for_current_samples = config["months_back_for_current_samples"],
+        years_back_to_compare = config["max_years_for_distances"],
     output:
         distances = BUILD_TIMEPOINT_PATH + "pairwise_fra_titer_tree_distances.json",
     benchmark: "benchmarks/pairwise_fra_titer_tree_distances_" + BUILD_SEGMENT_LOG_STEM + ".txt"
@@ -745,6 +746,7 @@ rule pairwise_fra_titer_tree_distances:
             --model-attribute-name {params.model_attribute_name} \
             --attribute-name {params.attribute_names} \
             --date-annotations {input.date_annotations} \
+            --months-back-for-current-samples {params.months_back_for_current_samples} \
             --years-back-to-compare {params.years_back_to_compare} \
             --output {output} &> {log}
         """
