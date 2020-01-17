@@ -131,11 +131,10 @@ The mutational load metric received a consistently negative coefficient with an 
 \end{figure*}
 
 Surprisingly, the composite model of epitope antigenic novelty and mutational load did not perform better than the individual mutational load model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-While epitope antigenic novelty was not predictive on its own, the consistently positive coefficient it received in the composite model suggested that it was an informative metric when effects of purifying selection were also represented in the model.
 The antigenic novelty fitness metric assumes that antigenic drift is driven by nonlinear effects of previous host exposure \cite{Luksza:2014hj} that are not explicitly present in our simulations.
 To understand whether positive selection at epitope sites might be better represented by a linear model, we fit an additional model based on an ``epitope ancestor'' metric that counted the number of epitope mutations since each sample's ancestor in the previous season.
-By itself, this linear fitness metric did not outperform the antigenic novelty metric (Table~\ref{table_simulated_model_selection}).
-However, when we fit a composite model of the epitope ancestor and mutational load metrics, this model outperformed both the individual mutational load model and the composite antigenic novelty and mutational load model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
+This linear fitness metric slightly outperformed the antigenic novelty metric (Table~\ref{table_simulated_model_selection}).
+Importantly, a composite model of the epitope ancestor and mutational load metrics outperformed all other epitope-based models and the individual mutational load model (Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
 From these results, we concluded that our method can accurately estimate the evolution of simulated populations, but that the fitness of simulated strains was dominated by purifying selection and only weakly affected by a linear effect of positive selection at epitope sites.
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
@@ -171,8 +170,8 @@ Percentile ranks per strain based on their observed and estimated distances to t
 Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
 A standard expectation from machine learning is that models will perform worse on test data than on validation data.
-Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}).
-The composite model of mutational load and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively (Supplemental Table~\ref{table_simulated_model_selection}).
+Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
+The composite model of mutational load and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively.
 Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
 Note, that the numbers of test and validation data points are small and we therefore expect fluctuations.
 
@@ -226,10 +225,10 @@ The average improvement of the sequence-only models over the naive model was con
 This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
 
 Of the two metrics for antigenic drift, HI antigenic novelty consistently outperformed epitope antigenic novelty (Table~\ref{table_natural_model_selection}).
-HI antigenic novelty estimated an average distance to the future of 6.04 $\pm$ 1.57 AAs and outperformed the naive model at 17 of 23 timepoints (74\%).
-After the first three training windows where HI measurements were relatively sparse, the HI antigenic novelty coefficient was stable across all remaining timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
-In contrast, epitope antigenic novelty estimated a distance of 7.06 $\pm$ 1.37 AAs and only outperformed the naive model at six timepoints (26\%).
-Epitope antigenic novelty was also the only metric whose coefficient started at a positive value (1.45 $\pm$ 0.10 on average prior to October 2009) and transitioned to a negative value through the validation period (-0.13 $\pm$ 0.32 on average for October 2009 and after).
+HI antigenic novelty estimated an average distance to the future of 6.01 $\pm$ 1.50 AAs and outperformed the naive model at 16 of 23 timepoints (70\%).
+The coefficient for HI antigenic novelty remained stable across all timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
+In contrast, epitope antigenic novelty estimated a distance of 7.13 $\pm$ 1.47 AAs and only outperformed the naive model at seven timepoints (30\%).
+Epitope antigenic novelty was also the only metric whose coefficient started at a positive value (1.17 $\pm$ 0.03 on average prior to October 2009) and transitioned to a negative value through the validation period (-0.19 $\pm$ 0.34 on average for October 2009 and after).
 This strong coefficient for the first half of training windows indicated that, unlike the results for simulated populations, the nonlinear antigenic novelty metric was historically an effective measure of antigenic drift.
 The historical importance of the epitope sites used for this metric was further supported by the relative enrichment of mutations at these sites for the most successful ``trunk'' lineages of natural populations compared to side branch lineages (Supplemental Table~\ref{sup_table:mutations_by_trunk_status}).
 
