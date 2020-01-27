@@ -331,5 +331,8 @@ rule auspice:
 rule validation_figures:
     input: _get_validation_figures
 
-#rule trees:
-#    input: rules.aggregate_tree_plots.output.trees
+rule trees:
+    input: expand(rules.aggregate_tree_plots.output.trees, zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES)
+    output:
+        trees="results/figures/trees.pdf"
+    shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
