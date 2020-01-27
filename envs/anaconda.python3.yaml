@@ -1,14 +1,16 @@
-name: nextstrain
+name: flu_forecasting
 channels:
 - bioconda
 - defaults
 dependencies:
+- ant
 - conda
 - cvxopt
 - fasttree
 - iqtree
 - mafft
 - opencv
+- openjdk
 - pandas=0.25.*
 - pip
 - psutil

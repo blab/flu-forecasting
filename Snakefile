@@ -297,12 +297,9 @@ include: "rules/builds.smk"
 
 rule all:
     input:
-        #_get_clade_model_files,
         _get_distance_model_files,
         _get_auspice_files,
-        _get_validation_figures,
-        "results/figures/frequencies.pdf",
-        "results/figures/trees.pdf"
+        _get_validation_figures
 
 rule clade_models:
     input: _get_clade_model_files

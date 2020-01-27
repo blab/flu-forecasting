@@ -74,10 +74,6 @@ then
     USE_CLUSTER=0
 fi
 
-# Setup the environment.
-. ${HOME}/miniconda3/etc/profile.d/conda.sh
-conda activate nextstrain
-
 # Run jobs on the cluster if it is possible and the user did not request a local
 # run.
 if [[ "${USE_CLUSTER}" -eq "1" ]]

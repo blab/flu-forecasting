@@ -1,8 +1,8 @@
 # Integrative prediction of seasonal influenza evolution by genotype and phenotype
 
-## Quickstart (simulated populations only)
+## Installation
 
-[Install miniconda](https://conda.io/miniconda.html) for your machine and then run the following commands.
+[Install miniconda](https://conda.io/miniconda.html) for your machine.
 
 Clone the forecasting repository.
 
@@ -11,48 +11,64 @@ git clone --recursive https://github.com/blab/flu-forecasting.git
 cd flu-forecasting
 ```
 
-Run the pipeline for simulated data.
+Create and activate a conda environment for the pipeline.
+
+```bash
+conda env create -f envs/anaconda.python3.yaml
+conda activate flu_forecasting
+```
+
+Build santa-sim.
+
+```bash
+cd dist/santa-sim
+ant
+cd ../..
+```
+
+The entire pipeline is implemented with [Snakemake](https://snakemake.readthedocs.io/en/stable/).
+
+## Quickstart (sparse simulated populations only)
+
+Run the pipeline for sparse simulated data.
 This will first simulate influenza-like populations and then fit models to those populations.
 All steps will be run locally with one CPU.
 
 ```bash
-./quickstart
+snakemake --config active_builds='simulated_sample_1'
 ```
 
 For the impatient, run locally with four CPUs.
 
 ```bash
-./quickstart -j 4
+snakemake --config active_builds='simulated_sample_1' -j 4
 ```
 
 ## Run the complete analysis with simulated and natural populations
 
 This step requires access to the Bedford lab's "fauna" database to download data for natural populations.
 
-[Install miniconda](https://conda.io/miniconda.html) for your machine and then run the following commands.
+Clone the fauna repository in the parent directory of the `flu-forecasting` directory.
 
 ```bash
-# Clone the fauna repo
-git clone https://github.com/nextstrain/fauna.git
-
-# Clone the forecasting repo
-git clone --recursive https://github.com/blab/flu-forecasting.git
-cd flu-forecasting
-
-# Create conda environment for Snakemake.
-conda env create -f envs/anaconda.python3.yaml
-
-# Set RETHINK database environment variables.
-export RETHINK=
-
-# Or run the entire pipeline on the complete input data.
-./run
+git clone https://github.com/nextstrain/fauna.git ../fauna
 ```
 
-The entire pipeline is implemented with [Snakemake](https://snakemake.readthedocs.io/en/stable/), so you can run `snakemake` directly as follows to run the pipeline on your cluster.
-The following example works for a SLURM-based cluster environment.
-Modify the `--cluster-config` and `--drmaa` arguments to match your cluster's environment.
-Change the `-j` argument to change the number of jobs to be executed simultaneously.
+Set environment variables to connect to the database.
+
+```bash
+export RETHINK=
+```
+
+Run the entire pipeline locally with four simultaneous jobs.
+
+```bash
+snakemake -j 4
+```
+
+Alternately, follow [Snakemake documentation to distribute the entire pipeline to your cloud or cluster accounts](https://snakemake.readthedocs.io/en/stable/executing/cluster-cloud.html).
+The following is an example of how to distribute the pipeline on a SLURM-based cluster using 20 simultaneous jobs.
+The `--use-conda` flag is required to ensure each rule is executed within the proper environment.
 
 ```bash
 snakemake \
@@ -65,22 +81,13 @@ snakemake \
     -j 20
 ```
 
-By default, this pipeline will download HA sequences and public titers for A/H3N2 with fauna, run augur prepare and process, run the fitness model for all defined combinations of predictors, and generate the output tables and figures described below.
-
 ## Configuration
 
-Model builds are parameterized by the contents of `config.json`.
-The following parameters are required to specify builds.
-
-| Parameter | Description | Example |
-|:---:|:---:|:---:|
-| year_ranges | list of year intervals to build trees for | `["2000-2015", "2005-2017"]` |
-| viruses | scalar or list of number of viruses to sample per month | `[20, 92]` |
-| number_of_samples | number of trees to build for each combination of year ranges and virus sampling densities | `5` |
-| predictors | list of fitness predictors to fit a model for; multiple predictors specified as hyphen-delimited lists | `["null", "ep-cTiterSub-dms"]` |
-
-Trees will be built for all combination of year ranges, virus sampling densities, and number of samples.
-Models will be built for all combination of predictors and trees.
+Analyses are parameterized by the contents of `config.json`.
+Models are fit to annotated data frames created for one or more "builds" from one or more "datasets".
+Datasets and builds are decoupled to allow multiple builds from a single dataset.
+Builds are split into "simulated" and "natural" such that each entry in one of these categories is a dictionary of build settings indexed by a build name.
+The list of active builds is determined by the space-delimited values in the `active_builds` top-level key of the configuration.
 
 ## Inputs
 
@@ -90,8 +97,5 @@ The only inputs currently are the configuration file, `config.json`, and the dat
 
 | Filename | Contents |
 |:---:|:---:|
-| models.tab | raw data table of initial, observed, and predicted frequencies by clade, timepoint, and model |
-| model_accuracy.tab | summary table of growth correlation and clade error for all models |
-| model_parameters.tab | summary table of beta and std dev params for each predictor in each model with one or more predictors |
-| trees.pdf | BALTIC-style visualization of trees built by augur's process step |
-| model_fold_change.pdf | Correlation of observed and predicted growth rate for all models |
+| results/distance_model_errors.tsv | table of model errors per build, timepoint, and model |
+| results/distance_model_coefficients.tsv | table of model coefficients per build, timepoint, and model |
