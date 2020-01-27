@@ -57,7 +57,8 @@ git clone https://github.com/nextstrain/fauna.git ../fauna
 Set environment variables to connect to the database.
 
 ```bash
-export RETHINK=
+export RETHINK_HOST=yourhost
+export RETHINK_AUTH_KEY=yourkey
 ```
 
 Run the entire pipeline locally with four simultaneous jobs.
