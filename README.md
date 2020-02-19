@@ -78,7 +78,7 @@ snakemake \
     --use-conda \
     --cluster-config config/cluster-gizmo.json \
     --drmaa " -p {cluster.partition} --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" \
-    --jobname "{rulename}.{jobid}.sh"
+    --jobname "{rulename}.{jobid}.sh" \
     -j 20
 ```
 
