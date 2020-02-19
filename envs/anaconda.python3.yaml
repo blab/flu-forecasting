@@ -20,5 +20,6 @@ dependencies:
 - seaborn
 - pip:
   - snakemake
+  - drmaa==0.7.9
   - nextstrain-augur==5.4.1
   - rethinkdb==2.2.0.post6
