@@ -297,7 +297,8 @@ include: "rules/builds.smk"
 
 rule all:
     input:
-        _get_distance_model_files,
+        "results/distance_model_errors.tsv",
+        "results/distance_model_coefficients.tsv",
         _get_auspice_files,
         _get_validation_figures
 

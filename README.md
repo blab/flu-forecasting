@@ -32,10 +32,10 @@ The entire pipeline is implemented with [Snakemake](https://snakemake.readthedoc
 
 Run the pipeline for sparse simulated data.
 This will first simulate influenza-like populations and then fit models to those populations.
-All steps will be run locally with one CPU.
+Run the pipeline locally with one CPU.
 
 ```bash
-snakemake --config active_builds='simulated_sample_1'
+snakemake --config active_builds='simulated_sample_1' -j 1
 ```
 
 For the impatient, run locally with four CPUs.
@@ -43,6 +43,9 @@ For the impatient, run locally with four CPUs.
 ```bash
 snakemake --config active_builds='simulated_sample_1' -j 4
 ```
+
+Always specify a value for `-j`, to limit the number of cores available to the simulator.
+If no limit is provided, the Java-based simulator will attempt to use all available cores and may cause headaches for you or your cluster's system administrator.
 
 ## Run the complete analysis with simulated and natural populations
 
@@ -80,6 +83,12 @@ snakemake \
     --drmaa " -p {cluster.partition} --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" \
     --jobname "{rulename}.{jobid}.sh" \
     -j 20
+```
+
+You can also run just one of the natural builds as follows, to confirm your environment is configured properly.
+
+```bash
+snakemake --config active_builds='natural_sample_1_with_90_vpm_sliding' -j 4
 ```
 
 ## Configuration
