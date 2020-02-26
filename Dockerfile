@@ -4,9 +4,6 @@ FROM continuumio/miniconda3
 # Use bash as the default shell.
 SHELL ["/bin/bash", "-c"]
 
-# Create a top-level directory for all Nextstrain-related tools.
-WORKDIR /nextstrain
-
 # Install Snakemake.
 RUN conda install --yes -c bioconda -c conda-forge snakemake-minimal
 
@@ -15,6 +12,9 @@ RUN conda install --yes -c bioconda biopython
 
 # Install pandas
 RUN conda install --yes pandas
+
+# Create a top-level directory for all Nextstrain-related tools.
+WORKDIR /nextstrain
 
 # Download the fauna repository.
 RUN git clone https://github.com/nextstrain/fauna.git
@@ -29,3 +29,6 @@ COPY envs envs/
 COPY rules rules/
 COPY scripts scripts/
 COPY src src/
+
+# Prepare conda environment for Snakemake.
+RUN snakemake --use-conda build_environment

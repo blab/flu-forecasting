@@ -316,6 +316,10 @@ rule all:
         _get_auspice_files,
         _get_validation_figures
 
+rule build_environment:
+    conda: "envs/anaconda.python3.yaml"
+    shell: "echo Environment built"
+
 rule clade_models:
     input: _get_clade_model_files
 

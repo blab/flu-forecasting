@@ -5,6 +5,7 @@ channels:
 dependencies:
 - conda
 - cvxopt
+- datrie
 - fasttree
 - iqtree
 - mafft
