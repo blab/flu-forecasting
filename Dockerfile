@@ -24,6 +24,7 @@ WORKDIR /nextstrain/flu-forecasting
 COPY Snakefile .
 COPY config config/
 COPY data data/
+COPY dist dist/
 COPY envs envs/
 COPY rules rules/
 COPY scripts scripts/
