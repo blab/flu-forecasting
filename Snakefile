@@ -1,4 +1,3 @@
-from augur.frequency_estimators import get_pivots, timestamp_to_float
 import Bio.SeqIO
 import csv
 import json
@@ -8,8 +7,6 @@ from pathlib import Path
 import pprint
 from snakemake.logging import logger
 import sys
-
-from src.forecast.fitness_model import get_train_validate_timepoints
 
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
@@ -232,6 +229,23 @@ def _get_clock_std_dev_argument(wildcards):
         argument = "--clock-std-dev %.5f" % (0.2 * rate)
 
     return argument
+
+def timestamp_to_float(time):
+    """Convert a pandas timestamp to a floating point date.
+
+    >>> import datetime
+    >>> time = datetime.date(2010, 10, 1)
+    >>> timestamp_to_float(time)
+    2010.75
+    >>> time = datetime.date(2011, 4, 1)
+    >>> timestamp_to_float(time)
+    2011.25
+    >>> timestamp_to_float(datetime.date(2011, 1, 1))
+    2011.0
+    >>> timestamp_to_float(datetime.date(2011, 12, 1)) == (2011.0 + 11.0 / 12)
+    True
+    """
+    return time.year + ((time.month - 1) / 12.0)
 
 def _get_min_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.start))
