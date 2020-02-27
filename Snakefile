@@ -1,7 +1,5 @@
-import Bio.SeqIO
 import csv
 import json
-import numpy as np
 import pandas as pd
 from pathlib import Path
 import pprint
@@ -331,18 +329,26 @@ rule distance_models_errors:
         errors = _get_distance_model_errors
     output:
         errors = "results/distance_model_errors.tsv"
-    run:
-        df = pd.concat([pd.read_csv(error_file, sep="\t") for error_file in input.errors], ignore_index=True)
-        df.to_csv(output.errors, sep="\t", header=True, index=False)
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/concatenate_tables.py \
+            --tables {input.errors} \
+            --output {output.errors}
+        """
 
 rule distance_models_coefficients:
     input:
         coefficients = _get_distance_model_coefficients
     output:
         coefficients = "results/distance_model_coefficients.tsv"
-    run:
-        df = pd.concat([pd.read_csv(coefficient_file, sep="\t") for coefficient_file in input.coefficients], ignore_index=True)
-        df.to_csv(output.coefficients, sep="\t", header=True, index=False)
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/concatenate_tables.py \
+            --tables {input.coefficients} \
+            --output {output.coefficients}
+        """
 
 rule auspice:
     input: _get_auspice_files

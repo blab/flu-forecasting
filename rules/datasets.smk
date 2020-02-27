@@ -49,15 +49,18 @@ rule standardize_simulated_sequence_dates:
         metadata = rules.parse_simulated_sequences.output.metadata
     output:
         metadata = DATA_SIMULATED_ROOT_PATH + "corrected_metadata.tsv"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["num_date"] = 2000.0 + (df["generation"] / 200.0)
-        df["date"] = df["num_date"].apply(float_to_datestring)
-        df["year"]  = pd.to_datetime(df["date"]).dt.year
-        df["month"]  = pd.to_datetime(df["date"]).dt.month
-
-        df[df["fitness"] > 0].to_csv(output.metadata, header=True, index=False, sep="\t")
-
+    conda: "../envs/anaconda.python3.yaml"
+    params:
+        start_year = 2000.0,
+        generations_per_year = 200.0
+    shell:
+        """
+        python3 scripts/standardize_simulated_sequence_dates.py \
+            --metadata {input.metadata} \
+            --start-year {params.start_year} \
+           --generations-per-year {params.generations_per_year} \
+            --output {output.metadata}
+        """
 
 rule filter_simulated:
     input:
