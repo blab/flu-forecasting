@@ -1,5 +1,5 @@
 {
-    "active_builds": "simulated_sample_3 simulated_sample_3_test_tree natural_sample_1_with_90_vpm_sliding natural_sample_1_with_90_vpm_sliding_test_tree natural_sample_20191001",
+    "active_builds": "simulated_sample_3 natural_sample_1_with_90_vpm_sliding",
     "datasets": {
         "simulated_sample_1": {
             "description": "Require a minimum fitness for randomly select amino acids in non-stationary positive selection",
