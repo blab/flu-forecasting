@@ -257,3 +257,12 @@ The following is an example of how to distribute the pipeline on a SLURM-based c
 ```bash
 snakemake --profile profiles/slurm-drmaa
 ```
+
+### Cleaning output for subsequent builds
+
+In order to clear output files to be rebuilt in subsequent builds, run the `clean_forecasting_output.py` script.
+For example, the following command clears output files for a single sample in the natural builds.
+
+```bash
+python scripts/clean_foreasting_output.py "natural_sample_1_with_90_vpm_sliding""
+```
