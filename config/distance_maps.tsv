@@ -12,6 +12,8 @@ h3n2	ha	ancestor	dms_nonepitope	dms_nonepitope
 h3n2	ha	pairwise	ep_pairwise	luksza
 h3n2	ha	pairwise	ep_pairwise_wolf	wolf
 h3n2	ha	pairwise	ep_pairwise_koel	koel
+h3n2	ha	pairwise	ep_pairwise_antigenic_escape_epitope	antigenic_escape_ep
+h3n2	ha	pairwise	ep_pairwuse_antigenic_escape_mutdiffsel	antigenic_escape_mutdiffsel
 h3n2	ha	pairwise	oracle_pairwise	oracle
 h3n2	na	root	ep	bhatt
 h3n2	na	root	ne	bhatt_nonepitope
