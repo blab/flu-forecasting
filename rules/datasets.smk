@@ -187,21 +187,14 @@ rule get_titers_by_passage:
         passage = _get_titer_passage
     benchmark: "benchmarks/get_titers_natural_{sample}.txt"
     log: "logs/get_titers_natural_{sample}.log"
-    run:
-        df = pd.read_json(input.titers)
-        passaged = (df["serum_passage_category"] == params.passage)
-        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
-        tsv_fields = [
-            "virus_strain",
-            "serum_strain",
-            "serum_id",
-            "source",
-            "titer",
-            "assay_type"
-        ]
-
-        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
-        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/get_titers_by_passage.py \
+            --titers {input.titers} \
+            --passage-type {params.passage} \
+            --output {output.titers}
+        """
 
 
 rule get_fra_titers_by_passage:
@@ -213,21 +206,14 @@ rule get_fra_titers_by_passage:
         passage = _get_titer_passage
     benchmark: "benchmarks/get_fra_titers_natural_{sample}.txt"
     log: "logs/get_fra_titers_natural_{sample}.log"
-    run:
-        df = pd.read_json(input.titers)
-        passaged = (df["serum_passage_category"] == params.passage)
-        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
-        tsv_fields = [
-            "virus_strain",
-            "serum_strain",
-            "serum_id",
-            "source",
-            "titer",
-            "assay_type"
-        ]
-
-        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
-        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/get_titers_by_passage.py \
+            --titers {input.titers} \
+            --passage-type {params.passage} \
+            --output {output.titers}
+        """
 
 
 rule parse:
