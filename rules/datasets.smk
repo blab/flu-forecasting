@@ -62,6 +62,7 @@ rule standardize_simulated_sequence_dates:
             --output {output.metadata}
         """
 
+
 rule filter_simulated:
     input:
         sequences = rules.parse_simulated_sequences.output.sequences,
@@ -93,17 +94,14 @@ rule filter_metadata_simulated:
         metadata = rules.standardize_simulated_sequence_dates.output.metadata,
     output:
         metadata = DATA_SIMULATED_ROOT_PATH + "filtered_metadata.tsv"
-    run:
-        # Get a list of all samples that passed the sequence filtering step.
-        sequences = Bio.SeqIO.parse(input.sequences, "fasta")
-        sample_ids = [sequence.id for sequence in sequences]
-
-        # Load all metadata.
-        metadata = pd.read_csv(input.metadata, sep="\t")
-        filtered_metadata = metadata[metadata["strain"].isin(sample_ids)].copy()
-
-        # Save only the metadata records that have entries in the filtered sequences.
-        filtered_metadata.to_csv(output.metadata, sep="\t", header=True, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_simulated_metadata.py \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --output {output.metadata}
+        """
 
 
 rule get_strains_for_simulated_sequences:
