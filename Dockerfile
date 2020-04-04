@@ -28,15 +28,15 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-$CONDA_VERSION-L
     && echo "${CONDA_MD5}  Miniconda3-$CONDA_VERSION-Linux-x86_64.sh" > miniconda.md5 \
     && if [ $(md5sum -c miniconda.md5 | awk '{print $2}') != "OK" ] ; then exit 1; fi \
     && mv Miniconda3-$CONDA_VERSION-Linux-x86_64.sh miniconda.sh \
-    && /bin/bash ~/miniconda.sh -b -p /opt/conda \
-    && rm ~/miniconda.sh miniconda.md5 \
+    && /bin/bash ./miniconda.sh -b -p /opt/conda \
+    && rm miniconda.sh miniconda.md5 \
     && /opt/conda/bin/conda clean -tipsy \
     && ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
     && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
     && echo "conda activate base" >> ~/.bashrc \
     && /opt/conda/bin/conda install --freeze-installed tini -y \
     && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
-    && /opt/conda/bin/conda clean -afy \
+    && /opt/conda/bin/conda clean -afy
 
 # Create Nextstrain environment inside the base environment.
 COPY envs/anaconda.python3.yaml /tmp
