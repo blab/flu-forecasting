@@ -34,7 +34,7 @@ if __name__ == '__main__':
         frequencies = {
             node_name: region_frequencies["global"]
             for node_name, region_frequencies in frequencies_json.items()
-            if node_name not in ["pivots", "counts"]
+            if node_name not in ["pivots", "counts", "generated_by"]
         }
 
     # Collect the last frequency for each node keeping only terminal nodes

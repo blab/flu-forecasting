@@ -920,27 +920,16 @@ rule merge_node_data_and_frequencies:
         table = BUILD_TIMEPOINT_PATH + "tip_attributes.tsv"
     params:
         preferred_frequency_method = config["frequencies"]["preferred_method"]
-    run:
-        node_data = pd.read_table(input.node_data)
-        kde_frequencies = pd.read_table(input.kde_frequencies)
-        diffusion_frequencies = pd.read_table(input.diffusion_frequencies)
-        df = node_data.merge(
-            kde_frequencies,
-            how="inner",
-            on=["strain", "timepoint", "is_terminal"]
-        ).merge(
-            diffusion_frequencies,
-            how="inner",
-            on=["strain", "timepoint", "is_terminal"]
-        )
-
-        # Annotate frequency by the preferred method if there isn't already a
-        # frequency column defined.
-        if "frequency" not in df.columns:
-            df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
-
-        df = df[df["frequency"] > 0.0].copy()
-        df.to_csv(output.table, sep="\t", index=False, header=True)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/merge_node_data_and_frequencies.py \
+            --node-data {input.node_data} \
+            --kde-frequencies {input.kde_frequencies} \
+            --diffusion-frequencies {input.diffusion_frequencies} \
+            --preferred-frequency-method {params.preferred_frequency_method} \
+            --output {output.table}
+        """
 
 
 rule collect_tip_attributes:
