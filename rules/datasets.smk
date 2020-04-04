@@ -263,11 +263,13 @@ rule filter_metadata:
         metadata = rules.parse.output.metadata,
     output:
         metadata = DATA_NATURAL_ROOT_PATH + "filtered_metadata.tsv"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-
-        # Exclude strains with ambiguous collection dates.
-        df[~df["date"].str.contains("XX")].to_csv(output.metadata, sep="\t", header=True, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_strains_with_ambiguous_dates.py \
+            --metadata {input.metadata} \
+            --output {output.metadata}
+        """
 
 
 rule select_strains:
@@ -308,8 +310,11 @@ rule extract_strain_metadata:
         metadata = rules.filter_metadata.output.metadata
     output:
         metadata = protected(DATA_NATURAL_ROOT_PATH + "strains_metadata.tsv")
-    run:
-        strains = pd.read_table(input.strains, header=None, names=["strain"])
-        metadata = pd.read_table(input.metadata)
-        selected_metadata = strains.merge(metadata, how="left", on="strain")
-        selected_metadata.to_csv(output.metadata, sep="\t", index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_metadata_by_strains.py \
+            --metadata {input.metadata} \
+            --strains {input.strains} \
+            --output {output.metadata}
+        """
