@@ -48,18 +48,18 @@ RUN conda env update -n base -f anaconda.python3.yaml \
 # Create a top-level directory for all Nextstrain-related tools.
 WORKDIR /nextstrain
 
-# Download the fauna repository.
-RUN git clone https://github.com/nextstrain/fauna.git
+# Download the fauna repository, keeping only the files and not the repository history.
+RUN git clone https://github.com/nextstrain/fauna.git && rm -rf fauna/.git
 
 # Copy files to run the forecasting pipeline.
 WORKDIR /nextstrain/flu-forecasting
-# COPY Snakefile .
-# COPY config config/
-# COPY data data/
-# COPY dist dist/
-# COPY envs envs/
-# COPY rules rules/
-# COPY scripts scripts/
-# COPY src src/
+COPY Snakefile .
+COPY config config/
+COPY data data/
+COPY dist dist/
+COPY envs envs/
+COPY rules rules/
+COPY scripts scripts/
+COPY src src/
 
 ENTRYPOINT ["/opt/conda/bin/tini", "-g", "--", "/bin/bash"]

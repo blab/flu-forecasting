@@ -3,6 +3,7 @@ channels:
 - bioconda
 - defaults
 dependencies:
+- nomkl
 - conda
 - cvxopt
 - datrie
