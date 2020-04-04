@@ -104,16 +104,6 @@ rule filter_metadata_simulated:
         """
 
 
-rule get_strains_for_simulated_sequences:
-    input:
-        metadata = rules.filter_metadata_simulated.output.metadata
-    output:
-        strains = DATA_SIMULATED_ROOT_PATH + "strains.txt"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["strain"].to_csv(output.strains, header=False, index=False)
-
-
 #
 # Rules for natural datasets
 #
