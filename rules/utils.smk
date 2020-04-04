@@ -51,7 +51,11 @@ def _get_titers_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["titers"]
 
 def _get_fra_titers_by_wildcards(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["fra_titers"]
+    try:
+        return config["builds"][wildcards.type][wildcards.sample]["fra_titers"]
+    except KeyError:
+        print("ERROR: Could not find FRA titers for the %s sample '%s'. Add a 'fra_titers' entry to the config file." % (wildcards.type, wildcards.sample), file=sys.stderr)
+        raise
 
 def _get_start_date_by_wildcards(wildcards):
     return config["builds"][wildcards.type][wildcards.sample]["start_date"]

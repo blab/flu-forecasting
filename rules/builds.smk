@@ -632,19 +632,14 @@ rule rename_fields_in_fra_titers_tree:
     input:
         titers_model = rules.fra_titers_tree.output.titers_model
     output:
-        titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json",
-    run:
-        with open(input.titers_model, "r") as fh:
-            titers_json = json.load(fh)
-
-        for sample in titers_json["nodes"].keys():
-            titers_json["nodes"][sample]["fra_cTiter"] = titers_json["nodes"][sample]["cTiter"]
-            titers_json["nodes"][sample]["fra_dTiter"] = titers_json["nodes"][sample]["dTiter"]
-            del titers_json["nodes"][sample]["cTiter"]
-            del titers_json["nodes"][sample]["dTiter"]
-
-        with open(output.titers_model, "w") as oh:
-            json.dump(titers_json, oh, indent=1)
+        titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/rename_fields_in_fra_titer_models.py \
+            --titers-model {input.titers_model} \
+            --output {output.titers_model}
+        """
 
 
 rule convert_titer_model_to_distance_map:
