@@ -1,3 +1,4 @@
 .git
 analyses
+data/*/*/*.fasta
 results
