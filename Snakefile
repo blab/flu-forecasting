@@ -361,3 +361,17 @@ rule trees:
     output:
         trees="results/figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+rule figure_for_model_schematic:
+    input:
+        tree_for_timepoint_t = "results/auspice/flu_simulated_simulated_sample_3_2029-10-01_tree.json",
+        tree_for_timepoint_u = "results/auspice/flu_simulated_simulated_sample_3_2030-10-01_tree.json",
+        frequencies_for_timepoint_t = "results/auspice/flu_simulated_simulated_sample_3_2029-10-01_tip-frequencies.json",
+        frequencies_for_timepoint_u = "results/auspice/flu_simulated_simulated_sample_3_2030-10-01_tip-frequencies.json"
+    output:
+        figure = "manuscript/figures/distance-based-fitness-model.pdf"
+    log:
+        notebook = "logs/notebooks/plot-model-diagram.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/plot-model-diagram.ipynb"
