@@ -2,12 +2,15 @@
 
 ## Installation
 
-[Install miniconda](https://conda.io/miniconda.html) for your machine.
+The software for this pipeline is available from GitHub + conda or a Docker image.
 
+### Installation with GitHub and conda
+
+[Install miniconda](https://conda.io/miniconda.html).
 Clone the forecasting repository.
 
 ```bash
-git clone --recursive https://github.com/blab/flu-forecasting.git
+git clone https://github.com/blab/flu-forecasting.git
 cd flu-forecasting
 ```
 
@@ -18,27 +21,32 @@ conda env create -f envs/anaconda.python3.yaml
 conda activate flu_forecasting
 ```
 
-Build santa-sim.
+### Installation with Docker
 
-```bash
-cd dist/santa-sim
-ant
-cd ../..
+Install [Docker](https://www.docker.com/).
+Download the image for the forecasting pipeline.
+
+```
+docker pull nextstrain/flu-forecasting:latest
 ```
 
-The entire pipeline is implemented with [Snakemake](https://snakemake.readthedocs.io/en/stable/).
+Start a shell inside a container from this image.
+
+```
+docker run -i -t flu-forecasting:latest
+```
 
 ## Quickstart (sparse simulated populations only)
 
 Run the pipeline for sparse simulated data.
 This will first simulate influenza-like populations and then fit models to those populations.
-Run the pipeline locally with one CPU.
+Inspect all steps to be executed by the pipeline with a dryrun.
 
 ```bash
-snakemake --config active_builds='simulated_sample_1' -j 1
+snakemake --dryrun --config active_builds='simulated_sample_1'
 ```
 
-For the impatient, run locally with four CPUs.
+Run the pipeline locally with four jobs (or cores) at once.
 
 ```bash
 snakemake --config active_builds='simulated_sample_1' -j 4
@@ -50,7 +58,6 @@ If no limit is provided, the Java-based simulator will attempt to use all availa
 ## Run the complete analysis with simulated and natural populations
 
 This step requires access to the Bedford lab's "fauna" database to download data for natural populations.
-
 Clone the fauna repository in the parent directory of the `flu-forecasting` directory.
 
 ```bash
