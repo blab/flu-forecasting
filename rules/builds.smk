@@ -632,19 +632,14 @@ rule rename_fields_in_fra_titers_tree:
     input:
         titers_model = rules.fra_titers_tree.output.titers_model
     output:
-        titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json",
-    run:
-        with open(input.titers_model, "r") as fh:
-            titers_json = json.load(fh)
-
-        for sample in titers_json["nodes"].keys():
-            titers_json["nodes"][sample]["fra_cTiter"] = titers_json["nodes"][sample]["cTiter"]
-            titers_json["nodes"][sample]["fra_dTiter"] = titers_json["nodes"][sample]["dTiter"]
-            del titers_json["nodes"][sample]["cTiter"]
-            del titers_json["nodes"][sample]["dTiter"]
-
-        with open(output.titers_model, "w") as oh:
-            json.dump(titers_json, oh, indent=1)
+        titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/rename_fields_in_fra_titer_models.py \
+            --titers-model {input.titers_model} \
+            --output {output.titers_model}
+        """
 
 
 rule convert_titer_model_to_distance_map:
@@ -925,27 +920,16 @@ rule merge_node_data_and_frequencies:
         table = BUILD_TIMEPOINT_PATH + "tip_attributes.tsv"
     params:
         preferred_frequency_method = config["frequencies"]["preferred_method"]
-    run:
-        node_data = pd.read_table(input.node_data)
-        kde_frequencies = pd.read_table(input.kde_frequencies)
-        diffusion_frequencies = pd.read_table(input.diffusion_frequencies)
-        df = node_data.merge(
-            kde_frequencies,
-            how="inner",
-            on=["strain", "timepoint", "is_terminal"]
-        ).merge(
-            diffusion_frequencies,
-            how="inner",
-            on=["strain", "timepoint", "is_terminal"]
-        )
-
-        # Annotate frequency by the preferred method if there isn't already a
-        # frequency column defined.
-        if "frequency" not in df.columns:
-            df["frequency"] = df["%s_frequency" % params.preferred_frequency_method]
-
-        df = df[df["frequency"] > 0.0].copy()
-        df.to_csv(output.table, sep="\t", index=False, header=True)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/merge_node_data_and_frequencies.py \
+            --node-data {input.node_data} \
+            --kde-frequencies {input.kde_frequencies} \
+            --diffusion-frequencies {input.diffusion_frequencies} \
+            --preferred-frequency-method {params.preferred_frequency_method} \
+            --output {output.table}
+        """
 
 
 rule collect_tip_attributes:
@@ -966,12 +950,14 @@ rule annotate_naive_tip_attribute:
     input:
         attributes = rules.collect_tip_attributes.output.attributes
     output:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
-    run:
-        # Annotate a predictor for a naive model with no growth.
-        df = pd.read_csv(input.attributes, sep="\t")
-        df["naive"] = 0.0
-        df.to_csv(output.attributes, sep="\t", index=False)
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/annotate_naive_tip_attribute.py \
+            --tip-attributes {input.attributes} \
+            --output {output.attributes}
+        """
 
 
 rule target_distances:
@@ -1052,15 +1038,13 @@ rule extract_minimal_models_by_distances:
         model = rules.fit_models_by_distances.output.model
     output:
         model = BUILD_PATH + "minimal_models_by_distances/{predictors}.json",
-    run:
-        with open(input.model, "r") as fh:
-            model = json.load(fh)
-
-        if "scores" in model:
-            del model["scores"]
-
-        with open(output.model, "w") as oh:
-            json.dump(model, oh, indent=1)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/extract_minimal_models_by_distances.py \
+            --model {input.model} \
+            --output {output.model}
+        """
 
 
 rule annotate_distance_models:

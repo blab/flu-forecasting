@@ -3,9 +3,10 @@ channels:
 - bioconda
 - defaults
 dependencies:
-- ant
+- nomkl
 - conda
 - cvxopt
+- datrie
 - fasttree
 - iqtree
 - mafft

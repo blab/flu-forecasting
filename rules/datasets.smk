@@ -21,7 +21,7 @@ rule run_simulation:
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
-        cd data/simulated/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/dist/santa-sim/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/{input.simulation_config}
+        cd data/simulated/{wildcards.sample} && java -jar {SNAKEMAKE_DIR}/dist/santa.jar -seed={params.seed} {SNAKEMAKE_DIR}/{input.simulation_config}
         """
 
 
@@ -49,14 +49,18 @@ rule standardize_simulated_sequence_dates:
         metadata = rules.parse_simulated_sequences.output.metadata
     output:
         metadata = DATA_SIMULATED_ROOT_PATH + "corrected_metadata.tsv"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["num_date"] = 2000.0 + (df["generation"] / 200.0)
-        df["date"] = df["num_date"].apply(float_to_datestring)
-        df["year"]  = pd.to_datetime(df["date"]).dt.year
-        df["month"]  = pd.to_datetime(df["date"]).dt.month
-
-        df[df["fitness"] > 0].to_csv(output.metadata, header=True, index=False, sep="\t")
+    conda: "../envs/anaconda.python3.yaml"
+    params:
+        start_year = 2000.0,
+        generations_per_year = 200.0
+    shell:
+        """
+        python3 scripts/standardize_simulated_sequence_dates.py \
+            --metadata {input.metadata} \
+            --start-year {params.start_year} \
+           --generations-per-year {params.generations_per_year} \
+            --output {output.metadata}
+        """
 
 
 rule filter_simulated:
@@ -90,27 +94,14 @@ rule filter_metadata_simulated:
         metadata = rules.standardize_simulated_sequence_dates.output.metadata,
     output:
         metadata = DATA_SIMULATED_ROOT_PATH + "filtered_metadata.tsv"
-    run:
-        # Get a list of all samples that passed the sequence filtering step.
-        sequences = Bio.SeqIO.parse(input.sequences, "fasta")
-        sample_ids = [sequence.id for sequence in sequences]
-
-        # Load all metadata.
-        metadata = pd.read_csv(input.metadata, sep="\t")
-        filtered_metadata = metadata[metadata["strain"].isin(sample_ids)].copy()
-
-        # Save only the metadata records that have entries in the filtered sequences.
-        filtered_metadata.to_csv(output.metadata, sep="\t", header=True, index=False)
-
-
-rule get_strains_for_simulated_sequences:
-    input:
-        metadata = rules.filter_metadata_simulated.output.metadata
-    output:
-        strains = DATA_SIMULATED_ROOT_PATH + "strains.txt"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-        df["strain"].to_csv(output.strains, header=False, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_simulated_metadata.py \
+            --sequences {input.sequences} \
+            --metadata {input.metadata} \
+            --output {output.metadata}
+        """
 
 
 #
@@ -196,21 +187,14 @@ rule get_titers_by_passage:
         passage = _get_titer_passage
     benchmark: "benchmarks/get_titers_natural_{sample}.txt"
     log: "logs/get_titers_natural_{sample}.log"
-    run:
-        df = pd.read_json(input.titers)
-        passaged = (df["serum_passage_category"] == params.passage)
-        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
-        tsv_fields = [
-            "virus_strain",
-            "serum_strain",
-            "serum_id",
-            "source",
-            "titer",
-            "assay_type"
-        ]
-
-        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
-        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/get_titers_by_passage.py \
+            --titers {input.titers} \
+            --passage-type {params.passage} \
+            --output {output.titers}
+        """
 
 
 rule get_fra_titers_by_passage:
@@ -222,21 +206,14 @@ rule get_fra_titers_by_passage:
         passage = _get_titer_passage
     benchmark: "benchmarks/get_fra_titers_natural_{sample}.txt"
     log: "logs/get_fra_titers_natural_{sample}.log"
-    run:
-        df = pd.read_json(input.titers)
-        passaged = (df["serum_passage_category"] == params.passage)
-        tdb_passaged = df["index"].apply(lambda index: isinstance(index, list) and params.passage in index)
-        tsv_fields = [
-            "virus_strain",
-            "serum_strain",
-            "serum_id",
-            "source",
-            "titer",
-            "assay_type"
-        ]
-
-        titers_df = df.loc[(passaged | tdb_passaged), tsv_fields]
-        titers_df.to_csv(output.titers, sep="\t", header=False, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/get_titers_by_passage.py \
+            --titers {input.titers} \
+            --passage-type {params.passage} \
+            --output {output.titers}
+        """
 
 
 rule parse:
@@ -286,11 +263,13 @@ rule filter_metadata:
         metadata = rules.parse.output.metadata,
     output:
         metadata = DATA_NATURAL_ROOT_PATH + "filtered_metadata.tsv"
-    run:
-        df = pd.read_csv(input.metadata, sep="\t")
-
-        # Exclude strains with ambiguous collection dates.
-        df[~df["date"].str.contains("XX")].to_csv(output.metadata, sep="\t", header=True, index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_strains_with_ambiguous_dates.py \
+            --metadata {input.metadata} \
+            --output {output.metadata}
+        """
 
 
 rule select_strains:
@@ -331,8 +310,11 @@ rule extract_strain_metadata:
         metadata = rules.filter_metadata.output.metadata
     output:
         metadata = protected(DATA_NATURAL_ROOT_PATH + "strains_metadata.tsv")
-    run:
-        strains = pd.read_table(input.strains, header=None, names=["strain"])
-        metadata = pd.read_table(input.metadata)
-        selected_metadata = strains.merge(metadata, how="left", on="strain")
-        selected_metadata.to_csv(output.metadata, sep="\t", index=False)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/filter_metadata_by_strains.py \
+            --metadata {input.metadata} \
+            --strains {input.strains} \
+            --output {output.metadata}
+        """

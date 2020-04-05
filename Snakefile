@@ -1,15 +1,10 @@
-from augur.frequency_estimators import get_pivots, timestamp_to_float
-import Bio.SeqIO
 import csv
 import json
-import numpy as np
 import pandas as pd
 from pathlib import Path
 import pprint
 from snakemake.logging import logger
 import sys
-
-from src.forecast.fitness_model import get_train_validate_timepoints
 
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
@@ -233,6 +228,23 @@ def _get_clock_std_dev_argument(wildcards):
 
     return argument
 
+def timestamp_to_float(time):
+    """Convert a pandas timestamp to a floating point date.
+
+    >>> import datetime
+    >>> time = datetime.date(2010, 10, 1)
+    >>> timestamp_to_float(time)
+    2010.75
+    >>> time = datetime.date(2011, 4, 1)
+    >>> timestamp_to_float(time)
+    2011.25
+    >>> timestamp_to_float(datetime.date(2011, 1, 1))
+    2011.0
+    >>> timestamp_to_float(datetime.date(2011, 12, 1)) == (2011.0 + 11.0 / 12)
+    True
+    """
+    return time.year + ((time.month - 1) / 12.0)
+
 def _get_min_date_for_augur_frequencies(wildcards):
     return timestamp_to_float(pd.to_datetime(wildcards.start))
 
@@ -302,6 +314,10 @@ rule all:
         _get_auspice_files,
         _get_validation_figures
 
+rule build_environment:
+    conda: "envs/anaconda.python3.yaml"
+    shell: "echo Environment built"
+
 rule clade_models:
     input: _get_clade_model_files
 
@@ -313,18 +329,26 @@ rule distance_models_errors:
         errors = _get_distance_model_errors
     output:
         errors = "results/distance_model_errors.tsv"
-    run:
-        df = pd.concat([pd.read_csv(error_file, sep="\t") for error_file in input.errors], ignore_index=True)
-        df.to_csv(output.errors, sep="\t", header=True, index=False)
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/concatenate_tables.py \
+            --tables {input.errors} \
+            --output {output.errors}
+        """
 
 rule distance_models_coefficients:
     input:
         coefficients = _get_distance_model_coefficients
     output:
         coefficients = "results/distance_model_coefficients.tsv"
-    run:
-        df = pd.concat([pd.read_csv(coefficient_file, sep="\t") for coefficient_file in input.coefficients], ignore_index=True)
-        df.to_csv(output.coefficients, sep="\t", header=True, index=False)
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/concatenate_tables.py \
+            --tables {input.coefficients} \
+            --output {output.coefficients}
+        """
 
 rule auspice:
     input: _get_auspice_files
