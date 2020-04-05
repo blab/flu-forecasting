@@ -950,12 +950,14 @@ rule annotate_naive_tip_attribute:
     input:
         attributes = rules.collect_tip_attributes.output.attributes
     output:
-        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv",
-    run:
-        # Annotate a predictor for a naive model with no growth.
-        df = pd.read_csv(input.attributes, sep="\t")
-        df["naive"] = 0.0
-        df.to_csv(output.attributes, sep="\t", index=False)
+        attributes = BUILD_PATH + "tip_attributes_with_naive_predictor.tsv"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/annotate_naive_tip_attribute.py \
+            --tip-attributes {input.attributes} \
+            --output {output.attributes}
+        """
 
 
 rule target_distances:
@@ -1036,15 +1038,13 @@ rule extract_minimal_models_by_distances:
         model = rules.fit_models_by_distances.output.model
     output:
         model = BUILD_PATH + "minimal_models_by_distances/{predictors}.json",
-    run:
-        with open(input.model, "r") as fh:
-            model = json.load(fh)
-
-        if "scores" in model:
-            del model["scores"]
-
-        with open(output.model, "w") as oh:
-            json.dump(model, oh, indent=1)
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/extract_minimal_models_by_distances.py \
+            --model {input.model} \
+            --output {output.model}
+        """
 
 
 rule annotate_distance_models:
