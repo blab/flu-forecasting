@@ -362,6 +362,8 @@ rule trees:
         trees="results/figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
 
+# Build figures for manuscript.
+
 rule figure_for_model_schematic:
     input:
         tree_for_timepoint_t = "results/auspice/flu_simulated_simulated_sample_3_2029-10-01_tree.json",
