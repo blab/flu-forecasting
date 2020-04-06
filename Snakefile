@@ -377,3 +377,20 @@ rule figure_for_model_schematic:
     conda: "envs/anaconda.python3.yaml"
     notebook:
         "notebooks/plot-model-diagram.ipynb"
+
+rule figure_for_vaccine_comparison:
+    input:
+        validation_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/tip_attributes_with_weighted_distances.tsv",
+        validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts.tsv",
+        test_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/tip_attributes_with_weighted_distances.tsv",
+        test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts.tsv",
+        vaccines_json_path = "config/vaccines_h3n2.json"
+    output:
+        figure = "manuscript/figures/vaccine-comparison.pdf"
+    log:
+        notebook = "logs/notebooks/vaccine-strain-comparison.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/vaccine-strain-comparison.ipynb"
+
+# TODO: Build manuscript here.
