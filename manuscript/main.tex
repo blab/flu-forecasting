@@ -461,7 +461,7 @@ Each simulated population was seeded with the full length HA from A/Beijing/32/1
 We defined purifying selection across all three domains, allowing the preferred amino acid at each site to change at a fixed rate over time.
 We additionally defined exposure-dependent selection for 49 putative epitope sites in HA1 \cite{Luksza:2014hj} to impose an effect of antigenic novelty that would allow mutations at those sites to increase viral fitness despite underlying purifying selection.
 We modified the SANTA-SIM source code to enable the inclusion of true fitness values for each sample in the FASTA header of the sampled sequences from each generation.
-This modified implementation is available at \url{https://github.com/huddlej/santa-sim/tree/emit-fitness}.
+This modified implementation has been integrated into the official SANTA-SIM code repository at \url{https://github.com/santa-dev/santa-sim} as of commit e2b3ea3.
 For our full analysis of model performance, we sampled 90 viruses per month to match the sampling density of natural populations.
 For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid exploration of hyperparameter space.
 
