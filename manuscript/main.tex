@@ -4,7 +4,7 @@
 Seasonal influenza virus infects 5--15\% of the global population every year causing an estimated 250,000 to 500,000 deaths annually with the majority of infections caused by influenza A/H3N2 \cite{flufactsheet}.
 Vaccination remains the most effective public health response available.
 However, frequent viral mutation results in viruses that escape previously acquired human immunity.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine strain selection requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine design requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
 Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
 Until recently, the hemagglutination inhibition (HI) assay has been the primary experimental measure of antigenic cross-reactivity between pairs of circulating viruses \cite{hirst1943studies}.
 Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}, prompting the increased use of focus reduction assays (FRAs) \cite{Okuno:1990uu}.
@@ -34,11 +34,11 @@ However, we also find that composite models based on phenotypic measures of anti
     Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of strains at timepoint $t$ determines the estimated frequency of strains with similar sequences one year in the future at timepoint $u$.
     Strains are colored by their amino acid sequence composition such that genetically similar strains have similar colors (Methods).
     A) Strains at timepoint $t$, $\mathbf{x}(t)$, are shown in their phylogenetic context and sized by their frequency at that timepoint.
-    The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with strains scaled in size by their projected frequency based on the true fitness model.
+    The estimated future population at timepoint $u$, $\mathbf{\hat{x}}(u)$, is projected to the right with strains scaled in size by their projected frequency based on the known fitness of each simulated strain.
     B) The frequency trajectories of strains at timepoint $t$ to $u$ represent the predicted the growth of the dark blue strains to the detriment of the pink strains.
     C) Strains at timepoint $u$, $\mathbf{x}(u)$, are shown in the corresponding phylogeny for that timepoint and scaled by their frequency at that time.
     D) The observed frequency trajectories of strains at timepoint $u$ broadly recapitulate the model's forecasts while also revealing increased diversity of sequences at the future timepoint that the model could not anticipate, e.g. the emergence of the light blue cluster from within the successful dark blue cluster.
-    Model coefficients minimize the earth mover's distance between amino acid sequences in the observed and estimated future populations across all training windows.
+    Model coefficients minimize the earth mover's distance between amino acid sequences in the observed, $\mathbf{x}(u)$,  and estimated, $\mathbf{\hat{x}}(u)$, future populations across all training windows.
   }
   \label{fig:model}
   \end{center}
