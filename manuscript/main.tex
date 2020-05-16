@@ -4,11 +4,11 @@
 Seasonal influenza virus infects 5--15\% of the global population every year causing an estimated 250,000 to 500,000 deaths annually with the majority of infections caused by influenza A/H3N2 \cite{flufactsheet}.
 Vaccination remains the most effective public health response available.
 However, frequent viral mutation results in viruses that escape previously acquired human immunity.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) selects vaccine viruses to match circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine design requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) selects vaccine viruses to represent circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine design requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
 Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
 Until recently, the hemagglutination inhibition (HI) assay has been the primary experimental measure of antigenic cross-reactivity between pairs of circulating viruses \cite{hirst1943studies}.
-Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}, prompting the increased use of focus reduction assays (FRAs) \cite{Okuno:1990uu}.
-Together, these two assays are the gold standard for vaccine strain selection, but they are laborious and low-throughput compared to genome sequencing \cite{Wood:2012ii}.
+Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}, prompting the increased use of virus neutralization assays including the neutralization-based focus reduction assay (FRA) \cite{Okuno:1990uu}.
+Together, these two assays are the gold standard in virus antigenic characterizations for vaccine strain selection, but they are laborious and low-throughput compared to genome sequencing \cite{Wood:2012ii}.
 As a result, researchers have developed computational methods to predict influenza fitness from sequence data alone \cite{Luksza:2014hj,Steinbruck:2014kq,Neher:2014eu}.
 
 Despite the promise of these sequence-only models, they explicitly omit experimental measurements of antigenic or functional phenotypes.
@@ -347,8 +347,10 @@ Interestingly, the FRA antigenic novelty metric received a consistently positive
 Unfortunately, this model performed considerably worse than the corresponding HI-based model.
 These results suggest that we may need more FRA data across a longer historical timespan to train a model that could replace the HI-based model.
 
-After confirming the coefficients for our best model of HI antigenic novelty and mutational load, we inspected forecasts of H3N2 clades from January 2020 to 2021.
+After confirming the coefficients for our best model of HI antigenic novelty and mutational load, we inspected forecasts of H3N2 clades from January 2020 to 2021 using data available up through January 17, 2020.
 Of the three major currently circulating clades, our model predicted growth of the clades A1b/131K and 3c3.A and decline of all other clades (Fig.~\ref{fig:nextstrain_forecasts}).
+Four months after those forecasts, the subclades of A1b/131K represented 40\% of the global H3N2 population an increase from an estimated 35\% frequency in January.
+The 3c3.A clade increased slightly in global frequency from 13\% to 15\%, in that time.
 To aid with identification of potential vaccine candidates for the next season, we annotated strains in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
 \begin{figure}[ht]
@@ -666,6 +668,8 @@ The work done at the Crick Worldwide Influenza Centre was supported by the Franc
 The Melbourne WHO Collaborating Centre for Reference and Research on Influenza is supported by the Australian Government Department of Health.
 RAN is supported by NIAID R01 AI127893-01 and institutional core funding.
 TB is a Pew Biomedical Scholar and is supported by NIH grants NIGMS R35 GM119774-01, NIAID U19 AI117891-01 and NIAID R01 AI127893-01.
+
+The findings and conclusions in this report are those of the author(s) and do not necessarily represent the official position of the Centers for Disease Control and Prevention.
 
 \section*{Author contributions}
 
