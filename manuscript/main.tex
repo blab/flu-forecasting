@@ -27,7 +27,7 @@ However, we also find that composite models based on phenotypic measures of anti
 
 \subsection*{A distance-based model of seasonal influenza evolution}
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.pdf}
   \caption{
@@ -74,7 +74,7 @@ We evaluated the performance of each model by the absolute distance between proj
 As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
 For this reason, we additionally calculated how often each model outperformed a naive model that estimated no change in populations between years and, therefore, measured the observed distance between annual populations.
 
-\begin{figure}[ht!]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf}
   \caption{
@@ -95,7 +95,7 @@ We hypothesized that fitness metrics associated with viral success such as true 
 We reasoned that both LBI and delta frequency would individually outperform the mechanistic metrics as both of these growth metrics estimate recent clade success regardless of the mechanistic basis for that success.
 Correspondingly, we expected that a composite model of epitope antigenic novelty and mutational load would perform as well as or better than the growth metrics, as this model would include both primary fitness constraints acting on our simulated populations.
 
-\begin{table}[ht]
+\begin{table}[htb]
   \begin{center}
     \scalebox{0.9}{
       \input{tables/simulated_model_selection.tex}
@@ -118,7 +118,7 @@ LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
 The mutational load metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
 
-\begin{figure}[ht!]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf}
   \caption{
@@ -184,7 +184,7 @@ These results confirm that our approach of minimizing the distance between yearl
 
 \subsection*{Models reflect historical patterns of H3N2 evolution}
 
-\begin{table}[ht]
+\begin{table}[htb]
   \begin{center}
     \scalebox{0.9}{
       \input{tables/natural_model_selection.tex}
@@ -206,7 +206,7 @@ As antigenic drift is generally considered to be the primary evolutionary pressu
 Previous research \cite{Neher:2014eu} and our simulation results also led us to expect that LBI and delta frequency would outperform other individual mechanistic metrics.
 As the earliest measurements from focus reduction assays (FRAs) date back to 2012, we could not train, validate, and test FRA antigenic novelty models in parallel with the HI antigenic novelty models.
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
   \caption{
@@ -255,7 +255,7 @@ Delta frequency performed worse than LBI and HI antigenic novelty and was compar
 While delta frequency should, in principle, measure the same aspect of viral fitness as LBI, these results show that the current implementations of these metrics represent qualitatively different fitness components.
 The LBI and mutational load might also be predictive for reasons other than correlation with fitness, see Discussion.
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
   \caption{
@@ -316,7 +316,7 @@ The mean absolute forecasting error with this model was consistently less than 2
 The estimated best strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}B).
 Similarly, the observed and estimated strain ranks strongly correlated (Spearman's $\rho^2 = 0.72$) across all strains and test timepoints (Fig.~\ref{fig:test_of_best_model_for_natural_populations}D).
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/vaccine-comparison.pdf}
   \caption{
@@ -355,7 +355,7 @@ Four months after those forecasts, the subclades of A1b/131K represented 40\% of
 The 3c3.A clade increased slightly in global frequency from 13\% to 15\%, in that time.
 To aid with identification of potential vaccine candidates for the next season, we annotated strains in the phylogeny by their estimated distance to the future based on our best model (Fig.~\ref{fig:nextstrain_distance_to_future}).
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/nextstrain-forecasts.png}
   \caption{
@@ -367,7 +367,7 @@ To aid with identification of potential vaccine candidates for the next season, 
   \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htb]
   \begin{center}
   \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
   \caption{
