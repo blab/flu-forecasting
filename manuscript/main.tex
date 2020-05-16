@@ -9,7 +9,7 @@ Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts 
 Until recently, the hemagglutination inhibition (HI) assay has been the primary experimental measure of antigenic cross-reactivity between pairs of circulating viruses \cite{hirst1943studies}.
 Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}, prompting the increased use of virus neutralization assays including the neutralization-based focus reduction assay (FRA) \cite{Okuno:1990uu}.
 Together, these two assays are the gold standard in virus antigenic characterizations for vaccine strain selection, but they are laborious and low-throughput compared to genome sequencing \cite{Wood:2012ii}.
-As a result, researchers have developed computational methods to predict influenza fitness from sequence data alone \cite{Luksza:2014hj,Steinbruck:2014kq,Neher:2014eu}.
+As a result, researchers have developed computational methods to predict influenza evolution from sequence data alone \cite{Luksza:2014hj,Steinbruck:2014kq,Neher:2014eu}.
 
 Despite the promise of these sequence-only models, they explicitly omit experimental measurements of antigenic or functional phenotypes.
 Recent developments in computational methods and influenza virology have made it feasible to integrate these important metrics of influenza fitness into a single predictive model.
@@ -62,7 +62,7 @@ Importantly, our models find fitness coefficients that minimize the earth mover'
 With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
 However, we retain the benefits of fitting models to highly similar strains found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
 
-\subsection*{Models accurately forecast evolution of H3N2-like viruses}
+\subsection*{Models accurately forecast evolution of simulated H3N2-like viruses}
 
 The long-term evolution of influenza H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Fig.~\ref{sup_fig:cross_validation_for_simulated_populations}).
@@ -114,7 +114,7 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
 In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future.
 With the exception of epitope antigenic novelty, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
-LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs.
+LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs consistent with the fact that the LBI is a correlate of fitness in models of rapidly adapting populations \cite{Neher:2014eu}.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
 The mutational load metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
 
@@ -141,7 +141,7 @@ We hypothesized that a composite model of mutually beneficial metrics could bett
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: mutational load and LBI.
 This composite model outperformed all individual metrics with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperformed the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 The coefficients for mutational load and LBI remained relatively consistent across all validation timepoints, indicating that these fitness metrics were stable approximations of the simulator's underlying evolutionary processes.
-These results support our hypothesis that multiple complementary metrics can produce more accurate models.
+This small gain supports our hypothesis that multiple complementary metrics can produce more accurate models.
 
 \begin{figure}[p]
   \begin{center}
@@ -152,6 +152,7 @@ These results support our hypothesis that multiple complementary metrics can pro
   B) The rank of the estimated best strain based on its distance to the future in the best model was in the top 20th percentile for 89\% of 18 timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
+  \jhc{Add and reference supplementary figure with naive model results to compare with these.}
   }
   \label{fig:test_of_best_model_for_simulated_populations}
   \end{center}
@@ -179,7 +180,7 @@ While observed and estimated clade frequency fold changes correlated more weakly
 We observed higher absolute forecast errors in the test data with higher errors for clades between 40\% and 60\% initial frequencies (Supplemental Fig.~\ref{fig:test_of_best_model_for_simulated_populations}C).
 The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 (89\%) of 18 of timepoints (Fig.~\ref{fig:test_of_best_model_for_simulated_populations}B).
 Observed and estimated strain ranks remained strongly correlated across all strains and timepoints (Spearman's $\rho^2 = 0.80$, Fig.~\ref{fig:test_of_best_model_for_simulated_populations}D).
-These results confirm that our approach of minimizing the distance between yearly populations can simultaneously capture clade-level dynamics of these populations and identify optimal individual strains as vaccine candidates.
+These results confirm that our approach of minimizing the distance between yearly populations can simultaneously capture clade-level dynamics of simulated influenza populations and identify individual strains that are most representative of future populations.
 
 \subsection*{Models reflect historical patterns of H3N2 evolution}
 
@@ -202,7 +203,7 @@ We held out strains collected after October 1, 2015 up through October 1, 2019 f
 In addition to the sequence-only models we tested on simulated populations, we also fit models for our new fitness metrics based on experimental phenotypes including HI antigenic novelty and DMS mutational effects.
 We hypothesized that both HI and DMS metrics would be assigned positive coefficients, as they estimate increased antigenic drift and beneficial mutations, respectively.
 As antigenic drift is generally considered to be the primary evolutionary pressure on natural H3N2 populations \cite{Smith:2004jc,Bedford:2014bf,Luksza:2014hj}, we expected that epitope and HI antigenic novelty would be individually more predictive than mutational load or DMS mutational effects.
-Previous research \cite{Neher:2016hy} and our simulation results also led us to expect that LBI and delta frequency would outperform other individual mechanistic metrics.
+Previous research \cite{Neher:2014eu} and our simulation results also led us to expect that LBI and delta frequency would outperform other individual mechanistic metrics.
 As the earliest measurements from focus reduction assays (FRAs) date back to 2012, we could not train, validate, and test FRA antigenic novelty models in parallel with the HI antigenic novelty models.
 
 \begin{figure}[ht]
@@ -221,7 +222,7 @@ Across our training period, the distance between HA sequences of H3N2 influenza 
 This distance corresponds to the ``naive model'' in Table~\ref{table_natural_model_selection}.
 Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope antigenic novelty and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
-This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the increased complexity of the fitness constraints on these real populations.
+This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the fact that our simple models do not capture all drivers of evolution in natural H3N2 populations.
 
 Of the two metrics for antigenic drift, HI antigenic novelty consistently outperformed epitope antigenic novelty (Table~\ref{table_natural_model_selection}).
 HI antigenic novelty estimated an average distance to the future of 6.01 $\pm$ 1.50 AAs and outperformed the naive model at 16 of 23 timepoints (70\%).
@@ -249,9 +250,10 @@ This result is consistent with the DMS model overfitting to the evolutionary his
 Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}, Methods).
 Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive biophysical model based on measured mutational effects of a single strain.
 
-LBI was the best individual fitness metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied mutational load by outperforming the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
-Delta frequency performed worse than LBI and HI antigenic novelty and only performed slightly better than mutational load.
+LBI was the best individual metric by average distance to the future (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied mutational load by outperforming the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
+Delta frequency performed worse than LBI and HI antigenic novelty and was comparable to mutational load.
 While delta frequency should, in principle, measure the same aspect of viral fitness as LBI, these results show that the current implementations of these metrics represent qualitatively different fitness components.
+The LBI and mutational load might also be predictive for reasons other than correlation with fitness, see Discussion.
 
 \begin{figure}[ht]
   \begin{center}
@@ -272,7 +274,7 @@ Both two-metric composite models performed better than their corresponding indiv
 The composite of mutational load and LBI performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs.
 The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
 In contrast, the three-metric model strongly preferred the HI antigenic novelty and mutational load metrics over LBI for the entire validation period, producing an average LBI coefficient of -0.04 $\pm$ 0.09.
-These results suggest that HI assays and LBI may measure similar fitness effects.
+Overall, the gain by combining multiple predictors was limited and the sensitivity of coefficients to the set of metrics included in the model suggests that there is substantial overlap in predictive value of different metrics.
 
 As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade frequency fold changes and the ranking of estimated best strains compared to the observed closest strains to future populations.
 The composite model of mutational load and LBI effectively captured clade dynamics with a fold change correlation of $R^2 = 0.35$ and growth and decline accuracies of 87\% and 89\%, respectively (Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}A).
@@ -397,7 +399,7 @@ We anticipate that these measurements could be used to define and continually up
 This set of sites could replace the statically defined set of ``non-epitope'' sites we use to estimate mutational load here.
 
 We observed overfitting to historical context in sequence-based models of antigenic drift.
-The fitness benefit of mutations that lead to antigenic drift in H3N2 is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}
+The fitness benefit of mutations that led to antigenic drift in H3N2 in the past is well-documented \cite{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}.
 Although the antigenic importance of seven specific sites in HA were experimentally validated by Koel et al. 2013 \cite{Koel:2013jz}, these sites do not explain all antigenic drift observed in natural populations \cite{Neher:2016hy}.
 Other attempts to define these so-called ``epitope sites'' have relied on either aggregation of results from antigenic escape assays \cite{Wolf:2006da} or retrospective computational analyses of sites with beneficial mutations \cite{Shih:2007bd,Luksza:2014hj}.
 We found that models based on all of these definitions except for the seven Koel epitope sites overfit to the historical context from which they were identified (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
@@ -438,11 +440,21 @@ Finally, forecasting models need to account for the geographic distribution of v
 Most influenza sequence data come from highly developed countries that account for a small fraction of the global population, while globally successful clades of influenza H3N2 often emerge in less well-sampled regions \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
 Explicitly accounting for these sampling biases and the associated migration dynamics would allow models to weight forecasts based on both viral fitness and transmission.
 
-\subsection*{Conclusions}
+\subsection*{The nature of the predictive power of individual metrics remains unclear}
 
 Prediction of future influenza virus populations is intrinsically limited by the small number of data points available to train and test models.
 Increasingly more complex models are therefore prone to overfitting.
 Across the validation and test periods, we found that antigenic drift and mutational load were the most robust predictors of future success for seasonal influenza H3N2 populations.
+
+Several metrics like the rate of frequency change or epitope mutations are naively expected to have predictive power but do not.
+Others like the mutational load are not expected to pick up adaptation, but are predictive.
+This points to one aspect that often overlooked when comparing the genetic make-up of an asexual population at two time points:
+The future population is unlikely to descend from any of the sampled tips but ancestral lineages of the future population merge with those of the present population in the past.
+Optimal representatives of the future therefore tend to be tips in the present that tend to be basal and less evolved.
+The LBI and the mutational load metric have the tendency to assign low fitness to evolved tips.
+The LBI in particular assigns high fitness to the base of large clades.
+Much the predictive power, in the sense of a reduced distance between the predicted and observed populations, might be due to putting more weight on less evolved strains rather than \emph{bona fide} prediction of fitness.
+In a companion manuscript, Barrat-Charlaix et al.~show that LBI has little predictive power for fixation probabilities of mutations in H3N2.
 
 Our framework enables real-time practical forecasts of these populations by leveraging historical and modern experimental assays and gene sequences.
 By releasing our framework as an open source tool based on modern data science standards like tidy data frames, we hope to encourage continued development of this tool by the influenza research community.
