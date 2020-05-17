@@ -378,6 +378,37 @@ rule figure_for_model_schematic:
     notebook:
         "notebooks/plot-model-diagram.ipynb"
 
+rule figures_and_tables_for_model_results:
+    input:
+        model_distances = "results/distance_model_errors.tsv",
+        model_coefficients = "results/distance_model_coefficients.tsv"
+    output:
+        # Simulated populations
+        table_for_simulated_model_selection = "manuscript/tables/simulated_model_selection.tex",
+        figure_for_simulated_model_controls = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf",
+        figure_for_simulated_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf",
+        figure_for_simulated_composite_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.pdf",
+
+        # Natural populations
+        table_for_natural_model_selection = "manuscript/tables/natural_model_selection.tex",
+        table_for_natural_model_complete_selection = "manuscript/tables/complete_natural_model_selection.tex",
+        figure_for_natural_epitope_vs_oracle_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.pdf",
+        figure_for_natural_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
+        figure_for_natural_composite_models = "manuscript/figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
+        figure_for_natural_updated_models = "manuscript/figures/models-natural-populations-composite-with-updated-coefficients-across-test-data.pdf",
+
+        # Cross-validation schematics
+        figure_for_simulated_cross_validation = "manuscript/figures/cross-validation-for-simulated-populations.pdf",
+        figure_for_natural_cross_validation = "manuscript/figures/cross-validation-for-natural-populations.pdf"
+    params:
+        simulated_sample = "simulated_sample_3",
+        natural_sample = "natural_sample_1_with_90_vpm_sliding"
+    log:
+        notebook = "logs/notebooks/model-results.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/model-results.ipynb"
+
 rule figure_for_vaccine_comparison:
     input:
         validation_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/tip_attributes_with_weighted_distances.tsv",
