@@ -424,4 +424,27 @@ rule figure_for_vaccine_comparison:
     notebook:
         "notebooks/vaccine-strain-comparison.ipynb"
 
-# TODO: Build manuscript here.
+rule table_of_mutations_by_trunk_status_for_simulated_populations:
+    input:
+        full_tree_json = "results/auspice/flu_simulated_simulated_sample_3_full_tree_2040-10-01_tree.json",
+        epitope_sites_distance_map = "config/distance_maps/h3n2/ha/luksza.json",
+    output:
+        table = "manuscript/tables/mutations_by_trunk_status_for_simulated_populations.tex"
+    log:
+        notebook = "logs/notebooks/simulated-mutations-by-trunk-status.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/simulated-mutations-by-trunk-status.ipynb"
+
+rule table_of_mutations_by_trunk_status_for_natural_populations:
+    input:
+        full_tree_json = "results/auspice/flu_natural_natural_sample_1_with_90_vpm_sliding_full_tree_2015-10-01_tree.json",
+        epitope_sites_distance_map = "config/distance_maps/h3n2/ha/luksza.json",
+    output:
+        table = "manuscript/tables/mutations_by_trunk_status.tex"
+    log:
+        notebook = "logs/notebooks/natural-mutations-by-trunk-status.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/natural-mutations-by-trunk-status.ipynb"
+
