@@ -361,3 +361,119 @@ rule trees:
     output:
         trees="results/figures/trees.pdf"
     shell: "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile={output} {input}"
+
+# Build figures for manuscript.
+
+rule figure_for_model_schematic:
+    input:
+        tree_for_timepoint_t = "results/auspice/flu_simulated_simulated_sample_3_2029-10-01_tree.json",
+        tree_for_timepoint_u = "results/auspice/flu_simulated_simulated_sample_3_2030-10-01_tree.json",
+        frequencies_for_timepoint_t = "results/auspice/flu_simulated_simulated_sample_3_2029-10-01_tip-frequencies.json",
+        frequencies_for_timepoint_u = "results/auspice/flu_simulated_simulated_sample_3_2030-10-01_tip-frequencies.json"
+    output:
+        figure = "manuscript/figures/distance-based-fitness-model.pdf"
+    log:
+        notebook = "logs/notebooks/plot-model-diagram.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/plot-model-diagram.ipynb"
+
+rule figures_and_tables_for_model_results:
+    input:
+        model_distances = "results/distance_model_errors.tsv",
+        model_coefficients = "results/distance_model_coefficients.tsv"
+    output:
+        # Simulated populations
+        table_for_simulated_model_selection = "manuscript/tables/simulated_model_selection.tex",
+        figure_for_simulated_model_controls = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf",
+        figure_for_simulated_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf",
+        figure_for_simulated_composite_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.pdf",
+
+        # Natural populations
+        table_for_natural_model_selection = "manuscript/tables/natural_model_selection.tex",
+        table_for_natural_model_complete_selection = "manuscript/tables/complete_natural_model_selection.tex",
+        figure_for_natural_epitope_vs_oracle_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.pdf",
+        figure_for_natural_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
+        figure_for_natural_composite_models = "manuscript/figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
+        figure_for_natural_updated_models = "manuscript/figures/models-natural-populations-composite-with-updated-coefficients-across-test-data.pdf",
+
+        # Cross-validation schematics
+        figure_for_simulated_cross_validation = "manuscript/figures/cross-validation-for-simulated-populations.pdf",
+        figure_for_natural_cross_validation = "manuscript/figures/cross-validation-for-natural-populations.pdf"
+    params:
+        simulated_sample = "simulated_sample_3",
+        natural_sample = "natural_sample_1_with_90_vpm_sliding"
+    log:
+        notebook = "logs/notebooks/model-results.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/model-results.ipynb"
+
+rule figure_for_vaccine_comparison:
+    input:
+        validation_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/tip_attributes_with_weighted_distances.tsv",
+        validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts.tsv",
+        test_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/tip_attributes_with_weighted_distances.tsv",
+        test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts.tsv",
+        vaccines_json_path = "config/vaccines_h3n2.json"
+    output:
+        figure = "manuscript/figures/vaccine-comparison.pdf"
+    log:
+        notebook = "logs/notebooks/vaccine-strain-comparison.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/vaccine-strain-comparison.ipynb"
+
+rule table_of_mutations_by_trunk_status_for_simulated_populations:
+    input:
+        full_tree_json = "results/auspice/flu_simulated_simulated_sample_3_full_tree_2040-10-01_tree.json",
+        epitope_sites_distance_map = "config/distance_maps/h3n2/ha/luksza.json",
+    output:
+        table = "manuscript/tables/mutations_by_trunk_status_for_simulated_populations.tex"
+    log:
+        notebook = "logs/notebooks/simulated-mutations-by-trunk-status.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/simulated-mutations-by-trunk-status.ipynb"
+
+rule table_of_mutations_by_trunk_status_for_natural_populations:
+    input:
+        full_tree_json = "results/auspice/flu_natural_natural_sample_1_with_90_vpm_sliding_full_tree_2015-10-01_tree.json",
+        epitope_sites_distance_map = "config/distance_maps/h3n2/ha/luksza.json",
+    output:
+        table = "manuscript/tables/mutations_by_trunk_status.tex"
+    log:
+        notebook = "logs/notebooks/natural-mutations-by-trunk-status.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/natural-mutations-by-trunk-status.ipynb"
+
+# Compile the manuscript after creating all figures and tables.
+rule manuscript:
+    input:
+        # Tables and figures
+        rules.figure_for_model_schematic.output,
+        *rules.figures_and_tables_for_model_results.output,
+        _get_validation_figures,
+        rules.figure_for_vaccine_comparison.output,
+        rules.table_of_mutations_by_trunk_status_for_simulated_populations.output,
+        rules.table_of_mutations_by_trunk_status_for_natural_populations.output,
+
+        # Manuscript text and references
+        "manuscript/flu_forecasting.tex",
+        "manuscript/flu_forecasting.bib",
+        "manuscript/abstract.tex",
+        "manuscript/main.tex",
+        "manuscript/supplement.tex"
+    output:
+        "manuscript/flu_forecasting.pdf"
+    params:
+        title = "flu_forecasting"
+    shell:
+        """
+        cd manuscript
+        pdflatex -draftmode {params.title}
+        bibtex {params.title}
+        pdflatex -draftmode {params.title}
+        pdflatex {params.title}
+        """
