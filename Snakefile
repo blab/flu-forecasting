@@ -378,10 +378,26 @@ rule figure_for_model_schematic:
     notebook:
         "notebooks/plot-model-diagram.ipynb"
 
+rule bootstrap_analysis:
+    input:
+        model_distances = "results/distance_model_errors.tsv"
+    output:
+        output_table = "manuscript/tables/bootstrap_p_values.tsv",
+        bootstrap_figure_for_simulated_sample = "manuscript/figures/bootstrap_distributions_for_simulated_sample_3.pdf",
+        bootstrap_figure_for_natural_sample = "manuscript/figures/bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding.pdf"
+    params:
+        n_bootstraps = 10000
+    log:
+        notebook = "logs/notebooks/bootstrap-analysis.ipynb"
+    conda: "envs/anaconda.python3.yaml"
+    notebook:
+        "notebooks/bootstrap-analysis.ipynb"
+
 rule figures_and_tables_for_model_results:
     input:
         model_distances = "results/distance_model_errors.tsv",
-        model_coefficients = "results/distance_model_coefficients.tsv"
+        model_coefficients = "results/distance_model_coefficients.tsv",
+        bootstrap_p_values = rules.bootstrap_analysis.output.output_table
     output:
         # Simulated populations
         table_for_simulated_model_selection = "manuscript/tables/simulated_model_selection.tex",
