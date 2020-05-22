@@ -104,6 +104,7 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
       Model coefficients and performance on validation and test data for simulated populations ordered from best to worst by distance to the future in the validation analysis.
       Coefficients are the mean $\pm$ standard deviation for each metric in a given model across 33 training windows.
       Distance to the future (mean $\pm$ standard deviation) measures the distance in amino acids between estimated and observed future populations.
+      Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap hypothesis tests (see Methods).
       The number of times (and percentage of total times) each model outperformed the naive model measures the benefit of each model over a model than estimates no change between current and future populations.
       Test results are based on 18 timepoints not observed during model training and validation.
     }
@@ -191,6 +192,7 @@ These results confirm that our approach of minimizing the distance between yearl
     }
     \caption{
       Model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future in the validation analysis, as in Table~\ref{table_simulated_model_selection}.
+      Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap hypothesis tests (see Methods).
       Validation results are based on 23 timepoints.
       Test results are based on eight timepoints not observed during model training and validation.
     }
@@ -585,6 +587,24 @@ We partitioned our training and validation data into six month seasons correspon
 To calculate validation error for each training window, we applied the resulting model coefficients to estimate the future frequencies for the year after the last timepoint in the training window.
 These validation errors informed our tuning of hyperparameters.
 Finally, we fixed the coefficients for each model at the mean values across all training windows and applied these fixed models to the test data to estimate the true forecasting accuracy of each model on previously unobserved data.
+
+\subsubsection*{Model comparison by bootstrap hypothesis testing}
+
+We compared the performance of each biologically-informed model to the corresponding population's naive model using bootstrap hypothesis tests \cite{EfronBradley1998}.
+For each model's empirical distribution of earth mover's distances to the future, $\mathbf{y}$, and the corresponding naive model's distribution, $\mathbf{x}$, we applied the following procedure to test whether their means were significantly different.
+We calculated the test statistic $t$ as follows where $n$ and $m$ were the respective lengths of the naive and biologically-informed model's distributions.
+
+$$
+t = \frac{\bar{x}-\bar{y}}{\sqrt{\sigma_x^2/n + \sigma_y^2/m}}
+$$
+
+Next, we combined the two empirical distributions of distances into a single distribution, $\mathbf{z}$, and calculated the mean of this distribution.
+For each original distribution, we created a new distribution that was recentered on the mean of $\mathbf{z}$.
+For example, we recentered the $\mathbf{x}$ distribution as $\mathbf{x^{'}} = \mathbf{x} - \bar{x} + \bar{z}$.
+We drew $n$ and $m$ samples, respectively, from the resulting distributions, $\mathbf{x^{'}}$ and $\mathbf{y^{'}}$, with replacement for 10,000 bootstrap iterations.
+For each iteration, we recalculated the test statistic $t^{'}$ for the means and variances of the bootstrap samples.
+We calculated the p-value as the proportion of bootstrap samples for which the $t^{'}$ statistic was greater than or equal to the observed $t$ for the empirical distributions.
+To assist with the interpretation of these p-values, we further bootstrapped each model's empirical distance distribution 10,000 times, calculated the mean of each bootstrap sample, and visualized the distributions of each model annotated by its p-value from the test above (Supplemental Figs.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3} and \ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
 
 \subsection*{Fitness metrics}
 
