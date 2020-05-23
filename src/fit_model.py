@@ -398,7 +398,7 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
         super().__init__(predictors, delta_time, l1_lambda, cost_function)
         self.distances = distances
 
-    def _fit(self, coefficients, X, y, use_l1_penalty=True):
+    def _fit(self, coefficients, X, y, use_l1_penalty=True, calculate_optimal_distance=False):
         """Calculate the error between observed and estimated values for the given
         parameters and data.
 
@@ -443,6 +443,35 @@ class DistanceExponentialGrowthModel(ExponentialGrowthModel):
                 samples_b,
                 self.distances
             ).astype(np.float32)
+
+            # Calculate the optimal distance to the future timepoint by mapping
+            # the frequency of each future strain to the closest strain in the
+            # current timepoint.
+            if calculate_optimal_distance:
+                # For each strain in the future timepoint, identify the closest
+                # strain in the current timepoint. This is an array of current
+                # strain indices (one index per future strain).
+                closest_strain_to_future = np.argmin(distance_matrix, axis=0)
+
+                # Sum the frequencies of the future strains across each closest
+                # strain in the current timepoint. This can and will often
+                # result in a few current strains accuring most of the future
+                # frequencies.
+                estimated_frequencies = np.zeros_like(sample_a_frequencies)
+                for i in range(sample_b_frequencies.shape[0]):
+                    estimated_frequencies[closest_strain_to_future[i]] += sample_b_frequencies[i]
+
+                # Calculate earth mover's distance to the future based on this
+                # optimal (or, at least, greedy) mapping of strains between
+                # timepoints. The resulting EMD value should be the best any
+                # model can hope to perform and establishes a lower bound for
+                # all models.
+                self.optimal_model_emd, _, optimal_model_flow = cv2.EMD(
+                    estimated_frequencies,
+                    sample_b_frequencies,
+                    cv2.DIST_USER,
+                    cost=distance_matrix
+                )
 
             # Estimate the distance between the model's estimated future and the
             # observed future populations.
@@ -699,16 +728,18 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
 
         # Calculate the model score for the validation data.
         validation_error = model.score(validation_X, validation_y)
-        null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y)
+        null_validation_error = model._fit(np.zeros_like(model.coef_), validation_X, validation_y, calculate_optimal_distance=True)
+        optimal_validation_error = model.optimal_model_emd
         differences_of_model_and_naive_errors.append(validation_error - null_validation_error)
         print(
-            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%.2f\t%.2f" % (
+            "%s\t%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\t%.2f\t%.2f" % (
                 training_timepoints[-1].strftime("%Y-%m"),
                 validation_timepoint.strftime("%Y-%m"),
                 training_error,
                 null_training_error,
                 validation_error,
                 null_validation_error,
+                optimal_validation_error,
                 model.coef_,
                 (np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors)),
                 end_time - start_time
@@ -744,6 +775,7 @@ def cross_validate(model_class, model_kwargs, data, targets, train_validate_time
             "validation_n": validation_X[group_by].unique().shape[0],
             "validation_error": validation_error,
             "null_validation_error": null_validation_error,
+            "optimal_validation_error": optimal_validation_error,
             "last_training_timepoint": training_timepoints[-1].strftime("%Y-%m-%d"),
             "validation_timepoint": validation_timepoint.strftime("%Y-%m-%d")
         }
@@ -816,13 +848,15 @@ def test(model_class, model_kwargs, data, targets, timepoints, coefficients=None
 
         # Calculate the model score for the validation data.
         test_error = model.score(test_X, test_y)
-        null_test_error = model._fit(np.zeros_like(model.coef_), test_X, test_y)
+        null_test_error = model._fit(np.zeros_like(model.coef_), test_X, test_y, calculate_optimal_distance=True)
+        optimal_test_error = model.optimal_model_emd
         differences_of_model_and_naive_errors.append(test_error - null_test_error)
         print(
-            "%s\t%.2f\t%.2f\t%s\t%.2f" % (
+            "%s\t%.2f\t%.2f\t%.2f\t%s\t%.2f" % (
                 test_timepoint.strftime("%Y-%m"),
                 test_error,
                 null_test_error,
+                optimal_test_error,
                 model.coef_,
                 (np.array(differences_of_model_and_naive_errors) < 0).sum() / float(len(differences_of_model_and_naive_errors))
             ),
@@ -850,6 +884,7 @@ def test(model_class, model_kwargs, data, targets, timepoints, coefficients=None
             "validation_n": test_X[group_by].unique().shape[0],
             "validation_error": test_error,
             "null_validation_error": null_test_error,
+            "optimal_validation_error": optimal_test_error,
             "validation_timepoint": test_timepoint.strftime("%Y-%m-%d")
         }
 
@@ -934,6 +969,7 @@ def get_errors_by_timepoint(scores):
             "validation_timepoint": pd.to_datetime(score["validation_timepoint"]),
             "validation_error": score["validation_error"],
             "null_validation_error": score["null_validation_error"],
+            "optimal_validation_error": score["optimal_validation_error"],
             "validation_n": score["validation_n"]
         })
 
