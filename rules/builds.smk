@@ -1212,7 +1212,7 @@ rule forecast_tips:
         attributes = rules.merge_node_data_and_frequencies.output.table,
         distances = rules.target_distances_by_timepoint.output.distances,
         frequencies = rules.tip_frequencies.output.frequencies,
-        model = _get_best_model
+        model = lambda wildcards: config["builds"][wildcards.type][wildcards.sample]["best_predictor"]
     output:
         node_data = BUILD_TIMEPOINT_PATH + "forecasts.json",
         frequencies = "results/auspice/flu_" + BUILD_SEGMENT_LOG_STEM + "_tip-frequencies.json"
@@ -1265,9 +1265,9 @@ rule forecast_all_tips:
     input:
         attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
         distances = rules.target_distances.output.distances,
-        model = _get_best_model
+        model = _get_model_from_validation
     output:
-        table = BUILD_PATH + "forecasts.tsv",
+        table = BUILD_PATH + "forecasts_{predictors}.tsv",
     params:
         delta_months = config["fitness_model"]["delta_months_to_fit"]
     conda: "../envs/anaconda.python3.yaml"
@@ -1349,9 +1349,9 @@ rule plot_validation_figure:
         attributes = rules.annotate_weighted_distances_for_tip_attributes.output.attributes,
         tips_to_clades = _get_tips_to_clades_for_full_tree_by_wildcards,
         forecasts = rules.forecast_all_tips.output.table,
-        model_errors = _get_best_model_errors
+        model_errors = _get_model_validation_errors
     output:
-        figure = BUILD_PATH + "figures/validation_figure.pdf"
+        figure = "manuscript/figures/validation_figure_{type}-{sample}-{predictors}.pdf"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """

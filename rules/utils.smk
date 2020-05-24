@@ -218,14 +218,17 @@ def _get_fitness_model_training_window(wildcards):
         config["fitness_model"]["training_window"]
     )
 
-def _get_best_model(wildcards):
-    return config["builds"][wildcards.type][wildcards.sample]["best_predictor"]
-
-def _get_best_model_errors(wildcards):
+def _get_model_from_validation(wildcards):
     # Convert the path for the best model's minimal JSON to the corresponding
     # path for the model's validation errors.
     path = Path(config["builds"][wildcards.type][wildcards.sample]["best_predictor"])
-    return str(path.parent.parent / Path("models_by_distances_errors") / Path(path.stem + ".tsv"))
+    return str(path.parent.parent / Path("minimal_models_by_distances") / Path(wildcards.predictors + ".json"))
+
+def _get_model_validation_errors(wildcards):
+    # Convert the path for the best model's minimal JSON to the corresponding
+    # path for the model's validation errors.
+    path = Path(config["builds"][wildcards.type][wildcards.sample]["best_predictor"])
+    return str(path.parent.parent / Path("models_by_distances_errors") / Path(wildcards.predictors + ".tsv"))
 
 def _get_delta_months_to_forecast(wildcards):
     return " ".join([str(month) for month in config["fitness_model"]["delta_months"]])

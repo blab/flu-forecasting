@@ -50,6 +50,7 @@ PREDICTORS = []
 
 VALIDATION_PREDICTOR_TYPES = []
 VALIDATION_PREDICTOR_SAMPLES = []
+VALIDATION_PREDICTOR_PREDICTORS = []
 
 TEST_PREDICTOR_TYPES = []
 TEST_PREDICTOR_SAMPLES = []
@@ -88,8 +89,10 @@ for build_type, builds_by_type in config["builds"].items():
 
             # Note samples for which we need validation figures.
             if "full_tree_build" in build:
-                VALIDATION_PREDICTOR_TYPES.append(build_type)
-                VALIDATION_PREDICTOR_SAMPLES.append(sample)
+                for predictor in build["validation_predictors"]:
+                    VALIDATION_PREDICTOR_TYPES.append(build_type)
+                    VALIDATION_PREDICTOR_SAMPLES.append(sample)
+                    VALIDATION_PREDICTOR_PREDICTORS.append(predictor)
 
 #
 # Configure amino acid distance masks.
@@ -301,7 +304,7 @@ def _get_auspice_files(wildcards):
     return expand("results/auspice/flu_{type}_{sample}_{timepoint}_{filetype}.json", zip, type=TIMEPOINT_TYPES, sample=TIMEPOINT_SAMPLES, timepoint=TIMEPOINTS, filetype=["tree", "tip-frequencies"] * len(TIMEPOINTS))
 
 def _get_validation_figures(wildcards):
-    return expand("results/builds/{type}/{sample}/figures/validation_figure.pdf", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES)
+    return expand("manuscript/figures/validation_figure_{type}-{sample}-{predictors}.pdf", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES, predictors=VALIDATION_PREDICTOR_PREDICTORS)
 
 include: "rules/utils.smk"
 include: "rules/datasets.smk"

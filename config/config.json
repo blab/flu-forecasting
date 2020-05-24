@@ -175,7 +175,11 @@
                     "ep_x-ne_star",
                     "lbi-ne_star"
                 ],
-                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
+                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json",
+                "validation_predictors": [
+                    "naive",
+                    "lbi-ne_star"
+                ]
             },
             "simulated_sample_3_full_tree": {
                 "dataset_sample": "simulated_sample_3",
@@ -217,7 +221,11 @@
                     "ep_x-ne_star",
                     "lbi-ne_star"
                 ],
-                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json"
+                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json",
+                "validation_predictors": [
+                    "naive",
+                    "lbi-ne_star"
+                ]
             },
             "simulated_sample_3_full_test_tree": {
                 "dataset_sample": "simulated_sample_3",
@@ -387,7 +395,12 @@
                     "cTiter_x-ne_star",
                     "cTiter_x-ne_star-lbi"
                 ],
-                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/ne_star-lbi.json"
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/ne_star-lbi.json",
+                "validation_predictors": [
+                    "naive",
+                    "ne_star-lbi",
+                    "cTiter_x-ne_star"
+                ]
             },
             "natural_sample_1_with_90_vpm_sliding_full_tree": {
                 "description": "Full tree for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
@@ -439,7 +452,12 @@
                     "cTiter_x-ne_star",
                     "cTiter_x-ne_star-lbi"
                 ],
-                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/cTiter_x-ne_star.json"
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/cTiter_x-ne_star.json",
+                "validation_predictors": [
+                    "naive",
+                    "ne_star-lbi",
+                    "cTiter_x-ne_star"
+                ]
             },
             "natural_sample_1_with_90_vpm_sliding_full_test_tree": {
                 "description": "Full tree for test data for very dense sampling of viruses over 25 years of H3N2 evolution after filtering outliers that don't match clock rate",
