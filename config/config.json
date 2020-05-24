@@ -178,7 +178,8 @@
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json",
                 "validation_predictors": [
                     "naive",
-                    "lbi-ne_star"
+                    "lbi-ne_star",
+                    "normalized_fitness"
                 ]
             },
             "simulated_sample_3_full_tree": {
@@ -224,7 +225,8 @@
                 "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json",
                 "validation_predictors": [
                     "naive",
-                    "lbi-ne_star"
+                    "lbi-ne_star",
+                    "normalized_fitness"
                 ]
             },
             "simulated_sample_3_full_test_tree": {
