@@ -431,9 +431,11 @@ rule figures_and_tables_for_model_results:
 rule figure_for_vaccine_comparison:
     input:
         validation_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/tip_attributes_with_weighted_distances.tsv",
-        validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts.tsv",
         test_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/tip_attributes_with_weighted_distances.tsv",
-        test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts.tsv",
+        cTiter_x_ne_star_validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts_cTiter_x-ne_star.tsv",
+        ne_star_lbi_validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts_ne_star-lbi.tsv",
+        cTiter_x_ne_star_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_cTiter_x-ne_star.tsv",
+        ne_star_lbi_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_ne_star-lbi.tsv",
         vaccines_json_path = "config/vaccines_h3n2.json"
     output:
         figure = "manuscript/figures/vaccine-comparison.pdf"
