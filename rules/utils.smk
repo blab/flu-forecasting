@@ -145,6 +145,16 @@ def _get_required_strains_argument(wildcards):
         # No required strains argument needed for simulated strains.
         return ""
 
+def _get_strains_for_natural_data(wildcards):
+    # If the current build has a predefined path to a frozen list of strains to
+    # use, return that path. Otherwise, we need to select a new set of strains
+    # for a new analysis.
+    sample = _get_sample_by_wildcards(wildcards)
+    if "frozen_strains" in config["datasets"][sample]:
+        return config["datasets"][sample]["frozen_strains"]
+    else:
+        return rules.select_strains.output.strains
+
 def _get_start_date_for_dataset(wildcards):
     sample = _get_sample_by_wildcards(wildcards)
     return config["datasets"][sample]["start_date"]

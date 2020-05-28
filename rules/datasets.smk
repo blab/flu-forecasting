@@ -306,7 +306,7 @@ rule select_strains:
 
 rule extract_strain_metadata:
     input:
-        strains = rules.select_strains.output.strains,
+        strains = _get_strains_for_natural_data,
         metadata = rules.filter_metadata.output.metadata
     output:
         metadata = protected(DATA_NATURAL_ROOT_PATH + "strains_metadata.tsv")

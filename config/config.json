@@ -72,6 +72,7 @@
             "min_sequence_length": 900,
             "outliers": "config/outliers_h3n2.txt",
             "required_strains": "config/references_h3n2.txt",
+            "frozen_strains": "data/natural/natural_sample_1_with_90_vpm/frozen_strains.txt",
             "start_date": "1990-10-01",
             "end_date": "2015-10-01"
         },
@@ -87,6 +88,7 @@
             "min_sequence_length": 900,
             "outliers": "config/outliers_h3n2.txt",
             "required_strains": "config/references_h3n2.txt",
+            "frozen_strains": "data/natural/natural_sample_1_with_90_vpm_test_tree/frozen_strains.txt",
             "start_date": "1990-10-01",
             "end_date": "2019-10-01"
         },
