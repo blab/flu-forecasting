@@ -9,7 +9,9 @@ dependencies:
 - datrie
 - fasttree
 - iqtree
+- jupyter
 - mafft
+- nbconvert
 - opencv
 - openjdk
 - pandas=0.25.*
