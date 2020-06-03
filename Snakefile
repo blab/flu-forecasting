@@ -56,7 +56,7 @@ TEST_PREDICTOR_TYPES = []
 TEST_PREDICTOR_SAMPLES = []
 TEST_PREDICTORS = []
 ACTIVE_BUILDS = config["active_builds"].split(" ")
-print("Active builds:", config["active_builds"])
+logger.info("Active builds: " + config["active_builds"])
 
 for build_type, builds_by_type in config["builds"].items():
     for sample, build in builds_by_type.items():
