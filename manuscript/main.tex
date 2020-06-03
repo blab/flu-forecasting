@@ -322,19 +322,21 @@ Similarly, the observed and estimated strain ranks strongly correlated (Spearman
   \begin{center}
   \includegraphics[width=\textwidth]{figures/vaccine-comparison.pdf}
   \caption{
-    Observed distance to natural H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated (orange) closest strains to the future at the corresponding timepoints.
+    Observed distance to natural H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated closest strains to the future by the mutational load and LBI model (orange) and the HI antigenic novelty and mutational load model (purple).
     Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
-    The distance to the future of each vaccine strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
-    The estimated closest strain to the future was identified by either the best model in the validation period (mutational load and LBI) or the best model in the test period (HI antigenic novelty and mutational load).
+    The weighted distance to the future for each strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
   }
   \label{fig:vaccine_comparison}
   \end{center}
 \end{figure}
 
-We further evaluated our best model's apparent success at estimating the closest strain to the next season's H3N2 population by comparing our model's selection to the WHO's vaccine strain selection.
-For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed and estimated closest strains.
-Our models selected a strain that was closer to the future than the selected vaccine strain for 11 (92\%) of the 12 seasons with vaccine updates (Fig.~\ref{fig:vaccine_comparison}).
-In the one season where the vaccine strain was closer to the future than the model's selection, the difference between the two strains' distances to the future was 0.19 AAs.
+We further evaluated our models' ability to estimate the closest strain to the next season's H3N2 population by comparing our best models' selections to the WHO's vaccine strain selection.
+For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed closest strains.
+We compared these distances to those of the closest strains to the future as estimated by our best models for the validation period (mutational load and LBI) and the test period (HI antigenic novelty and mutational load).
+The mutational load and LBI model selected strains that were as close or closer to the future than the corresponding vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (Fig.~\ref{fig:vaccine_comparison}).
+For the two seasons that the model selected more distant strains than the vaccine strain, the mean distance relative to the vaccine strain was 1.58 AAs.
+The HI antigenic novelty and mutational load model performed similarly by identifying strains as close or closer to the future for 11 (92\%) seasons.
+For the one season that the model selected a more distant strain, that selected strain was 0.75 AAs farther from the future than the vaccine strain.
 
 \subsection*{Historically-trained models enable real-time, actionable forecasts}
 
