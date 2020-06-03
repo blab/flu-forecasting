@@ -1,0 +1,24 @@
+# Custom settings for running on single machine.
+
+# Require fauna environment variables for natural sequence downloads.
+config: envvars="RETHINK_HOST RETHINK_AUTH_KEY"
+
+# Limit cores to a reasonable amount for a single machine or shared node.
+cores: 4
+
+# Always let the user know which commands are being executed for each rule and
+# why each rule is being run.
+printshellcmds: True
+reason: True
+
+# Track the run times of each job for debugging.
+stats: stats.json
+
+# Wait a fixed number of seconds for missing files since the cluster file system
+# can be quite slow and the workflow can fail unnecessarily due to this latency.
+latency-wait: 60
+
+# Use conda environments for augur and related binaries. This is important in a
+# cluster environment where Docker is not available and Singularity may be
+# prohibitively complicated to setup.
+use-conda: True

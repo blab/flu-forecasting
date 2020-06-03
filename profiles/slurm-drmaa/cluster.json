@@ -60,7 +60,12 @@
     },
     "fit_models_by_distances": {
         "partition": "campus",
-        "memory": "8192",
-        "time" : "04:00:00"
+        "memory": "20000",
+        "time" : "06:00:00"
+    },
+    "test_distance_models": {
+        "partition": "campus",
+        "memory": "20000",
+        "time" : "00:20:00"
     }
 }

@@ -78,18 +78,10 @@ snakemake -j 4
 ```
 
 Alternately, follow [Snakemake documentation to distribute the entire pipeline to your cloud or cluster accounts](https://snakemake.readthedocs.io/en/stable/executing/cluster-cloud.html).
-The following is an example of how to distribute the pipeline on a SLURM-based cluster using 20 simultaneous jobs.
-The `--use-conda` flag is required to ensure each rule is executed within the proper environment.
+The following is an example of how to distribute the pipeline on a SLURM-based cluster using a Snakemake profile.
 
 ```bash
-snakemake \
-    --restart-times 3 \
-    -w 60 \
-    --use-conda \
-    --cluster-config config/cluster-gizmo.json \
-    --drmaa " -p {cluster.partition} --nodes=1 --ntasks=1 --mem={cluster.memory} --cpus-per-task={cluster.cores} --tmp={cluster.disk} --time={cluster.time}" \
-    --jobname "{rulename}.{jobid}.sh" \
-    -j 20
+snakemake --profile profiles/slurm-drmaa
 ```
 
 You can also run just one of the natural builds as follows, to confirm your environment is configured properly.
