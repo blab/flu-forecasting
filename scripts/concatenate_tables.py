@@ -16,6 +16,6 @@ if __name__ == "__main__":
     df = pd.concat([
         pd.read_csv(table_file, sep=args.separator)
         for table_file in args.tables
-    ], ignore_index=True)
+    ], ignore_index=True, sort=True)
 
     df.to_csv(args.output, sep=args.separator, header=True, index=False)
