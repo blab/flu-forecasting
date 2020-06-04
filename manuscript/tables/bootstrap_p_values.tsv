@@ -1,39 +1,39 @@
-sample	error_type	predictors	t	p_value
-simulated_sample_3	validation	normalized_fitness	7.5093391869358275	0.0
-simulated_sample_3	validation	ep_x	-0.7537530636383657	0.7196
-simulated_sample_3	validation	ne_star	5.068715671482449	0.0
-simulated_sample_3	validation	lbi	4.444313169378289	0.0001
-simulated_sample_3	validation	delta_frequency	3.7875603500547297	0.0
-simulated_sample_3	validation	ep_star-ne_star	5.558644928226726	0.0
-simulated_sample_3	validation	ep_x-ne_star	4.206223222558092	0.0
-simulated_sample_3	validation	lbi-ne_star	7.048400791718868	0.0
-simulated_sample_3	test	normalized_fitness	5.235688449846596	0.0
-simulated_sample_3	test	ep_x	0.10304769819654372	0.4571
-simulated_sample_3	test	ne_star	4.679111721250112	0.0001
-simulated_sample_3	test	lbi	3.277302561342133	0.0016
-simulated_sample_3	test	delta_frequency	1.2391154843227135	0.1195
-simulated_sample_3	test	ep_star-ne_star	4.1668917232728235	0.0001
-simulated_sample_3	test	ep_x-ne_star	4.9184249356615615	0.0
-simulated_sample_3	test	lbi-ne_star	5.407250283799943	0.0
-natural_sample_1_with_90_vpm_sliding	validation	ep_x	-2.17510247685002	0.98
-natural_sample_1_with_90_vpm_sliding	validation	cTiter_x	1.57816604171416	0.0694
-natural_sample_1_with_90_vpm_sliding	validation	ne_star	1.6092134612505624	0.0598
-natural_sample_1_with_90_vpm_sliding	validation	dms_star	-0.7294840529250602	0.7392
-natural_sample_1_with_90_vpm_sliding	validation	lbi	1.6538413238084093	0.0542
-natural_sample_1_with_90_vpm_sliding	validation	delta_frequency	1.4069856148915092	0.0829
-natural_sample_1_with_90_vpm_sliding	validation	ep_star-ne_star	-0.6929330875805715	0.7474
-natural_sample_1_with_90_vpm_sliding	validation	ep_x-ne_star	-1.3241197274248226	0.9025
-natural_sample_1_with_90_vpm_sliding	validation	cTiter_x-ne_star	2.399499449895255	0.0117
-natural_sample_1_with_90_vpm_sliding	validation	ne_star-lbi	2.3325010813660882	0.0114
-natural_sample_1_with_90_vpm_sliding	validation	cTiter_x-ne_star-lbi	2.308842311874062	0.0157
-natural_sample_1_with_90_vpm_sliding	test	ep_x	0.32909259223131976	0.3794
-natural_sample_1_with_90_vpm_sliding	test	cTiter_x	1.3221709141649776	0.1225
-natural_sample_1_with_90_vpm_sliding	test	ne_star	0.8852351883763614	0.2135
-natural_sample_1_with_90_vpm_sliding	test	dms_star	-1.3989272365966194	0.895
-natural_sample_1_with_90_vpm_sliding	test	lbi	-1.4134177544900117	0.8966
-natural_sample_1_with_90_vpm_sliding	test	delta_frequency	-0.17531893905894158	0.5648
-natural_sample_1_with_90_vpm_sliding	test	ep_star-ne_star	0.8952404285927994	0.2071
-natural_sample_1_with_90_vpm_sliding	test	ep_x-ne_star	0.8523673952342878	0.215
-natural_sample_1_with_90_vpm_sliding	test	cTiter_x-ne_star	1.464805801514987	0.1011
-natural_sample_1_with_90_vpm_sliding	test	ne_star-lbi	-0.9675842469853393	0.8061
-natural_sample_1_with_90_vpm_sliding	test	cTiter_x-ne_star-lbi	1.402640515057784	0.1092
+sample	error_type	predictors	p_value
+natural_sample_1_with_90_vpm_sliding	test	cTiter_x	0.0096
+natural_sample_1_with_90_vpm_sliding	test	cTiter_x-ne_star	0.0095
+natural_sample_1_with_90_vpm_sliding	test	cTiter_x-ne_star-lbi	0.0104
+natural_sample_1_with_90_vpm_sliding	test	delta_frequency	0.5895
+natural_sample_1_with_90_vpm_sliding	test	dms_star	0.977
+natural_sample_1_with_90_vpm_sliding	test	ep_star-ne_star	0.1058
+natural_sample_1_with_90_vpm_sliding	test	ep_x	0.3119
+natural_sample_1_with_90_vpm_sliding	test	ep_x-ne_star	0.1179
+natural_sample_1_with_90_vpm_sliding	test	lbi	0.993
+natural_sample_1_with_90_vpm_sliding	test	ne_star	0.1125
+natural_sample_1_with_90_vpm_sliding	test	ne_star-lbi	0.9181
+natural_sample_1_with_90_vpm_sliding	validation	cTiter_x	0.0152
+natural_sample_1_with_90_vpm_sliding	validation	cTiter_x-ne_star	0.0001
+natural_sample_1_with_90_vpm_sliding	validation	cTiter_x-ne_star-lbi	0.0004
+natural_sample_1_with_90_vpm_sliding	validation	delta_frequency	0.0245
+natural_sample_1_with_90_vpm_sliding	validation	dms_star	0.858
+natural_sample_1_with_90_vpm_sliding	validation	ep_star-ne_star	0.8395
+natural_sample_1_with_90_vpm_sliding	validation	ep_x	0.9991
+natural_sample_1_with_90_vpm_sliding	validation	ep_x-ne_star	0.9662
+natural_sample_1_with_90_vpm_sliding	validation	lbi	0.0057
+natural_sample_1_with_90_vpm_sliding	validation	ne_star	0.0126
+natural_sample_1_with_90_vpm_sliding	validation	ne_star-lbi	0.0004
+simulated_sample_3	test	delta_frequency	0.0408
+simulated_sample_3	test	ep_star-ne_star	0.0
+simulated_sample_3	test	ep_x	0.4566
+simulated_sample_3	test	ep_x-ne_star	0.0
+simulated_sample_3	test	lbi	0.0
+simulated_sample_3	test	lbi-ne_star	0.0
+simulated_sample_3	test	ne_star	0.0
+simulated_sample_3	test	normalized_fitness	0.0
+simulated_sample_3	validation	delta_frequency	0.0
+simulated_sample_3	validation	ep_star-ne_star	0.0
+simulated_sample_3	validation	ep_x	0.8816
+simulated_sample_3	validation	ep_x-ne_star	0.0
+simulated_sample_3	validation	lbi	0.0
+simulated_sample_3	validation	lbi-ne_star	0.0
+simulated_sample_3	validation	ne_star	0.0
+simulated_sample_3	validation	normalized_fitness	0.0
