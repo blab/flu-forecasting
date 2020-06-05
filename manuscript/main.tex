@@ -56,23 +56,21 @@ Mutational load is the simplest of the functional constraint metrics, measuring 
 DMS mutational effects provide a more comprehensive biophysical model of functional constraint by measuring the beneficial or deleterious effect of each possible single amino acid mutation in HA from the background of a previous vaccine strain, A/Perth/16/2009.
 The growth metrics estimate how successful populations of strains have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
-We fit models by learning coefficients for each fitness metric either individually or in linear combinations from training data and selected the best of these models using time-series cross-validation.
-After selecting optimal models from training and validation, we evaluated the true out-of-sample errors of these models on additional data that were held out from the initial model fitting and tuning.
-Importantly, our models find fitness coefficients that minimize the earth mover's distance (EMD) between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
-With this approach, we avoid the intrinsic instability of clade definitions due to variability in phylogenetic reconstruction from year to year.
-However, we retain the benefits of fitting models to highly similar strains found within clades and enable future forecasting efforts for pathogens whose sequences are not amenable to standard phylogenetic inference.
+We fit models for individual fitness metrics and combinations of metrics that we anticipated would be mutually beneficial.
+For each model, we learned coefficient(s) that minimized the earth mover's distance between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
+We evaluated model performance with time-series cross-validation such that better models reduced the earth mover's distance to the future on validation or test data (Supplemental Figs~\ref{sup_fig:cross_validation_for_simulated_populations} and \ref{sup_fig:cross_validation_for_natural_populations}).
+The earth mover's distance to the future can never be zero, because each model makes predictions based on sequences available at the time of prediction and cannot account for new mutations that occur during the prediction interval.
+We calculated the lower bound for each model's performance as the optimal distance to the future possible given the current sequences at each timepoint.
+As an additional reference, we evaluated the performance of a ``naive'' model that predicted the future population would be identical to the current population.
+We expected that the best models would consistently outperform the naive model and perform as close as possible to the lower bound.
 
 \subsection*{Models accurately forecast evolution of simulated H3N2-like viruses}
 
 The long-term evolution of influenza H3N2 hemagglutinin has been previously described as a balance between positive selection for substitutions that enable escape from adaptive immunity by modifying existing epitopes and purifying selection on domains that are required to maintain the protein's primary functions of binding and membrane fusion \cite{Bush:1999vj,Neher2013,Luksza:2014hj,Koelle:2015dh}.
 To test the ability of our models to accurately detect these evolutionary patterns under controlled conditions, we simulated the long-term evolution of H3N2-like viruses under positive and purifying selection for 40 years (Methods, Supplemental Fig.~\ref{sup_fig:cross_validation_for_simulated_populations}).
 These selective constraints produced phylogenetic structures and accumulation of epitope and non-epitope mutations that were consistent with phylogenies of natural H3N2 HA (Supplemental Fig. \ref{sup_fig:simulated_h3n2_ha_phylogeny}, Supplemental Tables~\ref{sup_table:mutations_by_trunk_status_for_simulated_populations} and \ref{sup_table:mutations_by_trunk_status}).
-
 We fit models to these simulated populations using all sequence-only fitness metrics.
 As a positive control for our model framework, we also fit a model based on the true fitness of each strain as measured by the simulator.
-We evaluated the performance of each model by the absolute distance between projected and observed future populations.
-As each model only projects existing sequences forward one year without trying to predict which mutations occur in the future, the model's absolute distance to the future can never be zero.
-For this reason, we additionally calculated how often each model outperformed a naive model that estimated no change in populations between years and, therefore, measured the observed distance between annual populations.
 
 \begin{figure}[htb]
   \begin{center}
