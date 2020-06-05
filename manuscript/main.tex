@@ -82,8 +82,8 @@ As a positive control for our model framework, we also fit a model based on the 
     B) Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
     The mean $\pm$ standard deviation of distances per validation timepoint are shown in the top-left of each panel.
     Corresponding values per test timepoint are in the top-right.
-    For reference, the naive model's distance to the future is also shown per validation and test timepoint in gray.
-    The naive model's distance to the future was 8.97 $\pm$ 1.35 AAs for validation timepoints and 9.07 $\pm$ 1.71 AAs for test timepoints.
+    The naive model's distances to the future for validation and test timepoints (light gray) were 8.97 $\pm$ 1.35 AAs and 9.07 $\pm$ 1.71 AAs, respectively.
+    The corresponding lower bounds on the estimated distance to the future (dark gray) were 4.57 $\pm$ 0.61 AAs and 4.85 $\pm$ 0.82 AAs.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
   \end{center}
@@ -111,7 +111,7 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
 \end{table}
 
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
-In contrast to the true fitness model, the naive model was an average of 8.97 $\pm$ 1.35 AAs from the future.
+Although the true fitness model performed better than the naive model's average distance of 8.97 $\pm$ 1.35 AAs, it did not reach the closest possible distance between populations of 4.57 $\pm$ 0.61 AAs.
 With the exception of epitope antigenic novelty, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs consistent with the fact that the LBI is a correlate of fitness in models of rapidly adapting populations \cite{Neher:2014eu}.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
@@ -123,7 +123,6 @@ The mutational load metric received a consistently negative coefficient with an 
   \caption{
     Model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model fit to simulated populations.
     A) Coefficients and B) distances are shown per validation and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
-    The naive model's distance to the future was 8.97 $\pm$ 1.35 AAs for validation timepoints and 8.90 $\pm$ 1.69 AAs for test timepoints.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
   \end{center}
@@ -212,7 +211,8 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
   \caption{
     Model coefficients and distances to the future for individual biologically-informed fitness metrics fit to natural populations.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
-    The naive model's distance to the future was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
+    The naive model's distance to the future (light gray) was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
+    The corresponding lower bounds on the estimated distance to the future (dark gray) were 2.60 $\pm$ 0.89 AAs and 2.28 $\pm$ 0.61 AAs.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
   \end{center}
@@ -220,6 +220,7 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
 
 Across our training period, the distance between HA sequences of H3N2 influenza populations one year apart was 6.40 $\pm$ 1.36 AAs.
 This distance corresponds to the ``naive model'' in Table~\ref{table_natural_model_selection}.
+The lower bound for all models was 2.60 $\pm$ 0.89 AAs.
 Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope antigenic novelty and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the fact that our simple models do not capture all drivers of evolution in natural H3N2 populations.
@@ -561,6 +562,15 @@ With this metric, a perfect estimate of the future's strain sequence composition
 However, the inevitable accumulation of substitutions between the two populations prevents this outcome.
 We calculated EMD with the Python bindings for the OpenCV 3.4.1 implementation \cite{opencv_library}.
 We applied the Nelder-Mead minimization algorithm as implemented in SciPy \cite{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
+
+\subsubsection*{Lower bound on earth mover's distance}
+
+The minimum distance to the future between any two timepoints cannot be zero due to the accumulation of mutations between populations.
+We estimated the lower bound on earth mover's distance between timepoints using the following greedy solution to the optimal transport problem.
+For each timepoint $t$, we initialized the optimal frequency of each current strain to zero.
+For each strain in the future timepoint $u$, we identified the closest strain in the current timepoint by Hamming distance and added the frequency of the future strain to the optimal frequency of the corresponding current strain.
+This approach allows each strain from timepoint $t$ to accumulate frequencies from multiple strains at timepoint $u$.
+We calculated the minimum distance between populations as the earth mover's distance between the resulting optimal frequencies for current strains, the observed frequencies of future strains, and the original distance matrix between those two populations.
 
 \subsubsection*{Strain-specific distance to the future}
 
