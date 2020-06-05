@@ -76,7 +76,7 @@ As a positive control for our model framework, we also fit a model based on the 
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf}
   \caption{
-    Model coefficients and distances between projected and observed future populations as measured in amino acids (AAs) for simulated populations.
+    Simulated population model coefficients and distances between projected and observed future populations as measured in amino acids (AAs).
     A) Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
     For model testing, coefficients were fixed to their mean values from training/validation and applied to out-of-sample test data (open circles, N=18).
     B) Distances between projected and observed populations are shown per validation timepoint (solid black circles) or test timepoint (open black circles).
@@ -99,7 +99,7 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
       \input{tables/simulated_model_selection.tex}
     }
     \caption{
-      Model coefficients and performance on validation and test data for simulated populations ordered from best to worst by distance to the future in the validation analysis.
+      Simulated population model coefficients and performance on validation and test data ordered from best to worst by distance to the future in the validation analysis.
       Coefficients are the mean $\pm$ standard deviation for each metric in a given model across 33 training windows.
       Distance to the future (mean $\pm$ standard deviation) measures the distance in amino acids between estimated and observed future populations.
       Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and Supplemental Fig.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3}).
@@ -121,7 +121,7 @@ The mutational load metric received a consistently negative coefficient with an 
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf}
   \caption{
-    Model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model fit to simulated populations.
+    Simulated population model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model.
     A) Coefficients and B) distances are shown per validation and test timepoint as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
@@ -188,7 +188,7 @@ These results confirm that our approach of minimizing the distance between yearl
       \input{tables/natural_model_selection.tex}
     }
     \caption{
-      Model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future in the validation analysis, as in Table~\ref{table_simulated_model_selection}.
+      Natural population model coefficients and performance on validation and test data ordered from best to worst by distance to the future in the validation analysis, as in Table~\ref{table_simulated_model_selection}.
       Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and Supplemental Fig.~\ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
       Validation results are based on 23 timepoints.
       Test results are based on eight timepoints not observed during model training and validation.
@@ -209,7 +209,7 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
   \begin{center}
   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
   \caption{
-    Model coefficients and distances to the future for individual biologically-informed fitness metrics fit to natural populations.
+    Natural population model coefficients and distances to the future for individual biologically-informed fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The naive model's distance to the future (light gray) was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
     The corresponding lower bounds on the estimated distance to the future (dark gray) were 2.60 $\pm$ 0.89 AAs and 2.28 $\pm$ 0.61 AAs.
@@ -260,7 +260,7 @@ The LBI and mutational load might also be predictive for reasons other than corr
   \begin{center}
   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
   \caption{
-    Model coefficients and distances to the future for composite fitness metrics fit to natural populations.
+    Natural population model coefficients and distances to the future for composite fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
   }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
@@ -600,7 +600,8 @@ Finally, we fixed the coefficients for each model at the mean values across all 
 \subsubsection*{Model comparison by bootstrap tests}
 
 We compared the performance of each biologically-informed model to the corresponding population's naive model using bootstrap tests.
-For each model's empirical distribution of earth mover's distances to the future at a specific timepoint $t$, $y(t)$, and the corresponding naive model's distribution, $x(t)$, we calculated the difference between the two models as $y(t) - x(t)$ such that values less than zero represented timepoints when the given model outperformed the naive model.
+First, we calculated an empirical distribution of differences between each model's earth mover's distance to the future at a given timepoint and the corresponding naive model's distance at the same timepoint.
+Values less than zero in the resulting distribution represented timepoints when the given model outperformed the naive model.
 To determine whether each model generally estimated populations that were closer to the future than the naive model, we bootstrapped the empirical difference distributions for n=10,000 samples and calculated the mean difference of each bootstrap sample (Supplemental Figs.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3} and \ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
 We calculated an empirical p value for each model as the proportion of bootstrap samples with mean values less than zero.
 We identified models as significant if their empirical p value was less than 0.05.
