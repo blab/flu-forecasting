@@ -46,13 +46,13 @@ However, we also find that composite models based on phenotypic measures of anti
 
 We developed a framework to forecast seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 As with this original model, we forecasted the frequencies of viral populations one year in advance by applying to each virus strain an exponential growth factor scaled by an estimate of the strain's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
-We estimated the frequency of virus strains every six months using kernel density estimation (KDE) to represent the frequency of each strain.
+We estimated the frequency of virus strains every six months using kernel density estimation (KDE).
 
-We estimated viral fitness with biologically-informed metrics including those originally defined by \cite{Luksza:2014hj} of epitope antigenic novelty and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) antigenic novelty \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
+We estimated viral fitness with biologically-informed metrics including those originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj} of epitope antigenic novelty and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) antigenic novelty \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI antigenic novelty and DMS mutational effects rely only on HA sequences.
 The antigenic novelty metrics estimate how antigenically distinct each strain at time $t$ is from previously circulating strains based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
 Increased antigenic drift relative to previously circulating strains is expected to correspond to increased viral fitness.
-Mutational load is the simplest of the functional constraint metrics, measuring the number of putatively deleterious mutations that have accumulated in each strain since their ancestor in the previous season.
+Mutational load estimates functional constraint by measuring the number of putatively deleterious mutations that have accumulated in each strain since their ancestor in the previous season.
 DMS mutational effects provide a more comprehensive biophysical model of functional constraint by measuring the beneficial or deleterious effect of each possible single amino acid mutation in HA from the background of a previous vaccine strain, A/Perth/16/2009.
 The growth metrics estimate how successful populations of strains have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
