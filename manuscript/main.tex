@@ -306,8 +306,9 @@ The individual LBI model was the worst model, while mutational load continued to
 LBI performed especially poorly in the last two test timepoints of April and October 2018 (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
 These timepoints correspond to the dominance and sudden decline of a reassortant clade named A2/re \cite{Potter2019}.
 By April 2018, the A2/re clade had risen to a global frequency over 50\% from less than 15\% the previous year, despite an absence of antigenic drift.
-However, by October 2018, this clade had declined in frequency to approximately 30\% and, by October 2019, it had gone extinct.
+By October 2018, this clade had declined in frequency to approximately 30\% and, by October 2019, it had gone extinct.
 That LBI incorrectly predicted the success of this reassortant clade highlights a major limitation of growth-based fitness metrics and a corresponding benefit of more mechanistic metrics that explicitly measure antigenic drift and functional constraint.
+However, we cannot rule out the alternate possibility that the LBI model was overfit to the training data.
 
 After identifying the composite HI antigenic novelty and mutational load model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
 The composite model partially captured clade dynamics with a Pearson's correlation of $R^2 = 0.46$ between observed and estimated growth ratios and growth and decline accuracies of 52\% and 58\%, respectively (Fig.~\ref{fig:test_of_best_model_for_natural_populations}A).
