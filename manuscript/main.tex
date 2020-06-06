@@ -57,7 +57,7 @@ DMS mutational effects provide a more comprehensive biophysical model of functio
 The growth metrics estimate how successful populations of strains have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
 We fit models for individual fitness metrics and combinations of metrics that we anticipated would be mutually beneficial.
-For each model, we learned coefficient(s) that minimized the earth mover's distance between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model}).
+For each model, we learned coefficient(s) that minimized the earth mover's distance between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model} and Eq.~\ref{equation_fitness_estimation}).
 We evaluated model performance with time-series cross-validation such that better models reduced the earth mover's distance to the future on validation or test data (Supplemental Figs~\ref{sup_fig:cross_validation_for_simulated_populations} and \ref{sup_fig:cross_validation_for_natural_populations}).
 The earth mover's distance to the future can never be zero, because each model makes predictions based on sequences available at the time of prediction and cannot account for new mutations that occur during the prediction interval.
 We calculated the lower bound for each model's performance as the optimal distance to the future possible given the current sequences at each timepoint.
@@ -113,7 +113,8 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
 Although the true fitness model performed better than the naive model's average distance of 8.97 $\pm$ 1.35 AAs, it did not reach the closest possible distance between populations of 4.57 $\pm$ 0.61 AAs.
 With the exception of epitope antigenic novelty, all biologically-informed models consistently outperformed the naive model (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
-LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs consistent with the fact that the LBI is a correlate of fitness in models of rapidly adapting populations \cite{Neher:2014eu}.
+LBI was the best of these models, with a distance to the future of 7.57 $\pm$ 1.85 AAs.
+This result is consistent with the fact that the LBI is a correlate of fitness in models of rapidly adapting populations \cite{Neher:2014eu}.
 Indeed, both growth-based models received positive coefficients and outperformed the mechanistic models.
 The mutational load metric received a consistently negative coefficient with an average distance of 8.27 $\pm$ 1.35 AAs.
 
@@ -167,7 +168,7 @@ Percentile ranks per strain based on their observed and estimated distances to t
 
 Finally, we tested all of our models on out-of-sample data.
 Specifically, we fixed the coefficients of each model to the average values across the validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
-A standard expectation from machine learning is that models will perform worse on test data than on validation data due to overfitting to training data.
+A standard expectation from machine learning is that models will perform worse on test data due to overfitting to training data.
 Despite this expectation, we found that all models except for the individual epitope mutation models consistently outperformed the naive model across the out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
 The composite model of mutational load and LBI appeared to outperform the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively.
 However, we did not find a significant difference between these models by bootstrap testing (Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}) and could not rule out fluctuations in model performance across a relatively small number of data points.
