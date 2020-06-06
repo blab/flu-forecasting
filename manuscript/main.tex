@@ -598,9 +598,10 @@ Finally, we fixed the coefficients for each model at the mean values across all 
 
 We compared the performance of different pairs of models using bootstrap tests.
 For each timepoint, we calculated the difference between one model's earth mover's distance to the future and the other model's distance.
-The resulting empirical distribution values less than zero when the first model outperformed the second model.
+Values less than zero in the resulting empirical distribution represent when the first model outperformed the second model.
 To determine whether the first model generally outperformed the second model, we bootstrapped the empirical difference distributions for n=10,000 samples and calculated the mean difference of each bootstrap sample.
 We calculated an empirical p value for the first model as the proportion of bootstrap samples with mean values greater than or equal to zero.
+This p value represents how likely the mean difference between the models' distances to the future is to be zero or greater.
 We performed pairwise model comparisons for all biologically-informed models against the naive model (Supplemental Figs.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3} and \ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
 We also compared a subset of composite models to their respective individual models (Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}).
 
