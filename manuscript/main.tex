@@ -137,7 +137,7 @@ From these results, we concluded that our method can accurately estimate the evo
 
 We hypothesized that a composite model of mutually beneficial metrics could better approximate the true fitness of simulated viruses than models based on individual metrics.
 To this end, we fit an additional model including the best metrics from the mechanistic and clade growth categories: mutational load and LBI.
-This composite model outperformed all individual metrics with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperformed the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
+This composite model outperformed both of its corresponding individual metric models with an average distance to the future of 7.24 $\pm$ 1.66 AAs and outperformed the naive model as often as the true fitness metric (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}, Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}).
 The coefficients for mutational load and LBI remained relatively consistent across all validation timepoints, indicating that these fitness metrics were stable approximations of the simulator's underlying evolutionary processes.
 This small gain supports our hypothesis that multiple complementary metrics can produce more accurate models.
 
@@ -166,12 +166,11 @@ The estimated best strain was in the top first percentile of observed closest st
 Percentile ranks per strain based on their observed and estimated distances to the future correlated strongly across all strains and timepoints (Spearman's $\rho^2 = 0.87$, Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}D).
 
 Finally, we tested all of our models on out-of-sample data.
-Specifically, we fixed the coefficients of each model to the average values across the training/validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
-A standard expectation from machine learning is that models will perform worse on test data than on validation data.
-Instead, we found that nearly all models except for the true fitness and delta frequency performed as well or better with out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
-The composite model of mutational load and LBI outperformed the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively.
-Both the composite and true fitness models outperformed the naive model at 100\% and 89\% of test timepoints, respectively.
-Note, that the numbers of test and validation data points are small and we therefore expect fluctuations in model performance.
+Specifically, we fixed the coefficients of each model to the average values across the validation period and applied the resulting models to the next 9 years of previously unobserved simulated data.
+A standard expectation from machine learning is that models will perform worse on test data than on validation data due to overfitting to training data.
+Despite this expectation, we found that all models except for the individual epitope mutation models consistently outperformed the naive model across the out-of-sample data (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}, Supplemental Fig.~\ref{sup_fig:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}, Table~\ref{table_simulated_model_selection}).
+The composite model of mutational load and LBI appeared to outperform the true fitness metric with average distance to the future of 7.10 $\pm$ 1.19 compared to 7.38 $\pm$ 1.89, respectively.
+However, we did not find a significant difference between these models by bootstrap testing (Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}) and could not rule out fluctuations in model performance across a relatively small number of data points.
 
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 While observed and estimated clade frequency fold changes correlated more weakly for test data (Pearson's $R^2 = 0.14$), the accuracies of clade growth and decline predictions remained similar at 82\% and 53\%, respectively (Fig.~\ref{fig:test_of_best_model_for_simulated_populations}A).
@@ -218,10 +217,9 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
   \end{center}
 \end{figure}
 
-Across our training period, the distance between HA sequences of H3N2 influenza populations one year apart was 6.40 $\pm$ 1.36 AAs.
-This distance corresponds to the ``naive model'' in Table~\ref{table_natural_model_selection}.
-The lower bound for all models was 2.60 $\pm$ 0.89 AAs.
-Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope antigenic novelty and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
+Biologically-informed metrics generally performed better than the naive model with the exceptions of the epitope antigenic novelty and DMS mutational effects (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations} and Table~\ref{table_natural_model_selection}).
+The naive model estimated an average distance between natural H3N2 populations of 6.40 $\pm$ 1.36 AAs.
+The lower bound for how well any model could perform, 2.60 $\pm$ 0.89 AAs, was considerably lower than the corresponding bounds for simulated populations.
 The average improvement of the sequence-only models over the naive model was consistently lower than the same models in simulated populations.
 This reduced performance may have been caused by both the relatively reduced diversity between years in natural populations and the fact that our simple models do not capture all drivers of evolution in natural H3N2 populations.
 
@@ -271,9 +269,9 @@ To test whether composite models could outperform individual fitness metrics for
 Specifically, we fit models based on HI antigenic novelty and mutational load, mutational load and LBI, and all three of these metrics together.
 We anticipated that if these metrics all represented distinct, mutually beneficial components of viral fitness, these composite models should perform better than individual models with consistent coefficients for each metric.
 
-Both two-metric composite models performed better than their corresponding individual models (Table~\ref{table_natural_model_selection} and Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}).
+Both two-metric composite models modestly outperformed their corresponding individual models (Table~\ref{table_natural_model_selection}, Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}, and Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}).
 The composite of mutational load and LBI performed the best overall with an average distance to the future of 5.44 $\pm$ 1.80 AAs.
-The stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
+The relative stability of the coefficients for the metrics in the two-metric models suggested that these metrics represented complementary components of viral fitness.
 In contrast, the three-metric model strongly preferred the HI antigenic novelty and mutational load metrics over LBI for the entire validation period, producing an average LBI coefficient of -0.04 $\pm$ 0.09.
 Overall, the gain by combining multiple predictors was limited and the sensitivity of coefficients to the set of metrics included in the model suggests that there is substantial overlap in predictive value of different metrics.
 
@@ -300,9 +298,8 @@ This pattern held across all strains and timepoints with a strong correlation be
 
 Finally, we tested the performance of all models on out-of-sample data collected from October 1, 2015 through October 1, 2019.
 We anticipated that most models would perform worse on truly out-of-sample data than on validation data.
-As expected, all models estimated higher average distances to the future across these eight test timepoints (Table~\ref{table_natural_model_selection}).
-However, these increases were mostly consistent with an increased average distance between years of 6.82 $\pm$ 1.74 AAs as measured by the naive model.
-The composite of HI antigenic novelty and mutational load outperformed all other models on the test data with an average distance of 5.97 $\pm$ 1.47 AAs.
+Correspondingly, only the three models with the HI antigenic novelty metric significantly outperformed the naive model on the test data (Table~\ref{table_natural_model_selection}).
+The composite of HI antigenic novelty and mutational load performed modestly, although not significantly, better than the individual HI antigenic novelty model (Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}).
 Surprisingly, the best model for the validation data -- mutational load and LBI -- was one of the worst models for the test data with an average distance to the future of 7.70 $\pm$ 3.53 AAs.
 The individual LBI model was the worst model, while mutational load continued to perform well with test data.
 LBI performed especially poorly in the last two test timepoints of April and October 2018 (Fig.~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}).
@@ -599,12 +596,13 @@ Finally, we fixed the coefficients for each model at the mean values across all 
 
 \subsubsection*{Model comparison by bootstrap tests}
 
-We compared the performance of each biologically-informed model to the corresponding population's naive model using bootstrap tests.
-First, we calculated an empirical distribution of differences between each model's earth mover's distance to the future at a given timepoint and the corresponding naive model's distance at the same timepoint.
-Values less than zero in the resulting distribution represented timepoints when the given model outperformed the naive model.
-To determine whether each model generally estimated populations that were closer to the future than the naive model, we bootstrapped the empirical difference distributions for n=10,000 samples and calculated the mean difference of each bootstrap sample (Supplemental Figs.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3} and \ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
-We calculated an empirical p value for each model as the proportion of bootstrap samples with mean values less than zero.
-We identified models as significant if their empirical p value was less than 0.05.
+We compared the performance of different pairs of models using bootstrap tests.
+For each timepoint, we calculated the difference between one model's earth mover's distance to the future and the other model's distance.
+The resulting empirical distribution values less than zero when the first model outperformed the second model.
+To determine whether the first model generally outperformed the second model, we bootstrapped the empirical difference distributions for n=10,000 samples and calculated the mean difference of each bootstrap sample.
+We calculated an empirical p value for the first model as the proportion of bootstrap samples with mean values greater than or equal to zero.
+We performed pairwise model comparisons for all biologically-informed models against the naive model (Supplemental Figs.~\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3} and \ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
+We also compared a subset of composite models to their respective individual models (Supplemental Table~\ref{sup_table:composite_vs_individual_model_comparison}).
 
 \subsection*{Fitness metrics}
 

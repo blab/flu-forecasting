@@ -387,7 +387,8 @@ rule bootstrap_analysis:
     output:
         output_table = "manuscript/tables/bootstrap_p_values.tsv",
         bootstrap_figure_for_simulated_sample = "manuscript/figures/bootstrap_distributions_for_simulated_sample_3.pdf",
-        bootstrap_figure_for_natural_sample = "manuscript/figures/bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding.pdf"
+        bootstrap_figure_for_natural_sample = "manuscript/figures/bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding.pdf",
+        composite_vs_individual_model_table = "manuscript/tables/composite_vs_individual_model_comparison.tex"
     params:
         n_bootstraps = 10000
     log:
