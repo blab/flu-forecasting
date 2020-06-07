@@ -59,7 +59,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-simulated-populations.pdf}
+  \includegraphics[width=\textwidth]{figures/validation_figure_simulated-simulated_sample_3-normalized_fitness.pdf}
   \caption{
   Validation of best model for simulated populations of H3N2-like viruses.
   A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
@@ -67,8 +67,31 @@
   The estimated best strain was in the top 20th percentile of observed closest strains for 100\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (grey shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
+  The corresponding results for the naive model are shown in Supplemental Fig.~\ref{sup_fig:validation_of_naive_model_for_simulated_populations}.
   }
   \label{sup_fig:validation_of_best_model_for_simulated_populations}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/validation_figure_simulated-simulated_sample_3-naive.pdf}
+  \caption{
+  Validation of naive model for simulated populations of H3N2-like viruses as in Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}.
+  Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.
+  }
+  \label{sup_fig:validation_of_naive_model_for_simulated_populations}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/validation_figure_simulated-simulated_sample_3_test_tree-naive.pdf}
+  \caption{
+  Test of naive model for simulated populations of H3N2-like viruses as in Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}.
+  Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.
+  }
+  \label{sup_fig:test_of_naive_model_for_simulated_populations}
   \end{center}
 \end{figure}
 
@@ -115,7 +138,7 @@
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/validation-of-best-model-for-natural-populations.pdf}
+  \includegraphics[width=\textwidth]{figures/validation_figure_natural-natural_sample_1_with_90_vpm_sliding-ne_star-lbi.pdf}
   \caption{
   Validation of best model for natural populations of H3N2 viruses, the composite model of mutational load and LBI.
   A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
@@ -123,8 +146,31 @@
   The estimated best strain was in the top 20th percentile of observed closest strains for 87\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (grey shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
+  The corresponding results for the naive model are shown in Supplemental Fig.~\ref{sup_fig:validation_of_naive_model_for_natural_populations}.
   }
   \label{sup_fig:validation_of_best_model_for_natural_populations}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/validation_figure_natural-natural_sample_1_with_90_vpm_sliding-naive.pdf}
+  \caption{
+  Validation of naive model for natural populations of H3N2 viruses as in Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}.
+  Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.
+  }
+  \label{sup_fig:validation_of_naive_model_for_natural_populations}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/validation_figure_natural-natural_sample_1_with_90_vpm_sliding_test_tree-naive.pdf}
+  \caption{
+  Test of naive model for natural populations of H3N2 viruses as in Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}.
+  Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.
+  }
+  \label{sup_fig:test_of_naive_model_for_natural_populations}
   \end{center}
 \end{figure}
 
