@@ -1,4 +1,30 @@
-# Integrative prediction of seasonal influenza evolution by genotype and phenotype
+# Integrating genotypes and phenotypes improves long-term forecasts of seasonal influenza A/H3N2 evolution
+
+**John Huddleston<sup>1,2</sup>, John Barnes<sup>3</sup>, Thomas Rowe<sup>3</sup>, Xiyan Xu<sup>3</sup>, Rebecca Kondor<sup>3</sup>, David E. Wentworth<sup>3</sup>, Lynne Whittaker<sup>4</sup>, Burcu Ermetal<sup>4</sup>, Rodney S. Daniels<sup>4</sup>, John W. McCauley<sup>4</sup>, Seiichiro Fujisaki<sup>5</sup>, Kazuya Nakamura<sup>5</sup>, Noriko Kishida<sup>5</sup>, Shinji Watanabe<sup>5</sup>, Hideki Hasegawa<sup>5</sup>, Ian Barr<sup>6</sup>, Kanta Subbarao<sup>6</sup>, Richard A. Neher<sup>7,8</sup> & Trevor Bedford<sup>1</sup>**
+
+<sup>1</sup>Vaccine and Infectious Disease Division, Fred Hutchinson Cancer Research Center, Seattle, WA, USA, <sup>2</sup>Molecular and Cell Biology, University of Washington, Seattle, WA, USA, <sup>3</sup>Virology Surveillance and Diagnosis Branch, Influenza Division, National Center for Immunization and Respiratory Diseases (NCIRD), Centers for Disease Control and Prevention (CDC), 1600 Clifton Road, Atlanta, GA 30333, USA, <sup>4</sup>WHO Collaborating Centre for Reference and Research on Influenza, Crick Worldwide Influenza Centre, The Francis Crick Institute, London, UK., <sup>5</sup>Influenza Virus Research Center, National Institute of Infectious Diseases, Tokyo, Japan, <sup>6</sup>The WHO Collaborating Centre for Reference and Research on Influenza, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia; Department of Microbiology and Immunology, The University of Melbourne, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia., <sup>7</sup>Biozentrum, University of Basel, Basel, Switzerland, <sup>8</sup>Swiss Institute of Bioinformatics, Basel, Switzerland
+
+## Contents
+
+  1. [Abstract](#abstract)
+  1. [Installation](#installation)
+  1. [Quickstart](#quickstart)
+  1. [Configuration](#configuration)
+  1. [Workflow structure](#workflow-structure)
+  1. [Full analysis](#full-analysis)
+
+## Abstract
+
+Seasonal influenza virus A/H3N2 is a major cause of death globally.
+Vaccination remains the most effective preventative.
+Rapid mutation of hemagglutinin allows viruses to escape adaptive immunity.
+This antigenic drift necessitates regular vaccine updates.
+Effective vaccine strains need to represent H3N2 populations circulating one year after strain selection.
+Experts select strains based on experimental measurements of antigenic drift and predictions made by models from hemagglutinin sequences.
+No modern models use phenotypic measures of viral fitness in their predictions.
+We developed a novel influenza forecasting framework that integrates phenotypic measures of antigenic drift and functional constraint with previously published sequence-only fitness estimates.
+Forecasts informed by phenotypic measures of antigenic drift consistently outperformed previous sequence-only estimates, while sequence-only estimates of functional constraint surpassed more comprehensive experimentally-informed estimates.
+Importantly, the best models integrated estimates of both functional constraint and either antigenic drift phenotypes or recent population growth.
 
 ## Installation
 
@@ -36,7 +62,77 @@ snakemake --use-conda --config active_builds='simulated_sample_1' -j 4
 Always specify a value for `-j`, to limit the number of cores available to the simulator.
 If no limit is provided, the Java-based simulator will attempt to use all available cores and may cause headaches for you or your cluster's system administrator.
 
-## Run the complete analysis with simulated and natural populations
+## Configuration
+
+Analyses are parameterized by the contents of `config/config.json`.
+Models are fit to annotated data frames created for one or more "builds" from one or more "datasets".
+Datasets and builds are decoupled to allow multiple builds from a single dataset.
+Builds are split into "simulated" and "natural" such that each entry in one of these categories is a dictionary of build settings indexed by a build name.
+The list of active builds is determined by the space-delimited values in the `active_builds` top-level key of the configuration.
+
+## Workflow structure
+
+### Workflow
+
+The analyses for this paper were produced using a workflow written with [Snakemake](http://snakemake.readthedocs.io/).
+[The complete graph of the workflow is available as a PDF](docs/figures/full_dag.pdf).
+This PDF was created with the following Snakemake command.
+
+```bash
+snakemake --forceall --dag manuscript/flu_forecasting.pdf | dot -Tpdf > full_dag.pdf
+```
+
+Below is a subset of the complete workflow showing how tip attributes are created for a single timepoint (2015-10-01) from the natural populations analysis.
+This image was created with the following Snakemake command.
+
+```bash
+snakemake --forceall --dag \
+  results/builds/natural/natural_sample_1_with_90_vpm_sliding/timepoints/2015-10-01/tip_attributes.tsv | \
+  dot -Tpng > example_dag.png
+```
+
+![Example branch of the complete workflow](docs/figures/example_dag.png)
+
+### Inputs
+
+Both simulated and natural population builds depend on [the configuration file](#configuration), `config/config.json`, described above.
+
+Simulated populations are generated by SANTA-SIM as part of the workflow.
+SANTA-SIM XML configuration files determine the parameters of the simulations and can be found in the corresponding data directory for a given simulated sample.
+For example, the densely sampled simulated populations configuration file is `data/simulated/simulated_sample_3/influenza_h3n2_ha.xml`.
+
+Natural populations are represented by FASTA sequences that are freely available through GISAID.
+See [instructions on how to download these sequences below](#download-sequences-for-natural-populations).
+The full analysis for this paper also depends on raw hemagglutination inhibition (HI) and focus-reduction assay (FRA) titer measurements.
+Although these measurements are not publicly available, due to existing data sharing agreements, we provide imputed log2 titer values produced by Neher al. 2016's phylogenetic model for each strain.
+These values are available in the results files named `tip_attributes_with_weighted_distances.tsv`.
+For example, the complete set of tip attributes including imputed titer drops for the validation period of natural populations are available in `results/builds/natural/natural_sample_1_with_90_vpm_sliding/tip_attributes_with_weighted_distances.tsv`.
+
+### Outputs
+
+The primary outputs of this workflow are tables of tip attributes per populations that are used to fit models (`tip_attributes_with_weighted_distances.tsv`) and the tables of resulting model coefficients (`distance_model_coefficients.tsv`) and distances to the future (`distance_model_errors.tsv`).
+Additional outputs include the mapping of individual strains to clades (`tips_to_clades.tsv`) for the creation of model validation figures (e.g., comparison of estimated and observed clade frequency fold changes and absolute forecasting errors).
+The following outputs are included in this repository and are also created by running the full analysis pipeline.
+
+  - `results/`
+    - `distance_model_errors.tsv`
+    - `distance_model_coefficients.tsv`
+    - `builds/`
+      - `natural/`
+        - `natural_sample_1_with_90_vpm_sliding/`
+          - `tip_attributes_with_weighted_distances.tsv`
+        - `natural_sample_1_with_90_vpm_sliding_test_tree/`
+          - `tip_attributes_with_weighted_distances.tsv`
+      - `simulated/`
+        - `simulated_sample_3/`
+          - `tip_attributes_with_weighted_distances.tsv`
+        - `simulated_sample_3_test_tree/`
+          - `tip_attributes_with_weighted_distances.tsv`
+
+Most figures and tables for the manuscript are also automatically generated by the full analysis workflow.
+Figures can be found in `manuscript/figures/` and tables can be found in `manuscript/tables/`.
+
+## Full analysis
 
 ### Download sequences for natural populations
 
@@ -105,7 +201,7 @@ Confirm this is true by running snakemake in dry run mode.
 snakemake --dryrun
 ```
 
-### Run the complete analysis
+### Run the full analysis
 
 Run the entire pipeline locally with four simultaneous jobs.
 
@@ -125,22 +221,3 @@ The following is an example of how to distribute the pipeline on a SLURM-based c
 ```bash
 snakemake --profile profiles/slurm-drmaa
 ```
-
-## Configuration
-
-Analyses are parameterized by the contents of `config.json`.
-Models are fit to annotated data frames created for one or more "builds" from one or more "datasets".
-Datasets and builds are decoupled to allow multiple builds from a single dataset.
-Builds are split into "simulated" and "natural" such that each entry in one of these categories is a dictionary of build settings indexed by a build name.
-The list of active builds is determined by the space-delimited values in the `active_builds` top-level key of the configuration.
-
-## Inputs
-
-The only inputs currently are the configuration file, `config.json`, and the data downloaded from fauna.
-
-## Outputs
-
-| Filename | Contents |
-|:---:|:---:|
-| results/distance_model_errors.tsv | table of model errors per build, timepoint, and model |
-| results/distance_model_coefficients.tsv | table of model coefficients per build, timepoint, and model |
