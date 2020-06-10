@@ -572,7 +572,8 @@
         "ep_kratsch_pairwise",
         "muts",
         "num_date_confidence",
-        "region_confidence"
+        "region_confidence",
+        "sequence"
     ],
     "cross_immunity": {
         "h3n2": {
