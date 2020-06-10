@@ -76,7 +76,7 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("--tip-attributes", required=True, help="a tab-delimited file describing tip attributes at one or more timepoints")
-    parser.add_argument("--distances", required=True, help="tab-delimited output file with pairwise distances between samples")
+    parser.add_argument("--distances", required=True, help="tab-delimited file with pairwise distances between samples")
     parser.add_argument("--delta-months", required=True, type=int, help="number of months to project clade frequencies into the future")
     parser.add_argument("--output", required=True, help="tab-delimited output file with mean and standard deviation used to standardize each predictor")
     args = parser.parse_args()
