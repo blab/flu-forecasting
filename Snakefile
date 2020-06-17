@@ -10,8 +10,6 @@ import sys
 # Set snakemake directory
 SNAKEMAKE_DIR = os.path.dirname(workflow.snakefile)
 
-localrules: download_sequences, download_all_titers_by_assay, filter_metadata, filter
-
 wildcard_constraints:
     type="(natural|simulated)",
     sample="\w+",

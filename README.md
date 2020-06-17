@@ -182,12 +182,15 @@ The download interface should look like the following screenshot.
 
 ![Example GISAID download for a single batch](docs/figures/example-gisaid-download.png)
 
-Click the "Download" button and name the resulting FASTA file with the same id as your current batch (e.g., `gisaid_downloads/gisaid_epiflu_sequence_1.fasta`).
+Click the "Download" button and name the resulting FASTA file with the same id as your current batch (e.g., `gisaid_downloads/gisaid_epiflu_sequence_001.fasta`).
 This file naming convention will make tracking your progress easier.
+After the download completes, click the "Go back" button on the download dialog and then again from the search results display.
+Copy and paste the next batch of ids into the search field and repeat these steps until you have downloaded all batches.
+
 When you have downloaded sequences for all batches, concatenate them together into a single file.
 
 ```bash
-cat gisaid_downloads/gisaid_epiflu_sequence_*.fasta > gisaid_downloads.fasta
+cat gisaid_epiflu_sequences/gisaid_epiflu_sequence_*.fasta > gisaid_downloads.fasta
 ```
 
 Use augur to parse out the metadata and sequences into separate files.
@@ -198,13 +201,13 @@ Store these files in a directory with the same name as the natural samples in th
 mkdir -p data/natural/natural_sample_1_with_90_vpm
 augur parse \
     --sequences gisaid_downloads.fasta \
-    --output-sequences data/natural/natural_sample_1_with_90_vpm/sequences.fasta \
-    --output-metadata data/natural/natural_sample_1_with_90_vpm/metadata.tsv \
+    --output-sequences data/natural/natural_sample_1_with_90_vpm/filtered_sequences.fasta \
+    --output-metadata data/natural/natural_sample_1_with_90_vpm/strains_metadata.tsv \
     --fields strain accession collection_date passage_category submitting_lab
 
 # Copy the resulting sequences and metadata into the test sample directory.
 mkdir -p data/natural/natural_sample_1_with_90_vpm_test_tree
-cp data/natural/natural_sample_1_with_90_vpm/* data/natural/natural_sample_1_with_90_vpm_test_tree/
+cp data/natural/natural_sample_1_with_90_vpm/*.{fasta,tsv} data/natural/natural_sample_1_with_90_vpm_test_tree/
 ```
 
 Now, you should be able to run the pipeline from start to finish.
