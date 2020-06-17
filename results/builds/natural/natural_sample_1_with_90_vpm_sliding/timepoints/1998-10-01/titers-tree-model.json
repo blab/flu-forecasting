@@ -1,0 +1,3925 @@
+{
+ "avidity": {
+  "A/Auckland/10/1997": 0.0187,
+  "A/HongKong/1/1994": -0.1365,
+  "A/HongKong/2/1994": 0.3556,
+  "A/HongKong/357/1996": -0.0066,
+  "A/HongKong/358/1996": -0.0,
+  "A/HongKong/42/1996": 0.1525,
+  "A/HongKong/434/1996": 0.2422,
+  "A/HongKong/49/1995": -0.5786,
+  "A/HongKong/55/1995": -0.3035,
+  "A/HongKong/56/1994": 0.1714,
+  "A/Lyon/1781/1996": 0.0322,
+  "A/Netherlands/126/1993": 0.4357,
+  "A/Netherlands/18/1994": 0.3264,
+  "A/Netherlands/241/1993": 0.201,
+  "A/Netherlands/271/1995": -0.6444,
+  "A/Netherlands/300/1997": -0.0206,
+  "A/Netherlands/5/1998": -0.0077,
+  "A/Nice/491/1997": -0.1049,
+  "A/Singapore/1/1996": 0.0,
+  "A/SouthAustralia/25/1994": -0.2022,
+  "A/Stockholm/12/1992": -0.1023,
+  "A/Stockholm/20/1993": -0.056,
+  "A/Victoria/75/1995": 0.2519
+ },
+ "nodes": {
+  "A/Auckland/10/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Bcm/1/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/Beijing/233/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Beijing/259/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Beijing/62/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Beijing/65/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Christchurch/45/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Cnic/18/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Cnic/35/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Dakar/1/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Dakar/3/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Dakar/6/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/England/121/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/178/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/255/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/England/258/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/263/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/268/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/282/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/286/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/England/54/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/England/731/1997": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/England/79/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/Fujian/126/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Fujian/152/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Fujian/202/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Fujian/221/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Geneva/A9509/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/Guanger/211/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangxi/125/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Guangxi/126/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Guangxi/127/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Guangxi/341/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangxi/386/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangxi/42/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/Guangxi/9/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Guangzhou/118/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangzhou/331/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangzhou/44/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangzhou/499/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangzhou/720/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guangzhou/9/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Guangzhou/er149/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Guizhou/75/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hainan/1/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hainan/10/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hainan/3/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hainan/7/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hainan/9/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Hangzhou/16/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Harbin/1/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Harbin/2/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/1/1994": {
+   "cTiter": 2.185390226326369,
+   "dTiter": 0
+  },
+  "A/HongKong/2/1994": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "A/HongKong/357/1996": {
+   "cTiter": 4.12877998838632,
+   "dTiter": 0
+  },
+  "A/HongKong/358/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/42/1996": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/HongKong/434/1996": {
+   "cTiter": 2.185390226326369,
+   "dTiter": 0
+  },
+  "A/HongKong/49/1995": {
+   "cTiter": 3.416884980401901,
+   "dTiter": 0
+  },
+  "A/HongKong/55/1995": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/HongKong/56/1994": {
+   "cTiter": 3.4168848265734035,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10186/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10216/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10276/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10537/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10554/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10632/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10660/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10756/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10954/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10958/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK10960/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK12160/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK12563/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK12566/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK12626/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK12794/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK16614/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17464/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17603/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17643/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17697/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17704/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17707/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK17872/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18036/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18194/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18218/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18230/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18351/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18358/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK18610/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20010/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20199/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20213/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20217/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20236/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20320/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20523/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20731/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK20992/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK22013/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK22048/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK22185/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK22736/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK41114/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK41222/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK41459/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4147/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK41507/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK41757/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4245/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4391/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4529/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4542/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4622/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/HongKong/CUHK4803/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Jitie/1/1995": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/Johannesburg/29/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Lyon/1781/1996": {
+   "cTiter": 4.125786796152727,
+   "dTiter": 0
+  },
+  "A/Lyon/1815/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/Lyon/22686/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/Malaysia/10081/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Malaysia/10111/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Malaysia/10135/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Malaysia/10360/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10370/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Malaysia/10675/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10717/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10807/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10816/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10877/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10879/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10969/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10970/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/10997/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/11473/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Malaysia/12106/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12132/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12550/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12726/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12766/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12904/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12942/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12974/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/12990/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13002/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13094/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13241/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13246/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13328/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13329/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/13381/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/14590/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/17230/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/17276/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/17332/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/17392/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/17998/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/18121/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/18128/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Malaysia/7145/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/Malaysia/7831/1995": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Malaysia/7832/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/Mauritius/434/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Netherlands/126/1993": {
+   "cTiter": 4.564059147288283e-07,
+   "dTiter": 0
+  },
+  "A/Netherlands/165/1993": {
+   "cTiter": 0,
+   "dTiter": 0
+  },
+  "A/Netherlands/17/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/Netherlands/18/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/Netherlands/241/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/Netherlands/271/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/Netherlands/300/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Netherlands/357/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/Netherlands/5/1998": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/501/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/502/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/503/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/504/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/505/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/506/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/507/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/508/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/509/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/510/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/511/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/512/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/513/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/514/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/515/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/516/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/517/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/518/1998": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/519/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/520/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/521/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/522/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/523/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/524/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/525/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/526/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/527/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/528/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/529/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/530/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/531/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/532/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/533/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/534/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/535/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/536/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/537/1998": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/538/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/539/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/540/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/541/1998": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/542/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/543/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/544/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/545/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/546/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/547/1997": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/548/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/549/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/550/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/NewYork/554/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/555/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/556/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/557/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/558/1997": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/559/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/560/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/561/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/562/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/563/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/564/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/565/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/566/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/567/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/568/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/569/1997": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/570/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/571/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/572/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/573/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/574/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/575/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/576/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/577/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/578/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/579/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/580/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/581/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/582/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/583/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/584/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/585/1997": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/586/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/587/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/588/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/589/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/590/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/591/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/592/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/593/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/594/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/595/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/596/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/597/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/598/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/599/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/600/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/601/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/602/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/603/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/NewYork/606/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/608/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/609/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/610/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/611/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/612/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/613/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/617/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/618/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/619/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/622/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/623/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/624/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/625/1996": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/628/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/631/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/NewYork/632/1996": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/634/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/635/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/636/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/637/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/639/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/641/1996": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/647/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/648/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/NewYork/652/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/NewYork/654/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/655/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/657/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/658/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/659/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/660/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/661/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/662/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/663/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/664/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/665/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/666/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/667/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/668/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/669/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/670/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/671/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/672/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/673/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/674/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/675/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/676/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/677/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/678/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/679/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/680/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/681/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/682/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/683/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/684/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/685/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/686/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/687/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/688/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/689/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/690/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/691/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/692/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/693/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/695/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/696/1994": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/697/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/698/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/699/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/700/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/701/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/702/1995": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "A/NewYork/703/1995": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "A/NewYork/704/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/705/1994": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/706/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/707/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/708/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/709/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/710/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/711/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/712/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/713/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/714/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/715/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/716/1994": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/717/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/718/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/719/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/720/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/721/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/722/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/723/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/724/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/725/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/726/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/727/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/728/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/729/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/730/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/731/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/732/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/733/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/734/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/735/1994": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/736/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/737/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/738/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/739/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/740/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/741/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/742/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/743/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/744/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/745/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/746/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/747/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/748/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/749/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/750/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/751/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/752/1993": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/753/1994": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "A/NewYork/754/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/755/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/756/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/757/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/758/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/759/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/760/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/761/1993": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "A/NewYork/762/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/763/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/764/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/765/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/766/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/767/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/768/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/769/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/770/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/771/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/772/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/773/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/774/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/775/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/776/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/777/1993": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "A/NewYork/778/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/779/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/780/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/781/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/782/1993": {
+   "cTiter": 4.564059147288283e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/783/1993": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "A/NewYork/784/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/785/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/786/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/787/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/788/1993": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "A/NewYork/789/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/790/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/791/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/792/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/793/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/794/1993": {
+   "cTiter": 4.564059147288283e-07,
+   "dTiter": 0
+  },
+  "A/NewYork/795/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/796/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/797/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/798/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/799/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/800/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/801/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/802/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/NewYork/803/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/Nice/491/1997": {
+   "cTiter": 4.125786796152727,
+   "dTiter": 0
+  },
+  "A/Reunion/2369/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Scotland/31/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Scotland/38/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Scotland/39/1997": {
+   "cTiter": 4.125786796152727,
+   "dTiter": 0
+  },
+  "A/Scotland/89/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Shandong/10/1996": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Shandong/22/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shandong/7/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shanghai/1/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/11/1995": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shanghai/12/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shanghai/15/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/180/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/195/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/34/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/5/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shanghai/58/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/69/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanghai/9/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shantou/133/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shanxi/2/1995": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shanxi/28/1995": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Shanxi/5/1995": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Shenzhen/106/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shenzhen/1195/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Shenzhen/1219/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Sichuan/137/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Sichuan/304/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Sichuan/326/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Sichuan/350/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Sichuan/418/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/Siena/1/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Siena/3/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/Singapore/1/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Singapore/19/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/Singapore/3/1993": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/SouthAfrica/56/1998": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "A/SouthAustralia/25/1994": {
+   "cTiter": 2.185388553733952,
+   "dTiter": 0
+  },
+  "A/SouthAustralia/6/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Stockholm/12/1992": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "A/Stockholm/20/1993": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "A/Taiwan/1335/1997": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "A/Taiwan/287/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Taiwan/317/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Tianjin/46/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Tianjin/64/1997": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Umea/1982/1992": {
+   "cTiter": 0,
+   "dTiter": 0
+  },
+  "A/Victoria/75/1995": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "A/Wuhan/133/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Wuhan/260/1996": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Wuhan/30/1996": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "A/Wuhan/34/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "A/Zhejiang/11/1998": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000000": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000001": {
+   "cTiter": 0,
+   "dTiter": 0
+  },
+  "NODE_0000003": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000008": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000011": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000013": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000015": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000019": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000020": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000021": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000022": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000023": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000024": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000025": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000026": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000027": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000028": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000029": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000030": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000031": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000032": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000033": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000036": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000037": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 1.2768913556494575e-06
+  },
+  "NODE_0000038": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000039": {
+   "cTiter": 2.185390226326369,
+   "dTiter": 3.957010611985857e-07
+  },
+  "NODE_0000040": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000043": {
+   "cTiter": 2.185388553733952,
+   "dTiter": 3.1682542792751685e-07
+  },
+  "NODE_0000044": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 2.185387780502609
+  },
+  "NODE_0000045": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000047": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000049": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000050": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000051": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000052": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000053": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000054": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000055": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000056": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000057": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000058": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000059": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000060": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000061": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000062": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000063": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000064": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000065": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000066": {
+   "cTiter": 2.185389830625308,
+   "dTiter": 0
+  },
+  "NODE_0000067": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000068": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000069": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000071": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000072": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000073": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000075": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000076": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000077": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000078": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000079": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000080": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000081": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000082": {
+   "cTiter": 3.416884719648902,
+   "dTiter": 1.2314964827403778
+  },
+  "NODE_0000083": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000084": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000085": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 2.4399409942172627e-07
+  },
+  "NODE_0000086": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "NODE_0000087": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "NODE_0000088": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "NODE_0000089": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000090": {
+   "cTiter": 3.4168849636430014,
+   "dTiter": 0
+  },
+  "NODE_0000092": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 1.1319890933883139
+  },
+  "NODE_0000094": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000095": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000096": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000097": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000098": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000099": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000100": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000101": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000102": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000103": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000104": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000105": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000106": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000107": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000108": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000109": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000110": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000111": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000112": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000113": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000114": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000118": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000119": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000120": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000126": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000127": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000128": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000130": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000131": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000132": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000133": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000134": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000135": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000136": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000137": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000139": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000141": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000142": {
+   "cTiter": 4.548874057031315,
+   "dTiter": 0
+  },
+  "NODE_0000146": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000147": {
+   "cTiter": 2.185388236908524,
+   "dTiter": 0
+  },
+  "NODE_0000148": {
+   "cTiter": 4.564059147288283e-07,
+   "dTiter": 1.9793529521817768e-07
+  },
+  "NODE_0000149": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000150": {
+   "cTiter": 4.564059147288283e-07,
+   "dTiter": 0
+  },
+  "NODE_0000151": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000152": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000153": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000154": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000155": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000156": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000157": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000158": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 0
+  },
+  "NODE_0000159": {
+   "cTiter": 2.5847061951065063e-07,
+   "dTiter": 2.5847061951065063e-07
+  },
+  "NODE_0000160": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000161": {
+   "cTiter": 0,
+   "dTiter": 0
+  },
+  "NODE_0000162": {
+   "cTiter": 3.4168848265734035,
+   "dTiter": 1.0692450174892674e-07
+  },
+  "NODE_0000163": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 8.829937321698523e-08
+  },
+  "NODE_0000164": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000165": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000166": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000167": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000168": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000169": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000170": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000171": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000172": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000173": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000177": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000178": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000179": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000181": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000182": {
+   "cTiter": 3.416884980401901,
+   "dTiter": 6.552912415202513e-08
+  },
+  "NODE_0000183": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 1.1812292327159605e-07
+  },
+  "NODE_0000184": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000185": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000187": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000188": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000189": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000190": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000191": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000192": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000193": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000194": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000195": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000196": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000198": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000199": {
+   "cTiter": 3.4168850985248245,
+   "dTiter": 0
+  },
+  "NODE_0000207": {
+   "cTiter": 3.4168849148727767,
+   "dTiter": 0
+  },
+  "NODE_0000208": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0.7089012728175339
+  },
+  "NODE_0000209": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000210": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000212": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000213": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000214": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000215": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000216": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 3.9580229403126933e-07
+  },
+  "NODE_0000217": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000219": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000220": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000221": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000222": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000223": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000224": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000225": {
+   "cTiter": 4.125786796152727,
+   "dTiter": 2.126601216605353e-07
+  },
+  "NODE_0000226": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000227": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000228": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000230": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000231": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000232": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000235": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000236": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000237": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000238": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000239": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000241": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000242": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000243": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000244": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000245": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000246": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000247": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000248": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000249": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000250": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000251": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000252": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000253": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000254": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000256": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000257": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000258": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000260": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000261": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000262": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000263": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000264": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000265": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000266": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000267": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000268": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000269": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000270": {
+   "cTiter": 4.125786583492605,
+   "dTiter": 0
+  },
+  "NODE_0000275": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000276": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000277": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000278": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000280": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000281": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000282": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000283": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000284": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000285": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000287": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000288": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000289": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000290": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000291": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000292": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000293": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000295": {
+   "cTiter": 4.125786187690311,
+   "dTiter": 0
+  },
+  "NODE_0000296": {
+   "cTiter": 4.12877998838632,
+   "dTiter": 0.002993800696008899
+  },
+  "NODE_0000297": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0.7106919449264302
+  },
+  "NODE_0000298": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000299": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000300": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000301": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000302": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000303": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000304": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000305": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000306": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000307": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000308": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000310": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000311": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000313": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000315": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000316": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000317": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000320": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000321": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000322": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000323": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000326": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000327": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000328": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000329": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000330": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000331": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000332": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000333": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000334": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000335": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000336": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000337": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000341": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000342": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000343": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000344": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000345": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000346": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000347": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000348": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000349": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000350": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000351": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000353": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000354": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000355": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000356": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000357": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000358": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000359": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000361": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000362": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000363": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000364": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000365": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000367": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000368": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000369": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 2.0464703086398197
+  },
+  "NODE_0000370": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000371": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000372": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000373": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000375": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000376": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000377": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000378": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000379": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000380": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000382": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000385": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000386": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000388": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000389": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000390": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000391": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000392": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000393": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000394": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000395": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000396": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000397": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000398": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000399": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000400": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000401": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000402": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000403": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000404": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000405": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000406": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000408": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000409": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000411": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000412": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000413": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000414": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000416": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000417": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000421": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000422": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000423": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000425": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000426": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000427": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000428": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000429": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000430": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000431": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000432": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000433": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000434": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000435": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000436": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000437": {
+   "cTiter": 6.88594224195257,
+   "dTiter": 0
+  },
+  "NODE_0000439": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000440": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000441": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000443": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000444": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000447": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000448": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000449": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000450": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000451": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000452": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000454": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000455": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000456": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000458": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000459": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000460": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000461": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000462": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000463": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000464": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000465": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000466": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000467": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000468": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000469": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000470": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000471": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000472": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000473": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000474": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000475": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000476": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000477": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000478": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000479": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000480": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000481": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000482": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000483": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000484": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000485": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000486": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000487": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000488": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000489": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000490": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000491": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000492": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000493": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000495": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000496": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000497": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000498": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000506": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  },
+  "NODE_0000510": {
+   "cTiter": 4.83947193331275,
+   "dTiter": 0
+  }
+ },
+ "potency": {
+  "A/Auckland/10/1997": {
+   "AU/10/97": 0.5652,
+   "mean_potency": 0.5652494775449493
+  },
+  "A/Netherlands/18/1994": {
+   "NL/18/94": -1.8176,
+   "mean_potency": -1.8176106457685486
+  },
+  "A/Netherlands/5/1998": {
+   "NL/5/98": 1.7028,
+   "mean_potency": 1.7027549881469515
+  },
+  "A/Singapore/1/1996": {
+   "SP/1/96": 0.3708,
+   "mean_potency": 0.3708184368145896
+  }
+ },
+ "titers": {
+  "A/Auckland/10/1997": {
+   "A/Auckland/10/1997": {
+    "AU/10/97": [
+     0.0,
+     4434.0
+    ]
+   },
+   "A/HongKong/42/1996": {
+    "AU/10/97": [
+     3.7925,
+     320.0
+    ]
+   },
+   "A/HongKong/55/1995": {
+    "AU/10/97": [
+     3.7925,
+     320.0
+    ]
+   },
+   "A/Netherlands/241/1993": {
+    "AU/10/97": [
+     4.7925,
+     160.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "AU/10/97": [
+     0.1926,
+     3880.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "AU/10/97": [
+     5.8106,
+     79.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "AU/10/97": [
+     2.7925,
+     640.0
+    ]
+   }
+  },
+  "A/Netherlands/18/1994": {
+   "A/Auckland/10/1997": {
+    "NL/18/94": [
+     3.3959,
+     38.0
+    ]
+   },
+   "A/HongKong/1/1994": {
+    "NL/18/94": [
+     0.0,
+     400.0
+    ]
+   },
+   "A/HongKong/2/1994": {
+    "NL/18/94": [
+     0.737,
+     240.0
+    ]
+   },
+   "A/HongKong/357/1996": {
+    "NL/18/94": [
+     0.0,
+     400.0
+    ]
+   },
+   "A/HongKong/358/1996": {
+    "NL/18/94": [
+     0.737,
+     240.0
+    ]
+   },
+   "A/HongKong/42/1996": {
+    "NL/18/94": [
+     1.3219,
+     160.0
+    ]
+   },
+   "A/HongKong/434/1996": {
+    "NL/18/94": [
+     1.5146,
+     140.0
+    ]
+   },
+   "A/HongKong/49/1995": {
+    "NL/18/94": [
+     -3.0,
+     3200.0
+    ]
+   },
+   "A/HongKong/55/1995": {
+    "NL/18/94": [
+     -1.0,
+     800.0
+    ]
+   },
+   "A/HongKong/56/1994": {
+    "NL/18/94": [
+     0.0,
+     400.0
+    ]
+   },
+   "A/Lyon/1781/1996": {
+    "NL/18/94": [
+     0.152,
+     360.0
+    ]
+   },
+   "A/Netherlands/126/1993": {
+    "NL/18/94": [
+     4.4739,
+     18.0
+    ]
+   },
+   "A/Netherlands/18/1994": {
+    "NL/18/94": [
+     0.0,
+     400.0
+    ]
+   },
+   "A/Netherlands/271/1995": {
+    "NL/18/94": [
+     -3.263,
+     3840.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "NL/18/94": [
+     -0.6781,
+     640.0
+    ]
+   },
+   "A/SouthAustralia/25/1994": {
+    "NL/18/94": [
+     -0.263,
+     480.0
+    ]
+   },
+   "A/Stockholm/12/1992": {
+    "NL/18/94": [
+     2.3219,
+     80.0
+    ]
+   },
+   "A/Stockholm/20/1993": {
+    "NL/18/94": [
+     0.3219,
+     320.0
+    ]
+   },
+   "A/Victoria/75/1995": {
+    "NL/18/94": [
+     0.3219,
+     320.0
+    ]
+   }
+  },
+  "A/Netherlands/5/1998": {
+   "A/Auckland/10/1997": {
+    "NL/5/98": [
+     3.9627,
+     196.0
+    ]
+   },
+   "A/HongKong/42/1996": {
+    "NL/5/98": [
+     5.2555,
+     80.0
+    ]
+   },
+   "A/HongKong/55/1995": {
+    "NL/5/98": [
+     1.2555,
+     1280.0
+    ]
+   },
+   "A/Netherlands/241/1993": {
+    "NL/5/98": [
+     4.2555,
+     160.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "NL/5/98": [
+     3.8563,
+     211.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "NL/5/98": [
+     0.0,
+     3056.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "NL/5/98": [
+     1.7272,
+     923.0
+    ]
+   }
+  },
+  "A/Singapore/1/1996": {
+   "A/HongKong/55/1995": {
+    "SP/1/96": [
+     -0.7502,
+     1280.0
+    ]
+   },
+   "A/Netherlands/18/1994": {
+    "SP/1/96": [
+     3.8438,
+     53.0
+    ]
+   },
+   "A/Netherlands/241/1993": {
+    "SP/1/96": [
+     3.0799,
+     90.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "SP/1/96": [
+     3.9868,
+     48.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "SP/1/96": [
+     -1.4672,
+     2104.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "SP/1/96": [
+     0.2498,
+     640.0
+    ]
+   },
+   "A/Singapore/1/1996": {
+    "SP/1/96": [
+     0.0,
+     761.0
+    ]
+   }
+  }
+ }
+}

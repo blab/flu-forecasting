@@ -214,6 +214,21 @@ Confirm this is true by running snakemake in dry run mode.
 snakemake --dryrun
 ```
 
+### Inspect derived titer data for natural populations
+
+Due to existing data sharing agreements, we cannot publicly distribute raw titer measurements for hemagglutination inhibition (HI) assays and focus reduction assays (FRAs).
+As an alternative, we provide the derived titer models produced by the `augur titers` command using the algorithms described in [Neher et al. 2016](https://www.pnas.org/content/113/12/E1701).
+For HI assays, we provide two different model files per analysis timepoint for the titer "tree model" and "substitution model".
+These files are named `titers-tree-model.json` and `titers-sub-model.json`, respectively.
+For FRAs, we provide model files for the tree model with names like `fra-titers-tree-model.json`.
+Example paths for each of these files are listed below for a single timepoint in the analysis of most recent A/H3N2 sequences.
+
+  - `results/builds/natural/natural_sample_20191001/timepoints/2015-10-01/titers-tree-model.json`
+  - `results/builds/natural/natural_sample_20191001/timepoints/2015-10-01/titers-sub-model.json`
+  - `results/builds/natural/natural_sample_20191001/timepoints/2015-10-01/fra-titers-tree-model.json`
+
+These model files contain all information required to fit the HI- and FRA-based forecasting models described in the manuscript.
+
 ### Run the full analysis
 
 Run the entire pipeline locally with four simultaneous jobs.

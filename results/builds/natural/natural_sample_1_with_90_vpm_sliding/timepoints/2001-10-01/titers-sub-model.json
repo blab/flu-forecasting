@@ -1,0 +1,7141 @@
+{
+ "avidity": {
+  "A/Auckland/10/1997": 0.1194,
+  "A/HongKong/42/1996": 0.6322,
+  "A/HongKong/55/1995": -0.5268,
+  "A/HongKong/734/2001": 0.1104,
+  "A/Netherlands/118/2001": -0.6422,
+  "A/Netherlands/124/2001": 0.5663,
+  "A/Netherlands/3/2000": 0.4724,
+  "A/Netherlands/300/1997": 0.0962,
+  "A/Netherlands/427/1998": 0.4551,
+  "A/Netherlands/5/1998": 0.5771,
+  "A/Nice/491/1997": -0.4482,
+  "A/Singapore/1/1996": 0.0,
+  "A/Singapore/15/2001": -0.0682,
+  "A/Toulouse/878/2001": 0.0032
+ },
+ "nodes": {
+  "A/Argentina/10/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/13/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/25/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/302/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/311/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/3758/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/3759/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/44/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/5/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/5995/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Argentina/mc5/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Arizona/9/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Arkansas/2/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/10/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/583/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/588/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/589/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/593/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/596/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/598/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/599/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/600/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/601/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/602/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/604/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Auckland/607/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/115/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/156/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/161/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/178/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/202/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/224/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/226/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/27/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/28/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/328/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/480/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/504/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/62/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bangkok/86/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/130/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/233/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/259/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/62/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Beijing/65/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/10/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/18a/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/2c/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/4b/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/694/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/695/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/718/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/822/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brazil/991/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brisbane/10/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brisbane/11/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Brisbane/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bulgaria/113/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bulgaria/28/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Bulgaria/874/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Busan/11/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Busan/16/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Busan/44/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Busan/66/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Busan/71/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/California/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/10/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/101/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/103/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/140/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/146/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/149/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/17/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/179/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/2/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/36/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/37/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/38/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/39/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/42/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/43/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/44/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/50/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/50/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/55/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/56/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/6/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/61/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/62/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/64/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/66/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/67/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/68/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/7/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/71/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/73/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/75/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/80/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/81/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/84/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/85/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/88/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/89/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/90/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/92/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/93/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/94/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/96/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/97/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/98/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Canterbury/99/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chile/5109/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chile/5299/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chile/5823/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chile/6416/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chongqing/1/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Chongqing/3/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Christchurch/28/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Christchurch/37/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Christchurch/44/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Christchurch/45/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Christchurch/94/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Cnic/113/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Cnic/129/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Cnic/14/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Cnic/18/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Cnic/35/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Colombia/3026/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Daegu/24/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Daegu/56/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Daegu/58/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/1/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/115/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/19/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/2/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/26/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/3/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dakar/6/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Darwin/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Darwin/17/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Darwin/2/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dunedin/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Dunedin/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Ecuador/2635/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/England/731/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Finland/620/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Florida/1/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/126/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/151/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/152/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/202/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/221/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/54/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fujian/90/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Fukushima/127/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Georgia/NHRC0001/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangdong/233/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guanger/211/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/125/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/126/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/127/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/341/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/386/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangxi/9/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/100/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/1166/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/118/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/118/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/1191/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/194/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/229/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/242/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/253/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/331/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/375/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/438/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/44/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/442/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/443/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/499/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/535/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/536/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/57/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/602/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/62/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/720/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/81/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/9/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/93/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/933/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/934/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/98/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guangzhou/er149/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guizhou/105/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Guizhou/75/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hainan/1/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hainan/10/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hainan/3/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hainan/7/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hainan/9/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hangzhou/16/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Harbin/1/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Harbin/2/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Harbin/36/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Harbin/59/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Henan/102/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Henan/104/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hiroshima/1/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hiroshima/253/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1251/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1269/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1399/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1418/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1573/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/1585/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/357/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/358/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/42/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/434/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/55/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/648/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/734/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/762/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10100/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10132/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10133/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10151/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10186/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10216/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10276/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10537/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10554/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10632/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10660/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10756/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10954/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10958/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK10960/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK11163/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK11230/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK11237/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK11241/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK11255/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12160/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12312/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12563/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12566/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12572/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12580/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12626/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12794/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK12897/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13033/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13048/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13172/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13510/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13658/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK13763/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK14627/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK14672/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK14875/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK16614/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17464/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17603/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17643/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17697/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17704/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17707/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK17872/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18036/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18194/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18218/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18230/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18351/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18358/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18610/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK18886/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK19579/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20010/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20169/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20173/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20199/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20200/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20213/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20217/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20236/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20292/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20294/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20300/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20320/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20523/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20731/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK20992/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21124/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21128/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21132/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21226/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21250/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21421/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21675/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21733/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21734/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21891/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK21932/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22013/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22048/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22072/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22078/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22087/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22162/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22163/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22185/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22644/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22736/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK22888/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24510/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24749/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24760/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24825/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24882/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK24985/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK26805/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK26846/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK26907/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK26969/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK26980/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK27157/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK27183/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK27348/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK27374/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK28038/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK28040/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK28044/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK28278/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK28501/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK30314/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK30419/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK30423/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK30605/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK31421/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK31448/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK31490/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK31510/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK32796/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33316/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33406/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33416/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33418/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33829/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33885/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK33915/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK34114/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK34193/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK41114/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK41222/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK41459/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4147/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK41507/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK41757/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4245/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4391/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4529/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4542/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4622/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK4803/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK50552/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK50722/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/HongKong/CUHK52247/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Hutt/82/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Illinois/NHRC0001/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/India/2701/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/India/3783/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Indonesia/8338/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Jochiwon/4/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Johannesburg/29/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Kentucky/21/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Kiev/633/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Korea/2623/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Korea/320/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Lyon/1781/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Madagascar/62645/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10081/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10111/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10135/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10360/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10370/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10675/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10717/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10759/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10807/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10816/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10877/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10879/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10969/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10970/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/10997/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/11473/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12106/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12132/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12550/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12726/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12766/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12904/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12942/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12974/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/12990/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13002/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13094/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13241/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13246/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13328/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13329/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/13381/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/14590/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/17230/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/17276/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/17332/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/17392/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/17998/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/18121/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Malaysia/18128/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Massachusetts/2/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Mauritius/434/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Michigan/17/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Missouri/NHRC0001/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Nara/3/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NelsonMarlborough/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Nepal/g-2079/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/118/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/124/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/197/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/271/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/300/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/427/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/462/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/5/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Netherlands/51/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewCaledonia/1/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewCaledonia/11/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/137/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/138/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/139/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/140/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/141/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/142/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/143/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/145/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/147/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/148/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/149/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/150/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/151/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/152/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/153/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/154/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/155/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/156/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/157/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/158/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/160/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/161/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/162/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/163/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/164/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/165/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/166/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/167/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/168/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/169/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/170/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/171/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/172/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/173/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/174/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/175/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/176/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/177/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/178/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/179/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/180/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/181/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/182/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/183/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/184/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/185/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/186/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/187/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/188/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/189/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/224/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/240/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/247/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/248/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/249/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/250/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/251/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/252/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/253/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/254/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/255/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/256/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/257/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/259/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/260/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/261/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/262/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/263/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/264/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/265/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/266/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/277/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/278/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/279/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/280/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/282/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/283/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/284/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/285/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/286/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/287/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/288/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/289/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/290/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/301/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/304/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/311/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/313/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/314/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/315/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/316/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/317/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/318/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/320/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/321/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/322/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/323/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/324/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/325/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/326/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/327/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/328/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/329/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/330/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/331/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/332/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/333/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/335/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/336/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/337/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/338/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/339/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/340/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/347/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/397/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/398/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/421/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/422/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/423/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/424/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/425/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/426/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/427/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/428/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/429/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/430/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/431/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/432/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/433/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/434/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/435/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/436/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/437/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/438/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/439/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/440/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/448/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/449/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/450/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/451/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/452/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/453/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/454/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/455/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/456/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/457/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/458/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/459/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/460/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/501/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/502/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/503/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/504/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/505/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/506/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/507/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/508/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/509/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/510/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/511/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/512/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/513/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/514/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/515/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/516/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/517/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/518/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/519/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/520/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/521/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/522/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/523/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/524/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/525/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/526/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/527/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/528/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/529/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/530/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/531/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/532/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/533/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/534/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/535/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/536/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/537/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/538/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/539/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/540/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/541/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/542/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/543/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/544/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/545/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/546/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/547/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/548/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/549/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/550/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/554/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/555/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/556/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/557/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/558/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/559/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/560/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/561/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/562/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/563/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/564/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/565/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/566/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/567/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/568/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/569/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/570/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/571/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/572/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/573/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/574/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/575/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/576/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/577/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/578/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/579/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/580/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/581/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/582/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/583/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/584/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/585/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/586/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/587/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/588/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/589/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/590/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/591/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/592/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/593/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/594/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/595/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/596/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/597/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/598/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/599/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/600/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/601/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/602/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/603/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/606/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/608/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/609/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/610/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/611/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/612/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/613/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/617/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/618/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/619/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/622/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/623/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/624/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/625/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/628/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/631/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/632/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/634/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/635/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/636/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/637/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/639/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/641/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/647/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/648/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NewYork/652/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Nice/491/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Niigata/2743/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Ningxia/6/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NongKhai/475/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/NorthCarolina/1/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Okinawa/184/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Okinawa/5/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Okinawa/54/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Okinawa/92/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Osaka/125/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Osaka/68/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/2137/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/2501/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/2512/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/3161/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/5631/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/6391/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Oslo/841/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Perth/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Perth/10/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Perth/204/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Perth/213/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Perth/41/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Peru/5937/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Philippines/78890/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/11/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/12/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/14/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/16/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/17/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/18/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/19/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/2/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/20/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/5/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/7/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/8/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Queensland/9/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Reunion/2369/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Romania/175/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Romania/387/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Romania/427/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Santiago/5628/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Santiago/6774/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/211/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/230/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/262/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/31/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/38/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/39/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Scotland/89/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sendai/161/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shandong/10/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shandong/22/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shandong/7/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/1/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/12/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/15/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/159/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/180/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/195/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/34/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/42/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/44/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/5/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/58/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/69/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanghai/9/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shantou/133/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanxi/2/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanxi/28/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shanxi/5/1995": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/106/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/1090/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/1195/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/1219/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/195/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/474/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/499/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/805/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shenzhen/882/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shiga/2/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Shimane/133/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sichuan/137/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sichuan/304/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sichuan/326/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sichuan/350/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sichuan/418/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Siena/1/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/1/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/15/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/2/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/4/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/41/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/45/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/54/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Singapore/94/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAfrica/40/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAfrica/56/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAfrica/96/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/44/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/53/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/6/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/71/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/75/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/84/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthAustralia/85/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/SouthCarolina/NHRC0001/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sydney/118/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sydney/2/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sydney/201/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sydney/213/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Sydney/217/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/1/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/124/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/1335/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/1459/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/1471/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/16/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/160/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/17/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/206/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/22104/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/263/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/287/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/317/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/365/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/429/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/431/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/511/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/55/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/6/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Taiwan/92605/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Tak/123/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Tak/214/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Texas/7/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Texas/8/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Thailand/80891/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Tianjin/46/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Tianjin/64/1997": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Toulouse/878/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Townsville/1/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Townsville/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/302/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/508/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/509/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/523/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/532/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/544/2002": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Victoria/570/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Vietnam/1249/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Vietnam/1293/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/1/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/105/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/15/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/16/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/17/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/20/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/5/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/5/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/6/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/7/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/8/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Waikato/9/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wellington/21/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wellington/22/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wellington/30/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wellington/34/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wellington/9/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WestCoast/28/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WestCoast/32/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WestCoast/55/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/1/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/10/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/11/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/12/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/13/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/14/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/15/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/16/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/2/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/3/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/4/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/5/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/6/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/7/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/8/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/WesternAustralia/9/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wuhan/133/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wuhan/260/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wuhan/30/1996": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wuhan/34/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Wuhan/46/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Yamagata/592/2001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Yokohama/111/2000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Zhejiang/11/1998": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "A/Zhejiang/4/1999": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000000": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000001": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000002": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000003": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000004": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000006": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000009": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000014": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000015": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000016": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000017": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000020": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000028": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000030": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000031": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000032": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000033": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000034": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000035": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000038": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000040": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000044": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000048": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000049": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000050": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000052": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000053": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000054": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000055": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000056": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000057": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000058": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000059": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000060": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000061": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000062": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000063": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000064": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000065": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000066": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000067": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000068": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000069": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000071": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000075": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000076": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000077": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000078": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000079": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000080": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000081": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000082": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000083": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000084": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000085": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000086": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000087": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000088": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000089": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000090": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000091": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000093": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000094": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000095": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000096": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000097": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000101": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000103": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000105": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000106": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000107": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000108": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000111": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000112": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000113": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000114": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000115": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000116": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000117": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000118": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000120": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000121": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000122": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000123": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000124": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000125": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000127": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000128": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000129": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000130": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000131": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000132": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000133": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000136": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000138": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000140": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000141": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000142": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000143": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000144": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000145": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000146": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000147": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000148": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000149": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000151": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000153": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000155": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000156": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000157": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000158": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000160": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000161": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000163": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000164": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000165": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000166": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000167": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000168": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000169": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000171": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000172": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000174": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000175": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000176": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000177": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000178": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000179": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000180": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000181": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000182": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000183": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000184": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000185": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000186": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000187": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000188": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000189": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000191": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000192": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000193": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000194": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000196": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000197": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000199": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000200": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000201": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000203": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000204": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000205": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000206": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000207": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000208": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000209": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000210": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000211": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000212": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000213": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000214": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000215": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000216": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000217": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000218": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000219": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000220": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000221": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000222": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000223": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000224": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000225": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000226": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000227": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000228": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000233": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000235": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000236": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000237": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000238": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000239": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000240": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000242": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000244": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000245": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000246": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000247": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000248": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000249": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000250": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000251": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000252": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000255": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000256": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000257": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000258": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000259": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000260": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000263": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000264": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000265": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000266": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000272": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000273": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000274": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000275": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000276": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000277": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000278": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000279": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000280": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000281": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000282": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000283": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000284": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000285": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000286": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000287": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000288": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000289": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000290": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000291": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000292": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000293": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000294": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000297": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000299": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000303": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000304": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000305": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000306": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000307": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000308": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000309": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000310": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000311": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000314": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000316": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000317": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000318": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000321": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000322": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000323": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000324": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000326": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000328": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000330": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000331": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000334": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000336": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000337": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000338": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000339": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000340": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000341": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000342": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000344": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000345": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000346": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000348": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000349": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000350": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000351": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000352": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000353": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000354": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000355": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000356": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000357": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000359": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000360": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000361": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000362": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000363": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000364": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000365": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000366": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000367": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000368": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000369": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000370": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000371": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000372": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000373": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000374": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000375": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000376": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000377": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000378": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000379": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000380": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000381": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000382": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000383": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000384": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000385": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000386": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000387": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000388": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000389": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000390": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000391": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000392": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000393": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000394": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000395": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000396": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000397": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000398": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000399": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000400": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000401": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000402": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000403": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000404": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000405": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000406": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000407": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000408": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000409": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000411": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000412": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000413": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000414": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000416": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000417": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000418": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000419": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000420": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000421": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000423": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000424": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000425": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000426": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000427": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000428": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000429": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000430": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000434": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000435": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000436": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000437": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000438": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000439": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000441": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000442": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000443": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000444": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000445": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000446": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000447": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000448": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000450": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000452": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000453": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000454": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000455": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000456": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000457": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000459": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000460": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000461": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000462": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000463": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000464": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000465": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000466": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000468": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000469": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000470": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000471": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000472": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000473": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000474": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000475": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000476": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000477": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000478": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000480": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000481": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000482": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000483": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000484": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000485": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000486": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000487": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000488": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000489": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000490": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000491": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000492": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000493": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000494": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000495": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000496": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000497": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000498": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000499": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000500": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000501": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000502": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000503": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000504": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000505": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000506": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000508": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000511": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000512": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000517": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000518": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000519": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000521": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000522": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000523": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000524": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000525": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000526": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000527": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000528": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000529": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000531": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000532": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000533": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000534": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000535": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000536": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000537": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000538": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000539": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000540": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000541": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000542": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000543": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000544": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000545": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000546": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000547": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000548": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000556": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000558": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000559": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000560": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000561": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000563": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000564": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000566": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000567": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000570": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000571": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000574": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000575": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000576": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000577": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000578": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000579": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000580": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000581": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000583": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000584": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000586": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000587": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000588": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000589": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000590": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000591": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000592": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000593": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000594": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000595": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000596": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000597": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000599": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000601": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000602": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000603": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000606": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000607": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000608": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000609": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000611": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000614": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000617": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000618": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000620": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000621": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000622": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000623": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000624": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000625": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000626": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000627": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000628": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000629": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000630": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000631": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000632": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000633": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000634": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000635": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000638": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000639": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000640": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000641": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000643": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000644": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000646": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000650": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000652": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000653": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000654": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000655": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000656": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000658": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000659": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000660": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000661": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000662": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000663": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000666": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000667": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000668": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000669": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000670": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000671": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000672": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000673": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000674": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000675": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000677": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000678": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000679": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000680": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000682": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000683": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000684": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000685": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000686": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000687": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000688": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000689": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000690": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000691": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000692": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000694": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000696": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000697": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000698": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000699": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000701": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000702": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000703": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000704": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000705": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000706": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000707": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000709": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000710": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000711": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000712": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000713": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000714": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000715": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000716": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000717": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000718": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000719": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000720": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000721": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000722": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000723": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000724": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000725": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000726": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000727": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000728": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000729": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000733": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000735": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000741": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000742": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000743": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000744": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000745": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000746": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000747": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000748": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000749": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000750": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000751": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000752": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000753": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000755": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000756": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000757": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000758": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000759": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000760": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000761": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000764": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000765": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000766": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000767": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000768": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000770": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000771": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000773": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000774": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000775": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000776": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000777": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000778": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000779": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000780": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000781": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000782": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000783": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000784": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000785": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000786": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000787": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000788": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000789": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000790": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000791": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000792": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000793": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000794": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000795": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000796": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000797": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000798": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000799": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000800": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000801": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000802": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000803": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000804": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000805": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000806": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000807": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000808": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000809": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000810": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000811": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000812": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000813": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000814": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000815": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000816": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000817": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000818": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000819": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000820": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000821": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000822": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000823": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000824": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000825": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000826": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000827": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000828": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000829": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000830": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000831": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000832": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000833": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000834": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000835": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000836": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000837": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000838": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000839": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000840": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000841": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000842": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000843": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000844": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000845": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000846": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000847": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000848": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000849": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000850": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000851": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000852": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000853": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000854": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000855": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000856": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000857": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000858": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000859": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000860": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000861": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000862": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000863": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000864": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000865": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000866": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000867": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000868": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000869": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000870": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000871": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000872": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000873": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000874": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000875": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000876": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000877": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000878": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000879": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000880": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000881": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000882": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000883": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000884": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000885": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000886": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000887": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000889": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000890": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000891": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000892": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000893": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000894": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000895": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000896": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000897": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000898": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000899": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000900": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000901": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000902": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000904": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000905": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000906": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000907": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000908": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000916": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000922": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000925": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000926": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000928": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000929": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000930": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000931": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000932": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000934": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000936": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000937": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000938": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000939": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000940": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000941": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000942": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000943": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000944": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000945": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000946": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000948": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000949": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000950": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000951": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000952": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000953": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000954": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000955": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000956": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000957": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000958": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000959": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000960": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000961": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000962": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000963": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000964": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000965": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000966": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000967": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000968": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000969": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000970": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000971": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000972": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000973": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000974": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000975": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000977": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000978": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000979": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000980": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000981": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  },
+  "NODE_0000982": {
+   "cTiterSub": 0,
+   "dTiterSub": 0
+  }
+ },
+ "potency": {
+  "A/Auckland/10/1997": {
+   "AU/10/97": 2.5211,
+   "mean_potency": 2.5211233835131983
+  },
+  "A/HongKong/734/2001": {
+   "A/HK/734/01_nimr02": 0.026,
+   "mean_potency": 0.025974025974025965
+  },
+  "A/Netherlands/118/2001": {
+   "NL/118/01": 0.3066,
+   "mean_potency": 0.30663907117144984
+  },
+  "A/Netherlands/124/2001": {
+   "NL/124/01": 1.2858,
+   "mean_potency": 1.2857829671840584
+  },
+  "A/Netherlands/5/1998": {
+   "NL/5/98": 3.3659,
+   "mean_potency": 3.365915964445978
+  },
+  "A/Singapore/1/1996": {
+   "SP/1/96": 1.5714,
+   "mean_potency": 1.5713958208513727
+  },
+  "A/Singapore/15/2001": {
+   "A/Sing/15/01_nimr02": -0.0455,
+   "mean_potency": -0.04545454545454547
+  },
+  "A/Toulouse/878/2001": {
+   "A/Toul/878/01_nimr02": 0.3831,
+   "mean_potency": 0.38311688311688313
+  }
+ },
+ "substitution": {},
+ "titers": {
+  "A/Auckland/10/1997": {
+   "A/Auckland/10/1997": {
+    "AU/10/97": [
+     0.0,
+     4434.0
+    ]
+   },
+   "A/HongKong/42/1996": {
+    "AU/10/97": [
+     3.7925,
+     320.0
+    ]
+   },
+   "A/HongKong/55/1995": {
+    "AU/10/97": [
+     3.7925,
+     320.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "AU/10/97": [
+     0.1926,
+     3880.0
+    ]
+   },
+   "A/Netherlands/427/1998": {
+    "AU/10/97": [
+     0.7925,
+     2560.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "AU/10/97": [
+     5.8106,
+     79.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "AU/10/97": [
+     2.7925,
+     640.0
+    ]
+   }
+  },
+  "A/HongKong/734/2001": {
+   "A/HongKong/734/2001": {
+    "A/HK/734/01_nimr02": [
+     0.0,
+     1280.0
+    ]
+   },
+   "A/Singapore/15/2001": {
+    "A/HK/734/01_nimr02": [
+     0.0,
+     1280.0
+    ]
+   },
+   "A/Toulouse/878/2001": {
+    "A/HK/734/01_nimr02": [
+     0.0,
+     1280.0
+    ]
+   }
+  },
+  "A/Netherlands/118/2001": {
+   "A/Netherlands/118/2001": {
+    "NL/118/01": [
+     0.0,
+     2933.0
+    ]
+   },
+   "A/Netherlands/124/2001": {
+    "NL/118/01": [
+     1.0263,
+     1440.0
+    ]
+   }
+  },
+  "A/Netherlands/124/2001": {
+   "A/Netherlands/118/2001": {
+    "NL/124/01": [
+     -1.9253,
+     3840.0
+    ]
+   },
+   "A/Netherlands/124/2001": {
+    "NL/124/01": [
+     0.0,
+     1011.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "NL/124/01": [
+     5.0747,
+     30.0
+    ]
+   }
+  },
+  "A/Netherlands/5/1998": {
+   "A/Auckland/10/1997": {
+    "NL/5/98": [
+     3.9627,
+     196.0
+    ]
+   },
+   "A/HongKong/42/1996": {
+    "NL/5/98": [
+     5.2555,
+     80.0
+    ]
+   },
+   "A/HongKong/55/1995": {
+    "NL/5/98": [
+     1.2555,
+     1280.0
+    ]
+   },
+   "A/Netherlands/3/2000": {
+    "NL/5/98": [
+     5.2555,
+     80.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "NL/5/98": [
+     3.8563,
+     211.0
+    ]
+   },
+   "A/Netherlands/427/1998": {
+    "NL/5/98": [
+     4.7319,
+     115.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "NL/5/98": [
+     0.0,
+     3056.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "NL/5/98": [
+     1.7272,
+     923.0
+    ]
+   }
+  },
+  "A/Singapore/1/1996": {
+   "A/HongKong/55/1995": {
+    "SP/1/96": [
+     -0.7502,
+     1280.0
+    ]
+   },
+   "A/Netherlands/124/2001": {
+    "SP/1/96": [
+     4.2498,
+     40.0
+    ]
+   },
+   "A/Netherlands/300/1997": {
+    "SP/1/96": [
+     3.9868,
+     48.0
+    ]
+   },
+   "A/Netherlands/427/1998": {
+    "SP/1/96": [
+     4.6649,
+     30.0
+    ]
+   },
+   "A/Netherlands/5/1998": {
+    "SP/1/96": [
+     -1.4672,
+     2104.0
+    ]
+   },
+   "A/Nice/491/1997": {
+    "SP/1/96": [
+     0.2498,
+     640.0
+    ]
+   },
+   "A/Singapore/1/1996": {
+    "SP/1/96": [
+     0.0,
+     761.0
+    ]
+   }
+  },
+  "A/Singapore/15/2001": {
+   "A/HongKong/734/2001": {
+    "A/Sing/15/01_nimr02": [
+     0.0,
+     640.0
+    ]
+   },
+   "A/Singapore/15/2001": {
+    "A/Sing/15/01_nimr02": [
+     0.0,
+     640.0
+    ]
+   },
+   "A/Toulouse/878/2001": {
+    "A/Sing/15/01_nimr02": [
+     0.0,
+     640.0
+    ]
+   }
+  },
+  "A/Toulouse/878/2001": {
+   "A/HongKong/734/2001": {
+    "A/Toul/878/01_nimr02": [
+     1.0,
+     640.0
+    ]
+   },
+   "A/Singapore/15/2001": {
+    "A/Toul/878/01_nimr02": [
+     0.0,
+     1280.0
+    ]
+   },
+   "A/Toulouse/878/2001": {
+    "A/Toul/878/01_nimr02": [
+     0.0,
+     1280.0
+    ]
+   }
+  }
+ }
+}
