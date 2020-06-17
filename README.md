@@ -138,6 +138,15 @@ These files can be found in the following paths.
 
 ## Full analysis
 
+### Inspect sequences for simulated populations
+
+Each SANTA-SIM run and subsequent subsampling of the resulting sequences will produce a different random collection of sequences for the workflow.
+To ensure reproducibility of results, we have included the specific simulated sequences used for analyses in the manuscript.
+These sequences and their corresponding metadata are available at the following paths:
+
+  - `data/simulated/simulated_sample_3/filtered_sequences.fasta`
+  - `data/simulated/simulated_sample_3/filtered_metadata.tsv`
+
 ### Download sequences for natural populations
 
 All hemagglutinin sequences for natural populations are available through [the GISAID database](https://www.gisaid.org/).
