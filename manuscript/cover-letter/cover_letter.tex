@@ -20,7 +20,7 @@
   Seattle, WA 98109, USA}
 \emailfrom{jlhudd@uw.edu}
 
-\greetto{Dear Editor,}
+\greetto{Dear Editors,}
 \closeline{\\Sincerely,}
 
 % comments
@@ -36,29 +36,27 @@
   Please find attached our manuscript entitled ``Integrating genotypes and phenotypes improves long-term forecasts of seasonal influenza A/H3N2 evolution''.
   We would be grateful if you considered it for publication in \textit{eLife}.
 
-  The World Health Organization selects vaccine strains for seasonal influenza A/H3N2 based on experimental measurements of antigenic drift and computational models of hemagglutinin (HA) sequence evolution.
+  The World Health Organization (WHO) selects vaccine strains for seasonal influenza A/H3N2 based on experimental measurements of antigenic drift and computational models of hemagglutinin (HA) sequence evolution.
   Hemagglutination inhibition (HI) assays provide phenotypic measurements of antigenic drift that have been the gold standard for decades.
-  In their 2014 \textit{Nature} paper, {\L}uksza and L\"assig provided the first mechanistic fitness model to predict the success of H3N2 populations one year into the future from HA sequences alone.
-  That same year in \textit{eLife}, Neher et al. presented the local branching index (LBI), a fitness estimate based on rapid branching in HA phylogenies.
-  No studies to date have integrated these genetic and phenotypic measures of HA into a single model to understand their relative contributions to influenza fitness.
+  The WHO augments these data with computational fitness models based on HA sequences including a mechanistic model by {\L}uksza and L{\"a}ssig (2014) that predicts the success of H3N2 populations one year into the future and a phylogenetic model by Neher et al. (2014) called the local branching index (LBI) that estimates H3N2 strain fitness based on rapid branching in HA phylogenies.
+  No published studies to date have integrated all of these genetic and phenotypic measures of HA into a single model to understand their relative contributions to influenza fitness.
 
-  To address this gap, we present the first fitness framework to integrate genetic and phenotypic measures of HA antigenic drift and functional constraint and phylogenetic measures of clade growth.
-  We implemented novel measures of antigenic drift by HI assays, functional constraint measured by deep mutational scanning (DMS) experiments, and clade growth based on recent changes in clade frequencies.
-  We also reimplemented {\L}uksza and L\"assig's sequence-based measures of antigenic drift and functional constraint, and Neher et al.'s clade growth metric, LBI.
-  To identify the most predictive models, we tested each of these fitness metrics individually and in relevant combinations using time-series cross-validation.
+  To address this gap, we developed a fitness framework that integrates genetic and phenotypic measures of antigenic drift and functional constraint with phylogenetic measures of clade growth.
+  We implemented novel measures of antigenic drift from HI assays, functional constraint from deep mutational scanning (DMS) experiments, and clade growth from recent changes in clade frequencies.
+  We also reimplemented {\L}uksza and L{\"a}ssig's sequence-based measures of antigenic drift and functional constraint and Neher et al.'s LBI metric.
+  We rigorously tested the performance of these fitness metrics individually and in relevant combinations using time-series cross-validation.
   The most accurate models included a combination of sequence-based functional constraint and either HI-based measures of antigenic drift or LBI-based measures of clade growth.
 
-  Our findings answer several open questions in the field and point the way for future forecasting efforts.
+  Our findings address several open questions in the field of long-term influenza forecasting and point the way for future forecasting efforts.
   We find that genetic estimates of antigenic drift are insufficient replacements for the gold standard phenotypic measures provided by HI assays.
-  We further show that the success of previous models based on these genetic estimates is due, in part, to inadvertantly borrowing information from the future.
-  In contrast, we show that simple genetic estimates of functional constraint are superior to more detailed estimates provided by deep mutational scanning (DMS) measurements from a single background strain.
-  These results suggest that future forecasting models should strive not to replace genetic fitness metrics with phenotypic metrics but to identify metrics that are the least likely to be affected by historical contingency.
+  We further show that the success of previous models based on these genetic estimates is due, in part, to inadvertently borrowing information from the future.
+  In contrast, simple genetic estimates of functional constraint are superior to more detailed estimates provided by deep mutational scanning (DMS) measurements from a single background strain.
+  These results suggest that future forecasting models should identify metrics that are the least likely to be affected by historical contingency.
 
-  We designed our fitness framework as a reproducible workflow built from open source tools, released as open source itself, and integrated into the real-time pathogen surveillance ecosystem of Nextstrain.
-  Our models estimate the sequence composition of future populations instead of phylogenetic clade frequencies, enabling subsequent forecasting efforts for rapidly evolving organisms whose genomes are not suited for phylogenetic inference such as recombining viruses and bacteria.
-  Importantly, fitness metrics can be readily defined in tidy data frames from any continuous trait of a sample.
-  Altogether, this manuscript and the associated fitness framework are immediately relevant to a general audience of evolutionary biologists, infectious disease researchers, virologists, and bioinformaticians.
-  For these reasons, we believe that \textit{eLife} is an appropriate venue for this work.
+  We designed our fitness framework as an open source, reproducible workflow built on tidy data frames and integrated it into Nextstrain, a real-time pathogen surveillance tool.
+  As our models estimate the sequence composition of future populations instead of phylogenetic clade frequencies, they could enable forecasting efforts for other rapidly evolving organisms whose genomes are not suited for phylogenetic inference such as recombining viruses and bacteria.
+  This manuscript is relevant to an audience of evolutionary biologists, infectious disease researchers, and computational biologists.
+  For this reason, we would like to submit this manuscript for consideration in the Special Issue on Evolutionary Medicine.
 \end{newlfm}
 
 \end{document}
