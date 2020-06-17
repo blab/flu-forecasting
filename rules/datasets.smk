@@ -13,7 +13,7 @@ DATA_NATURAL_ROOT_PATH = "data/natural/{sample}/"
 
 rule run_simulation:
     input:
-        simulation_config = DATA_SIMULATED_ROOT_PATH + "influenza_h3n2_ha.xml"
+        simulation_config = ancient(DATA_SIMULATED_ROOT_PATH + "influenza_h3n2_ha.xml")
     output:
         sequences = DATA_SIMULATED_ROOT_PATH + "simulated_HA_sequences.fasta"
     params:
@@ -65,8 +65,8 @@ rule standardize_simulated_sequence_dates:
 
 rule filter_simulated:
     input:
-        sequences = rules.parse_simulated_sequences.output.sequences,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata
+        sequences = ancient(rules.parse_simulated_sequences.output.sequences),
+        metadata = ancient(rules.standardize_simulated_sequence_dates.output.metadata)
     output:
         sequences = DATA_SIMULATED_ROOT_PATH + "filtered_sequences.fasta"
     params:
@@ -90,8 +90,8 @@ rule filter_simulated:
 
 rule filter_metadata_simulated:
     input:
-        sequences = rules.filter_simulated.output.sequences,
-        metadata = rules.standardize_simulated_sequence_dates.output.metadata,
+        sequences = ancient(rules.filter_simulated.output.sequences),
+        metadata = ancient(rules.standardize_simulated_sequence_dates.output.metadata)
     output:
         metadata = DATA_SIMULATED_ROOT_PATH + "filtered_metadata.tsv"
     conda: "../envs/anaconda.python3.yaml"
