@@ -563,66 +563,69 @@ rule unnormalized_lbi:
         """
 
 
-rule titers_sub:
-    input:
-        titers = _get_titers_by_wildcards,
-        alignments = translations,
-        tree = rules.refine.output.tree
-    params:
-        genes = gene_names
-    output:
-        titers_model = BUILD_TIMEPOINT_PATH + "titers-sub-model.json",
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    shell:
-        """
-        augur titers sub \
-            --titers {input.titers} \
-            --alignment {input.alignments} \
-            --tree {input.tree} \
-            --gene-names {params.genes} \
-            --allow-empty-model \
-            --output {output.titers_model} &> {log}
-        """
+# Only attempt to regenerate titer model files if the user has access to the raw titer data.
+# Otherwise, the files stored in version control will be used.
+if "RETHINK_HOST" in os.environ and "RETHINK_AUTH_KEY" in os.environ:
+    rule titers_sub:
+        input:
+            titers = _get_titers_by_wildcards,
+            alignments = translations,
+            tree = rules.refine.output.tree
+        params:
+            genes = gene_names
+        output:
+            titers_model = BUILD_TIMEPOINT_PATH + "titers-sub-model.json",
+        conda: "../envs/anaconda.python3.yaml"
+        benchmark: "benchmarks/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+        log: "logs/titers_sub_" + BUILD_SEGMENT_LOG_STEM + ".log"
+        shell:
+            """
+            augur titers sub \
+                --titers {input.titers} \
+                --alignment {input.alignments} \
+                --tree {input.tree} \
+                --gene-names {params.genes} \
+                --allow-empty-model \
+                --output {output.titers_model} &> {log}
+            """
 
 
-rule titers_tree:
-    input:
-        titers = _get_titers_by_wildcards,
-        tree = rules.refine.output.tree
-    output:
-        titers_model = BUILD_TIMEPOINT_PATH + "titers-tree-model.json",
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    shell:
-        """
-        augur titers tree \
-            --titers {input.titers} \
-            --tree {input.tree} \
-            --allow-empty-model \
-            --output {output.titers_model} &> {log}
-        """
+    rule titers_tree:
+        input:
+            titers = _get_titers_by_wildcards,
+            tree = rules.refine.output.tree
+        output:
+            titers_model = BUILD_TIMEPOINT_PATH + "titers-tree-model.json",
+        conda: "../envs/anaconda.python3.yaml"
+        benchmark: "benchmarks/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+        log: "logs/titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
+        shell:
+            """
+            augur titers tree \
+                --titers {input.titers} \
+                --tree {input.tree} \
+                --allow-empty-model \
+                --output {output.titers_model} &> {log}
+            """
 
 
-rule fra_titers_tree:
-    input:
-        titers = _get_fra_titers_by_wildcards,
-        tree = rules.refine.output.tree
-    output:
-        titers_model = BUILD_TIMEPOINT_PATH + "fra-titers-tree-model.json",
-    conda: "../envs/anaconda.python3.yaml"
-    benchmark: "benchmarks/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
-    log: "logs/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
-    shell:
-        """
-        augur titers tree \
-            --titers {input.titers} \
-            --tree {input.tree} \
-            --allow-empty-model \
-            --output {output.titers_model} &> {log}
-        """
+    rule fra_titers_tree:
+        input:
+            titers = _get_fra_titers_by_wildcards,
+            tree = rules.refine.output.tree
+        output:
+            titers_model = BUILD_TIMEPOINT_PATH + "fra-titers-tree-model.json",
+        conda: "../envs/anaconda.python3.yaml"
+        benchmark: "benchmarks/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".txt"
+        log: "logs/fra_titers_tree_" + BUILD_SEGMENT_LOG_STEM + ".log"
+        shell:
+            """
+            augur titers tree \
+                --titers {input.titers} \
+                --tree {input.tree} \
+                --allow-empty-model \
+                --output {output.titers_model} &> {log}
+            """
 
 
 # This is silly, but augur titers outputs a fixed pair of key names and trying
@@ -630,7 +633,7 @@ rule fra_titers_tree:
 # collision.
 rule rename_fields_in_fra_titers_tree:
     input:
-        titers_model = rules.fra_titers_tree.output.titers_model
+        titers_model = BUILD_TIMEPOINT_PATH + "fra-titers-tree-model.json"
     output:
         titers_model = BUILD_TIMEPOINT_PATH + "renamed-fra-titers-tree-model.json"
     conda: "../envs/anaconda.python3.yaml"
@@ -644,7 +647,7 @@ rule rename_fields_in_fra_titers_tree:
 
 rule convert_titer_model_to_distance_map:
     input:
-        model = rules.titers_sub.output.titers_model
+        model = BUILD_TIMEPOINT_PATH + "titers-sub-model.json"
     output:
         distance_map = BUILD_TIMEPOINT_PATH + "titer_substitution_distance_map.json"
     conda: "../envs/anaconda.python3.yaml"
@@ -691,7 +694,7 @@ rule pairwise_titer_tree_distances:
     input:
         tree = rules.refine.output.tree,
         frequencies = rules.tip_frequencies.output.frequencies,
-        model = rules.titers_tree.output.titers_model,
+        model = BUILD_TIMEPOINT_PATH + "titers-tree-model.json",
         date_annotations = rules.refine.output.node_data
     params:
         attribute_names = "cTiter_pairwise",
@@ -864,8 +867,8 @@ def _get_node_data_for_export(wildcards):
     if wildcards.type == "natural":
         inputs.extend([
             rules.traits.output.node_data,
-            rules.titers_tree.output.titers_model,
-            rules.titers_sub.output.titers_model,
+            BUILD_TIMEPOINT_PATH + "titers-tree-model.json",
+            BUILD_TIMEPOINT_PATH + "titers-sub-model.json",
             rules.titer_cross_immunities.output.cross_immunities,
             rules.titer_tree_cross_immunities.output.cross_immunities
         ])
