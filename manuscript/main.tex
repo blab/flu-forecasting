@@ -4,7 +4,9 @@
 Seasonal influenza virus infects 5--15\% of the global population every year causing an estimated 250,000 to 500,000 deaths annually with the majority of infections caused by influenza A/H3N2 \cite{flufactsheet}.
 Vaccination remains the most effective public health response available.
 However, frequent viral mutation results in viruses that escape previously acquired human immunity.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) selects vaccine viruses to represent circulating viruses, but because the process of vaccine development and distribution requires several months to complete, optimal vaccine design requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) monitors influenza evolution by sampling currently circulating viruses, or strains, and analyzing these strains with genome sequencing and serological assays.
+The WHO GISRS uses these data to select vaccine viruses that should best represent circulating viruses in the next influenza season.
+However, because the process of vaccine development and distribution requires several months to complete, optimal vaccine design requires an accurate prediction of which viruses will predominate approximately one year after vaccine viruses are selected.
 Current vaccine predictions focus on the hemagglutinin (HA) protein, which acts as the primary target of human immunity.
 Until recently, the hemagglutination inhibition (HI) assay has been the primary experimental measure of antigenic cross-reactivity between pairs of circulating viruses \cite{hirst1943studies}.
 Most modern H3N2 strains carry a glycosylation motif that reduces their binding efficiency in HI assays \cite{Chambers:2015jt,Zost2017}, prompting the increased use of virus neutralization assays including the neutralization-based focus reduction assay (FRA) \cite{Okuno:1990uu}.
@@ -47,7 +49,13 @@ We also find that composite models based on phenotypic measures of antigenic dri
 
 We developed a framework to forecast seasonal influenza evolution inspired by the Malthusian growth fitness model of {\L}uksza and L\"assig \cite{Luksza:2014hj}.
 As with this original model, we forecasted the frequencies of viral populations one year in advance by applying to each virus strain an exponential growth factor scaled by an estimate of the strain's fitness (Fig.~\ref{fig:model} and Eq.~\ref{equation_exponential_growth_model}).
-We estimated the frequency of virus strains every six months using kernel density estimation (KDE).
+{\L}uksza and L\"assig \cite{Luksza:2014hj} measured model performance by identifying clades -- groups of strains that all share a recent common ancestor -- and comparing observed and estimated future clade frequencies.
+However, as clade definitions are inherently unstable between seasons, we evaluated our models by comparing the genetic composition of observed and estimated future populations with the earth mover's distance metric.
+The earth mover's distance calculates the minimum distance between two populations, given the frequency of each individual within a population and a pairwise ``ground distance'' between individuals \cite{Rubner1998}.
+We defined distinct amino acid haplotypes as individuals in our observed and estimated future populations.
+For frequencies of individuals, we used the observed frequencies of haplotypes in the future and our model's estimated frequencies.
+We calculated the ground distance between individuals as the Hamming distance between haplotypes.
+With this implementation, more accurate projections of the future population's composition produce smaller earth mover's distances between the observed and estimated future (Fig.~\ref{fig:model}).
 
 We estimated viral fitness with biologically-informed metrics including those originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj} of epitope antigenic novelty and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) antigenic novelty \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
 All of these metrics except for HI antigenic novelty and DMS mutational effects rely only on HA sequences.
@@ -58,7 +66,7 @@ DMS mutational effects provide a more comprehensive biophysical model of functio
 The growth metrics estimate how successful populations of strains have been in the last six months based on either rapid branching in the phylogeny (LBI) or the change in clade frequencies over time (delta frequency).
 
 We fit models for individual fitness metrics and combinations of metrics that we anticipated would be mutually beneficial.
-For each model, we learned coefficient(s) that minimized the earth mover's distance between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Fig.~\ref{fig:model} and Eq.~\ref{equation_fitness_estimation}).
+For each model, we learned coefficient(s) that minimized the earth mover's distance between HA amino acid sequences from the observed population one year in the future and the estimated population produced by the fitness model (Eq.~\ref{equation_fitness_estimation}).
 We evaluated model performance with time-series cross-validation such that better models reduced the earth mover's distance to the future on validation or test data (Supplemental Figs~\ref{sup_fig:cross_validation_for_simulated_populations} and \ref{sup_fig:cross_validation_for_natural_populations}).
 The earth mover's distance to the future can never be zero, because each model makes predictions based on sequences available at the time of prediction and cannot account for new mutations that occur during the prediction interval.
 We calculated the lower bound for each model's performance as the optimal distance to the future possible given the current sequences at each timepoint.
