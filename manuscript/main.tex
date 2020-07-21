@@ -421,10 +421,14 @@ We suspect that this model was able to minimize overfitting by continuously upda
 
 Even the most accurate models with few parameters will sometimes fail due to the probabilistic nature of evolution.
 For example, the model with the best performance across our validation data -- mutational load and LBI -- was also one of the worst models across our test data.
-Specifically, we found that this model failed to predict the sudden decline of a dominant reassortant clade, A2/re, in 2019.
-Despite this model's excellent performance historically, it was unable to account for rare yet important events such as reassortment.
+Although we cannot rule out the role of overfitting, this model's poor performance coincided with unusual evolutionary circumstances.
+The diversity of H3N2 lineages during our test period was higher than the historical average \cite{Koelle:2006kf}, with the most recent common ancestor of all circulating strains dating eight years back.
+This persistence of diversity may have reduced the effectiveness of the LBI metric that assumes relatively rapid population turnover.
+Additionally, this model's poorest performance occurred in 2019 when it failed to predict the sudden decline of a dominant reassortant clade, A2/re.
+Only our models based on HI antigenic novelty and mutational load continued to perform as well or better than the naive model during the same time period.
+These results highlight the challenge of identifying models that remain robust to stochastic evolutionary events by avoiding overfitting to the past.
 
-Finally, we observed that composite models of multiple orthogonal fitness metrics often outperformed models based on their individual components.
+Correspondingly, we observed that composite models of multiple orthogonal fitness metrics often outperformed models based on their individual components.
 These results are consistent with previous work that found improved performance by integrating components of antigenic drift, functional constraint, and clade growth \cite{Luksza:2014hj}.
 However, the effective elimination of LBI from our three-metric model during the validation period (Fig.~\ref{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}) reveals the limitations of our current additive approach to composite models.
 The recent success of weighted ensembles for short-term influenza forecasting through the CDC's FluSight network \cite{Reich:2019bq} suggests that long-term forecasting may benefit from a similar approach.
