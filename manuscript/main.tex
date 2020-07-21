@@ -447,6 +447,11 @@ In addition to these FRA data based on ferret antisera, recent high-throughput a
 These assays reveal the specific sites and residues that confer antigenic escape from polyclonal sera obtained from individual humans.
 A sufficiently broad geographic and temporal sample of human sera with these assays could reveal consistent patterns of the immune landscape H3N2 strains must navigate to be globally successful.
 Models should also integrate information from multiple segments of the influenza genome and will need to balance the fitness benefits of evolution in genes such as neuraminidase \cite{Chen:2018kp} with the costs of reassortment \cite{Villa:2017iw}.
+Our forecasting framework makes the inclusion of fitness metrics based on additional gene segments technically straightforward.
+However, the definition of appropriate fitness metrics for neuraminidase and other genes remains an important scientific challenge.
+An additional challenge to model training is a relative lack of historical strains for which all genes have been sequenced.
+Of the 34,312 H3N2 strains in GISAID with all eight primary gene segments and collection dates between October 1, 1990 and 2019, the majority (24,466 or 71\%) were collected after October 1, 2015.
+Data availability will therefore inform which gene segments are prioritized for inclusion in future models.
 Finally, forecasting models need to account for the geographic distribution of viruses and the vastly different sampling intensities across the globe.
 Most influenza sequence data come from highly developed countries that account for a small fraction of the global population, while globally successful clades of influenza H3N2 often emerge in less well-sampled regions \cite{Russell:2008ke,Rambaut:2008ew,Bedford:2015fj}.
 Explicitly accounting for these sampling biases and the associated migration dynamics would allow models to weight forecasts based on both viral fitness and transmission.
