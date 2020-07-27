@@ -57,7 +57,20 @@ For frequencies of individuals, we used the observed frequencies of haplotypes i
 We calculated the ground distance between individuals as the Hamming distance between haplotypes.
 With this implementation, more accurate projections of the future population's composition produce smaller earth mover's distances between the observed and estimated future (Fig.~\ref{fig:model}).
 
-We estimated viral fitness with biologically-informed metrics including those originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj} of epitope antigenic novelty and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) antigenic novelty \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency).
+\begin{table}[htb]
+  \begin{center}
+    \scalebox{0.7}{
+      \input{tables/model_summary.tex}
+    }
+    \caption{
+      Summary of models used with simulated and natural populations.
+      Models are labeled by the type of population they were applied to, the type of data they were based on, and the component of influenza fitness they represent.
+    }
+    \label{table_model_summary}
+  \end{center}
+\end{table}
+
+We estimated viral fitness with biologically-informed metrics including those originally defined by {\L}uksza and L\"assig \cite{Luksza:2014hj} of epitope antigenic novelty and mutational load (non-epitope mutations) as well as four more recent metrics including hemagglutination inhibition (HI) antigenic novelty \cite{Neher:2016hy}, deep mutational scanning (DMS) mutational effects \cite{Lee2018}, local branching index (LBI) \cite{Neher:2014eu}, and change in clade frequency over time (delta frequency) (Table~\ref{table_model_summary}).
 All of these metrics except for HI antigenic novelty and DMS mutational effects rely only on HA sequences.
 The antigenic novelty metrics estimate how antigenically distinct each strain at time $t$ is from previously circulating strains based on either genetic distance at epitope sites or $\log_{2}$ titer distance from HI measurements.
 Increased antigenic drift relative to previously circulating strains is expected to correspond to increased viral fitness.
