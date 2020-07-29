@@ -438,7 +438,8 @@ rule figure_for_vaccine_comparison:
         cTiter_x_ne_star_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_cTiter_x-ne_star.tsv",
         ne_star_lbi_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_ne_star-lbi.tsv",
         naive_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_naive.tsv",
-        vaccines_json_path = "config/vaccines_h3n2.json"
+        vaccines_json_path = "config/vaccines_h3n2.json",
+        titers = config["builds"]["natural"]["natural_sample_1_with_90_vpm_sliding_test_tree"]["titers"]
     output:
         figure = "manuscript/figures/vaccine-comparison.pdf",
         relative_figure = "manuscript/figures/vaccine-comparison-relative-distance.pdf"
