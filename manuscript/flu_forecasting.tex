@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[9pt,lineno]{elife}
 
 % graphicx package, useful for including eps and pdf graphics
 \usepackage{graphicx}
@@ -29,10 +29,11 @@
 \usepackage[labelfont=bf,labelsep=period,font=small]{caption}
 
 % cite package, to clean up citations in the main text. Do not remove.
-\usepackage{cite}
+%\usepackage{cite}
+%\usepackage{natbib}
 
-\usepackage{lineno}
-\linenumbers
+%% \usepackage{lineno}
+%% \linenumbers
 
 \usepackage{authblk}
 \renewcommand\Authands{ \& }
@@ -63,14 +64,14 @@
 \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
 
 % comments
-\definecolor{purple}{rgb}{0.459,0.109,0.538}
-\def\tbc#1{\textcolor{purple}{[#1]}}
-\def\rnc#1{\textcolor{blue}{[#1]}}
-\def\jhc#1{\textcolor{green}{[#1]}}
+%% \definecolor{purple}{rgb}{0.459,0.109,0.538}
+%% \def\tbc#1{\textcolor{purple}{[#1]}}
+%% \def\rnc#1{\textcolor{blue}{[#1]}}
+%% \def\jhc#1{\textcolor{green}{[#1]}}
 
 \title{Integrating genotypes and phenotypes improves long-term forecasts of seasonal influenza A/H3N2 evolution}
 
-\author[1,2]{John Huddleston}
+\author[1,2*]{John Huddleston}
 
 % CC authors in alphabetical order by center name.
 
@@ -100,7 +101,7 @@
 
 % Nextstrain team
 \author[7,8]{Richard A.\ Neher}
-\author[1]{Trevor Bedford}
+\author[1*]{Trevor Bedford}
 
 \affil[1]{Vaccine and Infectious Disease Division, Fred Hutchinson Cancer Research Center, Seattle, WA, USA}
 \affil[2]{Molecular and Cell Biology, University of Washington, Seattle, WA, USA}
@@ -110,6 +111,9 @@
 \affil[6]{The WHO Collaborating Centre for Reference and Research on Influenza, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia; Department of Microbiology and Immunology, The University of Melbourne, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia.}
 \affil[7]{Biozentrum, University of Basel, Basel, Switzerland}
 \affil[8]{Swiss Institute of Bioinformatics, Basel, Switzerland}
+
+\corr{huddlej@gmail.com}{JH}
+\corr{trevor@bedford.io}{TB}
 
 \date{}
 
@@ -126,7 +130,6 @@
 
 \clearpage
 
-\bibliographystyle{nih}
 \bibliography{flu_forecasting}
 
 \clearpage
