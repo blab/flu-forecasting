@@ -612,7 +612,7 @@ We then identified the fitness coefficients that provided projected future frequ
 With this metric, a perfect estimate of the future's strain sequence composition and frequencies would produce a distance of zero.
 However, the inevitable accumulation of substitutions between the two populations prevents this outcome.
 We calculated EMD with the Python bindings for the OpenCV 3.4.1 implementation \citep{opencv_library}.
-We applied the Nelder-Mead minimization algorithm as implemented in SciPy \citep{SciPy} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
+We applied the Nelder-Mead minimization algorithm as implemented in SciPy \citep{virtanen_scipy_2020} to learn fitness coefficients that minimize the average of this distance metric over all timepoints in a given training window.
 
 \subsubsection*{Lower bound on earth mover's distance}
 
