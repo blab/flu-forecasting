@@ -302,7 +302,7 @@ Of the two metrics for functional constraint, mutational load outperformed DMS m
 In contrast to the original \cite{Luksza:2014hj} model, where the coefficient of the mutational load metric was fixed at -0.5, our model learned a consistently stronger coefficient of -0.99 $\pm$ 0.30.
 Notably, the best performance of the DMS mutational effects model was forecasting from April 2007 to April 2008 when the major clade containing A/Perth/16/2009 was first emerging.
 This result is consistent with the DMS model overfitting to the evolutionary history of the background strain used to perform the DMS experiments.
-Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Supplemental Table~\ref{sup_table:complete_natural_model_selection}, Methods).
+Alternate implementations of less background-dependent DMS metrics never performed better than the mutational load metric (Table~\ref{table:complete_natural_model_selection}, Methods).
 Thus, we find that a simple model where any mutation at non-epitope sites is deleterious is more predictive of global viral success than a more comprehensive biophysical model based on measured mutational effects of a single strain.
 
 LBI was the best individual metric by average distance to the future (Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}) and tied mutational load by outperforming the naive model at 17 (74\%) timepoints (Table~\ref{table_natural_model_selection}).
@@ -489,7 +489,7 @@ We observed overfitting to historical context in sequence-based models of antige
 The fitness benefit of mutations that led to antigenic drift in H3N2 in the past is well-documented \citep{Wiley:1981bc,Smith:2004jc,Wolf:2006da,Koel:2013jz}.
 Although the antigenic importance of seven specific sites in HA were experimentally validated by \cite{Koel:2013jz}, these sites do not explain all antigenic drift observed in natural populations \citep{Neher:2016hy}.
 Other attempts to define these so-called ``epitope sites'' have relied on either aggregation of results from antigenic escape assays \citep{Wolf:2006da} or retrospective computational analyses of sites with beneficial mutations \citep{Shih:2007bd,Luksza:2014hj}.
-We found that models based on all of these definitions except for the seven Koel epitope sites overfit to the historical context from which they were identified (Supplemental Table~\ref{sup_table:complete_natural_model_selection}).
+We found that models based on all of these definitions except for the seven Koel epitope sites overfit to the historical context from which they were identified (Table~\ref{table:complete_natural_model_selection}).
 These results suggest that the set of sites that contribute to antigenic drift at any given time may depend on both the fitness landscape of currently circulating strains and the immune landscape of the hosts these strains need to infect.
 Recent experimental mapping of antigenic escape mutations in H3N2 HA with human sera show that the specific sites that confer antigenic escape can vary dramatically between individuals based on their exposure history \citep{Lee2019}.
 In contrast to models based on predefined ``epitope sites'', our model based on experimental measurements of antigenic drift did not suffer from overfitting in the validation or test periods.
@@ -878,6 +878,23 @@ We set the neighborhood parameter, $\tau$, to 0.3 and only considered viruses sa
 We estimated the change in frequency over time by calculating clade frequencies under a Brownian motion diffusion process as previously described \citep{Lee2018}.
 These frequency calculations allowed us to assign a partial clade frequency to each strain within nested clades.
 We calculated the delta frequency as the change in frequency for each strain between the most recent timepoint in a given phylogeny and six months prior to that timepoint divided by 0.5 years.
+
+\begin{table}
+  \begin{center}
+    \scalebox{0.9}{
+        \input{tables/complete_natural_model_selection.tex}
+    }
+    \caption{
+      All model coefficients and performance on validation and test data for natural populations ordered from best to worst by distance to the future, as in Table~\ref{table_simulated_model_selection}.
+      Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and Figure~\ref{fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
+      Distances annotated with carets ($\wedge$) were not tested for significance relative to the naive model.
+      Validation results are based on 23 timepoints.
+      Test results are based on eight timepoints not observed during model training and validation.
+      Model results for additional variants of fitness metrics including those based on epitope mutations and DMS preferences are included for reference.
+    }
+    \label{table:complete_natural_model_selection}
+  \end{center}
+\end{table}
 
 \subsection*{Clustering of amino acid sequences for visualization}
 
