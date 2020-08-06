@@ -473,14 +473,28 @@ rule table_of_mutations_by_trunk_status_for_natural_populations:
     notebook:
         "notebooks/natural-mutations-by-trunk-status.ipynb"
 
-# Compile the manuscript after creating all figures and tables.
-rule manuscript:
+rule figures:
     input:
-        # Tables and figures
         rules.figure_for_model_schematic.output,
         *rules.figures_and_tables_for_model_results.output,
         _get_validation_figures,
         rules.figure_for_vaccine_comparison.output,
+        figure_names="manuscript/figures/figure_names.tsv"
+    output:
+        "figures/Figure_1.pdf"
+    shell:
+        """
+        while read original_name new_name
+        do
+            ln -s manuscript/figures/$original_name manuscript/figures/$new_name"
+        done < {input.figure_names}
+        """
+
+# Compile the manuscript after creating all figures and tables.
+rule manuscript:
+    input:
+        # Tables and figures
+        "figures/Figure_1.pdf",
         rules.table_of_mutations_by_trunk_status_for_simulated_populations.output,
         rules.table_of_mutations_by_trunk_status_for_natural_populations.output,
 
@@ -488,8 +502,7 @@ rule manuscript:
         "manuscript/flu_forecasting.tex",
         "manuscript/flu_forecasting.bib",
         "manuscript/abstract.tex",
-        "manuscript/main.tex",
-        "manuscript/supplement.tex"
+        "manuscript/main.tex"
     output:
         "manuscript/flu_forecasting.pdf"
     params:
