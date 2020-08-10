@@ -156,6 +156,7 @@ The mutational load metric received a consistently negative coefficient with an 
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
 
   \figsupp[Composite model coefficients and distances to the future for models fit to simulated populations.]{
+    Composite model coefficients and distances to the future for models fit to simulated populations.
     A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.}{\includegraphics[width=\textwidth]{figures/Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
 
 \end{figure}
@@ -176,7 +177,8 @@ This small gain supports our hypothesis that multiple complementary metrics can 
 \begin{figure}
   \includegraphics[width=\textwidth]{figures/Figure_4.pdf}
   \caption{
-  Test of best model for simulated populations (true fitness) using 9 years previously unobserved test data and fixed model coefficients.
+  Test of best model for simulated populations (true fitness) using 9 years (18 timepoints) of previously unobserved test data and fixed model coefficients.
+  These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
   A) The correlation of log estimated clade frequency fold change, $\log_{10}{\frac{\hat{x}(t + \Delta{t})}{x(t)}}$, and log observed clade frequency fold change, $\log_{10}{\frac{x(t + \Delta{t})}{x(t)}}$, shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   B) The rank of the estimated best strain based on its distance to the future in the best model was in the top 20th percentile for 89\% of 18 timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
@@ -186,6 +188,8 @@ This small gain supports our hypothesis that multiple complementary metrics can 
   \label{fig:test_of_best_model_for_simulated_populations}
 
   \figsupp[Validation of best model for simulated populations of H3N2-like viruses.]{
+    Validation of best model for simulated populations of H3N2-like viruses for 33 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
     B) The rank of the estimated best strain based on its distance to the future for 33 timepoints.
   The estimated best strain was in the top 20th percentile of observed closest strains for 100\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
@@ -194,9 +198,13 @@ This small gain supports our hypothesis that multiple complementary metrics can 
   The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_simulated_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_simulated_populations}
 
   \figsupp[Validation of naive model for simulated populations of H3N2-like viruses.]{
+    Validation of naive model for simulated populations of H3N2-like viruses for 33 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_simulated_populations}
 
   \figsupp[Test of naive model for simulated populations of H3N2-like viruses.]{
+    Test of naive model for simulated populations of H3N2-like viruses for 18 timepoints.
+    These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_simulated_populations}
 
 \end{figure}
@@ -347,7 +355,8 @@ The naive model's performance repeated the pattern we observed with simulated po
 \begin{figure}
   \includegraphics[width=\textwidth]{figures/Figure_7.pdf}
   \caption{
-  Test of best model for natural populations of H3N2 viruses, the composite model of HI antigenic novelty and mutational load.
+  Test of best model for natural populations of H3N2 viruses, the composite model of HI antigenic novelty and mutational load, across eight timepoints.
+  These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
   A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
   B) The rank of the estimated best strain based on its distance to the future for eight timepoints.
   The estimated best strain was in the top 20th percentile of observed closest strains for 100\% of timepoints.
@@ -358,7 +367,8 @@ The naive model's performance repeated the pattern we observed with simulated po
   \label{fig:test_of_best_model_for_natural_populations}
 
   \figsupp[Validation of best model for natural populations of H3N2 viruses.]{
-    Validation results for the composite model of mutational load and LBI.
+    Validation of best model for natural populations of H3N2 viruses for 23 timepoints using the composite model of mutational load and LBI.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
     B) The rank of the estimated best strain based on its distance to the future for 23 timepoints.
     The estimated best strain was in the top 20th percentile of observed closest strains for 87\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
@@ -367,9 +377,13 @@ The naive model's performance repeated the pattern we observed with simulated po
     The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_natural_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_natural_populations}
 
   \figsupp[Validation of naive model for natural populations of H3N2 viruses.]{
+    Validation of naive model for natural populations of H3N2 viruses for 23 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_natural_populations}
 
   \figsupp[Test of naive model for natural populations of H3N2 viruses.]{
+    Test of naive model for natural populations of H3N2 viruses for eight timepoints.
+    These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_natural_populations}
 
 \end{figure}
