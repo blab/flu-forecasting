@@ -1,7 +1,7 @@
 %DIF 1c1
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL manuscript-full-submission/flu_forecasting.tex   Mon Aug  3 15:54:49 2020
-%DIF ADD manuscript/flu_forecasting.tex                   Thu Aug  6 10:29:22 2020
+%DIF ADD manuscript/flu_forecasting.tex                   Mon Aug 10 11:04:21 2020
 %DIF < \documentclass[12pt]{article}
 %DIF -------
 \documentclass[9pt,lineno]{elife} %DIF > 
@@ -127,8 +127,11 @@
 \author[6]{Kanta Subbarao}
 
 % Nextstrain team
+%DIF 102a103
+\author[7,8]{Pierre Barrat-Charlaix} %DIF > 
+%DIF -------
 \author[7,8]{Richard A.\ Neher}
-%DIF 103c104
+%DIF 103c105
 %DIF < \author[1]{Trevor Bedford}
 %DIF -------
 \author[1*]{Trevor Bedford} %DIF > 
@@ -142,7 +145,7 @@
 \affil[6]{The WHO Collaborating Centre for Reference and Research on Influenza, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia; Department of Microbiology and Immunology, The University of Melbourne, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia.}
 \affil[7]{Biozentrum, University of Basel, Basel, Switzerland}
 \affil[8]{Swiss Institute of Bioinformatics, Basel, Switzerland}
-%DIF 113a114-116
+%DIF 113a115-117
  %DIF > 
 \corr{huddlej@gmail.com}{JH} %DIF > 
 \corr{trevor@bedford.io}{TB} %DIF > 
@@ -462,6 +465,7 @@ The mutational load metric received a consistently negative coefficient with an 
 \DIFdelendFL \DIFaddbeginFL 
 
   \figsupp[Composite model coefficients and distances to the future for models fit to simulated populations.]{
+    Composite model coefficients and distances to the future for models fit to simulated populations.
     A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.}{\includegraphics[width=\textwidth]{figures/Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
 
 \DIFaddendFL \end{figure}
@@ -487,9 +491,10 @@ This small gain supports our hypothesis that multiple complementary metrics can 
 \DIFdelendFL \DIFaddbeginFL \begin{figure}
   \includegraphics[width=\textwidth]{figures/Figure_4.pdf}
   \DIFaddendFL \caption{
-  Test of best model for simulated populations (true fitness) using 9 years previously unobserved test data and fixed model coefficients.
-  A) The correlation of log estimated clade frequency fold change, $\log_{10}{\frac{\hat{x}(t + \Delta{t})}{x(t)}}$, and log observed clade frequency fold change, $\log_{10}{\frac{x(t + \Delta{t})}{x(t)}}$, shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-  B) The rank of the estimated best strain based on its distance to the future in the best model was in the top 20th percentile for 89\% of 18 timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+  Test of best model for simulated populations (true fitness) using 9 years \DIFaddbeginFL \DIFaddFL{(18 timepoints) of }\DIFaddendFL previously unobserved test data and fixed model coefficients.
+  \DIFaddbeginFL \DIFaddFL{These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
+  }\DIFaddendFL A) The correlation of log estimated clade frequency fold change, $\log_{10}{\frac{\hat{x}(t + \Delta{t})}{x(t)}}$, and log observed clade frequency fold change, $\log_{10}{\frac{x(t + \Delta{t})}{x(t)}}$, shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
+  B) The rank of the estimated \DIFdelbeginFL \DIFdelFL{best }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{closest }\DIFaddendFL strain based on its distance to the future in the best model was in the top 20th percentile for 89\% of 18 timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   The corresponding results for the naive model are shown in \DIFdelbeginFL \DIFdelFL{Supplemental Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\DIFdelbeginFL \DIFdelFL{\ref{sup_fig:test_of_naive_model_for_simulated_populations}}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:test_of_naive_model_for_simulated_populations}}\DIFaddendFL .
@@ -500,17 +505,23 @@ This small gain supports our hypothesis that multiple complementary metrics can 
 \DIFdelendFL \DIFaddbeginFL 
 
   \figsupp[Validation of best model for simulated populations of H3N2-like viruses.]{
+    Validation of best model for simulated populations of H3N2-like viruses for 33 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-    B) The rank of the estimated best strain based on its distance to the future for 33 timepoints.
-  The estimated best strain was in the top 20th percentile of observed closest strains for 100\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+    B) The rank of the estimated closest strain based on its distance to the future for 33 timepoints.
+  The estimated closest strain was in the top 20th percentile of observed closest strains for 100\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_simulated_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_simulated_populations}
 
   \figsupp[Validation of naive model for simulated populations of H3N2-like viruses.]{
+    Validation of naive model for simulated populations of H3N2-like viruses for 33 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_simulated_populations}
 
   \figsupp[Test of naive model for simulated populations of H3N2-like viruses.]{
+    Test of naive model for simulated populations of H3N2-like viruses for 18 timepoints.
+    These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_simulated_populations}
 
 \DIFaddendFL \end{figure}
@@ -521,7 +532,8 @@ The model's estimated fold changes correlated well with observed fold changes (P
 The model also accurately predicted the growth of 87\% of growing clades and the decline of 58\% of declining clades.
 Model forecasts were increasingly more accurate with increasing initial clade frequencies (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_simulated_populations}}\DIFaddend C).
 Next, we counted how often the estimated closest strain to the future population at any given timepoint ranked among the observed top closest strains to the future.
-The estimated best strain was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_simulated_populations}}\DIFaddend B).
+\DIFdelbegin \DIFdel{The estimated best }\DIFdelend \DIFaddbegin \DIFadd{We calculated the distance of each present strain to the future as the Hamming distance between the given strain's amino acid sequence and each future strain weighted by the future strain's observed or estimated frequency (Equations~\ref{equation_observed_weighted_distance_to_future} and \ref{equation_estimated_weighted_distance_to_future}).
+The estimated closest }\DIFaddend strain was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_simulated_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_simulated_populations}}\DIFaddend B).
 Percentile ranks per strain based on their observed and estimated distances to the future correlated strongly across all strains and timepoints (Spearman's $\rho^2 = 0.87$, \DIFdelbegin \DIFdel{Supplemental Fig.
 ~\ref{sup_fig:validation_of_best_model_for_simulated_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_simulated_populations}D).
 In contrast, the naive model's forecasts of clade frequencies were considerably less accurate (Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_simulated_populations}C).
@@ -539,7 +551,7 @@ However, we did not find a significant difference between these models by bootst
 As with our validation dataset, we tested the true fitness model's ability to recapitulate clade dynamics and select optimal individual strains from the test data.
 While observed and estimated clade frequency fold changes correlated more weakly for test data (Pearson's $R^2 = 0.14$), the accuracies of clade growth and decline predictions remained similar at 82\% and 53\%, respectively (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_simulated_populations}A).
 We observed higher absolute forecast errors in the test data with higher errors for clades between 40\% and 60\% initial frequencies (\DIFdelbegin \DIFdel{Supplemental Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_simulated_populations}C).
-The estimated best strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 (89\%) of 18 of timepoints (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_simulated_populations}B).
+The estimated \DIFdelbegin \DIFdel{best }\DIFdelend \DIFaddbegin \DIFadd{closest }\DIFaddend strain was higher than the top first percentile of observed closest strains for half of the test timepoints and in the top 20th percentile for 16 (89\%) of 18 of timepoints (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_simulated_populations}B).
 Observed and estimated strain ranks remained strongly correlated across all strains and timepoints (Spearman's $\rho^2 = 0.80$, \DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_simulated_populations}D).
 \DIFdelbegin \DIFdel{These results confirm }\DIFdelend \DIFaddbegin \DIFadd{The naive model performed comparatively well on these test data with all its estimated closest strains to the future in the top 20th percentile and a slightly higher correlation between observed and estimated percentile ranks than the true fitness model (Spearman's $\rho^2 = 0.82$, Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:test_of_naive_model_for_simulated_populations}).
 These results confirmed }\DIFaddend that our approach of minimizing the distance between yearly populations \DIFdelbegin \DIFdel{can }\DIFdelend \DIFaddbegin \DIFadd{could }\DIFaddend simultaneously capture clade-level dynamics of simulated influenza populations and identify individual strains that are most representative of future populations.
@@ -697,10 +709,10 @@ The relative stability of the coefficients for the metrics in the two-metric mod
 In contrast, the three-metric model strongly preferred the HI antigenic novelty and mutational load metrics over LBI for the entire validation period, producing an average LBI coefficient of -0.04 $\pm$ 0.09.
 Overall, the gain by combining multiple predictors was limited and the sensitivity of coefficients to the set of metrics included in the model suggests that there is substantial overlap in predictive value of different metrics.
 
-As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade frequency fold changes and the ranking of estimated best strains compared to the observed closest strains to future populations.
+As with the simulated populations, we validated the performance of the best model for natural populations using estimated and observed clade frequency fold changes and the ranking of estimated \DIFdelbegin \DIFdel{best }\DIFdelend \DIFaddbegin \DIFadd{closest }\DIFaddend strains compared to the observed closest strains to future populations.
 The composite model of mutational load and LBI effectively captured clade dynamics with a fold change correlation of $R^2 = 0.35$ and growth and decline accuracies of 87\% and 89\%, respectively (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_natural_populations}}\DIFaddend A).
 Absolute forecasting error declined noticeably for clades with initial frequencies above 60\%, but generally this error remained below 20\% on average (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_natural_populations}}\DIFaddend C).
-The estimated best strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 20 (87\%) of 23 timepoints (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_natural_populations}}\DIFaddend B).
+The estimated \DIFdelbegin \DIFdel{best }\DIFdelend \DIFaddbegin \DIFadd{closest }\DIFaddend strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 20 (87\%) of 23 timepoints (\DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_natural_populations}}\DIFaddend B).
 This pattern held across all strains and timepoints with a strong correlation between observed and estimated strain ranks (Spearman's $\rho^2 = 0.66$, \DIFdelbegin \DIFdel{Supplemental Fig.~\ref{sup_fig:validation_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_best_model_for_natural_populations}}\DIFaddend D).
 \DIFaddbegin \DIFadd{The naive model's performance repeated the pattern we observed with simulated populations: it made poor forecasts of absolute clade frequencies, but its estimated closest strains to the future were consistently highly ranked among the observed closest strains (Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_natural_populations}B and C).
 }\DIFaddend 
@@ -712,10 +724,11 @@ This pattern held across all strains and timepoints with a strong correlation be
 \DIFdelendFL \DIFaddbeginFL \begin{figure}
   \includegraphics[width=\textwidth]{figures/Figure_7.pdf}
   \DIFaddendFL \caption{
-  Test of best model for natural populations of H3N2 viruses, the composite model of HI antigenic novelty and mutational load.
-  A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-  B) The rank of the estimated best strain based on its distance to the future for eight timepoints.
-  The estimated best strain was in the top 20th percentile of observed closest strains for 100\% of timepoints.
+  Test of best model for natural populations of H3N2 viruses, the composite model of HI antigenic novelty and mutational load\DIFaddbeginFL \DIFaddFL{, across eight timepoints}\DIFaddendFL .
+  \DIFaddbeginFL \DIFaddFL{These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
+  }\DIFaddendFL A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
+  B) The rank of the estimated \DIFdelbeginFL \DIFdelFL{best }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{closest }\DIFaddendFL strain based on its distance to the future for eight timepoints.
+  The estimated \DIFdelbeginFL \DIFdelFL{best }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{closest }\DIFaddendFL strain was in the top 20th percentile of observed closest strains for 100\% of timepoints.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
   The corresponding results for the naive model are shown in \DIFdelbeginFL \DIFdelFL{Supplemental Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\DIFdelbeginFL \DIFdelFL{\ref{sup_fig:test_of_naive_model_for_natural_populations}}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:test_of_naive_model_for_natural_populations}}\DIFaddendFL .
@@ -726,18 +739,23 @@ This pattern held across all strains and timepoints with a strong correlation be
 \DIFdelendFL \DIFaddbeginFL 
 
   \figsupp[Validation of best model for natural populations of H3N2 viruses.]{
-    Validation results for the composite model of mutational load and LBI.
+    Validation of best model for natural populations of H3N2 viruses for 23 timepoints using the composite model of mutational load and LBI.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     A) The correlation of estimated and observed clade frequency fold changes shows the model's ability to capture clade-level dynamics without explicitly optimizing for clade frequency targets.
-    B) The rank of the estimated best strain based on its distance to the future for 23 timepoints.
-    The estimated best strain was in the top 20th percentile of observed closest strains for 87\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
+    B) The rank of the estimated closest strain based on its distance to the future for 23 timepoints.
+    The estimated closest strain was in the top 20th percentile of observed closest strains for 87\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
     C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
     D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
     The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_natural_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_natural_populations}
 
   \figsupp[Validation of naive model for natural populations of H3N2 viruses.]{
+    Validation of naive model for natural populations of H3N2 viruses for 23 timepoints.
+    These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_natural_populations}
 
   \figsupp[Test of naive model for natural populations of H3N2 viruses.]{
+    Test of naive model for natural populations of H3N2 viruses for eight timepoints.
+    These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
     Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_natural_populations}
 
 \DIFaddendFL \end{figure}
@@ -756,10 +774,10 @@ By October 2018, this clade had declined in frequency to approximately 30\% and,
 That LBI incorrectly predicted the success of this reassortant clade highlights a major limitation of growth-based fitness metrics and a corresponding benefit of more mechanistic metrics that explicitly measure antigenic drift and functional constraint.
 However, we cannot rule out the alternate possibility that the LBI model was overfit to the training data.
 
-After identifying the composite HI antigenic novelty and mutational load model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual best strains for vaccine composition.
+After identifying the composite HI antigenic novelty and mutational load model as the best model on out-of-sample data, we tested this model's ability to detect clade dynamics and select individual \DIFdelbegin \DIFdel{best strains }\DIFdelend \DIFaddbegin \DIFadd{closest strains to the future }\DIFaddend for vaccine composition.
 The composite model partially captured clade dynamics with a Pearson's correlation of $R^2 = 0.46$ between observed and estimated growth ratios and growth and decline accuracies of 52\% and 58\%, respectively (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_natural_populations}A).
 The mean absolute forecasting error with this model was consistently less than 20\%, regardless of the initial clade frequency (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_natural_populations}C).
-The estimated best strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_natural_populations}B).
+The estimated \DIFdelbegin \DIFdel{best }\DIFdelend \DIFaddbegin \DIFadd{closest }\DIFaddend strain from this model was in the top first percentile of observed closest strains for half of the validation timepoints and in the top 20th percentile for 100\% of timepoints (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:test_of_best_model_for_natural_populations}B).
 Similarly, the observed and estimated strain ranks strongly correlated (Spearman's $\rho^2 = 0.72$) across all strains and test timepoints (\DIFdelbegin \DIFdel{Fig.
 ~\ref{fig:test_of_best_model_for_natural_populations}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:test_of_best_model_for_natural_populations}D).
 The estimated strain ranks of the naive model were not as well correlated (Spearman's $\rho^2 = 0.56$), but seven of its eight estimates for the closest strain to the future (88\%) were in the top fifth percentile of observed closest strains (Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:test_of_naive_model_for_natural_populations}B and }\DIFaddend D).
@@ -781,20 +799,23 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
 \DIFdelendFL \DIFaddbeginFL 
 
   \figsupp[Relative improvement of model selections over vaccine strains.]{
-    Relative distance to future H3N2 populations between vaccine strains and corresponding observed and estimated best strains at each timepoint as in Figure~\ref{fig:vaccine_comparison}.
+    Relative distance to future H3N2 populations between vaccine strains and corresponding observed and estimated closest strains at each timepoint as in Figure~\ref{fig:vaccine_comparison}.
     Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.}{\includegraphics[width=\textwidth]{figures/Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
 \DIFaddendFL \end{figure}
 
 We further evaluated our models' ability to estimate the closest strain to the next season's H3N2 population by comparing our best models' selections to the WHO's vaccine strain selection.
-For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed closest strains.
-We compared these distances to those of the closest strains to the future as estimated by our best models for the validation period (mutational load and LBI) and the test period (HI antigenic novelty and mutational load).
-The mutational load and LBI model selected strains that were as close or closer to the future than the corresponding vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (\DIFdelbegin \DIFdel{Fig.
+For each season when the WHO selected a new vaccine strain and one year of future data existed in our validation or test periods, we measured the observed distance of that strain's sequence to the future and the corresponding distances to the future for the observed closest strains \DIFaddbegin \DIFadd{(Equation~\ref{equation_observed_weighted_distance_to_future})}\DIFaddend .
+We compared these distances to those of the closest strains to the future as estimated by our best models for the validation period (mutational load and LBI) and the test period (HI antigenic novelty and mutational load) \DIFdelbegin \DIFdel{.
+The }\DIFdelend \DIFaddbegin \DIFadd{using Equation~\ref{equation_estimated_weighted_distance_to_future}.
+The observed closest strain to the future represents the centroid of the observed future population, while the estimated closest strains are the models' predictions of that future population's centroid.
+The }\DIFaddend mutational load and LBI model selected strains that were as close or closer to the future than the corresponding vaccine strain for 10 (83\%) of the 12 seasons with vaccine updates (\DIFdelbegin \DIFdel{Fig.
 ~\ref{fig:vaccine_comparison}}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:vaccine_comparison}).
 On average, the strains selected by this model were closer to future than the vaccine strain by 1.93 AAs (Figure~\ref{fig:vaccine_comparison}-Figure supplement~\ref{figsupp:vaccine_comparison_relative_distance}}\DIFaddend ).
 For the two seasons that the model selected more distant strains than the vaccine strain, the mean distance relative to the vaccine strain was 1.58 AAs.
 The HI antigenic novelty and mutational load model performed similarly by identifying strains as close or closer to the future for 11 (92\%) seasons \DIFaddbegin \DIFadd{with an average improvement over the vaccine strains of 2.33 AAs}\DIFaddend .
 For the one season that the model selected a more distant strain, that selected strain was 0.75 AAs farther from the future than the vaccine strain.
 \DIFaddbegin \DIFadd{Interestingly, the strains selected by the naive model were always better than the selected vaccine strain.
+Since the naive model predicts that the future will be identical to the present, these strains represent the centroid of each current population.
 With an average improvement over the vaccine strains of 2.19 AAs, the naive model performed consistently better than the LBI-based model and nearly as well as the HI-based model.
 These results were consistent with our earlier observations that the naive model often performs as well as biologically-informed models when estimating a single closest strain to the future.
 }\DIFaddend 
@@ -1421,7 +1442,7 @@ The work done at the Crick Worldwide Influenza Centre was supported by the Franc
 SF, KN, NK, SW and HH were supported by the Ministry of Health, Labour and Welfare, Japan (10110400).
 SW was supported by the Japan Agency for Medical Research and Development (JPfk0108118).
 The Melbourne WHO Collaborating Centre for Reference and Research on Influenza is supported by the Australian Government Department of Health.
-RAN is supported by NIAID R01 AI127893-01 and institutional core funding.
+\DIFdelbegin \DIFdel{RAN is }\DIFdelend \DIFaddbegin \DIFadd{PB and RAN are }\DIFaddend supported by NIAID R01 AI127893-01 and institutional core funding.
 TB is a Pew Biomedical Scholar and is supported by NIH grants NIGMS R35 GM119774-01, NIAID U19 AI117891-01 and NIAID R01 AI127893-01.
 
 The findings and conclusions in this report are those of the author(s) and do not necessarily represent the official position of the Centers for Disease Control and Prevention.
@@ -1430,7 +1451,8 @@ The findings and conclusions in this report are those of the author(s) and do no
 
 JH planned experiments, implemented the final forecasting framework, analyzed results, and wrote the manuscript.
 JB, TR, XX, RK, DEW, LW, BE, RSD, JWM, SF, KN, NK, SW, HH, IB, and KS performed and provided data from serological assays.
-RAN planned experiments and edited the manuscript.
+\DIFaddbegin \DIFadd{PB analyzed results.
+}\DIFaddend RAN planned experiments and edited the manuscript.
 TB planned experiments, implemented the initial forecasting framework, and edited the manuscript.
 
 \section*{Competing interests}
