@@ -1,7 +1,7 @@
 %DIF 1c1
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL manuscript-full-submission/flu_forecasting.tex   Mon Aug  3 15:54:49 2020
-%DIF ADD manuscript/flu_forecasting.tex                   Mon Aug 10 11:04:21 2020
+%DIF ADD manuscript/flu_forecasting.tex                   Thu Aug 13 13:24:56 2020
 %DIF < \documentclass[12pt]{article}
 %DIF -------
 \documentclass[9pt,lineno]{elife} %DIF > 
@@ -229,9 +229,10 @@ Experts select strains based on experimental measurements of antigenic drift and
 We developed a novel influenza forecasting framework that integrates phenotypic measures of antigenic drift and functional constraint with previously published sequence-only fitness estimates.
 Forecasts informed by phenotypic measures of antigenic drift consistently outperformed previous sequence-only estimates, while sequence-only estimates of functional constraint surpassed more comprehensive experimentally-informed estimates.
 Importantly, the best models integrated estimates of both functional constraint and either antigenic drift phenotypes or recent population growth.
+\DIFdelbegin %DIFDELCMD < 
 
-\end{abstract}
-
+%DIFDELCMD < %%%
+\DIFdelend \end{abstract}
 
 %DIF < \input{main_diff.tex}
 \DIFdelbegin %DIFDELCMD < 
@@ -293,7 +294,7 @@ We also find that composite models based on phenotypic measures of antigenic dri
   \begin{center}
   \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\columnwidth]{figures/distance-based-fitness-model.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\columnwidth]{figures/Figure_1.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\columnwidth]{Figure_1.pdf}
   \DIFaddendFL \caption{
     Schematic representation of the fitness model for simulated H3N2-like populations wherein the fitness of strains at timepoint $t$ determines the estimated frequency of strains with similar sequences one year in the future at timepoint $u$.
     Strains are colored by their amino acid sequence composition such that genetically similar strains have similar colors (Methods).
@@ -382,7 +383,7 @@ As a positive control for our model framework, we also fit a model based on the 
   \begin{center}
   \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_2.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_2.pdf}
   \DIFaddendFL \caption{
     Simulated population model coefficients and distances between projected and observed future populations as measured in amino acids (AAs).
     A) Coefficients are shown per validation timepoint (solid circles, N=33) with the mean $\pm$ standard deviation in the top-left corner.
@@ -454,7 +455,7 @@ The mutational load metric received a consistently negative coefficient with an 
   \DIFdelbeginFL %DIFDELCMD < \begin{center}
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_3.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_3.pdf}
   \DIFaddendFL \caption{
     Simulated population model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model.
     A) Coefficients and B) distances are shown per validation and test timepoint as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
@@ -466,7 +467,7 @@ The mutational load metric received a consistently negative coefficient with an 
 
   \figsupp[Composite model coefficients and distances to the future for models fit to simulated populations.]{
     Composite model coefficients and distances to the future for models fit to simulated populations.
-    A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.}{\includegraphics[width=\textwidth]{figures/Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
+    A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.}{\includegraphics[width=\textwidth]{Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
 
 \DIFaddendFL \end{figure}
 
@@ -489,7 +490,7 @@ This small gain supports our hypothesis that multiple complementary metrics can 
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/validation_figure_simulated-simulated_sample_3_test_tree-normalized_fitness.pdf}
 %DIFDELCMD <   %%%
 \DIFdelendFL \DIFaddbeginFL \begin{figure}
-  \includegraphics[width=\textwidth]{figures/Figure_4.pdf}
+  \includegraphics[width=\textwidth]{Figure_4.pdf}
   \DIFaddendFL \caption{
   Test of best model for simulated populations (true fitness) using 9 years \DIFaddbeginFL \DIFaddFL{(18 timepoints) of }\DIFaddendFL previously unobserved test data and fixed model coefficients.
   \DIFaddbeginFL \DIFaddFL{These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
@@ -512,17 +513,17 @@ This small gain supports our hypothesis that multiple complementary metrics can 
   The estimated closest strain was in the top 20th percentile of observed closest strains for 100\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
   C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
   D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
-  The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_simulated_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_simulated_populations}
+  The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_simulated_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_simulated_populations}.}{\includegraphics[width=\textwidth]{Figure_4-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_simulated_populations}
 
   \figsupp[Validation of naive model for simulated populations of H3N2-like viruses.]{
     Validation of naive model for simulated populations of H3N2-like viruses for 33 timepoints.
     These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
-    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_simulated_populations}
+    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{Figure_4-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_simulated_populations}
 
   \figsupp[Test of naive model for simulated populations of H3N2-like viruses.]{
     Test of naive model for simulated populations of H3N2-like viruses for 18 timepoints.
     These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_simulated_populations}.
-    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_4-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_simulated_populations}
+    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{Figure_4-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_simulated_populations}
 
 \DIFaddendFL \end{figure}
 
@@ -613,7 +614,7 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
   \DIFdelbeginFL %DIFDELCMD < \begin{center}
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_5.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_5.pdf}
   \DIFaddendFL \caption{
     Natural population model coefficients and distances to the future for individual biologically-informed fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
@@ -630,7 +631,7 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
     A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The epitope antigenic novelty model relies on previously published epitope sites \citep{Luksza:2014hj}.
     The ``oracle'' antigenic novelty model relies on sites of beneficial mutations that were manually identified from the entire training and validation time period (Methods).
-    The improved performance of the ``oracle'' model indicates that the sequence-based antigenic novelty metric can be effective when sites of beneficial mutations are known prior to forecasting.}{\includegraphics[width=\textwidth]{figures/Figure_5-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
+    The improved performance of the ``oracle'' model indicates that the sequence-based antigenic novelty metric can be effective when sites of beneficial mutations are known prior to forecasting.}{\includegraphics[width=\textwidth]{Figure_5-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
 
 \DIFaddendFL \end{figure}
 
@@ -680,7 +681,7 @@ The LBI and mutational load might also be predictive for reasons other than corr
   \DIFdelbeginFL %DIFDELCMD < \begin{center}
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_6.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_6.pdf}
   \DIFaddendFL \caption{
     Natural population model coefficients and distances to the future for composite fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
@@ -695,7 +696,7 @@ The LBI and mutational load might also be predictive for reasons other than corr
     A) Coefficients and B) distances are shown per test timepoint (N=8).
     In contrast to the results for these models based on fixed coefficients from training/validation, these coefficients were learned for each six-year window prior to the corresponding test timepoint.
     The corresponding distances reflect the model's performance with updated coefficients on what is effectively new validation data.
-    The naive model's distance to the future was 6.82 $\pm$ 1.74 AAs for these timepoints.}{\includegraphics[width=\textwidth]{figures/Figure_6-Figure_supplement_1.pdf}}\label{figsupp:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}
+    The naive model's distance to the future was 6.82 $\pm$ 1.74 AAs for these timepoints.}{\includegraphics[width=\textwidth]{Figure_6-Figure_supplement_1.pdf}}\label{figsupp:updated_model_accuracy_and_coefficients_for_natural_populations_across_test_data}
 
 \DIFaddendFL \end{figure}
 
@@ -722,7 +723,7 @@ This pattern held across all strains and timepoints with a strong correlation be
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/validation_figure_natural-natural_sample_1_with_90_vpm_sliding_test_tree-cTiter_x-ne_star.pdf}
 %DIFDELCMD <   %%%
 \DIFdelendFL \DIFaddbeginFL \begin{figure}
-  \includegraphics[width=\textwidth]{figures/Figure_7.pdf}
+  \includegraphics[width=\textwidth]{Figure_7.pdf}
   \DIFaddendFL \caption{
   Test of best model for natural populations of H3N2 viruses, the composite model of HI antigenic novelty and mutational load\DIFaddbeginFL \DIFaddFL{, across eight timepoints}\DIFaddendFL .
   \DIFaddbeginFL \DIFaddFL{These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
@@ -746,17 +747,17 @@ This pattern held across all strains and timepoints with a strong correlation be
     The estimated closest strain was in the top 20th percentile of observed closest strains for 87\% of timepoints, confirming that the model makes a good choice when forced to select a single representative strain for the future population.
     C) Absolute forecast error for clades shown in A by their initial frequency with a mean LOESS fit (solid black line) and 95\% confidence intervals (gray shading) based on 100 bootstraps.
     D) The correlation of all strains at all timepoints by the percentile rank of their observed and estimated distances to the future.
-    The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_natural_populations}.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_natural_populations}
+    The corresponding results for the naive model are shown in Figure~\ref{fig:test_of_best_model_for_natural_populations}-Figure supplement~\ref{figsupp:validation_of_naive_model_for_natural_populations}.}{\includegraphics[width=\textwidth]{Figure_7-Figure_supplement_1.pdf}}\label{figsupp:validation_of_best_model_for_natural_populations}
 
   \figsupp[Validation of naive model for natural populations of H3N2 viruses.]{
     Validation of naive model for natural populations of H3N2 viruses for 23 timepoints.
     These timepoints correspond to the closed circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
-    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_natural_populations}
+    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{Figure_7-Figure_supplement_2.pdf}}\label{figsupp:validation_of_naive_model_for_natural_populations}
 
   \figsupp[Test of naive model for natural populations of H3N2 viruses.]{
     Test of naive model for natural populations of H3N2 viruses for eight timepoints.
     These timepoints correspond to the open circles in Figure~\ref{fig:cross_validation_for_natural_populations}.
-    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{figures/Figure_7-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_natural_populations}
+    Note that the naive model sets future frequencies to current frequencies such that there is no estimated fold change in frequencies for the first panel.}{\includegraphics[width=\textwidth]{Figure_7-Figure_supplement_3.pdf}}\label{figsupp:test_of_naive_model_for_natural_populations}
 
 \DIFaddendFL \end{figure}
 
@@ -786,7 +787,7 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
   \DIFdelbeginFL %DIFDELCMD < \begin{center}
 %DIFDELCMD <   \includegraphics[width=\textwidth]{figures/vaccine-comparison.pdf}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_8.pdf}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_8.pdf}
   \DIFaddendFL \caption{
     Observed distance to natural H3N2 populations one year into the future for each vaccine strain (green) and the observed (blue) and estimated closest strains to the future by the mutational load and LBI model (orange)\DIFdelbeginFL \DIFdelFL{and }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{, }\DIFaddendFL the HI antigenic novelty and mutational load model (purple)\DIFaddbeginFL \DIFaddFL{, and the naive model (black)}\DIFaddendFL .
     Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
@@ -800,7 +801,7 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
 
   \figsupp[Relative improvement of model selections over vaccine strains.]{
     Relative distance to future H3N2 populations between vaccine strains and corresponding observed and estimated closest strains at each timepoint as in Figure~\ref{fig:vaccine_comparison}.
-    Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.}{\includegraphics[width=\textwidth]{figures/Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
+    Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.}{\includegraphics[width=\textwidth]{Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
 \DIFaddendFL \end{figure}
 
 We further evaluated our models' ability to estimate the closest strain to the next season's H3N2 population by comparing our best models' selections to the WHO's vaccine strain selection.
@@ -845,7 +846,7 @@ To aid with identification of potential vaccine candidates for the next season, 
   \begin{center}
   \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\textwidth]{figures/nextstrain-forecasts.png}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_9.png}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_9.png}
   \DIFaddendFL \caption{
     Snapshot of live forecasts on nextstrain.org from our best model (HI antigenic novelty and mutational load) for April 1, 2021.
     The observed frequency trajectories for currently circulating clades are shown up to April 1, 2020.
@@ -859,7 +860,7 @@ To aid with identification of potential vaccine candidates for the next season, 
   \begin{center}
   \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\textwidth]{figures/nextstrain-weighted-distance-to-future-per-strain.png}
 %DIFDELCMD <   %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{figures/Figure_10.png}
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\textwidth]{Figure_10.png}
   \DIFaddendFL \caption{
     Snapshot of the last two years of seasonal influenza H3N2 evolution on nextstrain.org showing the estimated distance per strain to the future population.
     Distance to the future is calculated for each strain as the Hamming distance of HA amino acid sequences to all other circulating strains weighted by the other strain's projected frequencies under the best fitness model (HI antigenic novelty and mutational load).
@@ -1001,7 +1002,7 @@ For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid e
 
 \DIFaddbegin \begin{figure}
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/Figure_11.pdf}
+  \includegraphics[width=\textwidth]{Figure_11.pdf}
   \caption{
   \DIFaddFL{Time-series cross-validation scheme for simulated populations.
   Models were trained in six-year sliding windows (gray lines) and validated on out-of-sample data from validation timepoints (filled circles).
@@ -1015,7 +1016,7 @@ For tuning of hyperparameters, we sampled 10 viruses per month to enable rapid e
 
 \begin{figure}
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/Figure_12.png}
+  \includegraphics[width=\textwidth]{Figure_12.png}
   \caption{
   \DIFaddFL{Phylogeny of H3N2-like HA sequences sampled between the 24th and 30th years of simulated evolution.
   The phylogenetic structure and rate of accumulated epitope and non-epitope mutations match patterns observed in phylogenies of natural sequences.
@@ -1198,7 +1199,7 @@ Finally, we fixed the coefficients for each model at the mean values across all 
 
 \DIFaddbegin \begin{figure}
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/Figure_13.pdf}
+  \includegraphics[width=\textwidth]{Figure_13.pdf}
   \caption{
   \DIFaddFL{Time-series cross-validation scheme for natural populations.
   Models were trained in six-year sliding windows (gray lines) and validated on out-of-sample data from validation timepoints (filled circles).
@@ -1224,7 +1225,7 @@ We also compared a subset of composite models to their respective individual mod
 
 \DIFaddbegin \begin{figure}
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/Figure_14.pdf}
+  \includegraphics[width=\textwidth]{Figure_14.pdf}
   \caption{
   \DIFaddFL{Bootstrap distributions of the mean difference of distances to the future between biologically-informed and naive models for simulated populations.
   Empirical differences in distances to the future were sampled with replacement and mean values for each bootstrap sample were calculated across n=10,000 bootstrap iterations.
@@ -1238,7 +1239,7 @@ We also compared a subset of composite models to their respective individual mod
 
 \begin{figure}
   \begin{center}
-  \includegraphics[width=\textwidth]{figures/Figure_15.pdf}
+  \includegraphics[width=\textwidth]{Figure_15.pdf}
   \caption{
   \DIFaddFL{Bootstrap distributions of the mean difference of distances to the future between biologically-informed and naive models for natural populations.
   Empirical differences in distances to the future were sampled with replacement and mean values for each bootstrap sample were calculated across n=10,000 bootstrap iterations.
@@ -2825,7 +2826,6 @@ The authors declare that no competing interests exist.
 \DIFaddbegin 
 
 \end{appendixbox}
-
 
 \clearpage
 
