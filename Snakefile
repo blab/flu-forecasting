@@ -481,12 +481,12 @@ rule figures:
         rules.figure_for_vaccine_comparison.output,
         figure_names="manuscript/figures/figure_names.tsv"
     output:
-        "figures/Figure_1.pdf"
+        "manuscript/Figure_1.pdf"
     shell:
         """
         while read original_name new_name
         do
-            ln -s manuscript/figures/$original_name manuscript/figures/$new_name"
+            ln manuscript/figures/$original_name manuscript/$new_name
         done < {input.figure_names}
         """
 
@@ -494,7 +494,7 @@ rule figures:
 rule manuscript:
     input:
         # Tables and figures
-        "figures/Figure_1.pdf",
+        "manuscript/Figure_1.pdf",
         rules.table_of_mutations_by_trunk_status_for_simulated_populations.output,
         rules.table_of_mutations_by_trunk_status_for_natural_populations.output,
 
