@@ -137,7 +137,7 @@ if __name__ == "__main__":
     )
 
     # Next, load the complete forecasts data frame for ranking of estimated and
-    # observed best strains.
+    # observed closest strains.
     full_forecasts = pd.read_csv(
         args.forecasts,
         sep="\t",
@@ -364,7 +364,7 @@ if __name__ == "__main__":
     rank_ax.legend(
         frameon=False
     )
-    rank_ax.set_xlabel("Percentile rank by distance\nfor estimated best strain")
+    rank_ax.set_xlabel("Percentile rank by distance\nfor estimated closest strain")
     rank_ax.set_ylabel("Number of timepoints")
 
     #
