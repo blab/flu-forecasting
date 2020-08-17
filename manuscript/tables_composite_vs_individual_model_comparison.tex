@@ -1,0 +1,20 @@
+\begin{tabular}{llllrrl}
+\toprule
+    sample &  error\_type &      individual\_model &                         composite\_model &  bootstrap\_mean &  bootstrap\_std &    p\_value \\
+\midrule
+ simulated &  validation &          true fitness &                  mutational load +  LBI &            0.42 &           0.23 &     0.9644 \\
+ simulated &  validation &       mutational load &                  mutational load +  LBI &           -1.03 &           0.21 &  $<$0.0001 \\
+ simulated &  validation &                   LBI &                  mutational load +  LBI &           -0.33 &           0.14 &     0.0091 \\
+ simulated &        test &          true fitness &                  mutational load +  LBI &           -0.28 &           0.26 &     0.1392 \\
+ simulated &        test &       mutational load &                  mutational load +  LBI &           -1.11 &           0.25 &  $<$0.0001 \\
+ simulated &        test &                   LBI &                  mutational load +  LBI &           -0.42 &           0.16 &     0.0001 \\
+   natural &  validation &       mutational load &                  mutational load +  LBI &           -0.69 &           0.28 &     0.0036 \\
+   natural &  validation &                   LBI &                  mutational load +  LBI &           -0.23 &           0.09 &     0.0025 \\
+   natural &  validation &       mutational load &  mutational load + HI antigenic novelty &           -0.31 &           0.18 &     0.0417 \\
+   natural &  validation &  HI antigenic novelty &  mutational load + HI antigenic novelty &           -0.18 &           0.11 &     0.0513 \\
+   natural &        test &       mutational load &                  mutational load +  LBI &            1.19 &           0.79 &     0.9432 \\
+   natural &        test &                   LBI &                  mutational load +  LBI &           -0.70 &           0.24 &  $<$0.0001 \\
+   natural &        test &       mutational load &  mutational load + HI antigenic novelty &           -0.56 &           0.33 &     0.0133 \\
+   natural &        test &  HI antigenic novelty &  mutational load + HI antigenic novelty &           -0.24 &           0.18 &     0.0999 \\
+\bottomrule
+\end{tabular}

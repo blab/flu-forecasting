@@ -434,11 +434,15 @@ rule figure_for_vaccine_comparison:
         test_tip_attributes = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/tip_attributes_with_weighted_distances.tsv",
         cTiter_x_ne_star_validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts_cTiter_x-ne_star.tsv",
         ne_star_lbi_validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts_ne_star-lbi.tsv",
+        naive_validation_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding/forecasts_naive.tsv",
         cTiter_x_ne_star_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_cTiter_x-ne_star.tsv",
         ne_star_lbi_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_ne_star-lbi.tsv",
-        vaccines_json_path = "config/vaccines_h3n2.json"
+        naive_test_forecasts_path = "results/builds/natural/natural_sample_1_with_90_vpm_sliding_test_tree/forecasts_naive.tsv",
+        vaccines_json_path = "config/vaccines_h3n2.json",
+        titers = config["builds"]["natural"]["natural_sample_1_with_90_vpm_sliding_test_tree"]["titers"]
     output:
-        figure = "manuscript/figures/vaccine-comparison.pdf"
+        figure = "manuscript/figures/vaccine-comparison.pdf",
+        relative_figure = "manuscript/figures/vaccine-comparison-relative-distance.pdf"
     log:
         notebook = "logs/notebooks/vaccine-strain-comparison.ipynb"
     conda: "envs/anaconda.python3.yaml"
@@ -469,14 +473,28 @@ rule table_of_mutations_by_trunk_status_for_natural_populations:
     notebook:
         "notebooks/natural-mutations-by-trunk-status.ipynb"
 
-# Compile the manuscript after creating all figures and tables.
-rule manuscript:
+rule figures:
     input:
-        # Tables and figures
         rules.figure_for_model_schematic.output,
         *rules.figures_and_tables_for_model_results.output,
         _get_validation_figures,
         rules.figure_for_vaccine_comparison.output,
+        figure_names="manuscript/figures/figure_names.tsv"
+    output:
+        "manuscript/Figure_1.pdf"
+    shell:
+        """
+        while read original_name new_name
+        do
+            ln manuscript/figures/$original_name manuscript/$new_name
+        done < {input.figure_names}
+        """
+
+# Compile the manuscript after creating all figures and tables.
+rule manuscript:
+    input:
+        # Tables and figures
+        "manuscript/Figure_1.pdf",
         rules.table_of_mutations_by_trunk_status_for_simulated_populations.output,
         rules.table_of_mutations_by_trunk_status_for_natural_populations.output,
 
@@ -484,8 +502,7 @@ rule manuscript:
         "manuscript/flu_forecasting.tex",
         "manuscript/flu_forecasting.bib",
         "manuscript/abstract.tex",
-        "manuscript/main.tex",
-        "manuscript/supplement.tex"
+        "manuscript/main.tex"
     output:
         "manuscript/flu_forecasting.pdf"
     params:
