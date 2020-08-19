@@ -1354,7 +1354,9 @@ rule plot_validation_figure:
         forecasts = rules.forecast_all_tips.output.table,
         model_errors = _get_model_validation_errors
     output:
-        figure = "manuscript/figures/validation_figure_{type}-{sample}-{predictors}.pdf"
+        figure = "manuscript/figures/validation_figure_{type}-{sample}-{predictors}.pdf",
+        clades = "manuscript/figures/validation_figure_clades_{type}-{sample}-{predictors}.tsv",
+        ranks = "manuscript/figures/validation_figure_ranks_{type}-{sample}-{predictors}.tsv"
     conda: "../envs/anaconda.python3.yaml"
     shell:
         """
@@ -1363,5 +1365,10 @@ rule plot_validation_figure:
             --tips-to-clades {input.tips_to_clades} \
             --forecasts {input.forecasts} \
             --model-errors {input.model_errors} \
-            --output {output}
+            --population {wildcards.type} \
+            --sample {wildcards.sample} \
+            --predictors {wildcards.predictors} \
+            --output {output.figure} \
+            --output-clades-table {output.clades} \
+            --output-ranks-table {output.ranks}
         """

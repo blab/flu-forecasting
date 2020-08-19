@@ -305,6 +305,12 @@ def _get_auspice_files(wildcards):
 def _get_validation_figures(wildcards):
     return expand("manuscript/figures/validation_figure_{type}-{sample}-{predictors}.pdf", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES, predictors=VALIDATION_PREDICTOR_PREDICTORS)
 
+def _get_validation_figure_clades(wildcards):
+    return expand("manuscript/figures/validation_figure_clades_{type}-{sample}-{predictors}.tsv", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES, predictors=VALIDATION_PREDICTOR_PREDICTORS)
+
+def _get_validation_figure_ranks(wildcards):
+    return expand("manuscript/figures/validation_figure_ranks_{type}-{sample}-{predictors}.tsv", zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES, predictors=VALIDATION_PREDICTOR_PREDICTORS)
+
 include: "rules/utils.smk"
 include: "rules/datasets.smk"
 include: "rules/builds.smk"
@@ -357,6 +363,32 @@ rule auspice:
 
 rule validation_figures:
     input: _get_validation_figures
+
+rule validation_figure_clades:
+    input:
+        _get_validation_figure_clades
+    output:
+        clades = "results/validation_figure_clades.tsv"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+          --tables {input} \
+          --output {output.clades}
+        """
+
+rule validation_figure_ranks:
+    input:
+        _get_validation_figure_ranks
+    output:
+        ranks = "results/validation_figure_ranks.tsv"
+    conda: "envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/collect_tables.py \
+          --tables {input} \
+          --output {output.ranks}
+        """
 
 rule trees:
     input: expand(rules.aggregate_tree_plots.output.trees, zip, type=VALIDATION_PREDICTOR_TYPES, sample=VALIDATION_PREDICTOR_SAMPLES)

@@ -84,7 +84,12 @@ if __name__ == "__main__":
     parser.add_argument("--forecasts", required=True, help="table of forecasts for the given tips")
     parser.add_argument("--model-errors", required=True, help="annotated validation errors for the model used to make the given forecasts")
     parser.add_argument("--bootstrap-samples", type=int, default=100, help="number of bootstrap samples to generate for confidence intervals around absolute forecast errors")
+    parser.add_argument("--population", help="the population being analyzed (e.g., simulated or natural)")
+    parser.add_argument("--sample", help="sample name for population being analyzed")
+    parser.add_argument("--predictors", help="predictors being analyzed")
     parser.add_argument("--output", required=True, help="validation figure")
+    parser.add_argument("--output-clades-table", help="table of clade frequencies used in left panels")
+    parser.add_argument("--output-ranks-table", help="table of strain ranks used in right panels")
 
     args = parser.parse_args()
 
@@ -462,3 +467,50 @@ if __name__ == "__main__":
             int(np.round((timepoints_better_than_20th_percentile / float(total_timepoints)) * 100))
         )
     )
+
+    if args.output_clades_table:
+        complete_clade_frequencies = complete_clade_frequencies.rename(columns={
+            "frequency": "initial_frequency",
+            "frequency_final": "observed_future_frequency",
+            "projected_frequency": "estimated_future_frequency"
+        })
+        complete_clade_frequencies["population"] = args.population
+        complete_clade_frequencies["predictors"] = args.predictors
+        complete_clade_frequencies["error_type"] = "test" if "test" in args.sample else "validation"
+
+        complete_clade_frequencies.to_csv(
+            args.output_clades_table,
+            sep="\t",
+            header=True,
+            index=False
+        )
+
+    if args.output_ranks_table:
+        sorted_df["observed_distance_to_future"] = sorted_df["weighted_distance_to_future"]
+        sorted_df["estimated_distance_to_future"] = sorted_df["y"]
+        sorted_df["observed_rank"] = sorted_df["timepoint_rank"]
+        sorted_df["estimated_rank"] = sorted_df["timepoint_estimated_rank"]
+
+        sorted_df["population"] = args.population
+        sorted_df["sample"] = args.sample
+        sorted_df["predictors"] = args.predictors
+        sorted_df["error_type"] = "test" if "test" in args.sample else "validation"
+        sorted_df = np.around(sorted_df, 4)
+
+        sorted_df.to_csv(
+            args.output_ranks_table,
+            sep="\t",
+            header=True,
+            index=False,
+            columns=[
+                "population",
+                "error_type",
+                "predictors",
+                "timepoint",
+                "strain",
+                "observed_distance_to_future",
+                "estimated_distance_to_future",
+                "observed_rank",
+                "estimated_rank"
+            ]
+        )
