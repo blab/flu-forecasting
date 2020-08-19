@@ -495,7 +495,7 @@ if __name__ == "__main__":
         sorted_df["sample"] = args.sample
         sorted_df["predictors"] = args.predictors
         sorted_df["error_type"] = "test" if "test" in args.sample else "validation"
-        sorted_df = np.around(sorted_df, 4)
+        sorted_df = np.around(sorted_df, 2)
 
         sorted_df.to_csv(
             args.output_ranks_table,
