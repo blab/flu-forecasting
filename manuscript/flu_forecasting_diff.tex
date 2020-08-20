@@ -1,7 +1,7 @@
 %DIF 1c1
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL manuscript-full-submission/flu_forecasting.tex   Mon Aug  3 15:54:49 2020
-%DIF ADD manuscript/flu_forecasting.tex                   Thu Aug 13 13:24:56 2020
+%DIF ADD manuscript/flu_forecasting.tex                   Wed Aug 19 18:09:14 2020
 %DIF < \documentclass[12pt]{article}
 %DIF -------
 \documentclass[9pt,lineno]{elife} %DIF > 
@@ -393,7 +393,8 @@ As a positive control for our model framework, we also fit a model based on the 
     Corresponding values per test timepoint are in the top-right.
     The naive model's distances to the future for validation and test timepoints (light gray) were 8.97 $\pm$ 1.35 AAs and 9.07 $\pm$ 1.70 AAs, respectively.
     The corresponding lower bounds on the estimated distance to the future (dark gray) were 4.57 $\pm$ 0.61 AAs and 4.85 $\pm$ 0.82 AAs.
-  }
+    \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
+  }\DIFaddendFL }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
   \end{center}
 \end{figure}
@@ -437,10 +438,15 @@ epitope antigenic novelty & -0.03 +/- 0.19 & 9.03 +/- 1.37 & 9.07 +/- 1.69 & 14 
       Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and \DIFdelbeginFL \DIFdelFL{Supplemental Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\DIFdelbeginFL \DIFdelFL{\ref{sup_fig:bootstrap_distributions_for_simulated_sample_3}}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\ref{fig:bootstrap_distributions_for_simulated_sample_3}}\DIFaddendFL ).
       The number of times (and percentage of total times) each model outperformed the naive model measures the benefit of each model over a model than estimates no change between current and future populations.
       Test results are based on 18 timepoints not observed during model training and validation.
-    }
+      \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
+    }\DIFaddendFL }
     \label{table_simulated_model_selection}
   \end{center}
-\end{table}
+\DIFaddbeginFL 
+
+  \tabledata{Coefficients for models fit to simulated populations.}\label{tabledata:simulated_model_coefficients}
+  \tabledata{Distances to the future for models fit to simulated populations.}\label{tabledata:simulated_model_distances}
+\DIFaddendFL \end{table}
 
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (\DIFdelbegin \DIFdel{Fig.}\DIFdelend \DIFaddbegin \DIFadd{Figure}\DIFaddend ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
 Although the true fitness model performed better than the naive model's average distance of 8.97 $\pm$ 1.35 AAs, it did not reach the closest possible distance between populations of 4.57 $\pm$ 0.61 AAs.
@@ -459,7 +465,8 @@ The mutational load metric received a consistently negative coefficient with an 
   \DIFaddendFL \caption{
     Simulated population model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model.
     A) Coefficients and B) distances are shown per validation and test timepoint as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
-  }
+    \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
+  }\DIFaddendFL }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
 \DIFdelbeginFL %DIFDELCMD < \end{center}
 %DIFDELCMD < %%%
@@ -595,7 +602,8 @@ epitope antigenic novelty & 0.52 +/- 0.73 & 7.13 +/- 1.47 & 6.70 +/- 1.51 & 7 (3
       Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and \DIFdelbeginFL \DIFdelFL{Supplemental Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\DIFdelbeginFL \DIFdelFL{\ref{sup_fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\ref{fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}}\DIFaddendFL ).
       Validation results are based on 23 timepoints.
       Test results are based on eight timepoints not observed during model training and validation.
-    }
+      \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
+    }\DIFaddendFL }
     \label{table_natural_model_selection}
   \end{center}
 \end{table}
@@ -620,7 +628,8 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The naive model's distance to the future (light gray) was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
     The corresponding lower bounds on the estimated distance to the future (dark gray) were 2.60 $\pm$ 0.89 AAs and 2.28 $\pm$ 0.61 AAs.
-  }
+    \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
+  }\DIFaddendFL }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
 \DIFdelbeginFL %DIFDELCMD < \end{center}
 %DIFDELCMD < %%%
@@ -685,7 +694,8 @@ The LBI and mutational load might also be predictive for reasons other than corr
   \DIFaddendFL \caption{
     Natural population model coefficients and distances to the future for composite fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in \DIFdelbeginFL \DIFdelFL{Fig.}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Figure}\DIFaddendFL ~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
-  }
+    \DIFaddbeginFL \DIFaddFL{Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
+  }\DIFaddendFL }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
 \DIFdelbeginFL %DIFDELCMD < \end{center}
 %DIFDELCMD < %%%
@@ -793,6 +803,7 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
     Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
     The weighted distance to the future for each strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
     \DIFaddbeginFL \DIFaddFL{Vaccine strain names are abbreviated from A/Fujian/411/2002, A/Wellington/1/2004, A/California/7/2004, A/Wisconsin/67/2005, A/Brisbane/10/2007, A/Perth/16/2009, A/Victoria/361/2011, A/Texas/50/2012, A/Switzerland/9715293/2013, A/HongKong/4801/2014, A/Singapore/Infimh-16-0019/2016, and A/Switzerland/8060/2017.
+    Source data are available in Figure~\ref{fig:vaccine_comparison}-source data~\ref{figdata:vaccine_comparison}
   }\DIFaddendFL }
   \label{fig:vaccine_comparison}
 \DIFdelbeginFL %DIFDELCMD < \end{center}
@@ -802,6 +813,8 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
   \figsupp[Relative improvement of model selections over vaccine strains.]{
     Relative distance to future H3N2 populations between vaccine strains and corresponding observed and estimated closest strains at each timepoint as in Figure~\ref{fig:vaccine_comparison}.
     Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.}{\includegraphics[width=\textwidth]{Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
+
+  \figdata{Weighted distances to the future per strain by strain type and timepoint.}\label{figdata:vaccine_comparison}
 \DIFaddendFL \end{figure}
 
 We further evaluated our models' ability to estimate the closest strain to the next season's H3N2 population by comparing our best models' selections to the WHO's vaccine strain selection.
@@ -1408,9 +1421,13 @@ epitope antigenic novelty & 0.52 +/- 0.73 & 7.13 +/- 1.47 & 6.70 +/- 1.51 & 7 (3
       Validation results are based on 23 timepoints.
       Test results are based on eight timepoints not observed during model training and validation.
       Model results for additional variants of fitness metrics including those based on epitope mutations and DMS preferences are included for reference.
+      Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
     }}
     \label{table:complete_natural_model_selection}
   \end{center}
+
+  \tabledata{Coefficients for models fit to natural populations.}\label{tabledata:natural_model_coefficients}
+  \tabledata{Distances to the future for models fit to natural populations.}\label{tabledata:natural_model_distances}
 \end{table}
 
 \DIFaddend \subsection*{Clustering of amino acid sequences for visualization}
