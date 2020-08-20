@@ -436,6 +436,8 @@ rule figures_and_tables_for_model_results:
     output:
         # Simulated populations
         table_for_simulated_model_selection = "manuscript/tables/simulated_model_selection.tex",
+        source_data_for_simulated_model_coefficients = "manuscript/tables/simulated_model_coefficients.tsv",
+        source_data_for_simulated_model_distances = "manuscript/tables/simulated_model_distances.tsv",
         figure_for_simulated_model_controls = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf",
         figure_for_simulated_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf",
         figure_for_simulated_composite_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.pdf",
@@ -443,6 +445,8 @@ rule figures_and_tables_for_model_results:
         # Natural populations
         table_for_natural_model_selection = "manuscript/tables/natural_model_selection.tex",
         table_for_natural_model_complete_selection = "manuscript/tables/complete_natural_model_selection.tex",
+        source_data_for_natural_model_coefficients = "manuscript/tables/natural_model_coefficients.tsv",
+        source_data_for_natural_model_distances = "manuscript/tables/natural_model_distances.tsv",
         figure_for_natural_epitope_vs_oracle_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.pdf",
         figure_for_natural_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
         figure_for_natural_composite_models = "manuscript/figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
