@@ -478,7 +478,8 @@ rule figure_for_vaccine_comparison:
         titers = config["builds"]["natural"]["natural_sample_1_with_90_vpm_sliding_test_tree"]["titers"]
     output:
         figure = "manuscript/figures/vaccine-comparison.pdf",
-        relative_figure = "manuscript/figures/vaccine-comparison-relative-distance.pdf"
+        relative_figure = "manuscript/figures/vaccine-comparison-relative-distance.pdf",
+        source_data = "manuscript/figures/vaccine-comparison.tsv"
     log:
         notebook = "logs/notebooks/vaccine-strain-comparison.ipynb"
     conda: "envs/anaconda.python3.yaml"
