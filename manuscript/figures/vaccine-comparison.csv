@@ -1,0 +1,61 @@
+strain_type,strain,abbreviation,timepoint,distance_to_future,relative_distance_to_future
+vaccine,A/Fujian/411/2002,FU02,2003-10-01,9.44,N/A
+vaccine,A/Wellington/1/2004,WE04,2004-10-01,6.08,N/A
+vaccine,A/California/7/2004,CA04,2005-04-01,7.5,N/A
+vaccine,A/Wisconsin/67/2005,WI05,2006-04-01,10.3,N/A
+vaccine,A/Brisbane/10/2007,BR07,2007-10-01,5.78,N/A
+vaccine,A/Perth/16/2009,PE09,2009-10-01,7.95,N/A
+vaccine,A/Victoria/361/2011,VI11,2012-04-01,6.27,N/A
+vaccine,A/Texas/50/2012,TX12,2013-10-01,8.65,N/A
+vaccine,A/Switzerland/9715293/2013,SW13,2014-10-01,10.82,N/A
+vaccine,A/HongKong/4801/2014,HK14,2015-10-01,6.09,N/A
+vaccine,A/Singapore/Infimh-16-0019/2016,SI16,2017-10-01,8.61,N/A
+vaccine,A/Switzerland/8060/2017,SW17,2018-10-01,15.17,N/A
+observed closest,A/Jiangxi/20/2003,N/A,2003-10-01,4.08,-5.36
+observed closest,A/Jeonnam/336/2004,N/A,2004-10-01,3.32,-2.76
+observed closest,A/Malaysia/31944/2005,N/A,2005-04-01,3.59,-3.91
+observed closest,A/England/61007/2006,N/A,2006-04-01,4.9,-5.4
+observed closest,A/Hanoi/BM238/2007,N/A,2007-10-01,3.41,-2.37
+observed closest,A/BadenWurttemberg/209/2009,N/A,2009-10-01,4.92,-3.03
+observed closest,A/Anhui-Jinan/173/2012,N/A,2012-04-01,2.87,-3.39
+observed closest,A/AmericanSamoa/4796/2013,N/A,2013-10-01,5.44,-3.21
+observed closest,A/Asturias/1949/2014,N/A,2014-10-01,3.18,-7.64
+observed closest,A/Brazil/187/2015,N/A,2015-10-01,6.08,-0.0
+observed closest,A/Ayutthaya/73/2017,N/A,2017-10-01,7.27,-1.34
+observed closest,A/Shanghai-Huangpu/11325/2018,N/A,2018-10-01,7.67,-7.49
+estimated closest by naive,A/Malaysia/25849/2003,N/A,2003-10-01,7.49,-1.95
+estimated closest by naive,A/Dakar/18/2004,N/A,2004-10-01,4.38,-1.7
+estimated closest by naive,A/Austria/212187/2005,N/A,2005-04-01,4.6,-2.89
+estimated closest by naive,A/Anhui-Baohe/10/2005,N/A,2006-04-01,5.37,-4.94
+estimated closest by naive,A/Honduras/AF1426/2007,N/A,2007-10-01,3.8,-1.98
+estimated closest by naive,A/Morobe/10/2009,N/A,2009-10-01,6.95,-1.0
+estimated closest by naive,A/Alborz/927/2012,N/A,2012-04-01,6.12,-0.15
+estimated closest by naive,A/AmericanSamoa/4796/2013,N/A,2013-10-01,5.44,-3.21
+estimated closest by naive,A/Austria/96/2014,N/A,2014-10-01,9.82,-1.01
+estimated closest by naive,A/Alaska/115/2015,N/A,2015-10-01,6.09,-0.0
+estimated closest by naive,A/Philippines/7/2017,N/A,2017-10-01,7.81,-0.8
+estimated closest by naive,A/Chanthaburi/101/2018,N/A,2018-10-01,8.48,-6.68
+estimated closest by ne_star-lbi,A/Australia/NHRC0001/2003,N/A,2003-10-01,8.44,-1.01
+estimated closest by ne_star-lbi,A/Dakar/18/2004,N/A,2004-10-01,4.38,-1.7
+estimated closest by ne_star-lbi,A/Austria/212187/2005,N/A,2005-04-01,4.6,-2.89
+estimated closest by ne_star-lbi,A/Canada/CN-RV657-06/2006,N/A,2006-04-01,5.36,-4.94
+estimated closest by ne_star-lbi,A/Aichi/67/2007,N/A,2007-10-01,3.78,-2.0
+estimated closest by ne_star-lbi,A/Morobe/10/2009,N/A,2009-10-01,6.95,-1.0
+estimated closest by ne_star-lbi,A/Aichi/233/2011,N/A,2012-04-01,3.72,-2.54
+estimated closest by ne_star-lbi,A/Chiba-C/44/2013,N/A,2013-10-01,6.54,-2.11
+estimated closest by ne_star-lbi,A/Bangladesh/2008/2014,N/A,2014-10-01,3.88,-6.94
+estimated closest by ne_star-lbi,A/Arizona/7/2015,N/A,2015-10-01,7.33,1.24
+estimated closest by ne_star-lbi,A/Akita/21/2017,N/A,2017-10-01,7.47,-1.15
+estimated closest by ne_star-lbi,A/Bolivia/1914/2018,N/A,2018-10-01,17.08,1.91
+estimated closest by cTiter_x-ne_star,A/Hanoi/BM766/2003,N/A,2003-10-01,6.5,-2.95
+estimated closest by cTiter_x-ne_star,A/Dakar/18/2004,N/A,2004-10-01,4.38,-1.7
+estimated closest by cTiter_x-ne_star,A/Austria/212187/2005,N/A,2005-04-01,4.6,-2.89
+estimated closest by cTiter_x-ne_star,A/Anhui-Baohe/10/2005,N/A,2006-04-01,5.37,-4.94
+estimated closest by cTiter_x-ne_star,A/Aichi/67/2007,N/A,2007-10-01,3.78,-2.0
+estimated closest by cTiter_x-ne_star,A/Aichi/689/2009,N/A,2009-10-01,7.93,-0.02
+estimated closest by cTiter_x-ne_star,A/Alaska/17/2011,N/A,2012-04-01,7.02,0.75
+estimated closest by cTiter_x-ne_star,A/Alabama/7/2013,N/A,2013-10-01,6.89,-1.76
+estimated closest by cTiter_x-ne_star,A/Bangladesh/2008/2014,N/A,2014-10-01,3.88,-6.94
+estimated closest by cTiter_x-ne_star,A/Alaska/115/2015,N/A,2015-10-01,6.09,-0.0
+estimated closest by cTiter_x-ne_star,A/Philippines/7/2017,N/A,2017-10-01,7.81,-0.8
+estimated closest by cTiter_x-ne_star,A/Bangladesh/215/2018,N/A,2018-10-01,10.42,-4.75

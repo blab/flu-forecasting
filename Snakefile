@@ -436,8 +436,8 @@ rule figures_and_tables_for_model_results:
     output:
         # Simulated populations
         table_for_simulated_model_selection = "manuscript/tables/simulated_model_selection.tex",
-        source_data_for_simulated_model_coefficients = "manuscript/tables/simulated_model_coefficients.tsv",
-        source_data_for_simulated_model_distances = "manuscript/tables/simulated_model_distances.tsv",
+        source_data_for_simulated_model_coefficients = "manuscript/tables/simulated_model_coefficients.csv",
+        source_data_for_simulated_model_distances = "manuscript/tables/simulated_model_distances.csv",
         figure_for_simulated_model_controls = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations-controls.pdf",
         figure_for_simulated_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-simulated-populations.pdf",
         figure_for_simulated_composite_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-simulated-populations.pdf",
@@ -445,8 +445,8 @@ rule figures_and_tables_for_model_results:
         # Natural populations
         table_for_natural_model_selection = "manuscript/tables/natural_model_selection.tex",
         table_for_natural_model_complete_selection = "manuscript/tables/complete_natural_model_selection.tex",
-        source_data_for_natural_model_coefficients = "manuscript/tables/natural_model_coefficients.tsv",
-        source_data_for_natural_model_distances = "manuscript/tables/natural_model_distances.tsv",
+        source_data_for_natural_model_coefficients = "manuscript/tables/natural_model_coefficients.csv",
+        source_data_for_natural_model_distances = "manuscript/tables/natural_model_distances.csv",
         figure_for_natural_epitope_vs_oracle_models = "manuscript/figures/unadjusted-composite-model-accuracy-and-coefficients-for-natural-populations-epitope-vs-oracle.pdf",
         figure_for_natural_individual_models = "manuscript/figures/unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
         figure_for_natural_composite_models = "manuscript/figures/best-composite-unadjusted-model-accuracy-and-coefficients-for-natural-populations.pdf",
@@ -479,7 +479,7 @@ rule figure_for_vaccine_comparison:
     output:
         figure = "manuscript/figures/vaccine-comparison.pdf",
         relative_figure = "manuscript/figures/vaccine-comparison-relative-distance.pdf",
-        source_data = "manuscript/figures/vaccine-comparison.tsv"
+        source_data = "manuscript/figures/vaccine-comparison.csv"
     log:
         notebook = "logs/notebooks/vaccine-strain-comparison.ipynb"
     conda: "envs/anaconda.python3.yaml"
