@@ -1,7 +1,7 @@
 %DIF 1c1
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL manuscript-full-submission/flu_forecasting.tex   Mon Aug  3 15:54:49 2020
-%DIF ADD manuscript/flu_forecasting.tex                   Wed Aug 19 18:09:14 2020
+%DIF ADD manuscript/flu_forecasting.tex                   Wed Aug 19 21:14:35 2020
 %DIF < \documentclass[12pt]{article}
 %DIF -------
 \documentclass[9pt,lineno]{elife} %DIF > 
@@ -474,7 +474,9 @@ The mutational load metric received a consistently negative coefficient with an 
 
   \figsupp[Composite model coefficients and distances to the future for models fit to simulated populations.]{
     Composite model coefficients and distances to the future for models fit to simulated populations.
-    A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.}{\includegraphics[width=\textwidth]{Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
+    A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
+  }{\includegraphics[width=\textwidth]{Figure_3-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_simulated_populations}
 
 \DIFaddendFL \end{figure}
 
@@ -640,7 +642,9 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
     A) Coefficients and B) distances are shown per validation timepoint and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The epitope antigenic novelty model relies on previously published epitope sites \citep{Luksza:2014hj}.
     The ``oracle'' antigenic novelty model relies on sites of beneficial mutations that were manually identified from the entire training and validation time period (Methods).
-    The improved performance of the ``oracle'' model indicates that the sequence-based antigenic novelty metric can be effective when sites of beneficial mutations are known prior to forecasting.}{\includegraphics[width=\textwidth]{Figure_5-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
+    The improved performance of the ``oracle'' model indicates that the sequence-based antigenic novelty metric can be effective when sites of beneficial mutations are known prior to forecasting.
+    Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
+  }{\includegraphics[width=\textwidth]{Figure_5-Figure_supplement_1.pdf}}\label{figsupp:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations_epitope_vs_oracle}
 
 \DIFaddendFL \end{figure}
 
@@ -803,7 +807,7 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
     Vaccine strains were assigned to the validation or test timepoint closest to the date they were selected by the WHO.
     The weighted distance to the future for each strain was calculated from their amino acid sequences and the frequencies and sequences of the corresponding population one year in the future.
     \DIFaddbeginFL \DIFaddFL{Vaccine strain names are abbreviated from A/Fujian/411/2002, A/Wellington/1/2004, A/California/7/2004, A/Wisconsin/67/2005, A/Brisbane/10/2007, A/Perth/16/2009, A/Victoria/361/2011, A/Texas/50/2012, A/Switzerland/9715293/2013, A/HongKong/4801/2014, A/Singapore/Infimh-16-0019/2016, and A/Switzerland/8060/2017.
-    Source data are available in Figure~\ref{fig:vaccine_comparison}-source data~\ref{figdata:vaccine_comparison}
+    Source data are available in Figure~\ref{fig:vaccine_comparison}-source data~\ref{figdata:vaccine_comparison}.
   }\DIFaddendFL }
   \label{fig:vaccine_comparison}
 \DIFdelbeginFL %DIFDELCMD < \end{center}
@@ -812,7 +816,9 @@ The estimated strain ranks of the naive model were not as well correlated (Spear
 
   \figsupp[Relative improvement of model selections over vaccine strains.]{
     Relative distance to future H3N2 populations between vaccine strains and corresponding observed and estimated closest strains at each timepoint as in Figure~\ref{fig:vaccine_comparison}.
-    Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.}{\includegraphics[width=\textwidth]{Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
+    Strains with relative distances greater than zero were farther from the future than the selected vaccine strain, while strains below zero were closer to the future.
+    Source data are available in Figure~\ref{fig:vaccine_comparison}-source data~\ref{figdata:vaccine_comparison}.
+  }{\includegraphics[width=\textwidth]{Figure_8-Figure_supplement_1.pdf}}\label{figsupp:vaccine_comparison_relative_distance}
 
   \figdata{Weighted distances to the future per strain by strain type and timepoint.}\label{figdata:vaccine_comparison}
 \DIFaddendFL \end{figure}
@@ -2819,7 +2825,7 @@ The authors declare that no competing interests exist.
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \textbf{Supplemental File S1.} Tab-delimited GISAID accessions and metadata including originating and submitting labs for natural strains used across all timepoints.
+\DIFdelend \textbf{Supplemental File S1.} \DIFdelbegin \DIFdel{Tab-delimited }\DIFdelend GISAID accessions and metadata including originating and submitting labs for natural strains used across all timepoints.
 
 \DIFdelbegin %DIFDELCMD < \pagebreak
 %DIFDELCMD < %%%
