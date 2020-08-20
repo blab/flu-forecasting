@@ -110,12 +110,15 @@ For example, the complete set of tip attributes including imputed titer drops fo
 ### Outputs
 
 The primary outputs of this workflow are tables of tip attributes per populations that are used to fit models (`tip_attributes_with_weighted_distances.tsv`) and the tables of resulting model coefficients (`distance_model_coefficients.tsv`) and distances to the future (`distance_model_errors.tsv`).
+Data for validation figures (e.g., Figures 4 and 7) can be found in `validation_figure_clades.tsv` and `validation_figure_ranks.tsv`.
 Additional outputs include the mapping of individual strains to clades (`tips_to_clades.tsv`) for the creation of model validation figures (e.g., comparison of estimated and observed clade frequency fold changes and absolute forecasting errors).
 The following outputs are included in this repository and are also created by running the full analysis pipeline.
 
   - `results/`
     - `distance_model_errors.tsv`
     - `distance_model_coefficients.tsv`
+    - `validation_figure_clades.tsv`
+    - `validation_figure_ranks.tsv`
     - `builds/`
       - `natural/`
         - `natural_sample_1_with_90_vpm_sliding/`
