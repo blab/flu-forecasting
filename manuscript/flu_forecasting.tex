@@ -247,6 +247,7 @@ As a positive control for our model framework, we also fit a model based on the 
     Corresponding values per test timepoint are in the top-right.
     The naive model's distances to the future for validation and test timepoints (light gray) were 8.97 $\pm$ 1.35 AAs and 9.07 $\pm$ 1.70 AAs, respectively.
     The corresponding lower bounds on the estimated distance to the future (dark gray) were 4.57 $\pm$ 0.61 AAs and 4.85 $\pm$ 0.82 AAs.
+    Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}
   \end{center}
@@ -271,6 +272,9 @@ Correspondingly, we expected that a composite model of epitope antigenic novelty
     }
     \label{table_simulated_model_selection}
   \end{center}
+
+  \tabledata{Coefficients for models fit to simulated populations.}\label{tabledata:simulated_model_coefficients}
+  \tabledata{Distances to the future for models fit to simulated populations.}\label{tabledata:simulated_model_distances}
 \end{table}
 
 As expected, the true fitness model outperformed all other models, estimating a future population within 6.82 $\pm$ 1.52 amino acids (AAs) of the observed future and surpassing the naive model in 32 (97\%) of 33 timepoints (Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}, Table~\ref{table_simulated_model_selection}).
@@ -286,6 +290,7 @@ The mutational load metric received a consistently negative coefficient with an 
   \caption{
     Simulated population model coefficients and distances to the future for individual biologically-informed fitness metrics and the best composite model.
     A) Coefficients and B) distances are shown per validation and test timepoint as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Source data are in Table~\ref{table_simulated_model_selection}-source data~\ref{tabledata:simulated_model_coefficients} and \ref{tabledata:simulated_model_distances}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations}
 
@@ -384,6 +389,7 @@ However, they also supported the earlier finding that clade frequency forecasts 
       Distances annotated with asterisks (*) were significantly closer to the future than the naive model as measured by bootstrap tests (see Methods and Figure~\ref{fig:bootstrap_distributions_for_natural_sample_1_with_90_vpm_sliding}).
       Validation results are based on 23 timepoints.
       Test results are based on eight timepoints not observed during model training and validation.
+      Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
     }
     \label{table_natural_model_selection}
   \end{center}
@@ -404,6 +410,7 @@ As the earliest measurements from focus reduction assays (FRAs) date back to 201
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
     The naive model's distance to the future (light gray) was 6.40 $\pm$ 1.36 AAs for validation timepoints and 6.82 $\pm$ 1.74 AAs for test timepoints.
     The corresponding lower bounds on the estimated distance to the future (dark gray) were 2.60 $\pm$ 0.89 AAs and 2.28 $\pm$ 0.61 AAs.
+    Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
   }
   \label{fig:unadjusted_model_accuracy_and_coefficients_for_natural_populations}
 
@@ -458,6 +465,7 @@ The LBI and mutational load might also be predictive for reasons other than corr
   \caption{
     Natural population model coefficients and distances to the future for composite fitness metrics.
     A) Coefficients and B) distances are shown per validation timepoint (N=23) and test timepoint (N=8) as in Figure~\ref{fig:unadjusted_model_accuracy_and_coefficients_for_simulated_populations_controls}.
+    Source data are in Table~\ref{table:complete_natural_model_selection}-source data~\ref{tabledata:natural_model_coefficients} and \ref{tabledata:natural_model_distances}.
   }
   \label{fig:unadjusted_composite_model_accuracy_and_coefficients_for_natural_populations}
 
@@ -1045,6 +1053,9 @@ We calculated the delta frequency as the change in frequency for each strain bet
     }
     \label{table:complete_natural_model_selection}
   \end{center}
+
+  \tabledata{Coefficients for models fit to natural populations.}\label{tabledata:natural_model_coefficients}
+  \tabledata{Distances to the future for models fit to natural populations.}\label{tabledata:natural_model_distances}
 \end{table}
 
 \subsection*{Clustering of amino acid sequences for visualization}

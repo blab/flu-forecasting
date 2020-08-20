@@ -1,0 +1,528 @@
+error_type	model	timepoint	model_distance_to_future	naive_distance_to_future	optimal_distance_to_future
+validation	epitope ancestor	2003-10-01	8.186	8.188	3.784
+validation	epitope ancestor	2004-04-01	6.717	6.71	3.036
+validation	epitope ancestor	2004-10-01	5.245	5.266	1.828
+validation	epitope ancestor	2005-04-01	7.517	5.478	2.12
+validation	epitope ancestor	2005-10-01	8.547	5.348	2.421
+validation	epitope ancestor	2006-04-01	8.447	6.482	4.128
+validation	epitope ancestor	2006-10-01	6.813	4.648	2.489
+validation	epitope ancestor	2007-04-01	6.537	5.741	2.339
+validation	epitope ancestor	2007-10-01	5.219	5.383	2.085
+validation	epitope ancestor	2008-04-01	4.351	4.43	2.035
+validation	epitope ancestor	2008-10-01	7.808	7.344	4.768
+validation	epitope ancestor	2009-04-01	6.594	6.658	3.004
+validation	epitope ancestor	2009-10-01	6.754	6.675	3.621
+validation	epitope ancestor	2010-04-01	6.659	6.656	2.405
+validation	epitope ancestor	2010-10-01	6.214	6.376	3.334
+validation	epitope ancestor	2011-04-01	9.359	9.328	2.858
+validation	epitope ancestor	2011-10-01	5.867	5.127	1.76
+validation	epitope ancestor	2012-04-01	6.687	6.941	2.158
+validation	epitope ancestor	2012-10-01	8.794	8.388	1.356
+validation	epitope ancestor	2013-04-01	4.677	4.76	2.412
+validation	epitope ancestor	2013-10-01	5.27	5.243	3.057
+validation	epitope ancestor	2014-04-01	7.484	7.387	1.45
+validation	epitope ancestor	2014-10-01	8.651	8.628	1.404
+validation	Koel epitope antigenic novelty	2003-10-01	8.038	8.188	3.784
+validation	Koel epitope antigenic novelty	2004-04-01	6.544	6.71	3.036
+validation	Koel epitope antigenic novelty	2004-10-01	5.165	5.266	1.828
+validation	Koel epitope antigenic novelty	2005-04-01	5.309	5.478	2.12
+validation	Koel epitope antigenic novelty	2005-10-01	5.176	5.348	2.421
+validation	Koel epitope antigenic novelty	2006-04-01	6.369	6.482	4.128
+validation	Koel epitope antigenic novelty	2006-10-01	4.637	4.648	2.489
+validation	Koel epitope antigenic novelty	2007-04-01	5.852	5.741	2.339
+validation	Koel epitope antigenic novelty	2007-10-01	5.497	5.383	2.085
+validation	Koel epitope antigenic novelty	2008-04-01	4.541	4.43	2.035
+validation	Koel epitope antigenic novelty	2008-10-01	7.676	7.344	4.768
+validation	Koel epitope antigenic novelty	2009-04-01	5.503	6.658	3.004
+validation	Koel epitope antigenic novelty	2009-10-01	6.56	6.675	3.621
+validation	Koel epitope antigenic novelty	2010-04-01	6.499	6.656	2.405
+validation	Koel epitope antigenic novelty	2010-10-01	6.297	6.376	3.334
+validation	Koel epitope antigenic novelty	2011-04-01	8.939	9.328	2.858
+validation	Koel epitope antigenic novelty	2011-10-01	4.898	5.127	1.76
+validation	Koel epitope antigenic novelty	2012-04-01	6.981	6.941	2.158
+validation	Koel epitope antigenic novelty	2012-10-01	7.808	8.388	1.356
+validation	Koel epitope antigenic novelty	2013-04-01	4.536	4.76	2.412
+validation	Koel epitope antigenic novelty	2013-10-01	5.235	5.243	3.057
+validation	Koel epitope antigenic novelty	2014-04-01	7.052	7.387	1.45
+validation	Koel epitope antigenic novelty	2014-10-01	7.88	8.628	1.404
+validation	Wolf epitope antigenic novelty	2003-10-01	7.547	8.188	3.784
+validation	Wolf epitope antigenic novelty	2004-04-01	7.171	6.71	3.036
+validation	Wolf epitope antigenic novelty	2004-10-01	5.299	5.266	1.828
+validation	Wolf epitope antigenic novelty	2005-04-01	5.887	5.478	2.12
+validation	Wolf epitope antigenic novelty	2005-10-01	6.647	5.348	2.421
+validation	Wolf epitope antigenic novelty	2006-04-01	7.443	6.482	4.128
+validation	Wolf epitope antigenic novelty	2006-10-01	5.551	4.648	2.489
+validation	Wolf epitope antigenic novelty	2007-04-01	6.88	5.741	2.339
+validation	Wolf epitope antigenic novelty	2007-10-01	5.697	5.383	2.085
+validation	Wolf epitope antigenic novelty	2008-04-01	5.285	4.43	2.035
+validation	Wolf epitope antigenic novelty	2008-10-01	8.103	7.344	4.768
+validation	Wolf epitope antigenic novelty	2009-04-01	6.163	6.658	3.004
+validation	Wolf epitope antigenic novelty	2009-10-01	7.096	6.675	3.621
+validation	Wolf epitope antigenic novelty	2010-04-01	6.696	6.656	2.405
+validation	Wolf epitope antigenic novelty	2010-10-01	6.197	6.376	3.334
+validation	Wolf epitope antigenic novelty	2011-04-01	9.111	9.328	2.858
+validation	Wolf epitope antigenic novelty	2011-10-01	5.143	5.127	1.76
+validation	Wolf epitope antigenic novelty	2012-04-01	7.67	6.941	2.158
+validation	Wolf epitope antigenic novelty	2012-10-01	9.964	8.388	1.356
+validation	Wolf epitope antigenic novelty	2013-04-01	5.924	4.76	2.412
+validation	Wolf epitope antigenic novelty	2013-10-01	5.514	5.243	3.057
+validation	Wolf epitope antigenic novelty	2014-04-01	7.403	7.387	1.45
+validation	Wolf epitope antigenic novelty	2014-10-01	8.691	8.628	1.404
+validation	epitope antigenic novelty	2003-10-01	7.031	8.188	3.784
+validation	epitope antigenic novelty	2004-04-01	5.597	6.71	3.036
+validation	epitope antigenic novelty	2004-10-01	5.182	5.266	1.828
+validation	epitope antigenic novelty	2005-04-01	5.703	5.478	2.12
+validation	epitope antigenic novelty	2005-10-01	7.669	5.348	2.421
+validation	epitope antigenic novelty	2006-04-01	8.638	6.482	4.128
+validation	epitope antigenic novelty	2006-10-01	6.013	4.648	2.489
+validation	epitope antigenic novelty	2007-04-01	8.065	5.741	2.339
+validation	epitope antigenic novelty	2007-10-01	8.393	5.383	2.085
+validation	epitope antigenic novelty	2008-04-01	6.221	4.43	2.035
+validation	epitope antigenic novelty	2008-10-01	9.208	7.344	4.768
+validation	epitope antigenic novelty	2009-04-01	6.026	6.658	3.004
+validation	epitope antigenic novelty	2009-10-01	7.268	6.675	3.621
+validation	epitope antigenic novelty	2010-04-01	6.786	6.656	2.405
+validation	epitope antigenic novelty	2010-10-01	6.726	6.376	3.334
+validation	epitope antigenic novelty	2011-04-01	9.146	9.328	2.858
+validation	epitope antigenic novelty	2011-10-01	4.86	5.127	1.76
+validation	epitope antigenic novelty	2012-04-01	6.889	6.941	2.158
+validation	epitope antigenic novelty	2012-10-01	10.296	8.388	1.356
+validation	epitope antigenic novelty	2013-04-01	6.089	4.76	2.412
+validation	epitope antigenic novelty	2013-10-01	5.701	5.243	3.057
+validation	epitope antigenic novelty	2014-04-01	7.528	7.387	1.45
+validation	epitope antigenic novelty	2014-10-01	9.023	8.628	1.404
+validation	oracle antigenic novelty	2003-10-01	7.319	8.188	3.784
+validation	oracle antigenic novelty	2004-04-01	6.203	6.71	3.036
+validation	oracle antigenic novelty	2004-10-01	4.443	5.266	1.828
+validation	oracle antigenic novelty	2005-04-01	4.844	5.478	2.12
+validation	oracle antigenic novelty	2005-10-01	4.635	5.348	2.421
+validation	oracle antigenic novelty	2006-04-01	6.419	6.482	4.128
+validation	oracle antigenic novelty	2006-10-01	5.428	4.648	2.489
+validation	oracle antigenic novelty	2007-04-01	5.021	5.741	2.339
+validation	oracle antigenic novelty	2007-10-01	4.324	5.383	2.085
+validation	oracle antigenic novelty	2008-04-01	5.817	4.43	2.035
+validation	oracle antigenic novelty	2008-10-01	9.425	7.344	4.768
+validation	oracle antigenic novelty	2009-04-01	7.101	6.658	3.004
+validation	oracle antigenic novelty	2009-10-01	5.451	6.675	3.621
+validation	oracle antigenic novelty	2010-04-01	6.154	6.656	2.405
+validation	oracle antigenic novelty	2010-10-01	5.805	6.376	3.334
+validation	oracle antigenic novelty	2011-04-01	7.3	9.328	2.858
+validation	oracle antigenic novelty	2011-10-01	4.215	5.127	1.76
+validation	oracle antigenic novelty	2012-04-01	5.609	6.941	2.158
+validation	oracle antigenic novelty	2012-10-01	5.685	8.388	1.356
+validation	oracle antigenic novelty	2013-04-01	4.159	4.76	2.412
+validation	oracle antigenic novelty	2013-10-01	5.815	5.243	3.057
+validation	oracle antigenic novelty	2014-04-01	3.988	7.387	1.45
+validation	oracle antigenic novelty	2014-10-01	6.074	8.628	1.404
+validation	HI antigenic novelty	2003-10-01	7.386	8.188	3.784
+validation	HI antigenic novelty	2004-04-01	5.576	6.71	3.036
+validation	HI antigenic novelty	2004-10-01	5.94	5.266	1.828
+validation	HI antigenic novelty	2005-04-01	5.762	5.478	2.12
+validation	HI antigenic novelty	2005-10-01	3.797	5.348	2.421
+validation	HI antigenic novelty	2006-04-01	5.813	6.482	4.128
+validation	HI antigenic novelty	2006-10-01	5.17	4.648	2.489
+validation	HI antigenic novelty	2007-04-01	3.758	5.741	2.339
+validation	HI antigenic novelty	2007-10-01	4.285	5.383	2.085
+validation	HI antigenic novelty	2008-04-01	3.929	4.43	2.035
+validation	HI antigenic novelty	2008-10-01	8.661	7.344	4.768
+validation	HI antigenic novelty	2009-04-01	5.073	6.658	3.004
+validation	HI antigenic novelty	2009-10-01	7.606	6.675	3.621
+validation	HI antigenic novelty	2010-04-01	6.61	6.656	2.405
+validation	HI antigenic novelty	2010-10-01	6.965	6.376	3.334
+validation	HI antigenic novelty	2011-04-01	8.567	9.328	2.858
+validation	HI antigenic novelty	2011-10-01	4.967	5.127	1.76
+validation	HI antigenic novelty	2012-04-01	7.184	6.941	2.158
+validation	HI antigenic novelty	2012-10-01	7.357	8.388	1.356
+validation	HI antigenic novelty	2013-04-01	4.636	4.76	2.412
+validation	HI antigenic novelty	2013-10-01	4.844	5.243	3.057
+validation	HI antigenic novelty	2014-04-01	6.41	7.387	1.45
+validation	HI antigenic novelty	2014-10-01	7.871	8.628	1.404
+validation	mutational load	2003-10-01	7.861	8.188	3.784
+validation	mutational load	2004-04-01	5.748	6.71	3.036
+validation	mutational load	2004-10-01	4.889	5.266	1.828
+validation	mutational load	2005-04-01	4.788	5.478	2.12
+validation	mutational load	2005-10-01	4.796	5.348	2.421
+validation	mutational load	2006-04-01	5.745	6.482	4.128
+validation	mutational load	2006-10-01	4.108	4.648	2.489
+validation	mutational load	2007-04-01	7.012	5.741	2.339
+validation	mutational load	2007-10-01	5.579	5.383	2.085
+validation	mutational load	2008-04-01	4.017	4.43	2.035
+validation	mutational load	2008-10-01	6.46	7.344	4.768
+validation	mutational load	2009-04-01	6.077	6.658	3.004
+validation	mutational load	2009-10-01	6.869	6.675	3.621
+validation	mutational load	2010-04-01	6.608	6.656	2.405
+validation	mutational load	2010-10-01	5.95	6.376	3.334
+validation	mutational load	2011-04-01	9.474	9.328	2.858
+validation	mutational load	2011-10-01	5.967	5.127	1.76
+validation	mutational load	2012-04-01	6.524	6.941	2.158
+validation	mutational load	2012-10-01	7.731	8.388	1.356
+validation	mutational load	2013-04-01	4.535	4.76	2.412
+validation	mutational load	2013-10-01	5.108	5.243	3.057
+validation	mutational load	2014-04-01	7.735	7.387	1.45
+validation	mutational load	2014-10-01	7.593	8.628	1.404
+validation	DMS mutational effects	2003-10-01	7.445	8.188	3.784
+validation	DMS mutational effects	2004-04-01	8.35	6.71	3.036
+validation	DMS mutational effects	2004-10-01	6.623	5.266	1.828
+validation	DMS mutational effects	2005-04-01	12.364	5.478	2.12
+validation	DMS mutational effects	2005-10-01	4.275	5.348	2.421
+validation	DMS mutational effects	2006-04-01	6.341	6.482	4.128
+validation	DMS mutational effects	2006-10-01	5.562	4.648	2.489
+validation	DMS mutational effects	2007-04-01	3.42	5.741	2.339
+validation	DMS mutational effects	2007-10-01	6.644	5.383	2.085
+validation	DMS mutational effects	2008-04-01	4.824	4.43	2.035
+validation	DMS mutational effects	2008-10-01	7.38	7.344	4.768
+validation	DMS mutational effects	2009-04-01	5.993	6.658	3.004
+validation	DMS mutational effects	2009-10-01	7.007	6.675	3.621
+validation	DMS mutational effects	2010-04-01	6.479	6.656	2.405
+validation	DMS mutational effects	2010-10-01	6.167	6.376	3.334
+validation	DMS mutational effects	2011-04-01	9.461	9.328	2.858
+validation	DMS mutational effects	2011-10-01	5.602	5.127	1.76
+validation	DMS mutational effects	2012-04-01	6.738	6.941	2.158
+validation	DMS mutational effects	2012-10-01	8.906	8.388	1.356
+validation	DMS mutational effects	2013-04-01	4.573	4.76	2.412
+validation	DMS mutational effects	2013-10-01	5.065	5.243	3.057
+validation	DMS mutational effects	2014-04-01	7.234	7.387	1.45
+validation	DMS mutational effects	2014-10-01	8.732	8.628	1.404
+validation	DMS mutational load	2003-10-01	8.277	8.188	3.784
+validation	DMS mutational load	2004-04-01	6.718	6.71	3.036
+validation	DMS mutational load	2004-10-01	5.248	5.266	1.828
+validation	DMS mutational load	2005-04-01	5.429	5.478	2.12
+validation	DMS mutational load	2005-10-01	5.345	5.348	2.421
+validation	DMS mutational load	2006-04-01	6.517	6.482	4.128
+validation	DMS mutational load	2006-10-01	4.642	4.648	2.489
+validation	DMS mutational load	2007-04-01	5.766	5.741	2.339
+validation	DMS mutational load	2007-10-01	5.391	5.383	2.085
+validation	DMS mutational load	2008-04-01	4.489	4.43	2.035
+validation	DMS mutational load	2008-10-01	7.356	7.344	4.768
+validation	DMS mutational load	2009-04-01	6.691	6.658	3.004
+validation	DMS mutational load	2009-10-01	6.689	6.675	3.621
+validation	DMS mutational load	2010-04-01	6.668	6.656	2.405
+validation	DMS mutational load	2010-10-01	6.405	6.376	3.334
+validation	DMS mutational load	2011-04-01	9.327	9.328	2.858
+validation	DMS mutational load	2011-10-01	5.135	5.127	1.76
+validation	DMS mutational load	2012-04-01	6.827	6.941	2.158
+validation	DMS mutational load	2012-10-01	8.435	8.388	1.356
+validation	DMS mutational load	2013-04-01	4.747	4.76	2.412
+validation	DMS mutational load	2013-10-01	5.256	5.243	3.057
+validation	DMS mutational load	2014-04-01	7.895	7.387	1.45
+validation	DMS mutational load	2014-10-01	9.128	8.628	1.404
+validation	DMS entropy	2003-10-01	8.265	8.188	3.784
+validation	DMS entropy	2004-04-01	6.71	6.71	3.036
+validation	DMS entropy	2004-10-01	5.245	5.266	1.828
+validation	DMS entropy	2005-04-01	5.437	5.478	2.12
+validation	DMS entropy	2005-10-01	5.334	5.348	2.421
+validation	DMS entropy	2006-04-01	6.513	6.482	4.128
+validation	DMS entropy	2006-10-01	4.644	4.648	2.489
+validation	DMS entropy	2007-04-01	5.739	5.741	2.339
+validation	DMS entropy	2007-10-01	5.38	5.383	2.085
+validation	DMS entropy	2008-04-01	4.485	4.43	2.035
+validation	DMS entropy	2008-10-01	7.363	7.344	4.768
+validation	DMS entropy	2009-04-01	6.671	6.658	3.004
+validation	DMS entropy	2009-10-01	6.677	6.675	3.621
+validation	DMS entropy	2010-04-01	6.669	6.656	2.405
+validation	DMS entropy	2010-10-01	6.398	6.376	3.334
+validation	DMS entropy	2011-04-01	9.333	9.328	2.858
+validation	DMS entropy	2011-10-01	5.157	5.127	1.76
+validation	DMS entropy	2012-04-01	6.806	6.941	2.158
+validation	DMS entropy	2012-10-01	8.46	8.388	1.356
+validation	DMS entropy	2013-04-01	4.722	4.76	2.412
+validation	DMS entropy	2013-10-01	5.251	5.243	3.057
+validation	DMS entropy	2014-04-01	7.389	7.387	1.45
+validation	DMS entropy	2014-10-01	8.611	8.628	1.404
+validation	LBI	2003-10-01	8.192	8.188	3.784
+validation	LBI	2004-04-01	6.699	6.71	3.036
+validation	LBI	2004-10-01	5.252	5.266	1.828
+validation	LBI	2005-04-01	5.214	5.478	2.12
+validation	LBI	2005-10-01	4.009	5.348	2.421
+validation	LBI	2006-04-01	5.963	6.482	4.128
+validation	LBI	2006-10-01	4.313	4.648	2.489
+validation	LBI	2007-04-01	3.283	5.741	2.339
+validation	LBI	2007-10-01	3.979	5.383	2.085
+validation	LBI	2008-04-01	2.646	4.43	2.035
+validation	LBI	2008-10-01	6.233	7.344	4.768
+validation	LBI	2009-04-01	6.311	6.658	3.004
+validation	LBI	2009-10-01	5.471	6.675	3.621
+validation	LBI	2010-04-01	6.053	6.656	2.405
+validation	LBI	2010-10-01	6.838	6.376	3.334
+validation	LBI	2011-04-01	9.683	9.328	2.858
+validation	LBI	2011-10-01	6.418	5.127	1.76
+validation	LBI	2012-04-01	3.598	6.941	2.158
+validation	LBI	2012-10-01	3.363	8.388	1.356
+validation	LBI	2013-04-01	3.506	4.76	2.412
+validation	LBI	2013-10-01	6.708	5.243	3.057
+validation	LBI	2014-04-01	9.077	7.387	1.45
+validation	LBI	2014-10-01	7.778	8.628	1.404
+validation	delta frequency	2003-10-01	8.316	8.188	3.784
+validation	delta frequency	2004-04-01	6.269	6.71	3.036
+validation	delta frequency	2004-10-01	4.986	5.266	1.828
+validation	delta frequency	2005-04-01	4.93	5.478	2.12
+validation	delta frequency	2005-10-01	4.639	5.348	2.421
+validation	delta frequency	2006-04-01	6.365	6.482	4.128
+validation	delta frequency	2006-10-01	4.269	4.648	2.489
+validation	delta frequency	2007-04-01	4.39	5.741	2.339
+validation	delta frequency	2007-10-01	5.489	5.383	2.085
+validation	delta frequency	2008-04-01	3.255	4.43	2.035
+validation	delta frequency	2008-10-01	8.675	7.344	4.768
+validation	delta frequency	2009-04-01	6.936	6.658	3.004
+validation	delta frequency	2009-10-01	6.03	6.675	3.621
+validation	delta frequency	2010-04-01	6.591	6.656	2.405
+validation	delta frequency	2010-10-01	7.185	6.376	3.334
+validation	delta frequency	2011-04-01	10.041	9.328	2.858
+validation	delta frequency	2011-10-01	4.46	5.127	1.76
+validation	delta frequency	2012-04-01	5.46	6.941	2.158
+validation	delta frequency	2012-10-01	7.949	8.388	1.356
+validation	delta frequency	2013-04-01	4.11	4.76	2.412
+validation	delta frequency	2013-10-01	5.454	5.243	3.057
+validation	delta frequency	2014-04-01	7.116	7.387	1.45
+validation	delta frequency	2014-10-01	7.988	8.628	1.404
+validation	epitope ancestor + mutational load	2003-10-01	7.606	8.188	3.784
+validation	epitope ancestor + mutational load	2004-04-01	5.474	6.71	3.036
+validation	epitope ancestor + mutational load	2004-10-01	6.477	5.266	1.828
+validation	epitope ancestor + mutational load	2005-04-01	6.274	5.478	2.12
+validation	epitope ancestor + mutational load	2005-10-01	7.644	5.348	2.421
+validation	epitope ancestor + mutational load	2006-04-01	6.663	6.482	4.128
+validation	epitope ancestor + mutational load	2006-10-01	7.0	4.648	2.489
+validation	epitope ancestor + mutational load	2007-04-01	7.316	5.741	2.339
+validation	epitope ancestor + mutational load	2007-10-01	4.841	5.383	2.085
+validation	epitope ancestor + mutational load	2008-04-01	4.001	4.43	2.035
+validation	epitope ancestor + mutational load	2008-10-01	8.269	7.344	4.768
+validation	epitope ancestor + mutational load	2009-04-01	5.259	6.658	3.004
+validation	epitope ancestor + mutational load	2009-10-01	7.31	6.675	3.621
+validation	epitope ancestor + mutational load	2010-04-01	6.655	6.656	2.405
+validation	epitope ancestor + mutational load	2010-10-01	5.934	6.376	3.334
+validation	epitope ancestor + mutational load	2011-04-01	9.483	9.328	2.858
+validation	epitope ancestor + mutational load	2011-10-01	5.924	5.127	1.76
+validation	epitope ancestor + mutational load	2012-04-01	6.516	6.941	2.158
+validation	epitope ancestor + mutational load	2012-10-01	8.077	8.388	1.356
+validation	epitope ancestor + mutational load	2013-04-01	4.534	4.76	2.412
+validation	epitope ancestor + mutational load	2013-10-01	5.106	5.243	3.057
+validation	epitope ancestor + mutational load	2014-04-01	7.81	7.387	1.45
+validation	epitope ancestor + mutational load	2014-10-01	7.647	8.628	1.404
+validation	epitope antigenic novelty + mutational load	2003-10-01	6.048	8.188	3.784
+validation	epitope antigenic novelty + mutational load	2004-04-01	4.99	6.71	3.036
+validation	epitope antigenic novelty + mutational load	2004-10-01	5.653	5.266	1.828
+validation	epitope antigenic novelty + mutational load	2005-04-01	5.342	5.478	2.12
+validation	epitope antigenic novelty + mutational load	2005-10-01	7.159	5.348	2.421
+validation	epitope antigenic novelty + mutational load	2006-04-01	7.642	6.482	4.128
+validation	epitope antigenic novelty + mutational load	2006-10-01	6.149	4.648	2.489
+validation	epitope antigenic novelty + mutational load	2007-04-01	8.186	5.741	2.339
+validation	epitope antigenic novelty + mutational load	2007-10-01	8.617	5.383	2.085
+validation	epitope antigenic novelty + mutational load	2008-04-01	5.598	4.43	2.035
+validation	epitope antigenic novelty + mutational load	2008-10-01	8.977	7.344	4.768
+validation	epitope antigenic novelty + mutational load	2009-04-01	5.285	6.658	3.004
+validation	epitope antigenic novelty + mutational load	2009-10-01	7.174	6.675	3.621
+validation	epitope antigenic novelty + mutational load	2010-04-01	6.735	6.656	2.405
+validation	epitope antigenic novelty + mutational load	2010-10-01	6.244	6.376	3.334
+validation	epitope antigenic novelty + mutational load	2011-04-01	9.384	9.328	2.858
+validation	epitope antigenic novelty + mutational load	2011-10-01	5.525	5.127	1.76
+validation	epitope antigenic novelty + mutational load	2012-04-01	6.551	6.941	2.158
+validation	epitope antigenic novelty + mutational load	2012-10-01	9.781	8.388	1.356
+validation	epitope antigenic novelty + mutational load	2013-04-01	6.198	4.76	2.412
+validation	epitope antigenic novelty + mutational load	2013-10-01	5.442	5.243	3.057
+validation	epitope antigenic novelty + mutational load	2014-04-01	7.718	7.387	1.45
+validation	epitope antigenic novelty + mutational load	2014-10-01	8.087	8.628	1.404
+validation	mutational load + LBI	2003-10-01	7.855	8.188	3.784
+validation	mutational load + LBI	2004-04-01	5.544	6.71	3.036
+validation	mutational load + LBI	2004-10-01	4.616	5.266	1.828
+validation	mutational load + LBI	2005-04-01	4.777	5.478	2.12
+validation	mutational load + LBI	2005-10-01	3.902	5.348	2.421
+validation	mutational load + LBI	2006-04-01	5.658	6.482	4.128
+validation	mutational load + LBI	2006-10-01	3.932	4.648	2.489
+validation	mutational load + LBI	2007-04-01	3.871	5.741	2.339
+validation	mutational load + LBI	2007-10-01	3.972	5.383	2.085
+validation	mutational load + LBI	2008-04-01	2.515	4.43	2.035
+validation	mutational load + LBI	2008-10-01	5.888	7.344	4.768
+validation	mutational load + LBI	2009-04-01	6.267	6.658	3.004
+validation	mutational load + LBI	2009-10-01	5.784	6.675	3.621
+validation	mutational load + LBI	2010-04-01	5.696	6.656	2.405
+validation	mutational load + LBI	2010-10-01	6.753	6.376	3.334
+validation	mutational load + LBI	2011-04-01	9.689	9.328	2.858
+validation	mutational load + LBI	2011-10-01	5.927	5.127	1.76
+validation	mutational load + LBI	2012-04-01	3.698	6.941	2.158
+validation	mutational load + LBI	2012-10-01	3.597	8.388	1.356
+validation	mutational load + LBI	2013-04-01	3.483	4.76	2.412
+validation	mutational load + LBI	2013-10-01	6.536	5.243	3.057
+validation	mutational load + LBI	2014-04-01	9.077	7.387	1.45
+validation	mutational load + LBI	2014-10-01	6.177	8.628	1.404
+validation	HI antigenic novelty + mutational load	2003-10-01	6.964	8.188	3.784
+validation	HI antigenic novelty + mutational load	2004-04-01	5.021	6.71	3.036
+validation	HI antigenic novelty + mutational load	2004-10-01	5.453	5.266	1.828
+validation	HI antigenic novelty + mutational load	2005-04-01	5.486	5.478	2.12
+validation	HI antigenic novelty + mutational load	2005-10-01	3.279	5.348	2.421
+validation	HI antigenic novelty + mutational load	2006-04-01	5.414	6.482	4.128
+validation	HI antigenic novelty + mutational load	2006-10-01	4.777	4.648	2.489
+validation	HI antigenic novelty + mutational load	2007-04-01	5.215	5.741	2.339
+validation	HI antigenic novelty + mutational load	2007-10-01	4.039	5.383	2.085
+validation	HI antigenic novelty + mutational load	2008-04-01	3.324	4.43	2.035
+validation	HI antigenic novelty + mutational load	2008-10-01	8.096	7.344	4.768
+validation	HI antigenic novelty + mutational load	2009-04-01	4.778	6.658	3.004
+validation	HI antigenic novelty + mutational load	2009-10-01	7.511	6.675	3.621
+validation	HI antigenic novelty + mutational load	2010-04-01	6.003	6.656	2.405
+validation	HI antigenic novelty + mutational load	2010-10-01	6.543	6.376	3.334
+validation	HI antigenic novelty + mutational load	2011-04-01	9.152	9.328	2.858
+validation	HI antigenic novelty + mutational load	2011-10-01	5.036	5.127	1.76
+validation	HI antigenic novelty + mutational load	2012-04-01	6.931	6.941	2.158
+validation	HI antigenic novelty + mutational load	2012-10-01	7.323	8.388	1.356
+validation	HI antigenic novelty + mutational load	2013-04-01	4.472	4.76	2.412
+validation	HI antigenic novelty + mutational load	2013-10-01	5.099	5.243	3.057
+validation	HI antigenic novelty + mutational load	2014-04-01	7.172	7.387	1.45
+validation	HI antigenic novelty + mutational load	2014-10-01	6.855	8.628	1.404
+validation	HI antigenic novelty + mutational load + LBI	2003-10-01	6.942	8.188	3.784
+validation	HI antigenic novelty + mutational load + LBI	2004-04-01	4.974	6.71	3.036
+validation	HI antigenic novelty + mutational load + LBI	2004-10-01	5.587	5.266	1.828
+validation	HI antigenic novelty + mutational load + LBI	2005-04-01	5.472	5.478	2.12
+validation	HI antigenic novelty + mutational load + LBI	2005-10-01	3.251	5.348	2.421
+validation	HI antigenic novelty + mutational load + LBI	2006-04-01	5.415	6.482	4.128
+validation	HI antigenic novelty + mutational load + LBI	2006-10-01	4.76	4.648	2.489
+validation	HI antigenic novelty + mutational load + LBI	2007-04-01	5.214	5.741	2.339
+validation	HI antigenic novelty + mutational load + LBI	2007-10-01	4.044	5.383	2.085
+validation	HI antigenic novelty + mutational load + LBI	2008-04-01	3.317	4.43	2.035
+validation	HI antigenic novelty + mutational load + LBI	2008-10-01	8.208	7.344	4.768
+validation	HI antigenic novelty + mutational load + LBI	2009-04-01	4.8	6.658	3.004
+validation	HI antigenic novelty + mutational load + LBI	2009-10-01	7.549	6.675	3.621
+validation	HI antigenic novelty + mutational load + LBI	2010-04-01	6.016	6.656	2.405
+validation	HI antigenic novelty + mutational load + LBI	2010-10-01	6.441	6.376	3.334
+validation	HI antigenic novelty + mutational load + LBI	2011-04-01	9.057	9.328	2.858
+validation	HI antigenic novelty + mutational load + LBI	2011-10-01	5.247	5.127	1.76
+validation	HI antigenic novelty + mutational load + LBI	2012-04-01	6.947	6.941	2.158
+validation	HI antigenic novelty + mutational load + LBI	2012-10-01	7.562	8.388	1.356
+validation	HI antigenic novelty + mutational load + LBI	2013-04-01	4.481	4.76	2.412
+validation	HI antigenic novelty + mutational load + LBI	2013-10-01	5.041	5.243	3.057
+validation	HI antigenic novelty + mutational load + LBI	2014-04-01	7.043	7.387	1.45
+validation	HI antigenic novelty + mutational load + LBI	2014-10-01	6.925	8.628	1.404
+test	epitope ancestor	2015-04-01	5.239	5.429	1.949
+test	epitope ancestor	2015-10-01	6.473	6.293	2.34
+test	epitope ancestor	2016-04-01	5.683	5.816	2.142
+test	epitope ancestor	2016-10-01	7.003	6.841	2.462
+test	epitope ancestor	2017-04-01	6.503	6.215	1.431
+test	epitope ancestor	2017-10-01	5.051	5.033	1.899
+test	epitope ancestor	2018-04-01	9.028	9.123	2.533
+test	epitope ancestor	2018-10-01	9.565	9.819	3.496
+test	Koel epitope antigenic novelty	2015-04-01	4.71	5.429	1.949
+test	Koel epitope antigenic novelty	2015-10-01	6.135	6.293	2.34
+test	Koel epitope antigenic novelty	2016-04-01	5.991	5.816	2.142
+test	Koel epitope antigenic novelty	2016-10-01	7.727	6.841	2.462
+test	Koel epitope antigenic novelty	2017-04-01	6.399	6.215	1.431
+test	Koel epitope antigenic novelty	2017-10-01	5.379	5.033	1.899
+test	Koel epitope antigenic novelty	2018-04-01	8.284	9.123	2.533
+test	Koel epitope antigenic novelty	2018-10-01	9.107	9.819	3.496
+test	Wolf epitope antigenic novelty	2015-04-01	6.46	5.429	1.949
+test	Wolf epitope antigenic novelty	2015-10-01	6.588	6.293	2.34
+test	Wolf epitope antigenic novelty	2016-04-01	5.896	5.816	2.142
+test	Wolf epitope antigenic novelty	2016-10-01	7.844	6.841	2.462
+test	Wolf epitope antigenic novelty	2017-04-01	6.459	6.215	1.431
+test	Wolf epitope antigenic novelty	2017-10-01	4.956	5.033	1.899
+test	Wolf epitope antigenic novelty	2018-04-01	8.191	9.123	2.533
+test	Wolf epitope antigenic novelty	2018-10-01	9.377	9.819	3.496
+test	epitope antigenic novelty	2015-04-01	4.64	5.429	1.949
+test	epitope antigenic novelty	2015-10-01	6.79	6.293	2.34
+test	epitope antigenic novelty	2016-04-01	5.189	5.816	2.142
+test	epitope antigenic novelty	2016-10-01	6.277	6.841	2.462
+test	epitope antigenic novelty	2017-04-01	6.898	6.215	1.431
+test	epitope antigenic novelty	2017-10-01	6.28	5.033	1.899
+test	epitope antigenic novelty	2018-04-01	8.153	9.123	2.533
+test	epitope antigenic novelty	2018-10-01	9.339	9.819	3.496
+test	oracle antigenic novelty	2015-04-01	4.147	5.429	1.949
+test	oracle antigenic novelty	2015-10-01	6.412	6.293	2.34
+test	oracle antigenic novelty	2016-04-01	5.441	5.816	2.142
+test	oracle antigenic novelty	2016-10-01	10.26	6.841	2.462
+test	oracle antigenic novelty	2017-04-01	7.965	6.215	1.431
+test	oracle antigenic novelty	2017-10-01	9.401	5.033	1.899
+test	oracle antigenic novelty	2018-04-01	9.944	9.123	2.533
+test	oracle antigenic novelty	2018-10-01	10.923	9.819	3.496
+test	HI antigenic novelty	2015-04-01	4.628	5.429	1.949
+test	HI antigenic novelty	2015-10-01	6.149	6.293	2.34
+test	HI antigenic novelty	2016-04-01	5.496	5.816	2.142
+test	HI antigenic novelty	2016-10-01	6.494	6.841	2.462
+test	HI antigenic novelty	2017-04-01	6.737	6.215	1.431
+test	HI antigenic novelty	2017-10-01	4.707	5.033	1.899
+test	HI antigenic novelty	2018-04-01	6.253	9.123	2.533
+test	HI antigenic novelty	2018-10-01	9.202	9.819	3.496
+test	mutational load	2015-04-01	4.856	5.429	1.949
+test	mutational load	2015-10-01	6.082	6.293	2.34
+test	mutational load	2016-04-01	6.951	5.816	2.142
+test	mutational load	2016-10-01	6.089	6.841	2.462
+test	mutational load	2017-04-01	6.066	6.215	1.431
+test	mutational load	2017-10-01	5.129	5.033	1.899
+test	mutational load	2018-04-01	8.446	9.123	2.533
+test	mutational load	2018-10-01	8.608	9.819	3.496
+test	DMS mutational effects	2015-04-01	7.437	5.429	1.949
+test	DMS mutational effects	2015-10-01	5.923	6.293	2.34
+test	DMS mutational effects	2016-04-01	7.261	5.816	2.142
+test	DMS mutational effects	2016-10-01	6.535	6.841	2.462
+test	DMS mutational effects	2017-04-01	6.046	6.215	1.431
+test	DMS mutational effects	2017-10-01	4.494	5.033	1.899
+test	DMS mutational effects	2018-04-01	11.817	9.123	2.533
+test	DMS mutational effects	2018-10-01	12.889	9.819	3.496
+test	DMS mutational load	2015-04-01	5.421	5.429	1.949
+test	DMS mutational load	2015-10-01	6.303	6.293	2.34
+test	DMS mutational load	2016-04-01	5.79	5.816	2.142
+test	DMS mutational load	2016-10-01	6.852	6.841	2.462
+test	DMS mutational load	2017-04-01	6.227	6.215	1.431
+test	DMS mutational load	2017-10-01	5.03	5.033	1.899
+test	DMS mutational load	2018-04-01	9.095	9.123	2.533
+test	DMS mutational load	2018-10-01	9.809	9.819	3.496
+test	DMS entropy	2015-04-01	5.405	5.429	1.949
+test	DMS entropy	2015-10-01	6.28	6.293	2.34
+test	DMS entropy	2016-04-01	5.818	5.816	2.142
+test	DMS entropy	2016-10-01	6.821	6.841	2.462
+test	DMS entropy	2017-04-01	6.204	6.215	1.431
+test	DMS entropy	2017-10-01	5.042	5.033	1.899
+test	DMS entropy	2018-04-01	9.103	9.123	2.533
+test	DMS entropy	2018-10-01	9.787	9.819	3.496
+test	LBI	2015-04-01	4.778	5.429	1.949
+test	LBI	2015-10-01	7.527	6.293	2.34
+test	LBI	2016-04-01	5.302	5.816	2.142
+test	LBI	2016-10-01	7.057	6.841	2.462
+test	LBI	2017-04-01	8.314	6.215	1.431
+test	LBI	2017-10-01	5.746	5.033	1.899
+test	LBI	2018-04-01	11.983	9.123	2.533
+test	LBI	2018-10-01	16.489	9.819	3.496
+test	delta frequency	2015-04-01	4.471	5.429	1.949
+test	delta frequency	2015-10-01	6.254	6.293	2.34
+test	delta frequency	2016-04-01	5.783	5.816	2.142
+test	delta frequency	2016-10-01	7.45	6.841	2.462
+test	delta frequency	2017-04-01	6.952	6.215	1.431
+test	delta frequency	2017-10-01	4.219	5.033	1.899
+test	delta frequency	2018-04-01	11.097	9.123	2.533
+test	delta frequency	2018-10-01	8.999	9.819	3.496
+test	epitope ancestor + mutational load	2015-04-01	4.263	5.429	1.949
+test	epitope ancestor + mutational load	2015-10-01	6.507	6.293	2.34
+test	epitope ancestor + mutational load	2016-04-01	6.253	5.816	2.142
+test	epitope ancestor + mutational load	2016-10-01	6.273	6.841	2.462
+test	epitope ancestor + mutational load	2017-04-01	6.707	6.215	1.431
+test	epitope ancestor + mutational load	2017-10-01	5.074	5.033	1.899
+test	epitope ancestor + mutational load	2018-04-01	8.618	9.123	2.533
+test	epitope ancestor + mutational load	2018-10-01	8.571	9.819	3.496
+test	epitope antigenic novelty + mutational load	2015-04-01	4.332	5.429	1.949
+test	epitope antigenic novelty + mutational load	2015-10-01	6.637	6.293	2.34
+test	epitope antigenic novelty + mutational load	2016-04-01	5.856	5.816	2.142
+test	epitope antigenic novelty + mutational load	2016-10-01	5.81	6.841	2.462
+test	epitope antigenic novelty + mutational load	2017-04-01	6.715	6.215	1.431
+test	epitope antigenic novelty + mutational load	2017-10-01	5.951	5.033	1.899
+test	epitope antigenic novelty + mutational load	2018-04-01	7.72	9.123	2.533
+test	epitope antigenic novelty + mutational load	2018-10-01	8.657	9.819	3.496
+test	mutational load + LBI	2015-04-01	4.663	5.429	1.949
+test	mutational load + LBI	2015-10-01	7.229	6.293	2.34
+test	mutational load + LBI	2016-04-01	5.331	5.816	2.142
+test	mutational load + LBI	2016-10-01	6.38	6.841	2.462
+test	mutational load + LBI	2017-04-01	8.249	6.215	1.431
+test	mutational load + LBI	2017-10-01	4.207	5.033	1.899
+test	mutational load + LBI	2018-04-01	10.996	9.123	2.533
+test	mutational load + LBI	2018-10-01	14.569	9.819	3.496
+test	HI antigenic novelty + mutational load	2015-04-01	4.038	5.429	1.949
+test	HI antigenic novelty + mutational load	2015-10-01	5.931	6.293	2.34
+test	HI antigenic novelty + mutational load	2016-04-01	6.548	5.816	2.142
+test	HI antigenic novelty + mutational load	2016-10-01	5.856	6.841	2.462
+test	HI antigenic novelty + mutational load	2017-04-01	6.29	6.215	1.431
+test	HI antigenic novelty + mutational load	2017-10-01	4.505	5.033	1.899
+test	HI antigenic novelty + mutational load	2018-04-01	5.648	9.123	2.533
+test	HI antigenic novelty + mutational load	2018-10-01	8.913	9.819	3.496
+test	HI antigenic novelty + mutational load + LBI	2015-04-01	4.081	5.429	1.949
+test	HI antigenic novelty + mutational load + LBI	2015-10-01	5.933	6.293	2.34
+test	HI antigenic novelty + mutational load + LBI	2016-04-01	6.607	5.816	2.142
+test	HI antigenic novelty + mutational load + LBI	2016-10-01	5.9	6.841	2.462
+test	HI antigenic novelty + mutational load + LBI	2017-04-01	6.299	6.215	1.431
+test	HI antigenic novelty + mutational load + LBI	2017-10-01	4.552	5.033	1.899
+test	HI antigenic novelty + mutational load + LBI	2018-04-01	5.623	9.123	2.533
+test	HI antigenic novelty + mutational load + LBI	2018-10-01	8.93	9.819	3.496
