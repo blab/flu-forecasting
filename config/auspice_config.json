@@ -151,6 +151,12 @@
       "type": "continuous",
       "key": "delta_frequency"
     },
+    "distance_from_consensus": {
+      "menuItem": "distance from consensus",
+      "legendTitle": "distance from consensus",
+      "type": "continuous",
+      "key": "distance_from_consensus"
+    },
     "projected_frequency": {
       "menuItem": "projected frequency",
       "legendTitle": "projected frequency",
