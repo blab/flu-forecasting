@@ -4,6 +4,8 @@
 
 <sup>1</sup>Vaccine and Infectious Disease Division, Fred Hutchinson Cancer Research Center, Seattle, WA, USA, <sup>2</sup>Molecular and Cell Biology, University of Washington, Seattle, WA, USA, <sup>3</sup>Virology Surveillance and Diagnosis Branch, Influenza Division, National Center for Immunization and Respiratory Diseases (NCIRD), Centers for Disease Control and Prevention (CDC), 1600 Clifton Road, Atlanta, GA 30333, USA, <sup>4</sup>WHO Collaborating Centre for Reference and Research on Influenza, Crick Worldwide Influenza Centre, The Francis Crick Institute, London, UK., <sup>5</sup>Influenza Virus Research Center, National Institute of Infectious Diseases, Tokyo, Japan, <sup>6</sup>The WHO Collaborating Centre for Reference and Research on Influenza, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia; Department of Microbiology and Immunology, The University of Melbourne, The Peter Doherty Institute for Infection and Immunity, Melbourne, VIC, Australia., <sup>7</sup>Biozentrum, University of Basel, Basel, Switzerland, <sup>8</sup>Swiss Institute of Bioinformatics, Basel, Switzerland
 
+DOI: https://doi.org/10.7554/eLife.60067
+
 ## Contents
 
   1. [Abstract](#abstract)
