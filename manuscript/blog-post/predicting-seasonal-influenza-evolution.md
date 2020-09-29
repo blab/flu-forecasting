@@ -66,33 +66,55 @@ Flu populations also experience multiple bottlenecks in space and time including
 These bottlenecks likely reduce flu's effective population size and reduce the predictability of beneficial mutations sweeping globally.
 Finally, antigenic escape assays with polyclonal human sera suggest that successful viruses must accumulate multiple beneficial mutations of large effect to successfully evade the diversity of global host immunity [@lee_mapping_2019].
 
-## Does flu evolve like we think it does? (Barrat-Charlaix et al.)
+## Does flu evolve like we think it does?
 
-- This work is based on frequency trajectories of *individual mutations*, which are not independent. Only mutations that were absent in the past are considered (*i.e.* "new" mutations, rising in frequency).
-- For A/H3N2, frequency trajectories do not show much "inertia" *on average* (weak inertia for A/H1N1pdm). It is not possible to predict the short term dynamics of the frequency of a mutation based on the sole fact that it was rising in the recent past. Sweeps are not "typical" trajectories.
-- For A/H3N2, the probability of fixation of a mutation rising in frequency is equal to the frequency at which it is observed (slightly larger for A/H1N1). This is similar to what would be found for neutral evolution. A rise in frequency does not give information w.r. future fixation.
-- LBI and knowledge of epitope sites does not give information about fixation.
-- Other features, such as multiple appearance of a mutation in the tree, geographical spread (etc...), give limited information about fixation.
-- These are not trivial manifestations of genetic linkage and clonal interference, as simulations show.
-- In terms of predicting future population with a single sequence, the consensus sequence performs slightly but consistently better than the LBI. It is also the theoretical best predictor for neutral evolution. In the long run, it also performs better than multiple local consensi (consensuses? hmm...) based on local LBI maximas.
-- The top LBI strain is typically close to the consensus sequence, often identical.
+In [Barrat-Charlaix et al.](https://www.biorxiv.org/content/10.1101/2020.07.31.231100v1), we investigated the predictability of influenza mutation frequencies.
+We explicitly avoided modeling flu evolution and focused on an empirical account of long-term outcomes for mutation frequency trajectories.
+We selected all available HA and NA sequences for flu lineages A/H3N2 and A/H1N1pdm, performed multiple sequence alignments per lineage and gene, binned sequences by month, and calculated the frequencies of mutations per site and month.
+From these data, we constructed frequency trajectories of individual mutations that were rising in frequency from zero.
+We expected these rising mutations to represent beneficial, large-effect mutations that would sweep through the global population as predicted by the traveling wave models described above.
+By considering individual mutations, we effectively averaged the outcomes of these mutations across all genetic backgrounds.
+We evaluated the outcomes of trajectories for mutations that had risen from 0% to approximately 30% global frequency and classified trajectories for mutations that fixed, died out, or persisted as polymorphisms.
 
-- Note: simulations represent clonal interference with mutations of large effect size. These simulations do not represent the case where multiple mutations of similar smaller effect combine to improve viral fitness.
+<!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/vega@5.15.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.15.0"></script>
+<!-- Import vega-embed -->
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.11.1"></script>
 
-  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/vega@5.15.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.15.0"></script>
-  <!-- Import vega-embed -->
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.11.1"></script>
-
-<div id="vis"></div>
+<div id="mutation-trajectories"><img src="images/mutation-trajectories-static.png" style="width: 100%" /></div>
 
 <script type="text/javascript">
-  var spec = "https://gist.githubusercontent.com/huddlej/b9269ca919bc105351e928258e791a8a/raw/03d4d9c53d81e7c6976188fe7689beb0abf9ea4e/frequency-trajectories-of-h3n2-mutations-interactive.json";
-  vegaEmbed('#vis', spec).then(function(result) {
-    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-  }).catch(console.error);
+var spec = "https://gist.githubusercontent.com/huddlej/b9269ca919bc105351e928258e791a8a/raw/03d4d9c53d81e7c6976188fe7689beb0abf9ea4e/frequency-trajectories-of-h3n2-mutations-interactive.json";
+vegaEmbed('#mutation-trajectories', spec).then(function(result) {
+// Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+}).catch(console.error);
 </script>
+
+As shown above, the average trajectory of individual rising A/H3N2 mutations failed to rise toward fixation.
+Instead, the future frequency of these mutations was no higher on average than their initial frequency.
+We repeated this analysis for mutations with initial frequencies of 50% and 75% and for mutations in A/H1N1pdm and found nearly the same results.
+From these results, we concluded that it is not possible to predict the short-term dynamics of individual mutations based solely on their recent success.
+
+Next, we calculated the fixation probability of each mutation trajectory based on its initial frequency.
+Surprisingly, we found that the fixation probabilities of A/H3N2 mutations were equal to their initial frequencies.
+This pattern corresponds to what we expect for mutations evolving neutrally.
+Generally, the pattern remained the same even when we binned mutations by high LBI, presence at epitope sites, multiple appearances of a mutation in a tree, geographic spread, or other potential metrics associated with high fitness.
+We concluded that the recent success of rising mutations provides no information about their eventual fixation.
+
+We tested whether we could explain these results by genetic linkage or clonal interference by simulating flu-like populations under these evolutionary constraints.
+Mutation trajectories from simulated populations were more predictable than those from natural populations.
+The closest our simulations came to matching the uncertainty of natural populations was when we dramatically increased the rate at which the fitness landscape of simulated populations changed.
+These results suggested that we cannot explain the unpredictable nature of flu mutation trajectories by linkage or clonal interference alone.
+
+Since flu mutations appeared to evolve neutrally in the long-term and LBI did not provide information about eventual fixation of mutations, we wondered whether we could identify the most representative sequence of future populations with a different metric.
+The consensus sequence is provably the best predictor for a neutrally evolving population.
+We found that the consensus sequence is often closer to the future population than the virus sequence with the highest LBI.
+Indeed, we found that the top LBI virus was frequently similar to the consensus sequence and often identical.
+
+Taken together, our results from this empirical analysis reveal that beneficial mutations of large effect do not predictably sweep through flu populations and fix.
+Instead, the average outcome for any individual mutation evokes neutral evolution, despite the strong positive selection expected to act on these mutations.
+Although simulations rule out clonal interference between large effect mutations as an explanation for these results, we cannot discount the role of multiple mutations of similar, smaller effects in the overall fitness of flu viruses.
 
 ## Can we forecast flu evolution? (Huddleston et al.)
 
