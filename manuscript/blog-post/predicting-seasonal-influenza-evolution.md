@@ -138,6 +138,7 @@ We found that the most robust forecasts depended on a combined model of experime
 Importantly, this model explicitly accounts for the benefits of antigenic drift and the costs of deleterious mutations.
 This model also slightly outperformed the naive model in its estimated of flu clade frequencies.
 However, we found that the naive model often selected individual strains that were as close to the future population as the best biologically-informed model.
+The naive model's estimated closest strain to the future is effectively the weighted average of the current population and conceptually similar to the consensus sequence of the population.
 From these results, we concluded that the predictive gains of fitness models depend on the prediction target.
 
 Surprisingly, the sequence-based metrics of epitope cross-immunity and delta frequency and the mutational preferences from DMS experiments had little predictive power.
@@ -148,84 +149,42 @@ Similarly, the mutational preferences from DMS experiments originate from labora
 The metric based on these preferences failed to predict the future after 2009, reflecting the strong dependence of these preferences on their original genetic background.
 Both delta frequency and LBI suffered from overfitting to the training data, in a more general form of historical dependence.
 
-## How have these results changed how we think about flu evolution?
-
 ![Rising trajectories for flu-like populations simulated in Huddleston et al. 2020. Mutation trajectories from simulated populations resemble those of natural H1N1pdm mutations in Barrat-Charlaix et al.\label{fig:simulated-mutation-trajectories}](images/rising_trajectories_f03.png "Rising trajectories for flu-like populations simulated in Huddleston et al. 2020.")
 
 ![Distance to the future for LBI, HI antigenic novelty, and distance from consensus metrics.](images/distance-to-consensus-vs-lbi-and-hi.png)
 
- - From Barrat-Charlaix: "previous methods to predict influenza evolution work primarily because they pick strains that represent the future well, not because they predict future dynamics"
- - The genetic background of beneficial mutations is an important part of future success
-   - The average behavior of rising mutations does not behave as expected
-   - Fitness models based on phenotypes of antigenic drift and mutational load produce the most robust forecasts and outperform naive (neutral) models
-   - Fitness models based on epitope mutations and DMS preferences from specific historical contexts fail to forecast the future
- - A neutral (naive or consensus) model selects the closest individual virus to the future population nearly as well or better than other biologically-informed models. Even if fitness models can more accurately estimate the composition of future populations than a neutral model, our dependence on a single virus for the vaccine strain prevents us from benefitting from this model-based improvement.
-
 - Distance from consensus sequence is nearly as good at predicting distance to future natural populations as antigenic phenotypes and mutational load (include figure here)
 
- - Predictability of specific targets
-   - Fixation probability of individual mutations: not predictable
-   - Frequency dynamics of mutations or clades one year or more in the future: not predictable for mutations, weakly predictable for clades
-   - Haplotype composition of future populations one year in future: weakly predictable with antigenic phenotypes and mutational load
-   - Individual closest strain to the future: predictable by naive model or consensus sequence
- - Effectiveness of different fitness metrics (table)
-   - initial frequency of rising mutations (or recent change in frequency)
-   - epitope mutations
-   - non-epitope mutations (i.e., mutational load)
-   - local branching index
-   - consensus sequence (or naive model or distance from consensus)
-   - mutational preferences from deep mutational scanning (DMS) assays
-   - antigenic drift from serological assays (hemagglutination inhibition assays)
+## How have these results changed how we think about flu evolution?
 
-# Other bits
+In general, we found that the evolution of flu populations remains difficult to predict.
+The frequency dynamics and fixation probabilities of individual beneficial mutation resemble neutrally evolving alleles.
+Correspondingly, the most representative sequence of future flu populations is the consensus sequence of the current population and not necessarily the sequence with the highest local branching index.
+Simulations of flu-like populations show that we cannot explain these patterns by simple epistasis and clonal interference alone.
 
-## Potential figures
+Successful flu predictions depend on the choice of prediction targets and fitness metrics.
+We cannot estimate a mutation's fixation probability any better than its current frequency.
+We can weakly predict the frequency dynamics of flu clades when we combine experimental and genetic data in models that account for antigenic drift and mutational load.
+Better still, we can use these same models to predict the sequence composition of future flu populations.
+However, these complex fitness models barely outperform a naive weighted average of the current population, when predicting the current virus that is most representative of the future population.
 
- - Examples/cartoons of Malthusian growth, clonal interference, and traveling wave fitness landscapes
- - Sketch/cartoon summarizing different forecasting targets
- - Results from Barrat-Charlaix et al.
-     - Frequency trajectories for mutations starting at ~30%
-     - Probability of fixation by initial frequency and different metrics
-     - Distance to the future by predictor and delta t
- - Forecasting results from Huddleston et al. (one or more of the following)
-     - Model performance for best model (EMDs)
-     - Clade frequency performance for best model
-     - Comparison of best strains for vaccine selection
+There is a lot for us to learn from these results.
+Future prediction efforts should focus on estimating the composition of future populations instead of the more complex target of frequency dynamics.
+Fitness models should account for the genetic background of beneficial mutations and favor fitness metrics that are the least susceptible to model overfitting and historical contingency.
+Most importantly, there is a lot of room to improve.
+The benefits of considering the genetic background of individual mutations in HA suggest that considering the context of all genes may yield gains, too.
+Antigenic drift measurements from human populations instead of ferrets and modeling of global migration patterns could also improve predictions.
 
-## Models behind previous forecasting efforts
+ - A neutral (naive or consensus) model selects the closest individual virus to the future population nearly as well or better than other biologically-informed models. Even if fitness models can more accurately estimate the composition of future populations than a neutral model, our dependence on a single virus for the vaccine strain prevents us from benefitting from this model-based improvement.
 
- - Malthusian growth
- - clonal interference
- - traveling wave representation of fitness distributions
- - examples of previous forecasting efforts
-     - Łuksza and Lässig (clade frequencies)
-     - Steinbrück and McHardy (mutation frequencies)
-     - Neher et al. (phylogenetic growth)
-     - Reich et al. 2019, McGowan et al. 2019, etc. (ILI incidence and timing)
- - what we try to predict when we make forecasts
-     - the single most representative strain of the future population (e.g., the future population's centroid)
-     - the composition of haplotypes and their frequencies in the future population
-     - whether an individual mutation or clade will increase or decrease in frequency (a boolean yes/no measure)
-     - the frequency of individual mutations
-     - the frequency of individual clades (>=15% initial frequency allowing for nested clades)
-     - the probability that a mutation or clade will fix in the global population after some delta time
-
-## Key differences
-
-- Huddleston et. al. is based on fitness models, whereas Barrat-Charlaix et. al. considers "raw" data only.
-- H predicts (one year ahead)
-    - the population, with the EMD as a measure
-    - clade frequencies
-    - the single closest strain to the future
-- H uses phenotypic measures of antigenic drift in addition to sequence-based measures
-- BC tries to see if frequency trajectories of mutations show signs of selection that would make them predictable. This is addressed for short-term dynamics (do trajectories have inertia), and long-term destiny of mutations (fixation).
-- H considers frequencies of haplotypes, whereas BC considers individual mutations. This is important, as clades are disjoint but mutations are not. A strain belongs to one clade only, but could carry different mutations.
-
-## What we learned
-
-- Fixation of a mutation is something hard to predict (beyond current frequency)
-- But with models, one can to some extent predict what the pop. will look like a year ahead.
-- Short term dynamics of the frequency of a mutation is also hard to predict. Frequency trajectories of mutations do not show much inertia.
-- However, models make it possible to predict the evolution of the frequencies of clades, to some extent.
+Metric | Single strain | Population composition | Frequency dynamics | Fixation
+------ | ------------- | ---------------------- | ------------------ | --------
+initial frequency | none | N/A | none | none
+antigenic drift<br />(epitope mutations) | N/A | none | N/A | N/A
+antigenic drift<br />(serological data) | good | good | weak (with mutational load) | N/A
+mutational load<br />(non-epitope mutations) | N/A | weak | N/A | N/A
+local branching index | good | weak | none | none
+consensus sequence / naive model | good | weak | none | N/A
+DMS mutational preferences | N/A | none | N/A | N/A
 
 ## References
