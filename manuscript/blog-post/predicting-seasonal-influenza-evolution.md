@@ -36,14 +36,14 @@ HA and NA experience fitness trade-offs, as they acquire beneficial mutations as
 Viruses carrying beneficial mutations should grow exponentially relative to viruses lacking those mutations ([@fig:exponential-growth-with-clonal-interference]A).
 If beneficial mutations have large effects on fitness, viruses with different beneficial mutations will compete with each other for hosts in a process known as clonal interference ([@fig:exponential-growth-with-clonal-interference]B).
 In this case, the fitness of the genetic background where the beneficial mutations occur is less important for the success of the virus than the fitness effect of the beneficial mutations themselves ([@fig:fitness-landscapes]).
-If beneficial mutations have similar smaller effects on fitness, a virus's overall fitness depends on the effect of the beneficial mutations and the relative fitness of its genetic background.
+If beneficial mutations have similar, smaller effects on fitness, a virus's overall fitness depends on the effect of the beneficial mutations and the relative fitness of its genetic background.
 The ultimate success and fixation of these beneficial mutations depends, in part, on the number of deleterious mutations that already exist in the same genome ([@fig:fixation-probability]).
 
-![Individuals in asexually reproducing populations are expected to grow exponentially relative to their fitness. Normalization of frequencies to sum to 100% represents clonal interference and enforces relative fitness effects.](images/exponential-growth-with-clonal-interference.png){#fig:exponential-growth-with-clonal-interference}
+![Individuals in asexually reproducing populations tend to grow exponentially relative to their fitness. Normalization of frequencies to sum to 100% represents competition between viruses for hosts through clonal interference and reveals how exponentially growing viruses can decrease in frequency when their relative fitness is low.](images/exponential-growth-with-clonal-interference.png){#fig:exponential-growth-with-clonal-interference}
 
 ![Fitness landscapes by mutation effect size. Mutations with similar, smaller effects produce a smooth Gaussian fitness distribution while mutations with large effect sizes produce a more discrete fitness distribution. From Figure 1A and B of @neher-draft-2013.](images/fitness-landscape-by-mutation-effect-size.png "Fitness landscapes by mutation effect size."){#fig:fitness-landscapes}
 
-![Fixation probability as a function of the genetic background. From Figure 2C of @neher-draft-2013.](images/fixation-probability-as-function-of-background.png "Fixation probability as a function of the genetic background."){#fig:fixation-probability}
+![Fixation probability as a function of the genetic background. When mutations have similar, smaller effects, the fitness of a beneficial mutation's genetic background (red) contributes to the mutation's fixation probability (green). Mutations that ultimately fix originate from distribution given by the product of the background fitness and the fixation probability (blue). From Figure 2C of @neher-draft-2013.](images/fixation-probability-as-function-of-background.png "Fixation probability as a function of the genetic background."){#fig:fixation-probability}
 
 ## What is predictable about flu evolution?
 
@@ -51,13 +51,9 @@ The expectations from population genetic theory described above and previous exp
 Mutations in HA and NA that alter host antibody binding sites and enable viruses to reinfect hosts should be under strong positive selection.
 We expect these strongly beneficial mutations to sweep through the global flu population at a rate that depends on the importance of their genetic background.
 To reduce the complexity of our analyses, we do not necessarily need to consider every possible amino acid mutation.
-For example, fewer than a quarter of HA's 566 amino acid sites are under positive selection [@bush-1999], undergone rapid sweeps [@shih-2007], or contributed to antigenic drift [@wolf-2006].
-Not all of these sites contribute equally to antigenic drift [@koel-2013].
-
-
+For example, fewer than a quarter of HA's 566 amino acid sites are under positive selection [@bush-1999], have undergone rapid sweeps [@shih-2007], or contributed to antigenic drift [@wolf-2006].
+Importantly, not all of these sites contribute equally to antigenic drift [@koel-2013].
 Additionally, the strong pressure for viruses to escape human immunity and the limited choices viruses have to escape likely constrain the space of antigenic phenotypes viruses can reach at any given time [@smith-2004; @bedford-2012].
-
-@koel-2013 experimentally confirmed that mutations at seven previously identified epitope sites could explain major antigenic drift events in recent history.
 
 Recently, researchers have built on this evidence to create formal predictive models of flu evolution.
 @neher-predicting-2014 used expectations from traveling wave models to define the "local branching index" (LBI) estimate of viral fitness.
@@ -80,12 +76,12 @@ Instead of predicting the most representative virus of the future population, @l
 Despite the success of these predictive models, other aspects of flu evolution complicate predictions.
 When multiple beneficial mutations with large effects emerge in a population, the clonal interference between viruses reduces the probability of fixation for all mutations involved.
 Flu populations also experience multiple bottlenecks in space and time including transmission between hosts, global circulation, and seasonality.
-These bottlenecks likely reduce flu's effective population size and reduce the predictability of beneficial mutations sweeping globally.
+These bottlenecks reduce flu's effective population size and reduce the predictability of beneficial mutations sweeping globally.
 Finally, antigenic escape assays with polyclonal human sera suggest that successful viruses must accumulate multiple beneficial mutations of large effect to successfully evade the diversity of global host immunity [@lee-mapping-2019].
 
 ## Does flu evolve like we think it does?
 
-In [Barrat-Charlaix et al.](https://www.biorxiv.org/content/10.1101/2020.07.31.231100v1), we investigated the predictability of influenza mutation frequencies.
+In [Barrat-Charlaix et al.](https://www.biorxiv.org/content/10.1101/2020.07.31.231100v1), we investigated the predictability of flu mutation frequencies.
 We explicitly avoided modeling flu evolution and focused on an empirical account of long-term outcomes for mutation frequency trajectories.
 We selected all available HA and NA sequences for flu lineages A/H3N2 and A/H1N1pdm, performed multiple sequence alignments per lineage and gene, binned sequences by month, and calculated the frequencies of mutations per site and month.
 From these data, we constructed frequency trajectories of individual mutations that were rising in frequency from zero.
