@@ -9,6 +9,8 @@ bibliography: references.bib
 
 titleDelim: "."
 figPrefix: Figure
+ccsLabelSep: ")&nbsp;"
+subfigGrid: false
 ---
 
 This post summarizes and synthesizes the results of two recent efforts to predict influenza evolution, @huddleston-2020 and @barrat-charlaix-2020.
@@ -63,7 +65,13 @@ LBI assumes that most extant viruses descend from a highly fit ancestor in the r
 @neher-predicting-2014 showed that LBI could successfully identify ancestral nodes that were highly representative of the flu population one year in the future.
 Similarly, @neher-prediction-2016 mapped experimental measurements of antigenic drift to phylogenies to identify the most representative virus in the future flu population.
 
-![Seeding of future populations from mutations at the high fitness edge. This theoretical model provides the basis for the local branching index (LBI) heuristic for viral fitness. From Figure 5D of @neher-draft-2013.](images/neher-2013-figure-5d.png){#fig:lbi}
+<div id="fig:lbi">
+![Seeding of future populations from mutations at the high fitness edge. This theoretical model provides the basis for the local branching index (LBI) heuristic for viral fitness. From Figure 5D of @neher-draft-2013.](images/neher-2013-figure-5d.png){#fig:lbi-theory width=45%}
+
+![LBI values for a recent seasonal influenza A/H3N2 phylogeny from Nextstrain](images/h3n2-lbi-tree.png){#fig:lbi-tree width=50%}
+
+Local branching index (LBI) estimates the fitness of viruses in a phylogeny
+</div>
 
 @luksza-predictive-2014 developed a mechanistic model to forecast flu evolution based on population genetic theory and previous experimental work.
 This model assumed that flu viruses grow exponentially as a function of their fitness, compete with each other for hosts through clonal interference, and balance positive effects of mutations at sites previously associated with antigenic drift and deleterious effects of all other mutations.
@@ -158,7 +166,7 @@ Similarly, the mutational preferences from DMS experiments originate from labora
 The metric based on these preferences failed to predict the future after 2009, reflecting the strong dependence of these preferences on their original genetic background.
 Both delta frequency and LBI suffered from overfitting to the training data, in a more general form of historical dependence.
 
-![Rising trajectories for flu-like populations simulated in Huddleston et al. 2020. Mutation trajectories from simulated populations resemble those of natural H1N1pdm mutations in Barrat-Charlaix et al.](images/rising_trajectories_f03.png){#fig:simulated-mutation-trajectories}
+![Rising trajectories for flu-like populations simulated in Huddleston et al. 2020. Mutation trajectories from simulated populations resemble those of natural H1N1pdm mutations in Barrat-Charlaix et al.](images/rising_trajectories_f03.png){#fig:simulated-mutation-trajectories width=60%}
 
 ![Distance to the future for LBI, HI antigenic novelty, and distance from consensus metrics.](images/distance-to-consensus-vs-lbi-and-hi.png){#fig:distance-to-consensus-model}
 
