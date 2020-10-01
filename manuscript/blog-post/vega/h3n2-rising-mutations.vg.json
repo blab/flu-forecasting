@@ -1,0 +1,755 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Frequency trajectories of H3N2 mutations",
+  "background": "white",
+  "padding": 5,
+  "width": 550,
+  "height": 350,
+  "title": {
+    "text": "Frequency trajectories of H3N2 mutations",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {
+      "name": "hover_store",
+      "values": [
+        {
+          "unit": "layer_2",
+          "fields": [
+            {
+              "type": "E",
+              "field": "mutation"
+            },
+            {
+              "type": "E",
+              "field": "status"
+            }
+          ],
+          "values": [
+            "HA19I",
+            "fixed"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "status_store"
+    },
+    {
+      "name": "segment_store"
+    },
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/blab/flu-forecasting/blog-post/manuscript/blog-post/data/trajectories_h3n2.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "time": "number"
+        },
+        "delimiter": ","
+      },
+      "transform": [
+        {
+          "type": "joinaggregate",
+          "as": [
+            "argmax_time"
+          ],
+          "ops": [
+            "argmax"
+          ],
+          "fields": [
+            "time"
+          ],
+          "groupby": [
+            "mutation"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.argmax_time['freq'] > 0.95, 'fixed', if(datum.argmax_time['freq'] < 0.05, 'lost', 'polymorphic'))",
+          "as": "status"
+        },
+        {
+          "type": "formula",
+          "expr": "slice(datum.mutation, 0, 2)",
+          "as": "segment"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"status_store\"))) || (vlSelectionTest(\"status_store\", datum))"
+        },
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"segment_store\"))) || (vlSelectionTest(\"segment_store\", datum))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "time"
+          ],
+          "ops": [
+            "mean"
+          ],
+          "fields": [
+            "freq"
+          ],
+          "as": [
+            "mean_freq"
+          ]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {
+          "events": "mousemove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
+      ]
+    },
+    {
+      "name": "segment_segment",
+      "value": null,
+      "bind": {
+        "name": "segment",
+        "input": "radio",
+        "options": [
+          null,
+          "HA",
+          "NA"
+        ]
+      }
+    },
+    {
+      "name": "status_status",
+      "value": null,
+      "bind": {
+        "name": "status",
+        "input": "radio",
+        "options": [
+          null,
+          "fixed",
+          "lost",
+          "polymorphic"
+        ]
+      }
+    },
+    {
+      "name": "hover",
+      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+    },
+    {
+      "name": "status",
+      "update": "vlSelectionResolve(\"status_store\", \"union\")"
+    },
+    {
+      "name": "segment",
+      "update": "vlSelectionResolve(\"segment_store\", \"union\")"
+    },
+    {
+      "name": "hover_tuple",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover"
+            }
+          ],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"mutation\"], (item().isVoronoi ? datum.datum : datum)[\"status\"]]} : null",
+          "force": true
+        },
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
+      ]
+    },
+    {
+      "name": "hover_tuple_fields",
+      "value": [
+        {
+          "type": "E",
+          "field": "mutation"
+        },
+        {
+          "type": "E",
+          "field": "status"
+        }
+      ]
+    },
+    {
+      "name": "hover_modify",
+      "on": [
+        {
+          "events": {
+            "signal": "hover_tuple"
+          },
+          "update": "modify(\"hover_store\", hover_tuple, true)"
+        }
+      ]
+    },
+    {
+      "name": "status_tuple",
+      "update": "status_status !== null ? {fields: status_tuple_fields, values: [status_status]} : null"
+    },
+    {
+      "name": "status_tuple_fields",
+      "value": [
+        {
+          "type": "E",
+          "field": "status"
+        }
+      ]
+    },
+    {
+      "name": "status_modify",
+      "on": [
+        {
+          "events": {
+            "signal": "status_tuple"
+          },
+          "update": "modify(\"status_store\", status_tuple, true)"
+        }
+      ]
+    },
+    {
+      "name": "segment_tuple",
+      "update": "segment_segment !== null ? {fields: segment_tuple_fields, values: [segment_segment]} : null"
+    },
+    {
+      "name": "segment_tuple_fields",
+      "value": [
+        {
+          "type": "E",
+          "field": "segment"
+        }
+      ]
+    },
+    {
+      "name": "segment_modify",
+      "on": [
+        {
+          "events": {
+            "signal": "segment_tuple"
+          },
+          "update": "modify(\"segment_store\", segment_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_0_main",
+          "data": "data_1",
+          "groupby": [
+            "mutation"
+          ]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "height": {
+            "field": {
+              "group": "height"
+            }
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_0_marks",
+          "type": "line",
+          "style": [
+            "line"
+          ],
+          "sort": {
+            "field": "datum[\"time\"]"
+          },
+          "interactive": false,
+          "from": {
+            "data": "faceted_path_layer_0_main"
+          },
+          "encode": {
+            "update": {
+              "strokeDash": {
+                "value": [
+                  3,
+                  3
+                ]
+              },
+              "stroke": {
+                "value": "black"
+              },
+              "opacity": {
+                "value": 0.7
+              },
+              "description": {
+                "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"]) + \"; Days: \" + (format(datum[\"time\"], \"\")) + \"; mean_freq: \" + (format(datum[\"mean_freq\"], \"\"))"
+              },
+              "x": {
+                "scale": "x",
+                "field": "time"
+              },
+              "y": {
+                "scale": "y",
+                "field": "mean_freq"
+              },
+              "strokeWidth": {
+                "value": 3
+              },
+              "defined": {
+                "signal": "isValid(datum[\"time\"]) && isFinite(+datum[\"time\"]) && isValid(datum[\"mean_freq\"]) && isFinite(+datum[\"mean_freq\"])"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_1_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_1_main",
+          "data": "data_0",
+          "groupby": [
+            "mutation",
+            "status"
+          ]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "height": {
+            "field": {
+              "group": "height"
+            }
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_1_marks",
+          "type": "line",
+          "style": [
+            "line"
+          ],
+          "sort": {
+            "field": "datum[\"time\"]"
+          },
+          "interactive": true,
+          "from": {
+            "data": "faceted_path_layer_1_main"
+          },
+          "encode": {
+            "update": {
+              "opacity": [
+                {
+                  "test": "(vlSelectionTest(\"hover_store\", datum))",
+                  "value": 1
+                },
+                {
+                  "value": 0.25
+                }
+              ],
+              "stroke": [
+                {
+                  "test": "(vlSelectionTest(\"hover_store\", datum))",
+                  "scale": "color",
+                  "field": "status"
+                },
+                {
+                  "value": "grey"
+                }
+              ],
+              "tooltip": {
+                "signal": "{\"mutation\": isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"], \"status\": isValid(datum[\"status\"]) ? datum[\"status\"] : \"\"+datum[\"status\"], \"freq\": format(datum[\"freq\"], \"\")}"
+              },
+              "description": {
+                "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"]) + \"; Days: \" + (format(datum[\"time\"], \"\")) + \"; Frequency: \" + (format(datum[\"freq\"], \"\")) + \"; status: \" + (isValid(datum[\"status\"]) ? datum[\"status\"] : \"\"+datum[\"status\"]) + \"; freq: \" + (format(datum[\"freq\"], \"\"))"
+              },
+              "x": {
+                "scale": "x",
+                "field": "time"
+              },
+              "y": {
+                "scale": "y",
+                "field": "freq"
+              },
+              "defined": {
+                "signal": "isValid(datum[\"time\"]) && isFinite(+datum[\"time\"]) && isValid(datum[\"freq\"]) && isFinite(+datum[\"freq\"])"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_2_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_2_main",
+          "data": "source_0",
+          "groupby": [
+            "mutation"
+          ]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "height": {
+            "field": {
+              "group": "height"
+            }
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_2_marks",
+          "type": "line",
+          "style": [
+            "line"
+          ],
+          "interactive": true,
+          "from": {
+            "data": "faceted_path_layer_2_main"
+          },
+          "encode": {
+            "update": {
+              "stroke": {
+                "value": "transparent"
+              },
+              "strokeWidth": {
+                "value": 8
+              },
+              "description": {
+                "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"])"
+              },
+              "x": {
+                "signal": "width",
+                "mult": 0.5
+              },
+              "y": {
+                "signal": "height",
+                "mult": 0.5
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "rule",
+      "style": [
+        "rule"
+      ],
+      "interactive": false,
+      "from": {
+        "data": "source_0"
+      },
+      "encode": {
+        "update": {
+          "strokeDash": {
+            "value": [
+              2,
+              2
+            ]
+          },
+          "stroke": {
+            "value": "red"
+          },
+          "description": {
+            "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"])"
+          },
+          "x": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "x2": {
+            "value": 0
+          },
+          "y": {
+            "scale": "y",
+            "value": 0.95
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_4_marks",
+      "type": "rule",
+      "style": [
+        "rule"
+      ],
+      "interactive": false,
+      "from": {
+        "data": "source_0"
+      },
+      "encode": {
+        "update": {
+          "strokeDash": {
+            "value": [
+              2,
+              2
+            ]
+          },
+          "stroke": {
+            "value": "blue"
+          },
+          "description": {
+            "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"])"
+          },
+          "x": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "x2": {
+            "value": 0
+          },
+          "y": {
+            "scale": "y",
+            "value": 0.05
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_5_marks",
+      "type": "rule",
+      "style": [
+        "rule"
+      ],
+      "interactive": false,
+      "from": {
+        "data": "source_0"
+      },
+      "encode": {
+        "update": {
+          "stroke": {
+            "value": "gray"
+          },
+          "description": {
+            "signal": "\"mutation: \" + (isValid(datum[\"mutation\"]) ? datum[\"mutation\"] : \"\"+datum[\"mutation\"])"
+          },
+          "x": {
+            "scale": "x",
+            "value": 0
+          },
+          "y": {
+            "value": 0
+          },
+          "y2": {
+            "field": {
+              "group": "height"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {
+            "data": "data_1",
+            "field": "time"
+          },
+          {
+            "data": "data_0",
+            "field": "time"
+          },
+          [
+            0
+          ]
+        ]
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {
+            "data": "data_1",
+            "field": "mean_freq"
+          },
+          {
+            "data": "data_0",
+            "field": "freq"
+          },
+          [
+            0.95
+          ],
+          [
+            0.05
+          ]
+        ]
+      },
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "data": "data_0",
+        "field": "status",
+        "sort": true
+      },
+      "range": [
+        "red",
+        "blue",
+        "black"
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Days",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Frequency",
+      "labelOverlap": true,
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "labelFontSize": 14,
+      "titleFontSize": 14,
+      "stroke": "color",
+      "symbolType": "stroke",
+      "title": "status",
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "value": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "axisX": {
+      "labelFontSize": 14,
+      "titleFontSize": 14
+    },
+    "axisY": {
+      "labelFontSize": 14,
+      "titleFontSize": 14
+    }
+  }
+}
