@@ -8,6 +8,7 @@ pandoc \
     --filter pandoc-crossref \
     --filter pandoc-citeproc \
     --bibliography=references.bib \
+    --template template.html \
     -s predicting-seasonal-influenza-evolution.md \
     -o predicting-seasonal-influenza-evolution.html
 ```
