@@ -50,16 +50,15 @@ The ultimate success and fixation of these beneficial mutations depends, in part
 The expectations from population genetic theory described above and previous experimental work suggest that aspects of flu's evolution might be predictable.
 Mutations in HA and NA that alter host antibody binding sites and enable viruses to reinfect hosts should be under strong positive selection.
 We expect these strongly beneficial mutations to sweep through the global flu population at a rate that depends on the importance of their genetic background.
-To reduce the complexity of our analyses, we do not necessarily need to consider every possible amino acid mutation.
+We also do not expect that every site in HA or NA will acquire beneficial mutations.
 For example, fewer than a quarter of HA's 566 amino acid sites are under positive selection [@bush-1999], have undergone rapid sweeps [@shih-2007], or contributed to antigenic drift [@wolf-2006].
 Importantly, not all of these sites contribute equally to antigenic drift [@koel-2013].
-Additionally, the strong pressure for viruses to escape human immunity and the limited choices viruses have to escape likely constrain the space of antigenic phenotypes viruses can reach at any given time [@smith-2004; @bedford-2012].
+Additionally, the complex and strong pressures of existing human immunity appear to constrain the space of antigenic phenotypes that viruses can explore at any given time [@smith-2004; @bedford-2012].
 
 Recently, researchers have built on this evidence to create formal predictive models of flu evolution.
 @neher-predicting-2014 used expectations from traveling wave models to define the "local branching index" (LBI) estimate of viral fitness.
 LBI assumes that most extant viruses descend from a highly fit ancestor in the recent past and uses patterns of rapid branching in phylogenies to identify putative fit ancestors ([@fig:lbi]).
 @neher-predicting-2014 showed that LBI could successfully identify ancestral nodes that were highly representative of the flu population one year in the future.
-Similarly, @neher-prediction-2016 mapped experimental measurements of antigenic drift to phylogenies to identify the most representative virus in the future flu population.
 
 <div id="fig:lbi">
 ![Seeding of future populations from mutations at the high fitness edge. This theoretical model provides the basis for the local branching index (LBI) heuristic for viral fitness. From Figure 5D of @neher-draft-2013.](images/neher-2013-figure-5d.png){#fig:lbi-theory width=45%}
