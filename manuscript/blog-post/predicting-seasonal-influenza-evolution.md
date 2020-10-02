@@ -13,13 +13,13 @@ ccsLabelSep: ")&nbsp;"
 subfigGrid: false
 ---
 
-This post summarizes and synthesizes the results of two recent efforts to predict influenza evolution, @huddleston-2020 and @barrat-charlaix-2020.
+In this post, we summarize and synthesize the results of our recent efforts to predict influenza evolution as described in <a href="https://doi.org/10.7554/eLife.60067">@huddleston-2020</a> and <a href="https://www.biorxiv.org/content/10.1101/2020.07.31.231100v1">@barrat-charlaix-2020</a>.
 
 ## Why do we try to predict seasonal influenza evolution?
 
 Seasonal influenza (or "flu") sickens or kills millions of people per year.
 Flu vaccines are one of the most effective preventative measures against infection.
-However, flu vaccines require almost a year to develop and can only contain a single representative virus per flu lineage (e.g., A/H3N2, A/H1N1pdm, etc.).
+However, flu vaccines require almost a year to develop and can only contain a single representative virus per flu lineage (A/H3N2, A/H1N1pdm, B/Victoria, and B/Yamagata).
 These limitations require researchers to predict which single current flu virus will be the most representative of the flu population one year in the future.
 The better these predictions are, the more likely the vaccine will prevent illness and death from infection.
 
@@ -47,7 +47,7 @@ The ultimate success and fixation of these beneficial mutations depends, in part
 
 ## What is predictable about flu evolution?
 
-The expectations from population genetic theory described above and previous experimental work suggest that aspect of flu's evolution might be predictable.
+The expectations from population genetic theory described above and previous experimental work suggest that aspects of flu's evolution might be predictable.
 Mutations in HA and NA that alter host antibody binding sites and enable viruses to reinfect hosts should be under strong positive selection.
 We expect these strongly beneficial mutations to sweep through the global flu population at a rate that depends on the importance of their genetic background.
 To reduce the complexity of our analyses, we do not necessarily need to consider every possible amino acid mutation.
