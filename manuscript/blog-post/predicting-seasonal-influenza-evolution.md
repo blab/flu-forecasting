@@ -248,14 +248,67 @@ We need measures of antigenic drift from human antisera to complement current me
 We may also improve forecast accuracy by properly accounting for flu's global migration patterns.
 Finally, we could make the forecasting problem itself easier by reducing the lag between vaccine composition decisions and distribution to the public.
 
-Metric | Single strain | Population composition | Frequency dynamics | Fixation
------- | ------------- | ---------------------- | ------------------ | --------
-initial frequency | none | N/A | none | none
-antigenic drift<br />(epitope mutations) | N/A | none | N/A | N/A
-antigenic drift<br />(serological data) | good | good | weak (with mutational load) | N/A
-mutational load<br />(non-epitope mutations) | N/A | weak | N/A | N/A
-local branching index | good | weak | none | none
-consensus sequence / naive model | good | weak | none | N/A
-DMS mutational preferences | N/A | none | N/A | N/A
+<table class="table">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Single strain</th>
+      <th>Population composition</th>
+      <th>Frequency dynamics</th>
+      <th>Fixation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>initial (or delta) frequency</td>
+      <td class="table-danger">none</td>
+      <td class="table-danger">none</td>
+      <td class="table-danger">none</td>
+      <td class="table-danger">none</td>
+    </tr>
+     <tr>
+      <td>antigenic drift<br />(epitope mutations)</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-danger">none</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-danger">none</td>
+    </tr>
+    <tr>
+      <td>antigenic drift<br />(serological data)</td>
+      <td class="table-success">good</td>
+      <td class="table-success">good</td>
+      <td class="table-warning">weak</td>
+      <td class="table-secondary">N/A</td>
+    </tr>
+     <tr>
+      <td>mutational load<br />(non-epitope&nbsp;mutations)</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-warning">weak</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-secondary">N/A</td>
+    </tr>
+      <tr>
+      <td>local branching index</td>
+      <td class="table-success">good</td>
+      <td class="table-success">good</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-danger">none</td>
+    </tr>
+      <tr>
+      <td>consensus sequence / naive model</td>
+      <td class="table-success">good</td>
+      <td class="table-warning">weak</td>
+      <td class="table-danger">none</td>
+      <td class="table-secondary">N/A</td>
+    </tr>
+    <tr>
+      <td>DMS mutational preferences</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-danger">none</td>
+      <td class="table-secondary">N/A</td>
+      <td class="table-secondary">N/A</td>
+    </tr>
+  </tbody>
+</table>
 
 ## References

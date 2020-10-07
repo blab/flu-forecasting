@@ -126,65 +126,145 @@
           <p>In general, we found that the evolution of flu populations remains difficult to predict. The frequency dynamics and fixation probabilities of individual beneficial mutations resemble neutrally evolving alleles. Correspondingly, the most representative sequence of future flu populations is the consensus sequence of the current population and not necessarily the sequence with the highest local branching index.</p>
           <p>Successful flu predictions depend on the choice of prediction targets and fitness metrics. We cannot estimate a mutation’s fixation probability any better than its current frequency. We can weakly predict the frequency dynamics of flu clades when we combine experimental and genetic data in models that account for antigenic drift and mutational load. Better still, we can use these same models to predict the sequence composition of future flu populations. However, these complex fitness models barely outperform a naive weighted average of the current population, when predicting the current virus that is most representative of the future population.</p>
           <p>There is much for us to learn from these results. Future prediction efforts should focus on estimating the composition of future populations instead of the more complex target of frequency dynamics. Fitness models should account for the genetic background of beneficial mutations and favor fitness metrics that are the least susceptible to model overfitting and historical contingency. Most importantly, there is a lot of room to improve. The benefits of considering the genetic background of individual mutations in HA suggest that considering the context of all genes should yield gains, too. We need measures of antigenic drift from human antisera to complement current measures based on ferret antisera. We may also improve forecast accuracy by properly accounting for flu’s global migration patterns. Finally, we could make the forecasting problem itself easier by reducing the lag between vaccine composition decisions and distribution to the public.</p>
-          <table>
+          <table class="table">
           <thead>
-          <tr class="header">
-          <th>Metric</th>
-          <th>Single strain</th>
-          <th>Population composition</th>
-          <th>Frequency dynamics</th>
-          <th>Fixation</th>
+          <tr>
+          <th>
+          Metric
+          </th>
+          <th>
+          Single strain
+          </th>
+          <th>
+          Population composition
+          </th>
+          <th>
+          Frequency dynamics
+          </th>
+          <th>
+          Fixation
+          </th>
           </tr>
           </thead>
           <tbody>
-          <tr class="odd">
-          <td>initial frequency</td>
-          <td>none</td>
-          <td>N/A</td>
-          <td>none</td>
-          <td>none</td>
+          <tr>
+          <td>
+          initial (or delta) frequency
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-danger">
+          none
+          </td>
           </tr>
-          <tr class="even">
-          <td>antigenic drift<br />(epitope mutations)</td>
-          <td>N/A</td>
-          <td>none</td>
-          <td>N/A</td>
-          <td>N/A</td>
+          <tr>
+          <td>
+          antigenic drift<br />(epitope mutations)
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-danger">
+          none
+          </td>
           </tr>
-          <tr class="odd">
-          <td>antigenic drift<br />(serological data)</td>
-          <td>good</td>
-          <td>good</td>
-          <td>weak (with mutational load)</td>
-          <td>N/A</td>
+          <tr>
+          <td>
+          antigenic drift<br />(serological data)
+          </td>
+          <td class="table-success">
+          good
+          </td>
+          <td class="table-success">
+          good
+          </td>
+          <td class="table-warning">
+          weak
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
           </tr>
-          <tr class="even">
-          <td>mutational load<br />(non-epitope mutations)</td>
-          <td>N/A</td>
-          <td>weak</td>
-          <td>N/A</td>
-          <td>N/A</td>
+          <tr>
+          <td>
+          mutational load<br />(non-epitope mutations)
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-warning">
+          weak
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
           </tr>
-          <tr class="odd">
-          <td>local branching index</td>
-          <td>good</td>
-          <td>weak</td>
-          <td>none</td>
-          <td>none</td>
+          <tr>
+          <td>
+          local branching index
+          </td>
+          <td class="table-success">
+          good
+          </td>
+          <td class="table-success">
+          good
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-danger">
+          none
+          </td>
           </tr>
-          <tr class="even">
-          <td>consensus sequence / naive model</td>
-          <td>good</td>
-          <td>weak</td>
-          <td>none</td>
-          <td>N/A</td>
+          <tr>
+          <td>
+          consensus sequence / naive model
+          </td>
+          <td class="table-success">
+          good
+          </td>
+          <td class="table-warning">
+          weak
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
           </tr>
-          <tr class="odd">
-          <td>DMS mutational preferences</td>
-          <td>N/A</td>
-          <td>none</td>
-          <td>N/A</td>
-          <td>N/A</td>
+          <tr>
+          <td>
+          DMS mutational preferences
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-danger">
+          none
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
+          <td class="table-secondary">
+          N/A
+          </td>
           </tr>
           </tbody>
           </table>
