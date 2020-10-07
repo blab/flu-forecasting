@@ -183,9 +183,9 @@ We were especially interested to understand how simulated populations from the t
 
 Simulated populations play an important role in our two studies.
 We generated these simulated data as a source of truth where we understand the population dynamics because we defined them.
-In @barrat-charlaix-2020, the simulated binary populations from [ffpopsim](https://github.com/neherlab/ffpopsim) evolved under strong epistasis and immune escape pressure.
+In @barrat-charlaix-2020, the simulated binary populations from [ffpopsim](https://github.com/neherlab/ffpopsim) [@zanini-2012] evolved under strong epistasis and immune escape pressure.
 These populations showed us that mutation trajectories could be predictable under these population genetic constraints.
-In @huddleston-2020, the simulated nucleotide populations from [SANTA-SIM](https://github.com/santa-dev/santa-sim) also evolved under strong epistasis, purifying selection, and an "exposure dependent" fitness function that mimics immune escape pressure.
+In @huddleston-2020, the simulated nucleotide populations from [SANTA-SIM](https://github.com/santa-dev/santa-sim) [@jariani-2019] also evolved under strong epistasis, purifying selection, and an "exposure dependent" fitness function that mimics immune escape pressure.
 We used these populations to confirm that our forecasting framework could accurately predict the composition of future populations.
 Interestingly, when we inspected the predictability of the mutation trajectories for these simulated populations, we found that they resembled the weak predictability of natural H1N1pdm trajectories ([@fig:huddleston-simulated-trajectories-vs-h1n1pdm]).
 Despite the weak predictability of mutation trajectories from these simulated populations, we were able to forecast the composition of their future populations.
