@@ -120,6 +120,7 @@
                     "ne_star",
                     "lbi",
                     "delta_frequency",
+                    "distance_from_consensus",
                     "ep_star-ne_star",
                     "ep_x-ne_star",
                     "lbi-ne_star"
@@ -167,6 +168,7 @@
                     "ne_star",
                     "lbi",
                     "delta_frequency",
+                    "distance_from_consensus",
                     "ep_star-ne_star",
                     "ep_x-ne_star",
                     "lbi-ne_star"
@@ -222,6 +224,7 @@
                     "dms_entropy",
                     "lbi",
                     "delta_frequency",
+                    "distance_from_consensus",
                     "ep_star-ne_star",
                     "ep_x-ne_star",
                     "ne_star-lbi",
@@ -279,6 +282,7 @@
                     "dms_entropy",
                     "lbi",
                     "delta_frequency",
+                    "distance_from_consensus",
                     "ep_star-ne_star",
                     "ep_x-ne_star",
                     "ne_star-lbi",

@@ -846,6 +846,22 @@ rule normalize_fitness:
         """
 
 
+rule distance_from_consensus:
+    input:
+        sequences = rules.convert_translations_to_json.output.translations,
+        frequencies = rules.convert_frequencies_to_table.output.table
+    output:
+        distances = BUILD_TIMEPOINT_PATH + "distance_from_consensus.json"
+    conda: "../envs/anaconda.python3.yaml"
+    shell:
+        """
+        python3 scripts/distance_from_consensus.py \
+            --sequences {input.sequences} \
+            --frequencies {input.frequencies} \
+            --output {output.distances}
+        """
+
+
 def _get_node_data_for_export(wildcards):
     """Return a list of node data files to include for a given build's wildcards.
     """
@@ -859,7 +875,8 @@ def _get_node_data_for_export(wildcards):
         rules.delta_frequency.output.delta_frequency,
         rules.distances.output.distances,
         rules.cross_immunities.output.cross_immunities,
-        rules.lbi.output.lbi
+        rules.lbi.output.lbi,
+        rules.distance_from_consensus.output.distances
     ]
 
     # Define node data that only make sense for natural populations
