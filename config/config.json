@@ -416,14 +416,14 @@
         "h3n2": {
             "ha": {
                 "simulated": {
-                    "distance_attributes": "ep_pairwise ep_pairwise_antigenic_escape_epitope ep_pairwise_antigenic_escape_mutdiffsel",
-                    "immunity_attributes": "ep_x ep_x_antigenic_escape ep_x_antigenic_escape_mutdiffsel",
-                    "decay_factors": "14.0 14.0"
+                    "distance_attributes": "ep_pairwise",
+                    "immunity_attributes": "ep_x",
+                    "decay_factors": "14.0"
                 },
                 "natural": {
                     "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise ep_pairwise_antigenic_escape_epitope ep_pairwise_antigenic_escape_mutdiffsel",
                     "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x ep_x_antigenic_escape ep_x_antigenic_escape_mutdiffsel",
-                    "decay_factors": "14.0 14.0 14.0 14.0 14.0"
+                    "decay_factors": "14.0 14.0 14.0 14.0 14.0 14.0"
                 }
             }
         }
