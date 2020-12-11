@@ -276,12 +276,19 @@ if "RETHINK_HOST" in os.environ and "RETHINK_AUTH_KEY" in os.environ:
                 --output {output.metadata}
             """
 
+    def _get_titers_for_strain_selection(wildcards):
+        titer_assay = _get_titer_assay_for_strain_selection(wildcards)
+
+        if titer_assay == "fra":
+            return rules.get_fra_titers_by_passage.output.titers
+        else:
+            return rules.get_titers_by_passage.output.titers
 
     rule select_strains:
         input:
             sequences = rules.filter.output.sequences,
             metadata = rules.filter_metadata.output.metadata,
-            titers = rules.get_titers_by_passage.output.titers,
+            titers = _get_titers_for_strain_selection,
             include = _get_required_strains
         output:
             strains = DATA_NATURAL_ROOT_PATH + "strains.txt"
