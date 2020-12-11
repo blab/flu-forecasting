@@ -121,6 +121,13 @@ def _get_titer_assay(wildcards):
     sample = _get_sample_by_wildcards(wildcards)
     return config["datasets"][sample]["titer_assay"]
 
+def _get_titer_assay_for_strain_selection(wildcards):
+    sample = _get_sample_by_wildcards(wildcards)
+    if "titers_for_strain_selection" in config["datasets"][sample]:
+        return config["datasets"][sample]["titers_for_strain_selection"]
+    else:
+        return config["datasets"][sample]["titer_assay"]
+
 def _get_titer_passage(wildcards):
     sample = _get_sample_by_wildcards(wildcards)
     return config["datasets"][sample]["titer_passage"]

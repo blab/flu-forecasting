@@ -1,5 +1,5 @@
 {
-    "active_builds": "simulated_sample_3 natural_sample_1_with_90_vpm_sliding",
+    "active_builds": "simulated_sample_3 simulated_sample_3_test_tree natural_sample_1_with_90_vpm_sliding natural_sample_1_with_90_vpm_sliding_test_tree natural_sample_20191001 natural_sample_20191001_with_fra",
     "datasets": {
         "simulated_sample_1": {
             "description": "Require a minimum fitness for randomly select amino acids in non-stationary positive selection",
@@ -44,6 +44,22 @@
             "outliers": "config/outliers_h3n2.txt",
             "required_strains": "config/references_h3n2.txt",
             "frozen_strains": "data/natural/natural_sample_1_with_90_vpm_test_tree/frozen_strains.txt",
+            "start_date": "1990-10-01",
+            "end_date": "2019-10-01"
+        },
+        "natural_sample_1_with_90_vpm_test_tree_with_fra_titers": {
+            "lineage": "h3n2",
+            "segment": "ha",
+            "fauna_fields": "strain virus accession collection_date region country division location passage_category submitting_lab age gender",
+            "fasta_fields": "strain virus accession date region country division location passage submitting_lab age gender",
+            "titer_databases": "tdb cdc_tdb crick_tdb vidrl_tdb niid_tdb",
+            "titer_assay": "hi",
+            "titer_passage": "cell",
+            "titers_for_strain_selection": "fra",
+            "viruses_per_month": 90,
+            "min_sequence_length": 900,
+            "outliers": "config/outliers_h3n2.txt",
+            "required_strains": "config/references_h3n2.txt",
             "start_date": "1990-10-01",
             "end_date": "2019-10-01"
         }
@@ -220,6 +236,7 @@
                     "oracle_x",
                     "cTiter",
                     "cTiter_x",
+                    "cTiterSub_x",
                     "ne_star",
                     "dms_star",
                     "dms_nonepitope",
@@ -231,6 +248,8 @@
                     "ep_x-ne_star",
                     "ne_star-lbi",
                     "cTiter_x-ne_star",
+                    "cTiter_x-distance_from_consensus",
+                    "cTiterSub_x-ne_star",
                     "cTiter_x-ne_star-lbi"
                 ],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/ne_star-lbi.json",
@@ -278,6 +297,7 @@
                     "oracle_x",
                     "cTiter",
                     "cTiter_x",
+                    "cTiterSub_x",
                     "ne_star",
                     "dms_star",
                     "dms_nonepitope",
@@ -289,6 +309,8 @@
                     "ep_x-ne_star",
                     "ne_star-lbi",
                     "cTiter_x-ne_star",
+                    "cTiter_x-distance_from_consensus",
+                    "cTiterSub_x-ne_star",
                     "cTiter_x-ne_star-lbi"
                 ],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/cTiter_x-ne_star.json",
@@ -334,6 +356,30 @@
                     "cTiter_x-ne_star-lbi"
                 ],
                 "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/cTiter_x-ne_star.json"
+            },
+            "natural_sample_20191001_with_fra": {
+                "description": "Most recent build with very dense sampling of viruses to evaluate change in model coefficients during timepoints in the test period (preference given to samples with FRA titer data)",
+                "dataset_sample": "natural_sample_1_with_90_vpm_test_tree_with_fra_titers",
+                "sequences": "data/natural/natural_sample_1_with_90_vpm_test_tree_with_fra_titers/filtered_sequences.fasta",
+                "metadata": "data/natural/natural_sample_1_with_90_vpm_test_tree_with_fra_titers/strains_metadata.tsv",
+                "titers": "data/natural/natural_sample_1_with_90_vpm_test_tree_with_fra_titers/titers.tsv",
+                "fra_titers": "data/natural/natural_sample_1_with_90_vpm_test_tree_with_fra_titers/fra_titers.tsv",
+                "start_date": "2002-04-01",
+                "end_date": "2019-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 6,
+                "years_back_to_build_trees": 6,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "cTiter_x",
+                    "fra_cTiter_x",
+                    "fra_cTiter_x-ne_star",
+                    "ne_star-lbi",
+                    "cTiter_x-ne_star",
+                    "cTiter_x-ne_star-lbi"
+                ],
+                "best_predictor": "results/builds/natural/natural_sample_1_with_90_vpm_sliding/minimal_models_by_distances/fra_cTiter_x-ne_star.json"
             }
         }
     },
