@@ -117,8 +117,6 @@
                     "normalized_fitness",
                     "ep_star",
                     "ep_x",
-                    "ep_x_antigenic_escape",
-                    "ep_x_antigenic_escape_mutdiffsel",
                     "ne_star",
                     "lbi",
                     "delta_frequency",
@@ -218,7 +216,7 @@
                     "ep_x_wolf",
                     "ep_x",
                     "ep_x_antigenic_escape_epitope",
-                    "ep_x_antigenic_escape_epitope_mutdiffsel",
+                    "ep_x_antigenic_escape_weighted_epitope",
                     "oracle_x",
                     "cTiter",
                     "cTiter_x",
@@ -407,6 +405,11 @@
         "cTiterSub_pairwise",
         "ep_luksza_pairwise",
         "ep_kratsch_pairwise",
+        "oracle_pairwise",
+        "ep_pairwise_wolf"
+        "ep_pairwise_koel",
+        "ep_pairwise_antigenic_escape_epitope",
+        "ep_pairwise_antigenic_escape_weighted_epitope",
         "muts",
         "num_date_confidence",
         "region_confidence",
@@ -421,8 +424,8 @@
                     "decay_factors": "14.0"
                 },
                 "natural": {
-                    "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise ep_pairwise_antigenic_escape_epitope ep_pairwise_antigenic_escape_mutdiffsel",
-                    "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x ep_x_antigenic_escape ep_x_antigenic_escape_mutdiffsel",
+                    "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise ep_pairwise_antigenic_escape_epitope ep_pairwise_antigenic_escape_weighted_epitope",
+                    "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x ep_x_antigenic_escape ep_x_antigenic_escape_weighted",
                     "decay_factors": "14.0 14.0 14.0 14.0 14.0 14.0"
                 }
             }

@@ -1,13 +1,16 @@
 {
-	"default": 0,
-	"map": {
-		"HA1": {
-			"144": 1,
-			"157": 1,
-			"159": 1,
-			"160": 1,
-			"193": 1,
-			"222": 1
-		}
-	}
+    "default": 0,
+    "description": "Sites with greater than 4 stddev positive site-level mutdiffsel per serum across four human sera from Lee et al. 2019",
+    "map": {
+        "HA1": {
+            "144": 1,
+            "157": 1,
+            "159": 1,
+            "160": 1,
+            "193": 1,
+            "222": 1,
+            "244": 1
+        }
+    },
+    "name": "antigenic_escape_epitope_sites"
 }
