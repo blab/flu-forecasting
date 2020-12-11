@@ -452,7 +452,7 @@
         "ep_luksza_pairwise",
         "ep_kratsch_pairwise",
         "oracle_pairwise",
-        "ep_pairwise_wolf"
+        "ep_pairwise_wolf",
         "ep_pairwise_koel",
         "ep_pairwise_antigenic_escape_epitope",
         "ep_pairwise_antigenic_escape_weighted_epitope",
