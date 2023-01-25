@@ -1,0 +1,125 @@
+{
+    "active_builds": "simulated_sample_3",
+    "datasets": {
+        "simulated_sample_3": {
+            "description": "Highest density sampling of simulated populations with same settings as simulated_sample_1",
+            "seed": 3,
+            "lineage": "simulated",
+            "segment": "ha",
+            "viruses_per_month": 90
+        }
+    },
+    "builds": {
+        "simulated": {
+            "simulated_sample_3": {
+                "description": "Analysis of simulated A/H3N2-like populations from SANTA-SIM",
+                "full_tree_build": "simulated_sample_3_full_tree",
+                "sequences": "data/simulated/simulated_sample_3/filtered_sequences.fasta",
+                "metadata": "data/simulated/simulated_sample_3/filtered_metadata.tsv",
+                "strains": "data/simulated/simulated_sample_3/strains.txt",
+                "start_date": "2010-10-01",
+                "end_date": "2040-10-01",
+                "pivot_interval": 6,
+                "min_years_per_build": 6,
+                "years_back_to_build_trees": 6,
+                "reference": "config/reference_h3n2_ha.gb",
+                "predictors": [
+                    "naive",
+                    "normalized_fitness",
+                    "ep_x",
+                    "ne_star",
+                    "ep_x-ne_star"
+                ],
+                "best_predictor": "results/builds/simulated/simulated_sample_3/minimal_models_by_distances/normalized_fitness.json",
+                "validation_predictors": [
+                    "naive",
+                    "normalized_fitness"
+                ]
+            }
+        }
+    },
+    "path_to_fauna": "../nextstrain/fauna",
+    "years_for_titer_alignments": 10,
+    "min_tips_per_clade": 1,
+    "min_frequency_per_clade": 0.0,
+    "delta_pivots": 1,
+    "months_for_distance_season": 12,
+    "months_back_for_current_samples": 6,
+    "max_years_for_distances": 5,
+    "years_back_for_target_distance": 3,
+    "target_distance_attribute": "hamming",
+    "titers": {
+        "passages": ["cell"],
+        "assays": ["hi"]
+    },
+    "predictors": [
+        "naive",
+        "ep_x",
+        "ne_star"
+    ],
+    "predictors_simulated": [
+        "naive",
+        "fitness",
+        "ep_x",
+        "ne_star",
+        "ep_x-ne_star"
+    ],
+    "frequencies": {
+        "narrow_bandwidth": 0.1667,
+        "wide_bandwidth": 0.25,
+        "proportion_wide": 0.0,
+        "pivot_frequency": 6,
+        "bandwidths": [0.02, 0.04, 0.08, 0.16, 0.25, 0.33, 0.5],
+        "min_mutation_frequency": 0.0,
+        "stiffness": 20,
+        "inertia": 0.2,
+        "min_freq": 0.01,
+        "preferred_method": "kde",
+        "max_years_for_diffusion": 2
+    },
+    "lbi": {
+        "tau": 0.3,
+        "window": 0.5
+    },
+    "excluded_node_data_fields": [
+        "aa_muts",
+        "aa_sequences",
+        "country_confidence",
+        "ep_pairwise",
+        "cTiterSub_pairwise",
+        "ep_luksza_pairwise",
+        "ep_kratsch_pairwise",
+        "muts",
+        "num_date_confidence",
+        "region_confidence",
+        "sequence"
+    ],
+    "cross_immunity": {
+        "h3n2": {
+            "ha": {
+                "simulated": {
+                    "distance_attributes": "ep_pairwise",
+                    "immunity_attributes": "ep_x",
+                    "decay_factors": "14.0"
+                },
+                "natural": {
+                    "distance_attributes": "ep_pairwise ep_pairwise_wolf ep_pairwise_koel oracle_pairwise",
+                    "immunity_attributes": "ep_x ep_x_wolf ep_x_koel oracle_x",
+                    "decay_factors": "14.0 14.0 14.0 14.0"
+                }
+            }
+        }
+    },
+    "fitness_model": {
+        "min_freq": 0.01,
+        "max_freq": 0.99,
+        "training_window": 6,
+        "delta_months_to_fit": 12,
+        "delta_months": [6, 12],
+        "primary_segment": "ha",
+        "clade_cost_function": "information_gain",
+        "distance_cost_function": "diffsum",
+        "l1_lambda": 0.1,
+        "pseudocount": 0.001
+    }
+}
