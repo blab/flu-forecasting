@@ -198,6 +198,18 @@ When you have downloaded sequences for all batches, concatenate them together in
 cat gisaid_epiflu_sequences/gisaid_epiflu_sequence_*.fasta > gisaid_downloads.fasta
 ```
 
+Some strain names contain characters that IQ-TREE does not allow and which it will convert to underscores in its output trees.
+For example, the apostrophe in the name "Cote d'Ivoire" will be replaced with an underscore.
+To avoid mismatches between strain names caused by this IQ-TREE replacement, we replace those characters in the initial FASTA file at the beginning of the analysis using [seqkit's replace command](https://bioinf.shenwei.me/seqkit/usage/#replace).
+
+```bash
+# Install seqkit. Optionally, use "mamba install" instead of "conda install".
+conda install -c conda-forge -c bioconda seqkit
+
+# Replace apostrophes with underscores in the FASTA record names.
+seqkit replace -p "(')" -r "_" gisaid_downloads.fasta > gisaid_downloads.renamed.fasta
+```
+
 Use augur to parse out the metadata and sequences into separate files.
 Store these files in a directory with the same name as the natural samples in this analysis.
 
@@ -205,7 +217,7 @@ Store these files in a directory with the same name as the natural samples in th
 # Write out sequences and metadata for the validation sample.
 mkdir -p data/natural/natural_sample_1_with_90_vpm
 augur parse \
-    --sequences gisaid_downloads.fasta \
+    --sequences gisaid_downloads.renamed.fasta \
     --output-sequences data/natural/natural_sample_1_with_90_vpm/filtered_sequences.fasta \
     --output-metadata data/natural/natural_sample_1_with_90_vpm/strains_metadata.tsv \
     --fields strain accession collection_date passage_category submitting_lab
