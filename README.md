@@ -41,7 +41,7 @@ Create and activate a Conda environment for Snakemake.
 You will use this environment to run the workflow.
 
 ```bash
-conda create --yes -c conda-forge -c bioconda -n snakemake snakemake
+conda create --yes -c conda-forge -c bioconda -n snakemake snakemake=8.9.0
 conda activate snakemake
 ```
 
