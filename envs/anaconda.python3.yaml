@@ -1,5 +1,6 @@
 name: flu_forecasting
 channels:
+- conda-forge
 - bioconda
 - defaults
 dependencies:

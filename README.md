@@ -37,11 +37,12 @@ git clone https://github.com/blab/flu-forecasting.git
 cd flu-forecasting
 ```
 
-Create and activate a conda environment for the pipeline.
+Create and activate a Conda environment for Snakemake.
+You will use this environment to run the workflow.
 
 ```bash
-conda env create -f envs/anaconda.python3.yaml
-conda activate flu_forecasting
+conda create --yes -c conda-forge -c bioconda -n snakemake snakemake
+conda activate snakemake
 ```
 
 ## Quickstart
@@ -51,13 +52,13 @@ This will first simulate influenza-like populations and then fit models to those
 Inspect all steps to be executed by the pipeline with a dryrun.
 
 ```bash
-snakemake --dryrun --use-conda --config active_builds='simulated_sample_1'
+snakemake --dryrun --use-conda --conda-frontend conda --config active_builds='simulated_sample_1'
 ```
 
 Run the pipeline locally with four jobs (or cores) at once.
 
 ```bash
-snakemake --use-conda --config active_builds='simulated_sample_1' -j 4
+snakemake --use-conda --conda-frontend conda --config active_builds='simulated_sample_1' -j 4
 ```
 
 Always specify a value for `-j`, to limit the number of cores available to the simulator.
@@ -255,19 +256,19 @@ These model files contain all information required to fit the HI- and FRA-based 
 Run the entire pipeline locally with four simultaneous jobs.
 
 ```bash
-snakemake --use-conda -j 4
+snakemake --use-conda --conda-frontend conda -j 4
 ```
 
 You can also run just one of the natural builds as follows, to confirm your environment is configured properly.
 
 ```bash
-snakemake --use-conda --config active_builds='natural_sample_1_with_90_vpm_sliding' -j 4
+snakemake --use-conda --conda-frontend conda --config active_builds='natural_sample_1_with_90_vpm_sliding' -j 4
 ```
 
 Or you can run just one of the simulated builds as follows.
 
 ```bash
-snakemake --use-conda --config active_builds='simulated_sample_3' -j 4
+snakemake --use-conda --conda-frontend conda --config active_builds='simulated_sample_3' -j 4
 ```
 
 Alternately, follow [Snakemake documentation to distribute the entire pipeline to your cloud or cluster accounts](https://snakemake.readthedocs.io/en/stable/executing/cluster-cloud.html).
